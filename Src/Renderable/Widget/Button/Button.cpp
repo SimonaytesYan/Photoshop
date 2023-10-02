@@ -2,18 +2,18 @@
 
 #include "../../../Vector/Vector.h"
 
-Button::Button(Vector _position, Vector _size, Color _color, 
+Button::Button(Vector _position, Vector _size, Texture _texture, 
               void  (*_on_click)(void*), void* _args) :
 Widget   (_position),
 size     (_size),
-color    (_color),
 on_click (_on_click),
-args     (_args)
+args     (_args),
+texture  (_texture)
 {}
 
 void Button::Render(RenderTarget* render_target)
 {
-    render_target->DrawRect(position, size, color);
+    render_target->DrawSprite(position, texture);
 
     Widget::Render(render_target);
 }
