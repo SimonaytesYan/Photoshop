@@ -19,13 +19,14 @@ int main()
 {
 	Font font;
 	font.LoadFont("Resources/Font.ttf");
-	Texture texture;
+	Texture texture, close;
+	close.loadFromFile("Resources/Close.png");
 	texture.loadFromFile("Resources/img.png");
 
 	Widget w;
-	w.AddObject(new Button(Vector(0, 0),     Vector(100, 100), Color(255, 0, 0), Say, (void*)"1\n"));
-	w.AddObject(new Button(Vector(100, 100), Vector(100, 100), Color(255, 0, 0), Say, (void*)"2\n"));
-	w.AddObject(new Button(Vector(200, 200), Vector(100, 100), Color(255, 0, 0), Say, (void*)"3\n"));
+	w.AddObject(new Button(Vector(0, 0),     Vector(50,  50),  close,   Say, (void*)"1\n"));
+	w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
+	w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
 	w.AddObject(new Label(Vector(100, 100),  font, 50));
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
