@@ -50,3 +50,12 @@ void RenderTarget::DrawSprite(Vector position, Texture texture)
 
     data.draw(sprite);
 }
+
+void RenderTarget::SetPixel(Vector position, Color color)
+{
+    sf::RectangleShape shape(sf::Vector2f(1, 1));
+    shape.setPosition(position.GetX(), position.GetY());
+    shape.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+    
+    data.draw(shape);
+}
