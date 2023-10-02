@@ -16,6 +16,9 @@ void Say(void* args)
 
 int main()
 {
+	Texture texture;
+	texture.loadFromFile("Resources/img.png");
+
 	Widget w;
 
 	w.AddObject(new Button(Vector(0, 0),     Vector(100, 100), Color(255, 0, 0), Say, (void*)"1\n"));
@@ -49,6 +52,7 @@ int main()
 		}
 
 		w.Render(&rend_targ);
+		rend_targ.DrawSprite(Vector(500, 500), texture);
 
 		rend_targ.Display(&window);
 

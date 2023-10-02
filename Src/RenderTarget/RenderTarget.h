@@ -3,6 +3,7 @@
 
 #include "../Color.h"
 #include "../Vector/Vector.h"
+#include "../Texture/Texture.h"
 
 class RenderTarget
 {
@@ -16,8 +17,8 @@ public :
     void DrawLine  (Vector v0, Vector v1);
     void DrawRect  (Vector position, Vector size, 
                     Color fill_color = Color(255, 255, 255));
+    void DrawSprite(Vector position, Texture texture);
     void DrawText  ();
-    void DrawSprite();
 
     void Display(sf::RenderWindow* window);
     void Draw(sf::RenderWindow* window);

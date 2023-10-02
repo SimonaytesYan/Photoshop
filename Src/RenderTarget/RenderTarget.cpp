@@ -42,3 +42,11 @@ void RenderTarget::Display(sf::RenderWindow* window)
 
     window->draw(sprite);
 }
+
+void RenderTarget::DrawSprite(Vector position, Texture texture)
+{
+    sf::Sprite sprite(*texture.GetTexture());
+    sprite.setPosition(position.GetX(), position.GetY());
+
+    data.draw(sprite);
+}
