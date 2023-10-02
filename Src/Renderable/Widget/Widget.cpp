@@ -2,9 +2,10 @@
 #include "Widget.h"
 #include "../../Vector/Vector.h"
 
-Widget::Widget (Vector _position) :
-Renderable(),
-position (_position),
+Widget::Widget (Vector _position, bool available) :
+Renderable  (),
+available   (available),
+position    (_position),
 sub_widgets (List<Widget*>(0))
 {}
 
@@ -34,54 +35,64 @@ Vector Widget::GetPosition()
     return position;
 }
 
+bool WidgetEventRound(Events event, void*  event_args, 
+                      List<Widget*> &objects, bool available)
+{
+    if (!available)
+        return false;
+
+    bool intercepted = false;
+    int index = objects.End();
+    while (index != -1 && !intercepted)
+    {
+        switch (event)
+        {
+        case KEY_PRESS:
+            intercepted = objects[index].val->OnKeyPress(*(Key*)event_args);
+            break;
+        case KEY_RELEASE:
+            intercepted = objects[index].val->OnKeyRelease(*(Key*)event_args);
+            break;
+        case MOUSE_PRESS:
+            intercepted = objects[index].val->OnMousePress(*(MouseCondition*)event_args);
+            break;
+        case MOUSE_RELEASE:
+            intercepted = objects[index].val->OnMouseRelease(*(MouseCondition*)event_args);
+            break;
+        case MOUSE_MOVE:
+            intercepted = objects[index].val->OnMouseMove(*(MouseCondition*)event_args);
+            break;
+        
+        default:
+            break;
+        }
+        index = objects.Deterate(index);
+    }
+
+    return intercepted;
+}
+
 bool Widget::OnKeyPress(Key key)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
-    {
-        sub_widgets[index].val->OnKeyPress(key);
-        index = sub_widgets.Deterate(index);
-    }
+    return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
 }
 
 bool Widget::OnKeyRelease(Key key)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
-    {
-        sub_widgets[index].val->OnKeyRelease(key);
-        index = sub_widgets.Deterate(index);
-    }
+    return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
 }
 
-bool Widget::OnMousePress(Vector position, MouseKey key)
+bool Widget::OnMousePress(MouseCondition mouse)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
-    {
-        sub_widgets[index].val->OnMousePress(position, key);
-        index = sub_widgets.Deterate(index);
-    }
-
+    return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available);
 }
  
-bool Widget::OnMouseRelease(Vector position, MouseKey key)
+bool Widget::OnMouseRelease(MouseCondition mouse)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
-    {
-        sub_widgets[index].val->OnMouseRelease(position, key);
-        index = sub_widgets.Deterate(index);
-    }
+    return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
 }
 
-bool Widget::OnMouseMove(Vector position, MouseKey key)
+bool Widget::OnMouseMove(MouseCondition mouse)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
-    {
-        sub_widgets[index].val->OnMouseMove(position, key);
-        index = sub_widgets.Deterate(index);
-    }
+    return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
-

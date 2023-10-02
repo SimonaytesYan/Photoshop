@@ -1,3 +1,5 @@
+#include "Vector/Vector.h"
+
 enum Key
 {
     a,
@@ -6,6 +8,13 @@ enum Key
 
 enum MouseKey
 {
-    LEFT_MOUSE_BUTTON,
-    RIGHT_MOUSE_BUTTON
+    LEFT,
+    RIGHT,
+    MIDDLE
+};
+
+struct MouseCondition
+{
+    Vector   position;
+    MouseKey key;
 };

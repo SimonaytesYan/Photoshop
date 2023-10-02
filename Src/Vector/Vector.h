@@ -3,22 +3,17 @@
 
 #include <math.h>
 
-class Widget;
-
 class Vector
 {
     double x;
     double y;
 
-    sf::Color color;
-
 public : 
-    Vector(double x, double y, sf::Color color = sf::Color::White);
+    Vector(double x, double y);
     ~Vector();
 
     double    GetX    () {return x;};
     double    GetY    () {return y;};
-    sf::Color GetColor() {return color;};
 
     void   Dump  ();
     void   Rotate(double deg);

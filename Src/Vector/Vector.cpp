@@ -3,10 +3,9 @@
 
 #include "Vector.h"
 
-Vector::Vector(double x, double y, sf::Color color) :
+Vector::Vector(double x, double y) :
 x (x),
-y (y),
-color (color)
+y (y)
 {}
 
 Vector::~Vector()
@@ -22,20 +21,13 @@ void Vector::Dump()
 
 Vector operator+(const Vector& a, const Vector& b)
 {
-    sf::Color new_color((a.color.r + b.color.r)/2, 
-                        (a.color.g + b.color.g)/2,
-                        (a.color.b + b.color.b)/2);
-
-    Vector res = Vector(a.x + b.x, a.y + b.y, new_color);
+    Vector res = Vector(a.x + b.x, a.y + b.y);
     return res;
 }
 
 Vector operator-(const Vector& a)
 {
-    sf::Color new_color(255 - a.color.r, 
-                        255 - a.color.g, 
-                        255 - a.color.b);
-    return Vector(-a.x, -a.y, new_color);
+    return Vector(-a.x, -a.y);
 }
 
 Vector operator-(const Vector& a, const Vector& b)
@@ -45,12 +37,12 @@ Vector operator-(const Vector& a, const Vector& b)
 
 Vector operator*(const Vector& a, double b)
 {
-    return Vector(a.x * b, a.y * b, a.color);
+    return Vector(a.x * b, a.y * b);
 }
 
 Vector operator/(const Vector& a, double b)
 {
-    return Vector(a.x / b, a.y / b, a.color);
+    return Vector(a.x / b, a.y / b);
 }
 
 double operator,(const Vector& a, const Vector& b)
@@ -65,10 +57,7 @@ Vector operator!(const Vector& a)
 
 Vector operator+(const Vector& a)
 {
-    sf::Color new_color(255 - a.color.r, 
-                        255 - a.color.g, 
-                        255 - a.color.b);
-    return Vector(-a.y, a.x, new_color);
+    return Vector(-a.y, a.x);
 }
 
 Vector operator^(const Vector& a, double b)

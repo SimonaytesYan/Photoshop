@@ -8,16 +8,25 @@
 #include "../../List.h"
 #include "../../Keys.h"
 
+enum Events
+{
+    KEY_PRESS,
+    KEY_RELEASE,
+    MOUSE_PRESS,
+    MOUSE_RELEASE,
+    MOUSE_MOVE
+};
+
 class Widget : public Renderable
 {
-    List<Widget*> sub_widgets;
-    bool          available;
 
 protected:
+    bool          available;
+    List<Widget*> sub_widgets;
     Vector position;
 
 public : 
-    Widget (Vector position = Vector(0, 0));
+    Widget (Vector position = Vector(0, 0), bool available = true);
     ~Widget();
 
     virtual void Render        (RenderTarget* render_target) override;
@@ -25,9 +34,9 @@ public :
 
     virtual bool OnKeyPress    (Key key);
     virtual bool OnKeyRelease  (Key key);
-    virtual bool OnMousePress  (Vector position, MouseKey key);
-    virtual bool OnMouseRelease(Vector position, MouseKey key);
-    virtual bool OnMouseMove   (Vector position, MouseKey key);
+    virtual bool OnMousePress  (MouseCondition mouse);
+    virtual bool OnMouseRelease(MouseCondition mouse);
+    virtual bool OnMouseMove   (MouseCondition mouse);
 
     Vector GetPosition();
 };
