@@ -4,6 +4,7 @@
 #include "../Color.h"
 #include "../Vector/Vector.h"
 #include "../Texture/Texture.h"
+#include "../Font/Font.h"
 
 class RenderTarget
 {
@@ -18,7 +19,7 @@ public :
     void DrawRect  (Vector position, Vector size, 
                     Color fill_color = Color(255, 255, 255));
     void DrawSprite(Vector position, Texture texture);
-    void DrawText  ();
+    void DrawText  (Vector position, Font font, const char* text, int character_size);
 
     void Display(sf::RenderWindow* window);
     void Draw(sf::RenderWindow* window);

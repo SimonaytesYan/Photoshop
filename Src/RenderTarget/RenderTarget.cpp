@@ -59,3 +59,15 @@ void RenderTarget::SetPixel(Vector position, Color color)
     
     data.draw(shape);
 }
+
+void RenderTarget::DrawText(Vector position, Font font, const char* text, int character_size)
+{
+    sf::Text label;
+
+    label.setFont(*font.GetFont());
+    label.setCharacterSize(character_size);
+    label.setPosition(position.GetX(), position.GetY());
+    label.setString(text); 
+
+    data.draw(label);
+}
