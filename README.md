@@ -1,6 +1,6 @@
-## Chemistry simulator ##
+## Photoshop ##
 
-This is a educational C++ project - GUI library based on SFML.
+This is a educational C++ project - GUI library based on SFML and simle version of photoshop implemented on it. 
 
 ## Configuration ##
 
