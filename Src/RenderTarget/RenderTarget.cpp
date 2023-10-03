@@ -1,11 +1,11 @@
 #include "RenderTarget.h"
 
-sf::Color ColorToColor(Color color)
+sf::Color ConvertColor(Color color)
 {
     return sf::Color(color.r, color.g, color.b);
 }
 
-sf::Vector2f VecToVec(Vector vec)
+sf::Vector2f ConvertVec(Vector vec)
 {
     return sf::Vector2f(vec.GetX(), vec.GetY());
 }
@@ -24,11 +24,15 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color)
     data.draw(circle);
 }
 
-void RenderTarget::DrawRect(Vector position, Vector size, Color fill_color)
+void RenderTarget::DrawRect(Vector position, Vector size, Color fill_color,
+                            int border_size, Color border_color)
 {
-    sf::RectangleShape rect(VecToVec(size));
-    rect.setPosition(VecToVec(position));
-    rect.setFillColor(ColorToColor(fill_color));
+    sf::RectangleShape rect(ConvertVec(size));
+    rect.setPosition(ConvertVec(position));
+    rect.setFillColor(ConvertColor(fill_color));
+
+    rect.setOutlineColor(ConvertColor(border_color));
+    rect.setOutlineThickness(border_size);
 
     data.draw(rect);
 }

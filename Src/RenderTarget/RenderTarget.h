@@ -17,7 +17,9 @@ public :
     void DrawCircle(Vector position, double r, Color color);
     void DrawLine  (Vector v0, Vector v1);
     void DrawRect  (Vector position, Vector size, 
-                    Color fill_color = Color(255, 255, 255));
+                    Color fill_color = Color(255, 255, 255),
+                    int border_size = 0,
+                    Color border_color = Color(0, 0, 0));
     void DrawSprite(Vector position, Texture texture);
     void DrawText  (Vector position, Font font, const char* text, int character_size);
 
