@@ -3,9 +3,9 @@
 
 #include "Vector.h"
 
-Vector::Vector(double x, double y) :
-x (x),
-y (y)
+Vector::Vector(double _x, double _y) :
+x (_x),
+y (_y)
 {}
 
 Vector::~Vector()

@@ -1,14 +1,12 @@
 #include "Window.h"
 #include "../Button/Button.h"
 #include "../Label/Label.h"
+#include "../../../Resources.h"
 
-const char*  kCloseImgFile = "Resources/Close.png";
-const char*  kFontFile     = "Resources/Font.ttf";
 const size_t kButtonSize   = 50;
 
 void ButtonClose(void* args)
 {
-	fprintf(stderr, "Close window\n");
 	((Window*)(args))->Close();
 }
 

@@ -9,7 +9,7 @@ class Vector
     double y;
 
 public : 
-    Vector(double x, double y);
+    Vector(double _x, double _y);
     ~Vector();
 
     double    GetX    () {return x;};

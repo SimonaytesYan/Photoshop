@@ -6,15 +6,15 @@
 
 class Label : public Widget
 {
-    Font  font;
-    int   character_size;
-    char* text;
+    Font        font;
+    int         character_size;
+    const char* text;
 
 public:
-    Label(Vector _position, Font font, int character_size, char* text = "Label");
+    Label(Vector _position, Font font, int character_size, const char* text = "Label");
     ~Label();
 
-    void SetText(char* new_text);
+    void SetText(const char* new_text);
 
     void Render(RenderTarget* render_target) override;
 };

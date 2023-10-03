@@ -2,19 +2,37 @@
 #include <assert.h>
 
 #include "List.h"
+#include "Resources.h"
 #include "Renderable/Widget/Button/Button.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Label/Label.h"
 #include "Renderable/Widget/Window/Window.h"
+#include "Renderable/Widget/Menu/Menu.h"
 
-const char kWindowHeader[] = "Sphere";
-const int  kMaxTextLength  = 50;
-int WindowWidth  = 0;
-int WindowHeight = 0;
+const char   kWindowHeader[] = "Photoshop";
+const int    kMaxTextLength  = 50;
+size_t       WindowWidth     = 0;
+size_t       WindowHeight    = 0;
 
 void Say(void* args)
 {
 	fprintf(stderr, "Button say %s", (char*)args);
+}
+
+void AddMenu(Window* window)
+{
+	Menu* menu = new Menu();
+
+	Font font;
+	font.LoadFont(kFontFile);
+	Texture texture;
+	texture.LoadFromFile(kBackgroundImgFile);
+
+	Button* file_button = new Button(Vector(0, 50), Vector(100, 50), texture);
+	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File"));
+	menu->AddObject(file_button);
+
+	window->AddObject(menu);
 }
 
 int main()
@@ -31,13 +49,13 @@ int main()
 
 	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
 
-	Window w(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
-	Window w2(Vector(WindowWidth/2, WindowHeight/2), 
+	Window main_window(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
+	
+	Window sub_window(Vector(WindowWidth/2, WindowHeight/2), 
 			  Vector(WindowWidth/3, WindowHeight/3), "Window2");
 
-	w.AddObject(&w2);
-	//w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
-	//w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
+	main_window.AddObject(&sub_window);
+	AddMenu(&main_window);
 
 	while (window.isOpen())
 	{
@@ -56,14 +74,14 @@ int main()
 				{
 					Vector position(event.mouseButton.x,
 									event.mouseButton.y);
-					w.OnMousePress({position, (MouseKey)event.mouseButton.button});
+					main_window.OnMousePress({position, (MouseKey)event.mouseButton.button});
 				}
 			}
 		}
 
 		rend_targ.Clear();
 		window.clear();
-		w.Render(&rend_targ);
+		main_window.Render(&rend_targ);
 
 		rend_targ.Display(&window);
 

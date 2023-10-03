@@ -2,24 +2,21 @@
 #include "Widget.h"
 #include "../../Vector/Vector.h"
 
-Widget::Widget (Vector _position, bool available) :
+Widget::Widget (Vector _position, bool _available) :
 Renderable  (),
-available   (available),
+available   (_available),
 position    (_position),
 sub_widgets (List<Widget*>(0))
 {}
 
 Widget::~Widget()
 {
-    fprintf(stderr, "{\nWidget dtor\n");
     int index = sub_widgets.Begin();
     while (index != -1)
     {
         delete sub_widgets[index].val;
         index = sub_widgets.Iterate(index);
     }
-
-    fprintf(stderr, "end dtor\n}\n\n");
 }
 
 void Widget::Render(RenderTarget* render_target)

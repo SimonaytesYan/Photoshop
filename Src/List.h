@@ -72,7 +72,6 @@ int List<T>::Deterate(int index)
 template <class T>
 int List<T>::Begin()
 {
-    fprintf(stderr, "begin data = %p\n", data);
     if (capacity >= 1)
         return data[0].next;
     return -1;
@@ -109,7 +108,6 @@ List<T>::~List()
     size      = -1;
     free_i      = -1;
 
-    fprintf(stderr, "free data = %p\n", data);
     free(data);
 }
 
