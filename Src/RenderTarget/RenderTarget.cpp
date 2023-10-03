@@ -71,3 +71,8 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text, int ch
 
     data.draw(label);
 }
+
+void RenderTarget::Clear()
+{
+    data.clear();
+}

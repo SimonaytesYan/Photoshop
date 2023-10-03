@@ -23,7 +23,7 @@ class Widget : public Renderable
 protected:
     bool          available;
     List<Widget*> sub_widgets;
-    Vector position;
+    Vector        position;
 
 public : 
     Widget (Vector position = Vector(0, 0), bool available = true);

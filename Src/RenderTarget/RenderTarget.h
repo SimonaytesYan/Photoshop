@@ -23,6 +23,7 @@ public :
 
     void Display(sf::RenderWindow* window);
     void Draw(sf::RenderWindow* window);
+    void Clear();
 };
 
 #endif //SYM_RENDER_TARGET

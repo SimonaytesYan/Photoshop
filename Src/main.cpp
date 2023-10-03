@@ -5,14 +5,22 @@
 #include "Renderable/Widget/Button/Button.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Label/Label.h"
+#include "Renderable/Widget/Window/Window.h"
 
 const char kWindowHeader[] = "Sphere";
-const int  kWindowSize     = 1000;
 const int  kMaxTextLength  = 50;
+int WindowWidth  = 0;
+int WindowHeight = 0;
 
 void Say(void* args)
 {
 	printf("Button say %s", (char*)args);
+}
+
+void Close(void* args)
+{
+	printf("Close window\n");
+	((Window*)(args))->Close();
 }
 
 int main()
@@ -23,15 +31,19 @@ int main()
 	close.loadFromFile("Resources/Close.png");
 	texture.loadFromFile("Resources/img.png");
 
-	Widget w;
-	w.AddObject(new Button(Vector(0, 0),     Vector(50,  50),  close,   Say, (void*)"1\n"));
-	w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
-	w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
-	w.AddObject(new Label(Vector(100, 100),  font, 50));
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
-	RenderTarget rend_targ(Vector(kWindowSize, kWindowSize));
+	WindowWidth  = window.getSize().x;
+	WindowHeight = window.getSize().y;
+
+	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
+
+	Window w(Vector(0, 0), Vector(WindowWidth, WindowHeight));
+	w.AddObject(new Button(Vector(WindowWidth - 50, 0), Vector(50,  50), close, Close, &w));
+	w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
+	w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
+	w.AddObject(new Label(Vector(100, 0),  font, 30));
 
 	while (window.isOpen())
 	{
@@ -55,8 +67,9 @@ int main()
 			}
 		}
 
+		rend_targ.Clear();
+		window.clear();
 		w.Render(&rend_targ);
-		rend_targ.DrawSprite(Vector(500, 500), texture);
 
 		rend_targ.Display(&window);
 
