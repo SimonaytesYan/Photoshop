@@ -11,7 +11,9 @@ class Label : public Widget
     char* text;
 
 public:
-    Label(Vector _position, Font font, int character_size);
+    Label(Vector _position, Font font, int character_size, char* text = "Label");
+    ~Label();
+
     void SetText(char* new_text);
 
     void Render(RenderTarget* render_target) override;

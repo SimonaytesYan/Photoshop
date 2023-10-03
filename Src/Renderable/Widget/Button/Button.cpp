@@ -11,6 +11,9 @@ args     (_args),
 texture  (_texture)
 {}
 
+Button::~Button()
+{}
+
 void Button::Render(RenderTarget* render_target)
 {
     render_target->DrawSprite(position, texture);

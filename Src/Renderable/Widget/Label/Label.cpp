@@ -1,10 +1,13 @@
 #include "Label.h"
 
-Label::Label(Vector _position, Font _font, int _character_size) :
+Label::Label(Vector _position, Font _font, int _character_size, char* _text) :
 Widget(_position),
 font (_font),
 character_size (_character_size),
-text ("Label")
+text (_text)
+{}
+
+Label::~Label()
 {}
 
 void Label::SetText(char* new_text)

@@ -17,7 +17,8 @@ public :
            Texture  _texture         = Texture(),
            void  (*_on_click)(void*) = nullptr, 
            void* _args               = nullptr);
-    
+    ~Button();
+
     virtual void Render      (RenderTarget* render_target) override;
             bool OnMousePress(MouseCondition mouse)        override;
             bool Inside_p    (Vector v);

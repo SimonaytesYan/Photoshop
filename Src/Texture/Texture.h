@@ -9,7 +9,7 @@ class Texture
 
 public:
     bool         Create      (int width, int height);
-    bool         loadFromFile(const char* filename);
+    bool         LoadFromFile(const char* filename);
     sf::Texture* GetTexture  ();
 };
 

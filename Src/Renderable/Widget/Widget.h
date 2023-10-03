@@ -27,7 +27,7 @@ protected:
 
 public : 
     Widget (Vector position = Vector(0, 0), bool available = true);
-    ~Widget();
+    virtual ~Widget();
 
     virtual void Render        (RenderTarget* render_target) override;
     virtual void AddObject     (Widget* new_widget);

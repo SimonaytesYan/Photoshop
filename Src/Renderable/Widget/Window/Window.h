@@ -8,7 +8,8 @@ class Window : public Widget
     Vector size;
 
 public:
-    Window(Vector position, Vector size);
+    Window(Vector position, Vector size, char* header);
+    ~Window();
 
     void Render  (RenderTarget* render_target) override;
     bool Inside_p(Vector v);

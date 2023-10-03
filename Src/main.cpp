@@ -14,22 +14,14 @@ int WindowHeight = 0;
 
 void Say(void* args)
 {
-	printf("Button say %s", (char*)args);
-}
-
-void Close(void* args)
-{
-	printf("Close window\n");
-	((Window*)(args))->Close();
+	fprintf(stderr, "Button say %s", (char*)args);
 }
 
 int main()
 {
-	Font font;
-	font.LoadFont("Resources/Font.ttf");
 	Texture texture, close;
-	close.loadFromFile("Resources/Close.png");
-	texture.loadFromFile("Resources/img.png");
+	close.LoadFromFile("Resources/Close.png");
+	texture.LoadFromFile("Resources/img.png");
 
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
@@ -39,11 +31,13 @@ int main()
 
 	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
 
-	Window w(Vector(0, 0), Vector(WindowWidth, WindowHeight));
-	w.AddObject(new Button(Vector(WindowWidth - 50, 0), Vector(50,  50), close, Close, &w));
-	w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
-	w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
-	w.AddObject(new Label(Vector(100, 0),  font, 30));
+	Window w(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
+	Window w2(Vector(WindowWidth/2, WindowHeight/2), 
+			  Vector(WindowWidth/3, WindowHeight/3), "Window2");
+
+	w.AddObject(&w2);
+	//w.AddObject(new Button(Vector(100, 100), Vector(100, 100), texture, Say, (void*)"2\n"));
+	//w.AddObject(new Button(Vector(200, 200), Vector(100, 100), texture, Say, (void*)"3\n"));
 
 	while (window.isOpen())
 	{

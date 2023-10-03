@@ -11,17 +11,28 @@ sub_widgets (List<Widget*>(0))
 
 Widget::~Widget()
 {
-    sub_widgets.~List();
+    fprintf(stderr, "{\nWidget dtor\n");
+    int index = sub_widgets.Begin();
+    while (index != -1)
+    {
+        delete sub_widgets[index].val;
+        index = sub_widgets.Iterate(index);
+    }
+
+    fprintf(stderr, "end dtor\n}\n\n");
 }
 
 void Widget::Render(RenderTarget* render_target)
 {
-    int index = sub_widgets.End();
-    while (index != -1)
+    if (available)
     {
-        sub_widgets[index].val->Render(render_target);
+        int index = sub_widgets.End();
+        while (index != -1)
+        {
+            sub_widgets[index].val->Render(render_target);
 
-        index = sub_widgets.Deterate(index);
+            index = sub_widgets.Deterate(index);
+        }
     }
 }
 
