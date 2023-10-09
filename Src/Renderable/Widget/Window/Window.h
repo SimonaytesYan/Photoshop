@@ -12,7 +12,7 @@ public:
     ~Window();
 
     void Render  (RenderTarget* render_target) override;
-    bool Inside_p(Vector v);
+    bool InsideP(Vector v);
     bool OnMousePress(MouseCondition mouse) override;
     void Close();
 };

@@ -1,18 +1,33 @@
 #ifndef SYM_REGION_SET
 #define SYM_REGION_SET
 
-#include "../List.h"
+#include "../DynArray.h"
 class ClipRegion;
-#include "../ClipRegion/ClipRegion.h"
 
 class RegionSet
 {
-    List<ClipRegion*> data;
+    DynArray<ClipRegion> data;
 
 public:
-    RegionSet();
+    RegionSet() :
+    data (DynArray<ClipRegion>(0))
+    {};
 
-    void AddRegion(ClipRegion* region);
+    void UnitSet();
+    void AddRegion(ClipRegion region);
+    RegionSet& operator-=(const RegionSet& b);
+    ClipRegion operator[](const int index) const;
+
+    friend RegionSet operator&&(RegionSet a, RegionSet b);
+    friend RegionSet operator||(RegionSet a, RegionSet b);
+
+    int GetLength() const
+    { return data.GetLength(); };
+
+    void Dump();
 };
+
+RegionSet operator&&(RegionSet a, RegionSet b);
+RegionSet operator||(RegionSet a, RegionSet b);
 
 #endif //SYM_REGION_SET

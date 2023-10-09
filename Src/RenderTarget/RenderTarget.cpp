@@ -1,8 +1,10 @@
 #include "RenderTarget.h"
+#include "../RegionSet/RegionSet.h"
+#include "../ClipRegion/ClipRegion.h"
 
 sf::Color ConvertColor(Color color)
 {
-    return sf::Color(color.r, color.g, color.b);
+    return sf::Color(color.r, color.g, color.b, color.a);
 }
 
 sf::Vector2f ConvertVec(Vector vec)
@@ -74,6 +76,45 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text, int ch
     label.setString(text); 
 
     data.draw(label);
+}
+
+void RenderTarget::DrawRegionSet(const RegionSet& reg_set, int color_type)
+{
+    Color* colors = (Color*)calloc(sizeof(Color), reg_set.GetLength());
+    for (int i = 0; i < reg_set.GetLength(); i++)
+    {
+        switch (color_type)
+        {
+        case 0:
+            colors[i] = Color(0,
+                              255/(reg_set.GetLength() + 1) * (i + 1),
+                              0, 
+                              128);
+            break;
+        
+        case 1:
+            colors[i] = Color(0,
+                              0,
+                              255/(reg_set.GetLength() + 1) * (i + 1), 
+                              128);
+            break;
+
+        case 2:
+            colors[i] = Color(255/(reg_set.GetLength() + 1) * (i + 1),
+                              0,
+                              0, 
+                              128);
+            break;
+        }
+    }
+
+    for (int i = 0; i < reg_set.GetLength(); i++)
+    {        
+        DrawRect(reg_set[i].GetPosition() * 100, 
+                 reg_set[i].GetSize() * 100, colors[i], 2);
+    }
+
+    free(colors);
 }
 
 void RenderTarget::Clear()

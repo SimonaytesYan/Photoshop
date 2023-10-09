@@ -1,12 +1,12 @@
 #include "ClipRegion.h"
-//#include "../RegionSet/RegionSet.h"
+#include "../RegionSet/RegionSet.h"
 
-double max(double a, double b)
+inline double max(double a, double b)
 {
     return a < b ? b : a;
 }
 
-double min(double a, double b)
+inline double min(double a, double b)
 {
     return a < b ? a : b;
 }
@@ -15,20 +15,24 @@ ClipRegion::ClipRegion(Vector _position, Vector _size, Color _color) :
 position (_position),
 size     (_size),
 color    (_color)
-{
-}
+{}
 
-Vector ClipRegion::GetSize()
+Vector ClipRegion::GetSize() const
 {
     return size;
 }
 
-Vector ClipRegion::GetPosition()
+Vector ClipRegion::GetPosition() const
 {
     return position;
 }
 
-ClipRegion operator&&(ClipRegion a, ClipRegion b)
+bool operator==(ClipRegion a, ClipRegion b)
+{
+    return a.GetPosition() == b.GetPosition() && a.GetSize() == b.GetSize();
+}
+
+inline ClipRegion operator&&(ClipRegion a, ClipRegion b)
 {
     double left_x   = max(a.position.GetX(), b.position.GetX());
     double right_x  = min(a.position.GetX() + a.size.GetX(), 
@@ -48,19 +52,46 @@ ClipRegion operator&&(ClipRegion a, ClipRegion b)
     return ClipRegion(position, size, res_color);
 }
 
-bool XInsideRegion(ClipRegion a, double x)
+inline bool XInsideRegion(ClipRegion a, double x)
 {
     return a.GetPosition().GetX() < x &&
-           a.GetPosition().GetX() + a.GetSize().GetX() > x;
+           ((a.GetPosition() + a.GetSize()).GetX() > x);
 }
 
-bool YInsideRegion(ClipRegion a, double y)
+inline bool YInsideRegion(ClipRegion a, double y)
 {
     return a.GetPosition().GetY() < y &&
-           a.GetPosition().GetY() + a.GetSize().GetY() > y;
+           ((a.GetPosition() + a.GetSize()).GetY() > y);
 }
 
-RegionSet operator/(ClipRegion a, ClipRegion b)
+void ClipRegion::Dump()
+{
+    printf("{ ");
+    GetPosition().Dump();
+    printf(" ");
+    (GetSize() + GetPosition()).Dump();
+    printf("\t}\n");
+}
+
+bool RegionIntersectP(ClipRegion a, ClipRegion b)
+{
+    double a_x0 = a.GetPosition().GetX();
+    double a_y0 = a.GetPosition().GetY();
+    double a_x1 = a.GetPosition().GetX() + a.GetSize().GetX();
+    double a_y1 = a.GetPosition().GetY() + a.GetSize().GetY();
+
+    double b_x0 = b.GetPosition().GetX();
+    double b_y0 = b.GetPosition().GetY();
+    double b_x1 = b.GetPosition().GetX() + b.GetSize().GetX();
+    double b_y1 = b.GetPosition().GetY() + b.GetSize().GetY();
+
+    return (((a_x0 <= b_x0 && b_x0 <= a_x1) || (a_x0 <= b_x1 && b_x1 <= a_x1)) && 
+            ((a_y0 <= b_y0 && b_y0 <= a_y1) || (a_y0 <= b_y1 && b_y1 <= a_y1))) ||
+           (((b_x0 <= a_x0 && a_x0 <= b_x1) || (b_x0 <= a_x1 && a_x1 <= b_x1)) && 
+            ((b_y0 <= a_y0 && a_y0 <= b_y1) || (b_y0 <= a_y1 && a_y1 <= b_y1)));
+}
+
+RegionSet operator-(ClipRegion a, ClipRegion b)
 {
     RegionSet result;
 
@@ -74,38 +105,75 @@ RegionSet operator/(ClipRegion a, ClipRegion b)
     double b_x1 = b.GetPosition().GetX() + b.GetSize().GetX();
     double b_y1 = b.GetPosition().GetY() + b.GetSize().GetY();
 
-    if (YInsideRegion(a, b_y0) &&
-        (XInsideRegion(a, b_x0) || 
-         XInsideRegion(a, b_x1)))       //up region
-    {
-        result.AddRegion(new ClipRegion(a.position, 
-                                        Vector(a.size.GetX(), b_y0 - a_y0)));
-    }
+    #ifdef DEBUG
+        printf("a = ");
+        a.Dump();
+        printf("b = ");
+        b.Dump();
+    #endif
 
-    if (YInsideRegion(a, b_y1) &&
-        (XInsideRegion(a, b_x0) ||
-         XInsideRegion(a, b_x1)))       //bottom region
+    if (RegionIntersectP(a, b))
     {
-        result.AddRegion(new ClipRegion(Vector(a_x0, b_y1), 
-                                        Vector(a.size.GetX(), a_y1 - b_y1)));
-    }
+        if (YInsideRegion(a, b_y1))       //up region
+        {
+            Vector position = Vector(a_x0, b_y1);
+            Vector size     = Vector(a.size.GetX(), a_y1 - b_y1);
+            if(size.GetX() != 0 && size.GetY() != 0)
+                result.AddRegion(ClipRegion(position, size));
 
-    if (XInsideRegion(a, b_x0) &&
-        (YInsideRegion(a, b_y0) ||
-         YInsideRegion(a, b_y1)))       //left region
-    {   
-        Vector position(a_x0, max(a_y0, b_y0));
-        Vector size    (b_x0 - a_x0, b_y1 - max(a_y0, b_y0));
-        result.AddRegion(new ClipRegion(position, size));
+            #ifdef DEBUG
+                printf("0 rect = ");
+                ClipRegion(position, size).Dump();
+            #endif
+        }
+
+        if (YInsideRegion(a, b_y0))       //bottom region
+        {
+            Vector position = a.position;
+            Vector size     = Vector(a.size.GetX(), b_y0 - a_y0);
+            if(size.GetX() != 0 && size.GetY() != 0)
+                result.AddRegion(ClipRegion(position, size));
+
+            #ifdef DEBUG
+                printf("1 rect = ");
+                ClipRegion(position, size).Dump();
+            #endif
+        }
+
+        if (XInsideRegion(a, b_x0))       //left region
+        {   
+            Vector position(a_x0, max(a_y0, b_y0));
+            Vector size    (b_x0 - a_x0, min(a_y1, b_y1) - max(a_y0, b_y0));
+
+            if(size.GetX() != 0 && size.GetY() != 0)
+                result.AddRegion(ClipRegion(position, size));
+
+            #ifdef DEBUG
+                printf("2 rect = ");
+                ClipRegion(position, size).Dump();
+            #endif
+        }
+
+        if (XInsideRegion(a, b_x1))       //right region
+        {
+            Vector position(b_x1, max(a_y0, b_y0));
+            Vector size    (a_x1 - b_x1, min(a_y1, b_y1) - max(a_y0, b_y0));
+            if(size.GetX() != 0 && size.GetY() != 0)
+                result.AddRegion(ClipRegion(position, size));
+
+            #ifdef DEBUG
+                printf("3 rect = ");
+                ClipRegion(position, size).Dump();
+            #endif
+        }
     }
-                        
-    if (XInsideRegion(a, b_x0) &&
-        (YInsideRegion(a, b_y0) ||
-         YInsideRegion(a, b_y1)))
+    else
     {
-        Vector position(b_x1, max(a_y0, b_y0));
-        Vector size    (a_x1 - b_x1, b_y1 - max(a_y0, b_y0));
-        result.AddRegion(new ClipRegion(position, size));
+        #ifdef DEBUG
+            printf("4 rect = ");
+            a.Dump();
+            result.AddRegion(ClipRegion(a));
+        #endif
     }
 
     return result;
@@ -113,8 +181,8 @@ RegionSet operator/(ClipRegion a, ClipRegion b)
 
 RegionSet operator||(ClipRegion a, ClipRegion b)
 {
-    RegionSet result = a / b;
-    result.AddRegion(new ClipRegion(a.GetPosition(), a.GetSize()));
+    RegionSet result = a - b;
+    result.AddRegion(ClipRegion(a.GetPosition(), a.GetSize()));
 
     return result;
 }

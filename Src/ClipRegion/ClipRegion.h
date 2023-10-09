@@ -2,7 +2,6 @@
 #define SYM_CLIP_REGION
 
 class RegionSet;
-#include "../RegionSet/RegionSet.h"
 #include "../Vector/Vector.h"
 #include "../Color.h"
 
@@ -15,16 +14,20 @@ class ClipRegion
 public:
     ClipRegion(Vector position, Vector size, Color color = Color(255, 255, 255));
 
-    Vector GetSize();
-    Vector GetPosition();
+    Vector GetSize()     const;
+    Vector GetPosition() const;
+
+    void Dump();
 
     friend ClipRegion operator&&(ClipRegion a, ClipRegion b);
     friend RegionSet  operator||(ClipRegion a, ClipRegion b);
-    friend RegionSet  operator/ (ClipRegion a, ClipRegion b);
+    friend RegionSet  operator- (ClipRegion a, ClipRegion b);
+    friend bool       operator==(ClipRegion a, ClipRegion b);
 };
 
 ClipRegion operator&&(ClipRegion a, ClipRegion b);
 RegionSet  operator||(ClipRegion a, ClipRegion b);
-RegionSet  operator/ (ClipRegion a, ClipRegion b);
+RegionSet  operator- (ClipRegion a, ClipRegion b);
+bool       operator==(ClipRegion a, ClipRegion b);
 
 #endif //SYM_CLIP_REGION

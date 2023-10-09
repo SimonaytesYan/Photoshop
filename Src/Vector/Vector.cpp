@@ -16,7 +16,7 @@ Vector::~Vector()
 
 void Vector::Dump()
 {
-    fprintf(stderr, "(%lf, %lf)\n", x, y);
+    printf("(%.2lf, %.2lf)", x, y);
 }
 
 Vector operator+(const Vector& a, const Vector& b)
@@ -58,6 +58,11 @@ Vector operator!(const Vector& a)
 Vector operator+(const Vector& a)
 {
     return Vector(-a.y, a.x);
+}
+
+bool operator==(const Vector& a, const Vector& b)
+{
+    return a.x == b.x && a.y == b.y;
 }
 
 Vector operator^(const Vector& a, double b)

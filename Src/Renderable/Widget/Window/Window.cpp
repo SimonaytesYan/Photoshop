@@ -36,7 +36,7 @@ bool Window::OnMousePress(MouseCondition mouse)
 {
     if (available)
     {
-        if (Inside_p(mouse.position))
+        if (InsideP(mouse.position))
         {
             Widget::OnMousePress(mouse);
             return true;
@@ -51,7 +51,7 @@ void Window::Close()
     //this->~Window();
 }
 
-bool Window::Inside_p(Vector v)
+bool Window::InsideP(Vector v)
 {
     return v.GetX() - position.GetX() > 0           &&
            v.GetX() - position.GetX() < size.GetX() &&

@@ -21,7 +21,7 @@ public :
 
     virtual void Render      (RenderTarget* render_target) override;
             bool OnMousePress(MouseCondition mouse)        override;
-            bool Inside_p    (Vector v);
+            bool InsideP    (Vector v);
 };
 
 #endif //SYM_BUTTON

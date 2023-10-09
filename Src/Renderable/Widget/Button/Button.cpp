@@ -23,7 +23,7 @@ void Button::Render(RenderTarget* render_target)
 
 bool Button::OnMousePress(MouseCondition mouse)
 {
-    if (Inside_p(mouse.position))
+    if (InsideP(mouse.position))
     {
         bool intercepted = Widget::OnMousePress(mouse);
 
@@ -41,7 +41,7 @@ bool Button::OnMousePress(MouseCondition mouse)
     return false;
 }
 
-bool Button::Inside_p (Vector v)
+bool Button::InsideP (Vector v)
 {
     return v.GetX() - position.GetX() > 0           &&
            v.GetX() - position.GetX() < size.GetX() &&

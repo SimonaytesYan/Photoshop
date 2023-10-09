@@ -28,6 +28,7 @@ public :
     friend Vector operator!(const Vector& a);
     friend Vector operator+(const Vector& a);
     friend Vector operator^(const Vector& a, double b);
+    friend bool   operator==(const Vector& a, const Vector& b);
 };
 
 Vector operator+(const Vector& a, const Vector& b);
@@ -35,6 +36,7 @@ Vector operator-(const Vector& a);
 Vector operator-(const Vector& a, const Vector& b);
 Vector operator*(const Vector& a, double b);
 Vector operator/(const Vector& a, double b);
+bool   operator==(const Vector& a, const Vector& b);
 double operator,(const Vector& a, const Vector& b);		//scalar product
 Vector operator!(const Vector& a);						//return normalized vector
 Vector operator+(const Vector& a);						//return normal to vector
