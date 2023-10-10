@@ -17,6 +17,11 @@ size     (_size),
 color    (_color)
 {}
 
+Color ClipRegion::GetColor() const
+{
+    return color;
+}
+
 Vector ClipRegion::GetSize() const
 {
     return size;
@@ -70,7 +75,7 @@ void ClipRegion::Dump()
     GetPosition().Dump();
     printf(" ");
     (GetSize() + GetPosition()).Dump();
-    printf("\t}\n");
+    printf("}\n");
 }
 
 bool RegionIntersectP(ClipRegion a, ClipRegion b)
@@ -94,6 +99,11 @@ bool RegionIntersectP(ClipRegion a, ClipRegion b)
 RegionSet operator-(ClipRegion a, ClipRegion b)
 {
     RegionSet result;
+
+    if (a == b)
+    {
+        return result;
+    }
 
     double a_x0 = a.GetPosition().GetX();
     double a_y0 = a.GetPosition().GetY();
@@ -172,9 +182,11 @@ RegionSet operator-(ClipRegion a, ClipRegion b)
         #ifdef DEBUG
             printf("4 rect = ");
             a.Dump();
-            result.AddRegion(ClipRegion(a));
         #endif
     }
+
+    if (result.GetLength() == 0)
+        result.AddRegion(ClipRegion(a));
 
     return result;
 }

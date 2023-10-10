@@ -5,6 +5,7 @@ class RegionSet;
 #include "../Vector/Vector.h"
 #include "../Color.h"
 
+
 class ClipRegion
 {
     Vector position;
@@ -16,6 +17,7 @@ public:
 
     Vector GetSize()     const;
     Vector GetPosition() const;
+    Color  GetColor()    const;
 
     void Dump();
 
@@ -24,6 +26,10 @@ public:
     friend RegionSet  operator- (ClipRegion a, ClipRegion b);
     friend bool       operator==(ClipRegion a, ClipRegion b);
 };
+
+const ClipRegion kNullClipReg = ClipRegion(Vector(0, 0), 
+                                           Vector(0, 0), 
+                                           Color(0, 0, 0, 0));
 
 ClipRegion operator&&(ClipRegion a, ClipRegion b);
 RegionSet  operator||(ClipRegion a, ClipRegion b);
