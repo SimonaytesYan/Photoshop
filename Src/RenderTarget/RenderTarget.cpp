@@ -22,6 +22,20 @@ RenderTarget::RenderTarget(Vector size)
     data.create(size.GetX(), size.GetY()); 
 }
 
+void DrawWithRegionSet(const RegionSet& rend_set, sf::RenderTexture& data, 
+                                                  sf::RenderTexture& tmp_target)
+{
+    for (int i = 0; i < rend_set.GetLength(); i++)
+    {
+        sf::Sprite tmp_sprite(tmp_target.getTexture(), 
+                              sf::IntRect(ConvertVecI(rend_set[i].GetPosition()), 
+                                          ConvertVecI(rend_set[i].GetSize())));
+        tmp_sprite.setPosition(ConvertVecF(rend_set[i].GetPosition()));
+
+        data.draw(tmp_sprite);
+    }
+}
+
 void RenderTarget::DrawCircle(Vector position, double r, Color color, const RegionSet& rend_set)
 {
     sf::CircleShape circle(r);
@@ -33,15 +47,7 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
     tmp_target.draw(circle);
     tmp_target.display();
 
-    for (int i = 0; i < rend_set.GetLength(); i++)
-    {
-        sf::Sprite tmp_sprite(tmp_target.getTexture(), 
-                              sf::IntRect(ConvertVecI(rend_set[i].GetPosition()), 
-                                          ConvertVecI(rend_set[i].GetSize())));
-        tmp_sprite.setPosition(ConvertVecF(rend_set[i].GetPosition()));
-
-        data.draw(tmp_sprite);
-    }
+    DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
 void RenderTarget::DrawRect(Vector position, Vector size, 
@@ -100,6 +106,7 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
     }
 
 }
+
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
                             int character_size, const RegionSet& rend_set)
 {
@@ -110,7 +117,12 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text,
     label.setPosition(position.GetX(), position.GetY());
     label.setString(text); 
 
-    data.draw(label);
+    sf::RenderTexture tmp_target;
+    tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.draw(label);
+    tmp_target.display();
+
+    DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
 void RenderTarget::DrawRegionSet(const RegionSet& reg_set, int color_type)
