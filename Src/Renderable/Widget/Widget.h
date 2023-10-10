@@ -7,6 +7,7 @@
 #include "../../Vector/Vector.h"
 #include "../../List.h"
 #include "../../Keys.h"
+#include "../../RegionSet/RegionSet.h"
 
 enum Events
 {
@@ -24,6 +25,7 @@ protected:
     bool          available;
     List<Widget*> sub_widgets;
     Vector        position;
+    RegionSet     reg_set;
 
 public : 
     Widget (Vector position = Vector(0, 0), bool available = true);

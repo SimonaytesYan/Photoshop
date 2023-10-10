@@ -1,12 +1,15 @@
-#include "../Renderable.h"
 #include "Widget.h"
+#include "../Renderable.h"
 #include "../../Vector/Vector.h"
+#include "../../RegionSet/RegionSet.h"
+#include "../../ClipRegion/ClipRegion.h"
 
 Widget::Widget (Vector _position, bool _available) :
 Renderable  (),
 available   (_available),
 position    (_position),
-sub_widgets (List<Widget*>(0))
+sub_widgets (List<Widget*>(0)),
+reg_set     (RegionSet())
 {}
 
 Widget::~Widget()

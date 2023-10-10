@@ -1,6 +1,7 @@
 #include "Button.h"
-
 #include "../../../Vector/Vector.h"
+#include "../../../RegionSet/RegionSet.h"
+#include "../../../ClipRegion/ClipRegion.h"
 
 Button::Button(Vector _position, Vector _size, Texture _texture, 
               void  (*_on_click)(void*), void* _args) :
@@ -9,14 +10,16 @@ size     (_size),
 on_click (_on_click),
 args     (_args),
 texture  (_texture)
-{}
+{
+    reg_set.AddRegion(ClipRegion(_position, _size));
+}
 
 Button::~Button()
 {}
 
 void Button::Render(RenderTarget* render_target)
 {
-    render_target->DrawSprite(position, texture);
+    render_target->DrawSprite(position, texture, reg_set);
 
     Widget::Render(render_target);
 }
