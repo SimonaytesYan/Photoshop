@@ -54,14 +54,42 @@ void RenderTarget::DrawRect(Vector position, Vector size,
                             const RegionSet& rend_set, Color fill_color,
                             int border_size, Color border_color)
 {
-    sf::RectangleShape rect(ConvertVecF(size));
-    rect.setPosition(ConvertVecF(position));
-    rect.setFillColor(ConvertColor(fill_color));
+    //sf::RectangleShape rect(ConvertVecF(size));
+    //rect.setPosition(ConvertVecF(position));
+    //rect.setFillColor(ConvertColor(fill_color));
+//
+    //sf::RectangleShape border(ConvertVecF(size));
+    //border.setPosition(ConvertVecF(position));
+    //border.setFillColor(sf::Color::Transparent);
+    //border.setOutlineColor(ConvertColor(border_color));
+    //border.setOutlineThickness(border_size);
 
-    rect.setOutlineColor(ConvertColor(border_color));
-    rect.setOutlineThickness(border_size);
+    RegionSet rect_set;
+    rect_set.AddRegion(ClipRegion(Vector(position.GetX(),
+                                         position.GetY()),
+                                  Vector(size.GetX(),
+                                         size.GetY())));
+    rect_set &= rend_set;
+    DrawRegionSet(rect_set, fill_color);
 
-    data.draw(rect);
+    RegionSet border_set;
+    border_set.AddRegion(ClipRegion(Vector(position.GetX(),
+                                           position.GetY()),
+                                    Vector(border_size, size.GetY())));      //left
+
+    border_set.AddRegion(ClipRegion(Vector(position.GetX(),
+                                           position.GetY()),
+                                    Vector(size.GetX(), border_size)));      //down
+
+    border_set.AddRegion(ClipRegion(Vector((position + size).GetX() - border_size,
+                                            position.GetY()),
+                                    Vector(border_size, size.GetY())));      //right
+
+    border_set.AddRegion(ClipRegion(Vector(position.GetX(),
+                                           (position + size).GetY() - border_size),
+                                    Vector(size.GetX(), border_size)));      //ups
+
+    DrawRegionSet(border_set, border_color);
 }
 
 void RenderTarget::Display(sf::RenderWindow* window)
@@ -130,43 +158,20 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text,
     DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
-void RenderTarget::DrawRegionSet(const RegionSet& reg_set, int color_type)
+void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color)
 {
-    Color* colors = (Color*)calloc(sizeof(Color), reg_set.GetLength());
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
-        switch (color_type)
-        {
-        case 0:
-            colors[i] = Color(0,
-                              255/(reg_set.GetLength() + 1) * (i + 1),
-                              0, 
-                              128);
-            break;
-        
-        case 1:
-            colors[i] = Color(0,
-                              0,
-                              255/(reg_set.GetLength() + 1) * (i + 1), 
-                              128);
-            break;
+        sf::RectangleShape rect(ConvertVecF(reg_set[i].GetSize()));
+        rect.setFillColor(ConvertColor(color));
+        rect.setPosition(ConvertVecF(reg_set[i].GetPosition()));
+        rect.setOutlineColor(sf::Color::White);
+        rect.setOutlineThickness(2);
 
-        case 2:
-            colors[i] = Color(255/(reg_set.GetLength() + 1) * (i + 1),
-                              0,
-                              0, 
-                              128);
-            break;
-        }
+        data.draw(rect);
     }
 
-    for (int i = 0; i < reg_set.GetLength(); i++)
-    {        
-        //DrawRect(reg_set[i].GetPosition() * 100, 
-        //         reg_set[i].GetSize() * 100, colors[i], 2);
-    }
-
-    free(colors);
+    data.display();
 }
 
 void RenderTarget::Clear()
