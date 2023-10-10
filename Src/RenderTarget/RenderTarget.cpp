@@ -28,19 +28,20 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
     circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
     circle.setFillColor(sf::Color(color.r, color.g, color.b));
 
-    data.draw(circle);
+    sf::RenderTexture tmp_target;
+    tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.draw(circle);
+    tmp_target.display();
 
-    //sf::RenderTexture tmp_target;
-    //tmp_target.draw(circle);
-//
-    //for (int i = 0; i < rend_set.GetLength(); i++)
-    //{
-    //    sf::Sprite tmp_sprite(tmp_target.getTexture(), 
-    //                          sf::IntRect(ConvertVecI(rend_set[i].GetPosition()), 
-    //                                      ConvertVecI(rend_set[i].GetSize())));
-//
-    //    data.draw(tmp_sprite);
-    //}
+    for (int i = 0; i < rend_set.GetLength(); i++)
+    {
+        sf::Sprite tmp_sprite(tmp_target.getTexture(), 
+                              sf::IntRect(ConvertVecI(rend_set[i].GetPosition()), 
+                                          ConvertVecI(rend_set[i].GetSize())));
+        tmp_sprite.setPosition(ConvertVecF(rend_set[i].GetPosition()));
+
+        data.draw(tmp_sprite);
+    }
 }
 
 void RenderTarget::DrawRect(Vector position, Vector size, 
