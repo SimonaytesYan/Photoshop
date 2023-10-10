@@ -54,16 +54,6 @@ void RenderTarget::DrawRect(Vector position, Vector size,
                             const RegionSet& rend_set, Color fill_color,
                             int border_size, Color border_color)
 {
-    //sf::RectangleShape rect(ConvertVecF(size));
-    //rect.setPosition(ConvertVecF(position));
-    //rect.setFillColor(ConvertColor(fill_color));
-//
-    //sf::RectangleShape border(ConvertVecF(size));
-    //border.setPosition(ConvertVecF(position));
-    //border.setFillColor(sf::Color::Transparent);
-    //border.setOutlineColor(ConvertColor(border_color));
-    //border.setOutlineThickness(border_size);
-
     RegionSet rect_set;
     rect_set.AddRegion(ClipRegion(Vector(position.GetX(),
                                          position.GetY()),
@@ -87,7 +77,7 @@ void RenderTarget::DrawRect(Vector position, Vector size,
 
     border_set.AddRegion(ClipRegion(Vector(position.GetX(),
                                            (position + size).GetY() - border_size),
-                                    Vector(size.GetX(), border_size)));      //ups
+                                    Vector(size.GetX(), border_size)));      //up
 
     DrawRegionSet(border_set, border_color);
 }
