@@ -22,7 +22,7 @@ public:
     int GetLength() const
     { return data.GetLength(); };
 
-    void Dump();
+    void Dump() const;
 };
 
 #endif //SYM_REGION_SET

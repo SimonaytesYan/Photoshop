@@ -69,7 +69,7 @@ inline bool YInsideRegion(ClipRegion a, double y)
            ((a.GetPosition() + a.GetSize()).GetY() > y);
 }
 
-void ClipRegion::Dump()
+void ClipRegion::Dump() const
 {
     printf("{ ");
     GetPosition().Dump();
@@ -90,10 +90,12 @@ bool RegionIntersectP(ClipRegion a, ClipRegion b)
     double b_x1 = b.GetPosition().GetX() + b.GetSize().GetX();
     double b_y1 = b.GetPosition().GetY() + b.GetSize().GetY();
 
-    return (((a_x0 <= b_x0 && b_x0 <= a_x1) || (a_x0 <= b_x1 && b_x1 <= a_x1)) && 
-            ((a_y0 <= b_y0 && b_y0 <= a_y1) || (a_y0 <= b_y1 && b_y1 <= a_y1))) ||
-           (((b_x0 <= a_x0 && a_x0 <= b_x1) || (b_x0 <= a_x1 && a_x1 <= b_x1)) && 
-            ((b_y0 <= a_y0 && a_y0 <= b_y1) || (b_y0 <= a_y1 && a_y1 <= b_y1)));
+    double X0 = max(a_x0, b_x0);
+    double Y0 = max(a_y0, b_y0);
+    double X1 = min(a_x1, b_x1);
+    double Y1 = min(a_y1, b_y1);
+
+    return (X0 < X1) && (Y0 < Y1);
 }
 
 RegionSet operator-(ClipRegion a, ClipRegion b)
@@ -179,14 +181,12 @@ RegionSet operator-(ClipRegion a, ClipRegion b)
     }
     else
     {
+        result.AddRegion(ClipRegion(a));
         #ifdef DEBUG
             printf("4 rect = ");
             a.Dump();
         #endif
     }
-
-    if (result.GetLength() == 0)
-        result.AddRegion(ClipRegion(a));
 
     return result;
 }

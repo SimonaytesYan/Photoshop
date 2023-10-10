@@ -19,7 +19,7 @@ public:
     Vector GetPosition() const;
     Color  GetColor()    const;
 
-    void Dump();
+    void Dump() const;
 
     friend ClipRegion operator&&(ClipRegion a, ClipRegion b);
     friend RegionSet  operator||(ClipRegion a, ClipRegion b);

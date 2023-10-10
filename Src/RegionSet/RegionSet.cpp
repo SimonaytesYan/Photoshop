@@ -16,8 +16,10 @@ void RegionSet::AddRegion(ClipRegion region)
     data.PushBack(region);
 }
 
-void RegionSet::Dump()
+void RegionSet::Dump() const
 {
+    if (data.GetLength() == 0)
+        printf("{reg set in empty}\n");
     for (int i = 0; i < data.GetLength(); i++)
     {
         data[i].Dump();
