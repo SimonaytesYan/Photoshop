@@ -68,13 +68,10 @@ void Window::Render(RenderTarget* render_target)
     if (available)
     {
         render_target->DrawRect(position, size, reg_set, 
-                                Color(0, 0, 0, 0), 10, Color(0, 255, 255));  //border
-
-        render_target->DrawRect(position, size, reg_set);        //background
+                                Color(255, 255, 255), 10, Color(0, 255, 255));  //border
         render_target->DrawRect(position, 
                                 Vector(size.GetX(), kButtonSize), reg_set,
                                 Color(0, 255, 255));    //header
-
 
         Widget::Render(render_target);
     }
