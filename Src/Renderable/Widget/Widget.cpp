@@ -26,19 +26,19 @@ void Widget::Render(RenderTarget* render_target)
 {
     if (available)
     {
-        int index = sub_widgets.End();
+        int index = sub_widgets.Begin();
         while (index != -1)
         {
             sub_widgets[index].val->Render(render_target);
 
-            index = sub_widgets.Deterate(index);
+            index = sub_widgets.Iterate(index);
         }
     }
 }
 
 void Widget::AddObject(Widget* new_widget)
 {
-    sub_widgets.PushFront(new_widget);
+    sub_widgets.PushBack(new_widget);
 }
 
 Vector Widget::GetPosition()

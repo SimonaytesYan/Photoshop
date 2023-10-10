@@ -35,6 +35,7 @@ struct List
     int FindFree  (int* index);
     int ResizeUp  (int new_capacity);
     int PushFront (T value);
+    int PushBack  (T value);
 
     ListElem<T> operator[](int index);
 };
@@ -212,5 +213,13 @@ int List<T>::PushFront(T value)
     return Insert(value, 0);
 }
 
+template <class T>
+int List<T>::PushBack(T value)
+{
+    int after_which = End();
+    if (after_which == -1)
+        after_which = 0;
+    return Insert(value, after_which);    
+}
 
 #endif  //SYM_LIST

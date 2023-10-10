@@ -35,13 +35,13 @@ int main()
 	
 	TestRegClip(rend_targ);
 
-	//Window main_window(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
-	//
-	//Window sub_window(Vector(WindowWidth/2, WindowHeight/2), 
-	//		  Vector(WindowWidth/3, WindowHeight/3), "Window2");
-//
-	//main_window.AddObject(&sub_window);
-	//AddMenu(&main_window);
+	Window main_window(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
+	
+	Window sub_window(Vector(WindowWidth/2, WindowHeight/2), 
+			  		  Vector(WindowWidth/3, WindowHeight/3), "Window2");
+
+	main_window.AddObject(&sub_window);
+	AddMenu(&main_window);
 
 	while (window.isOpen())
 	{
@@ -60,16 +60,16 @@ int main()
 				{
 					Vector position(event.mouseButton.x,
 									event.mouseButton.y);
-					//main_window.OnMousePress({position, (MouseKey)event.mouseButton.button});
+					main_window.OnMousePress({position, (MouseKey)event.mouseButton.button});
 				}
 			}
 		}
 
 		rend_targ.Clear();
 		window.clear();
-		//main_window.Render(&rend_targ);
+		main_window.Render(&rend_targ);
 
-		TestRegClip(rend_targ);
+		//TestRegClip(rend_targ);
 		rend_targ.Display(&window);
 
 		window.display();
@@ -90,7 +90,6 @@ void TestRegClip(RenderTarget& rend_targ)
 	r2.AddRegion(ClipRegion(Vector(8,  1), Vector(1, 1)));
 	r2.AddRegion(ClipRegion(Vector(10, 8), Vector(5, 3)));
 
-	//rend_targ.DrawRegionSet(r1, 1);
 	rend_targ.DrawRegionSet(r2, 2);
 
 	r1 -= r2;
