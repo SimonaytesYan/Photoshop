@@ -76,15 +76,30 @@ void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet&
     data.draw(sprite);
 }
 
+bool InsideP(Vector v, Vector position, Vector size)
+{
+    return v.GetX() - position.GetX() > 0           &&
+           v.GetX() - position.GetX() < size.GetX() &&
+           v.GetY() - position.GetY() > 0           && 
+           v.GetY() - position.GetY() < size.GetY();
+}
+
 void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_set)
 {
     sf::RectangleShape shape(sf::Vector2f(1, 1));
     shape.setPosition(position.GetX(), position.GetY());
     shape.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
-    
-    data.draw(shape);
-}
 
+    for (int i = 0; i < rend_set.GetLength(); i++)
+    {
+        if (InsideP(position, rend_set[i].GetPosition(), rend_set[i].GetSize()))
+        {
+            data.draw(shape);
+            return;
+        }
+    }
+
+}
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
                             int character_size, const RegionSet& rend_set)
 {
