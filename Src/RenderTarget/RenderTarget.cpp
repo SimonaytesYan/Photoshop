@@ -79,7 +79,12 @@ void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet&
     sf::Sprite sprite(*texture.GetTexture());
     sprite.setPosition(position.GetX(), position.GetY());
 
-    data.draw(sprite);
+    sf::RenderTexture tmp_target;
+    tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.draw(sprite);
+    tmp_target.display();
+
+    DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
 bool InsideP(Vector v, Vector position, Vector size)
