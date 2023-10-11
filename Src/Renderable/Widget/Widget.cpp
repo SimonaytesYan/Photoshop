@@ -22,6 +22,24 @@ Widget::~Widget()
     }
 }
 
+void Widget::Move(Vector delta)
+{
+    for (int i = 0; i < reg_set.GetLength(); i++)
+    {
+        reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].GetPosition(), 
+                                reg_set[i].GetSize(), reg_set[i].GetColor()));
+    }
+    position = position + delta;
+
+    int index = sub_widgets.Begin();
+    while (index != -1)
+    {
+        sub_widgets[index].val->Move(delta);
+
+        index = sub_widgets.Iterate(index);
+    }
+}
+
 void Widget::Render(RenderTarget* render_target)
 {
     if (available)
@@ -53,7 +71,7 @@ bool WidgetEventRound(Events event, void*  event_args,
         return false;
 
     bool intercepted = false;
-    int index = objects.End();
+    int index = objects.Begin();
     while (index != -1 && !intercepted)
     {
         switch (event)
@@ -77,7 +95,7 @@ bool WidgetEventRound(Events event, void*  event_args,
         default:
             break;
         }
-        index = objects.Deterate(index);
+        index = objects.Iterate(index);
     }
 
     return intercepted;

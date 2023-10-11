@@ -32,6 +32,7 @@ public :
     virtual ~Widget();
 
     virtual void Render        (RenderTarget* render_target) override;
+    virtual void Move          (Vector delta);
     virtual void AddObject     (Widget* new_widget);
 
     virtual bool OnKeyPress    (Key key);

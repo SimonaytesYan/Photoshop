@@ -16,6 +16,11 @@ void RegionSet::AddRegion(ClipRegion region)
     data.PushBack(region);
 }
 
+void RegionSet::ChangeElem(size_t index, ClipRegion region)
+{
+    data[index] = region;
+}
+
 void RegionSet::Dump() const
 {
     if (data.GetLength() == 0)

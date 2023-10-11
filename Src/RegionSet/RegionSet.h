@@ -15,6 +15,7 @@ public:
 
     void UnitSet();
     void AddRegion(ClipRegion region);
+    void ChangeElem(size_t index, ClipRegion region);
     RegionSet& operator-=(const RegionSet& b);
     RegionSet& operator&=(const RegionSet& b);
     ClipRegion operator[](const int index) const;

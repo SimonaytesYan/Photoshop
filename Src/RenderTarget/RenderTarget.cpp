@@ -44,6 +44,7 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
 
     sf::RenderTexture tmp_target;
     tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.clear(sf::Color::Transparent);
     tmp_target.draw(circle);
     tmp_target.display();
 
@@ -99,6 +100,7 @@ void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet&
 
     sf::RenderTexture tmp_target;
     tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.clear(sf::Color::Transparent);
     tmp_target.draw(sprite);
     tmp_target.display();
 
@@ -142,6 +144,7 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text,
 
     sf::RenderTexture tmp_target;
     tmp_target.create(data.getSize().x, data.getSize().y);
+    tmp_target.clear(sf::Color::Transparent);
     tmp_target.draw(label);
     tmp_target.display();
 
