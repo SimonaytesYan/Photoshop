@@ -37,11 +37,11 @@ struct List
     int PushFront (T value);
     int PushBack  (T value);
 
-    ListElem<T> operator[](int index);
+    ListElem<T>& operator[](int index);
 };
 
 template <class T>
-ListElem<T> List<T>::operator[](int index)
+ListElem<T>& List<T>::operator[](int index)
 {
     return data[index];
 }

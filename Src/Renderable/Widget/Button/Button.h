@@ -8,7 +8,6 @@ class Button : public Widget
 {
     void*   args;
     void    (*on_click)(void*);
-    Vector  size;
     Texture texture;
 
 public :

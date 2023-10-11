@@ -5,8 +5,7 @@
 
 Button::Button(Vector _position, Vector _size, Texture _texture, 
               void  (*_on_click)(void*), void* _args) :
-Widget   (_position),
-size     (_size),
+Widget   (_position, _size),
 on_click (_on_click),
 args     (_args),
 texture  (_texture)
