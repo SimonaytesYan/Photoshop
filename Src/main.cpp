@@ -35,13 +35,14 @@ int main()
 	
 	TestRegClip(rend_targ);
 
-	Window main_window(Vector(0, 0), Vector(WindowWidth, WindowHeight), "Window1");
+	Window main_window(Vector(WindowWidth/2, WindowHeight/2), 
+					   Vector(WindowWidth/3, WindowHeight/3), "Window1");
 	
 	Window sub_window(Vector(WindowWidth/2, WindowHeight/2), 
 			  		  Vector(WindowWidth/3, WindowHeight/3), "Window2");
 
-	main_window.AddObject(&sub_window);
-	AddMenu(&main_window);
+	//main_window.AddObject(&sub_window);
+	//AddMenu(&main_window);
 
 	while (window.isOpen())
 	{
@@ -58,9 +59,26 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
-					Vector position(event.mouseButton.x,
-									event.mouseButton.y);
+					Vector position(sf::Mouse::getPosition().x,
+									sf::Mouse::getPosition().y);
 					main_window.OnMousePress({position, (MouseKey)event.mouseButton.button});
+					break;
+				}
+				
+				case sf::Event::MouseMoved:
+				{
+					Vector position(sf::Mouse::getPosition().x,
+									sf::Mouse::getPosition().y);
+					main_window.OnMouseMove(MouseCondition(position, (MouseKey)event.mouseButton.button));
+					break;
+				}
+				
+				case sf::Event::MouseButtonReleased:
+				{
+					Vector position(sf::Mouse::getPosition().x,
+									sf::Mouse::getPosition().y);
+					main_window.OnMouseRelease({position, (MouseKey)event.mouseButton.button});
+					break;
 				}
 			}
 		}
@@ -69,7 +87,10 @@ int main()
 		window.clear();
 		main_window.Render(&rend_targ);
 
-		//TestRegClip(rend_targ);
+		#ifdef DEBUG
+			TestRegClip(rend_targ);
+		#endif
+
 		rend_targ.Display(&window);
 
 		window.display();
@@ -78,28 +99,28 @@ int main()
 
 void TestRegClip(RenderTarget& rend_targ)
 {
-	RegionSet r1, r2;
+	RegionSet r1, r2, r3;
 
-	r1.AddRegion(ClipRegion(Vector(0, 0), Vector(3, 3)));
-	r1.AddRegion(ClipRegion(Vector(6, 0), Vector(4, 4)));
-	r1.AddRegion(ClipRegion(Vector(2, 4), Vector(5, 4)));
-	r1.AddRegion(ClipRegion(Vector(8, 7), Vector(5, 3)));
+	r1.AddRegion(ClipRegion(Vector(0, 0), Vector(300, 300)));
 
-	r2.AddRegion(ClipRegion(Vector(2,  2), Vector(5, 3)));
-	r2.AddRegion(ClipRegion(Vector(6,  5), Vector(4, 3)));
-	r2.AddRegion(ClipRegion(Vector(8,  1), Vector(1, 1)));
-	r2.AddRegion(ClipRegion(Vector(10, 8), Vector(5, 3)));
+	r2.AddRegion(ClipRegion(Vector(0, 0), Vector(50, 300)));
 
-	rend_targ.DrawRegionSet(r2, 2);
+	r2 &= r1;
+	//r3 -= r2;
 
-	r1 -= r2;
+	//rend_targ.DrawRegionSet(r1, 1);
+	rend_targ.DrawRegionSet(r2, Color(255, 0, 0));
 	
 	#ifdef DEBUG
+		rend_targ.DrawRegionSet(r2, 2);
+
+		r1 -= r2;
+	
 		printf("------------------\n");
 		r1.Dump();
-	#endif
 
 	rend_targ.DrawRegionSet(r1, 0);
+	#endif
 }
 
 void Say(void* args)
