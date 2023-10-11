@@ -4,13 +4,6 @@
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
 
-static Widget* ReturnRegionSet(Widget *widget, void *args_);
-static Widget* MinusRegionSet(Widget *widget, void *args_);
-
-struct MinusRegionSetArgs {
-    Widget *self;
-    RegionSet *reg_set;
-};
 
 Widget::Widget (Vector _position, Vector _size, bool _available) :
 Renderable  (),
@@ -18,7 +11,8 @@ available   (_available),
 position    (_position),
 size        (_size),
 sub_widgets (List<Widget*>(0)),
-reg_set     (RegionSet())
+reg_set     (RegionSet()),
+parent      (nullptr) // adopted
 {}
 
 Widget::~Widget()
@@ -65,16 +59,16 @@ void Widget::Render(RenderTarget* render_target)
 
 void Widget::AddObject(Widget* new_widget)
 {
-    sub_widgets.PushBack(new_widget);
-
     ClipRegion child_clip(new_widget->GetPosition(), new_widget->GetSize());
     RegionSet child_set;
     child_set.AddRegion(child_clip);
 
-
     Widget *tmp_this = this;
     MinusRegionSetArgs args = {new_widget, &child_set};
     RecursiveUpdate(&tmp_this, MinusRegionSet, &args);
+
+    new_widget->parent = this;
+    sub_widgets.PushBack(new_widget);
 }
 
 Vector Widget::GetPosition()
@@ -145,12 +139,16 @@ bool Widget::OnMouseMove(MouseCondition mouse)
 }
 
 
-void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args) {
+void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args, check_f check) {
     Widget *widget = *widget_ptr;
+
+    if (check && !check(widget, args)) {
+        return;
+    }
 
     for (int index = widget->sub_widgets.Begin(); index != -1; index = widget->sub_widgets.Iterate(index)) {
         Widget* tmp_ptr = widget->sub_widgets[index].val;
-        RecursiveUpdate(&tmp_ptr, func, args);
+        RecursiveUpdate(&tmp_ptr, func, args, check);
         widget->sub_widgets[index].val = tmp_ptr;
     }
 
@@ -159,18 +157,30 @@ void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args) {
 }
 
 
-static Widget* ReturnRegionSet(Widget *const widget, void *args_) {
+Widget* ReturnRegionSet(Widget *const widget, void *args_) {
     RegionSet *reg = static_cast<RegionSet *>(args_);
+
+    RegionSet update;
+    update.AddRegion(ClipRegion(widget->GetPosition(), widget->GetSize()));
+    update &= *reg;
+
+    widget->GetRegionSet() += update;
+
+    *reg -= widget->GetRegionSet();
 
     return widget;
 }
 
-static Widget* MinusRegionSet(Widget *const widget, void *args_) {
+Widget* MinusRegionSet(Widget *const widget, void *args_) {
     MinusRegionSetArgs *args = static_cast<MinusRegionSetArgs *>(args_);
-
-    if (widget != args->self) {
-        widget->GetRegionSet() -= *args->reg_set;
-    }
+    
+    widget->GetRegionSet() -= *args->reg_set;
 
     return widget;
+}
+
+bool CheckSelfMinusRegion(Widget *const widget, void *args_) {
+    MinusRegionSetArgs *args = static_cast<MinusRegionSetArgs *>(args_);
+
+    return widget != args->self;
 }

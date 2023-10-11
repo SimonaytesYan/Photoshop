@@ -11,6 +11,7 @@
 
 class Widget;
 using transform_f =  Widget*(*)(Widget *, void *);
+using check_f     =  bool   (*)(Widget *, void *);
 
 enum Events
 {
@@ -30,6 +31,7 @@ protected:
     Vector        position;
     Vector        size;
     RegionSet     reg_set;
+    Widget *      parent;
 
 public : 
     Widget (Vector position = Vector(0, 0), Vector size = Vector(0,0), bool available = true);
@@ -53,10 +55,20 @@ public :
     Vector&       GetSize()       { return size; }
     const Vector& GetSize() const { return size; }
 
-    friend void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args);
+    friend void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args, check_f check);
 };
 
 
-void RecursiveUpdate(Widget **widget, transform_f func, void* args);
+
+struct MinusRegionSetArgs {
+    Widget *self;
+    RegionSet *reg_set;
+};
+
+void RecursiveUpdate(Widget **widget, transform_f func, void* args, check_f check = nullptr);
+Widget* ReturnRegionSet(Widget *widget, void *args_);
+Widget* MinusRegionSet(Widget *widget, void *args_);
+bool CheckSelfMinusRegion(Widget *const widget, void *args_);
+
 
 #endif  //SYM_SUB_WINDOW

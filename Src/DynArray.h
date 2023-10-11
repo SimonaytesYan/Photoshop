@@ -2,6 +2,7 @@
 #define SYM_DYNAMIC_ARRAY
 
 #include <stdlib.h>
+#include <iostream>
 
 template <class T>
 class DynArray
@@ -15,7 +16,7 @@ public :
     {
         length   = _length;
         capacity = _length;
-        array    = (T*)calloc(length, sizeof(T));
+        array    = (T*)calloc(length+1, sizeof(T));
     };
 
     DynArray(const DynArray<T> &a)
@@ -50,10 +51,16 @@ public :
         if (capacity <= length)
         {
             capacity = capacity * 2 + 1;
+            // std::cout << "capacity " << capacity << " \n";
             array = (T*)realloc(array, capacity * sizeof(T));
+            // std::cout << "resize\n";
+        } else {
+            // std::cout << "not resize\n";
         }
 
-        new(array + length) T(elem);
+        // std::cout << "length " << length << " capacity " << capacity;
+        array[length] = elem;
+        //new(array + length) T(elem);
         length++;
     };
 

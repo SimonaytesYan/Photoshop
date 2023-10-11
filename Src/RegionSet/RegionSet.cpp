@@ -107,6 +107,8 @@ RegionSet& RegionSet::operator&=(const RegionSet& b)
     tmp   -= b;             //tmp = this - b
     *this -= tmp;           //this = this - (this - other)
 
+    UnitSet();
+
     return *this;
 }
 
@@ -162,6 +164,21 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
             i--;
         }
     }
+
+    UnitSet();
+
+    return *this;
+}
+
+
+RegionSet& RegionSet::operator+=(const RegionSet& b) {
+    *this -= b;
+
+    for (int i = 0; i < b.data.GetLength(); i++) {
+        data.PushBack(b.data[i]);
+    }
+
+    UnitSet();
 
     return *this;
 }

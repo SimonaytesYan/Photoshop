@@ -70,7 +70,16 @@ bool Window::OnMouseMove(MouseCondition mouse)
             old_mouse_pos = mouse.position;
         else
         {
+            RegionSet prev_region;
+            prev_region.AddRegion(ClipRegion(position, size));
             Widget::Move(mouse.position - old_mouse_pos);
+
+            RegionSet new_region;
+            new_region.AddRegion(ClipRegion(position, size));
+            MinusRegionSetArgs args = {this, &new_region};
+            RecursiveUpdate(&parent, ReturnRegionSet, &prev_region);
+            RecursiveUpdate(&parent, MinusRegionSet, &args, CheckSelfMinusRegion);
+
             old_mouse_pos = mouse.position;
         }
         return true;
