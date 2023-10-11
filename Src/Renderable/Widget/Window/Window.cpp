@@ -20,9 +20,9 @@ void ButtonMove(void* args)
 }
 
 Window::Window(Vector _position, Vector _size, char* header) :
-Widget(_position),
-size  (_size),
-old_mouse_pos (Vector(-1, -1))
+Widget(_position, _size),
+old_mouse_pos (Vector(-1, -1)),
+moving(false)
 {
     Font font;
     font.LoadFont(kFontFile);

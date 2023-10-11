@@ -38,11 +38,11 @@ int main()
 	Window main_window(Vector(WindowWidth/2, WindowHeight/2), 
 					   Vector(WindowWidth/3, WindowHeight/3), "Window1");
 	
-	Window sub_window(Vector(WindowWidth/2, WindowHeight/2), 
-			  		  Vector(WindowWidth/3, WindowHeight/3), "Window2");
+	Window sub_window(Vector(WindowWidth/2 + 50, WindowHeight/2 + 50), 
+			  		  Vector(WindowWidth/6, WindowHeight/6), "Window2");
 
-	//main_window.AddObject(&sub_window);
-	//AddMenu(&main_window);
+	main_window.AddObject(&sub_window);
+	// AddMenu(&main_window);
 
 	while (window.isOpen())
 	{

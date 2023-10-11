@@ -9,6 +9,9 @@
 #include "../../Keys.h"
 #include "../../RegionSet/RegionSet.h"
 
+class Widget;
+using transform_f =  Widget*(*)(Widget *, void *);
+
 enum Events
 {
     KEY_PRESS,
@@ -25,10 +28,11 @@ protected:
     bool          available;
     List<Widget*> sub_widgets;
     Vector        position;
+    Vector        size;
     RegionSet     reg_set;
 
 public : 
-    Widget (Vector position = Vector(0, 0), bool available = true);
+    Widget (Vector position = Vector(0, 0), Vector size = Vector(0,0), bool available = true);
     virtual ~Widget();
 
     virtual void Render        (RenderTarget* render_target) override;
@@ -42,6 +46,17 @@ public :
     virtual bool OnMouseMove   (MouseCondition mouse);
 
     Vector GetPosition();
+
+    RegionSet&       GetRegionSet()       { return reg_set; }
+    const RegionSet& GetRegionSet() const { return reg_set; }
+
+    Vector&       GetSize()       { return size; }
+    const Vector& GetSize() const { return size; }
+
+    friend void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args);
 };
+
+
+void RecursiveUpdate(Widget **widget, transform_f func, void* args);
 
 #endif  //SYM_SUB_WINDOW

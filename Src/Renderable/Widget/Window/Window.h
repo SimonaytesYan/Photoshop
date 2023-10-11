@@ -5,7 +5,6 @@
 
 class Window : public Widget
 {
-    Vector size;
     Vector old_mouse_pos;
     bool   moving;
 
