@@ -2,6 +2,8 @@
 #include "../RegionSet/RegionSet.h"
 #include "../ClipRegion/ClipRegion.h"
 
+#define DRAW_REGIONS
+
 sf::Color ConvertColor(Color color)
 {
     return sf::Color(color.r, color.g, color.b, color.a);
@@ -61,7 +63,11 @@ void RenderTarget::DrawRect(Vector position, Vector size,
                                   Vector(size.GetX(),
                                          size.GetY())));
     rect_set &= rend_set;
-    DrawRegionSet(rect_set, fill_color);
+    #ifdef DEBUG_REGIONS
+        DrawRegionSet(rect_set, fill_color, (size_t)&rend_set << 3);
+    #else
+        DrawRegionSet(rect_set, fill_color);
+    #endif
 
     RegionSet border_set;
     border_set.AddRegion(ClipRegion(Vector(position.GetX(),
@@ -80,7 +86,12 @@ void RenderTarget::DrawRect(Vector position, Vector size,
                                            (position + size).GetY() - border_size),
                                     Vector(size.GetX(), border_size)));      //up
 
-    DrawRegionSet(border_set, border_color);
+    #ifdef DEBUG_REGIONS   
+        DrawRegionSet(border_set, border_color, (size_t)&rend_set << 3);
+    #else
+        DrawRegionSet(border_set, border_color);
+    #endif
+
 }
 
 void RenderTarget::Display(sf::RenderWindow* window)
@@ -151,12 +162,36 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text,
     DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
-void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color)
+void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color, int color_type)
 {
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
         sf::RectangleShape rect(ConvertVecF(reg_set[i].GetSize()));
-        rect.setFillColor(ConvertColor(color));
+
+        
+        #ifdef DRAW_REGIONS
+            switch (i % 4)
+            {
+                case 0:
+                    rect.setFillColor(sf::Color(255, 0, 0, 128));
+                    break;
+                case 1:
+                    rect.setFillColor(sf::Color(0, 255, 0, 128));
+                    break;
+                case 2:
+                    rect.setFillColor(sf::Color(0, 0, 255, 128));
+                    break;
+                case 3:
+                    rect.setFillColor(sf::Color(255, 255, 255, 128));
+                    break;
+                
+                default:
+                    break;
+            }
+        #else
+            rect.setFillColor(ConvertColor(color));
+        #endif
+        
         rect.setPosition(ConvertVecF(reg_set[i].GetPosition()));
         rect.setOutlineColor(sf::Color::White);
         rect.setOutlineThickness(2);

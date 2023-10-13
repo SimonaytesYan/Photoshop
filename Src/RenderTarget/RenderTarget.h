@@ -25,7 +25,7 @@ public :
     void DrawSprite   (Vector position, Texture texture, const RegionSet& rend_set);
     void DrawText     (Vector position, Font font, const char* text, 
                        int character_size, const RegionSet& rend_set);
-    void DrawRegionSet(const RegionSet& reg_set, Color color);
+    void DrawRegionSet(const RegionSet& reg_set, Color color, int color_type = 0);
 
     void Display(sf::RenderWindow* window);
     void Draw(sf::RenderWindow* window);
