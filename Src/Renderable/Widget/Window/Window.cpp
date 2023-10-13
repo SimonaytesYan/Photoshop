@@ -5,7 +5,10 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-const size_t kButtonSize = 50;
+const size_t kButtonSize      = 50;
+const size_t kBorderThick     = 10;
+const Color  kBorderColor     = Color(175, 200, 175); //Color(0,   255, 255);
+const Color  kBackgroundColor = Color(255, 255, 255);
 
 void ButtonClose(void* args)
 {
@@ -28,7 +31,7 @@ moving(false)
     texture.LoadFromFile(kCloseImgFile);
 
     AddObject(new Button (position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
-                          Color(0, 255, 255), ButtonMove, (void*)this));            //Button to move window
+                          kBorderColor, ButtonMove, (void*)this));                  //Button to move window
     AddObject(new Label  (position, font, 40, header));                             //Header
 
     Vector close_button_pos = Vector(position.GetX() + size.GetX() - kButtonSize, 
@@ -114,7 +117,7 @@ void Window::Render(RenderTarget* render_target)
     if (available)
     {
         render_target->DrawRect(position, size, reg_set, 
-                                Color(255, 255, 255), 10, Color(0, 255, 255));  //border + background
+                                kBackgroundColor, kBorderThick, kBorderColor);  //border + background
 
         Widget::Render(render_target);
     }

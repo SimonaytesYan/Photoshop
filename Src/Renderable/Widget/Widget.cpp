@@ -141,7 +141,7 @@ void Widget::UpdateRegionSet()
     RegionSet tmp_rs;
     tmp_rs.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
 
-    if (parent != nullptr)  //Remove parent
+    if (parent != nullptr)                              //Remove parent
     {
         reg_set &= parent->reg_set;
 
@@ -152,7 +152,7 @@ void Widget::UpdateRegionSet()
                 break;
         }
         
-        index = parent->sub_widgets.Iterate(index);     //skip itself
+        index = parent->sub_widgets.Iterate(index);     //Skip itself
         for (index; index != -1; index = parent->sub_widgets.Iterate(index))
         {
             Widget* brother = parent->sub_widgets[index].val;
@@ -179,23 +179,3 @@ void Widget::UpdateRegionSet()
         }
     }
 }
-
-/*void Widget::UpdateRegionSet()
-{
-    reg_set.Clear();
-    reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
-
-    RegionSet tmp_reg;
-    tmp_reg.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
-    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) 
-    {
-        Widget* sub_w = sub_widgets[index].val;
-        if (sub_w->available)
-        {
-            tmp_reg[0] = ClipRegion(ClipRegion(sub_w->position,
-                                               sub_w->size));
-            reg_set -= tmp_reg;
-            sub_w->UpdateRegionSet();
-        }
-    }
-}*/

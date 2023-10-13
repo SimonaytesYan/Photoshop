@@ -24,7 +24,6 @@ int main()
 {
 	Texture texture, close;
 	close.LoadFromFile  ("Resources/Close.png");
-	texture.LoadFromFile("Resources/img.png");
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
@@ -101,23 +100,18 @@ void TestRegClip(RenderTarget& rend_targ)
 
 void AddMenu(Window* window)
 {
-	printf("Add menu\n");
-	//Menu* menu = new Menu();
-
 	Font font;
 	font.LoadFont(kFontFile);
 	Texture texture;
 	texture.LoadFromFile(kBackgroundImgFile);
 
-	char* phrase = "hello!\n";
-	Button* file_button = new Button(Vector(0, 50), Vector(100, 50), texture, Say, phrase);
+	Button* file_button = new Button(Vector(0, 50), Vector(100, 50), texture, Say, nullptr);
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File"));
-	//menu->AddObject(file_button);
 
 	window->AddObject(file_button);
 }
 
 void Say(void* args)
 {
-	printf("%s", (char*)args);
+	printf("Hello world!\n");
 }
