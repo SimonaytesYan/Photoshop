@@ -135,16 +135,25 @@ bool Widget::OnMouseMove(MouseCondition mouse)
 
 void Widget::UpdateRegionSet()
 {
+    while (parent != nullptr)
+        parent->UpdateRegionSet();
+    
+    UpdateRegionSetFromRoot();
+}
+
+void Widget::UpdateRegionSetFromRoot()
+{
     reg_set.Clear();
     reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
 
     RegionSet tmp_rs;
     tmp_rs.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
 
-    if (parent != nullptr)                              //Remove parent
+    if (parent != nullptr)                              
     {
-        reg_set &= parent->reg_set;
+        reg_set &= parent->reg_set;                 //Intersect with parent
 
+        //Remove upper brothers from this
         int index = 0;
         for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
         {
@@ -166,10 +175,10 @@ void Widget::UpdateRegionSet()
         Widget* sub_w = sub_widgets[index].val;
         
         if (sub_w->available)
-            sub_w->UpdateRegionSet();
+            sub_w->UpdateRegionSetFromRoot();
     }
 
-    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) //Remove children from itself
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) //Remove children from this
     {
         Widget* sub_w = sub_widgets[index].val;
         if (sub_w->available)
