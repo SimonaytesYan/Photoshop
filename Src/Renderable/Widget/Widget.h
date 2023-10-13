@@ -52,6 +52,7 @@ public :
     RegionSet&       GetRegionSet()       { return reg_set; }
     const RegionSet& GetRegionSet() const { return reg_set; }
     void             UpdateRegionSet();
+    void             UpdateRegSetWithAdd(const RegionSet& new_rs);
 
     Vector&       GetSize()       { return size; }
     const Vector& GetSize() const { return size; }

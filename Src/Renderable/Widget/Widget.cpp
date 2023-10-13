@@ -133,7 +133,54 @@ bool Widget::OnMouseMove(MouseCondition mouse)
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
 
-void Widget::UpdateRegionSet() 
+void Widget::UpdateRegionSet()
+{
+    reg_set.Clear();
+    reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
+
+    RegionSet tmp_rs;
+    tmp_rs.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
+
+    if (parent != nullptr)  //Remove parent
+    {
+        reg_set &= parent->reg_set;
+
+        int index = 0;
+        for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
+        {
+            if (parent->sub_widgets[index].val == this)
+                break;
+        }
+        
+        index = parent->sub_widgets.Iterate(index);     //skip itself
+        for (index; index != -1; index = parent->sub_widgets.Iterate(index))
+        {
+            Widget* brother = parent->sub_widgets[index].val;
+            tmp_rs[0] = ClipRegion(brother->position, brother->size);
+            reg_set -= tmp_rs;
+        }
+    }
+
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))  //Update children
+    {
+        Widget* sub_w = sub_widgets[index].val;
+        
+        if (sub_w->available)
+            sub_w->UpdateRegionSet();
+    }
+
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) //Remove children from itself
+    {
+        Widget* sub_w = sub_widgets[index].val;
+        if (sub_w->available)
+        {
+            tmp_rs[0] = ClipRegion(sub_w->position, sub_w->size);
+            reg_set -= tmp_rs;
+        }
+    }
+}
+
+/*void Widget::UpdateRegionSet()
 {
     reg_set.Clear();
     reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
@@ -151,4 +198,4 @@ void Widget::UpdateRegionSet()
             sub_w->UpdateRegionSet();
         }
     }
-}
+}*/

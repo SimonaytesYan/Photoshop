@@ -28,14 +28,13 @@ moving(false)
     texture.LoadFromFile(kCloseImgFile);
 
     AddObject(new Button (position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
-                          Texture(), ButtonMove, (void*)this));                     //Window moving
-    AddObject(new Label  (position, font, 40, header));
+                          Color(0, 255, 255), ButtonMove, (void*)this));            //Button to move window
+    AddObject(new Label  (position, font, 40, header));                             //Header
 
-    Vector button_position = Vector(position.GetX() + size.GetX() - kButtonSize, 
+    Vector close_button_pos = Vector(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());
-
-    AddObject(new Button(button_position, Vector(kButtonSize, kButtonSize), 
-                         texture, ButtonClose, (void*)this));
+    AddObject(new Button(close_button_pos, Vector(kButtonSize, kButtonSize), 
+                         texture, ButtonClose, (void*)this));                       //Close button window
 }
 
 Window::~Window()
@@ -67,7 +66,9 @@ bool Window::OnMouseMove(MouseCondition mouse)
         else
         {
             Widget::Move(mouse.position - old_mouse_pos);
-            parent->UpdateRegionSet();
+
+            if (parent != nullptr)
+                parent->UpdateRegionSet();
 
             old_mouse_pos = mouse.position;
         }
@@ -113,10 +114,7 @@ void Window::Render(RenderTarget* render_target)
     if (available)
     {
         render_target->DrawRect(position, size, reg_set, 
-                                Color(255, 255, 255), 10, Color(0, 255, 255));  //border
-        render_target->DrawRect(position, 
-                                Vector(size.GetX(), kButtonSize), reg_set,
-                                Color(0, 255, 255));                            //header
+                                Color(255, 255, 255), 10, Color(0, 255, 255));  //border + background
 
         Widget::Render(render_target);
     }

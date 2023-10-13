@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "RenderTarget.h"
 #include "../RegionSet/RegionSet.h"
 #include "../ClipRegion/ClipRegion.h"
@@ -100,16 +102,25 @@ void RenderTarget::Display(sf::RenderWindow* window)
 
 void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet& rend_set)
 {
-    sf::Sprite sprite(*texture.GetTexture());
-    sprite.setPosition(position.GetX(), position.GetY());
+    #ifdef DEBUG_REGIONS
+        RegionSet result;
+        result.AddRegion(ClipRegion(position, texture.GetSize()));
 
-    sf::RenderTexture tmp_target;
-    tmp_target.create(data.getSize().x, data.getSize().y);
-    tmp_target.clear(sf::Color::Transparent);
-    tmp_target.draw(sprite);
-    tmp_target.display();
+        result &= rend_set;
 
-    DrawWithRegionSet(rend_set, data, tmp_target);
+        DrawRegionSet(result, Color(0, 0, 0, 255), 1);
+    #else
+        sf::Sprite sprite(*texture.GetTexture());
+        sprite.setPosition(position.GetX(), position.GetY());
+
+        sf::RenderTexture tmp_target;
+        tmp_target.create(data.getSize().x, data.getSize().y);
+        tmp_target.clear(sf::Color::Transparent);
+        tmp_target.draw(sprite);
+        tmp_target.display();
+
+        DrawWithRegionSet(rend_set, data, tmp_target);
+    #endif
 }
 
 bool InsideP(Vector v, Vector position, Vector size)
@@ -140,20 +151,30 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
                             int character_size, const RegionSet& rend_set)
 {
-    sf::Text label;
 
-    label.setFont(*font.GetFont());
-    label.setCharacterSize(character_size);
-    label.setPosition(position.GetX(), position.GetY());
-    label.setString(text); 
+    #ifdef DEBUG_REGIONS
+        RegionSet result;
+        result.AddRegion(ClipRegion(position, Vector(character_size * strlen(text), character_size + 10)));
 
-    sf::RenderTexture tmp_target;
-    tmp_target.create(data.getSize().x, data.getSize().y);
-    tmp_target.clear(sf::Color::Transparent);
-    tmp_target.draw(label);
-    tmp_target.display();
+        result &= rend_set;
 
-    DrawWithRegionSet(rend_set, data, tmp_target);
+        DrawRegionSet(result, Color(0, 0, 0, 255), 1);
+    #else
+        sf::Text label;
+
+        label.setFont(*font.GetFont());
+        label.setCharacterSize(character_size);
+        label.setPosition(position.GetX(), position.GetY());
+        label.setString(text); 
+
+        sf::RenderTexture tmp_target;
+        tmp_target.create(data.getSize().x, data.getSize().y);
+        tmp_target.clear(sf::Color::Transparent);
+        tmp_target.draw(label);
+        tmp_target.display();
+
+        DrawWithRegionSet(rend_set, data, tmp_target);
+    #endif
 }
 
 Color ChooseDebugColor(size_t color_type, int index)

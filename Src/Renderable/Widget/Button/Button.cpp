@@ -8,15 +8,31 @@ Button::Button(Vector _position, Vector _size, Texture _texture,
 Widget   (_position, _size),
 on_click (_on_click),
 args     (_args),
-texture  (_texture)
+texture  (_texture),
+background_color (Color(0, 0, 0, 0)),
+use_texture (true)
+{}
+
+Button::Button(Vector _position, Vector _size, Color _background_color,
+              void  (*_on_click)(void*), void* _args) :
+Widget   (_position, _size),
+on_click (_on_click),
+args     (_args),
+texture  (Texture()),
+background_color (_background_color),
+use_texture (false)
 {}
 
 Button::~Button()
 {}
 
+
 void Button::Render(RenderTarget* render_target)
 {
-    render_target->DrawSprite(position, texture, reg_set);
+    if (use_texture)
+        render_target->DrawSprite(position, texture, reg_set);
+    else    
+        render_target->DrawRect(position, size, reg_set, background_color);
 
     Widget::Render(render_target);
 }
