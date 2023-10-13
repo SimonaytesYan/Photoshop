@@ -32,17 +32,15 @@ int main()
 	WindowHeight = window.getSize().y;
 
 	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
-	
-	TestRegClip(rend_targ);
 
-	Window main_window(Vector(WindowWidth/2, WindowHeight/2), 
-					   Vector(WindowWidth/3, WindowHeight/3), "Window1");
+	Window main_window(Vector(0, 0), 
+					   Vector(WindowWidth, WindowHeight), "Window1");
 	
-	Window sub_window(Vector(WindowWidth/2 + 50, WindowHeight/2 + 50), 
-			  		  Vector(WindowWidth/6, WindowHeight/6), "Window2");
+	Window sub_window(Vector(500, 500), 
+			  		  Vector(300, 200), "Window2");
 
 	main_window.AddObject(&sub_window);
-	// AddMenu(&main_window);
+	AddMenu(&main_window);
 
 	while (window.isOpen())
 	{
@@ -69,7 +67,7 @@ int main()
 				{
 					Vector position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					main_window.OnMouseMove(MouseCondition(position, (MouseKey)event.mouseButton.button));
+					main_window.OnMouseMove(MouseCondition(position, (MouseKey)1));
 					break;
 				}
 				
@@ -99,28 +97,6 @@ int main()
 
 void TestRegClip(RenderTarget& rend_targ)
 {
-	RegionSet r1, r2, r3;
-
-	r1.AddRegion(ClipRegion(Vector(0, 0), Vector(300, 300)));
-
-	r2.AddRegion(ClipRegion(Vector(0, 0), Vector(50, 300)));
-
-	r2 &= r1;
-	//r3 -= r2;
-
-	//rend_targ.DrawRegionSet(r1, 1);
-	rend_targ.DrawRegionSet(r2, Color(255, 0, 0));
-	
-	#ifdef DEBUG
-		rend_targ.DrawRegionSet(r2, 2);
-
-		r1 -= r2;
-	
-		printf("------------------\n");
-		r1.Dump();
-
-	rend_targ.DrawRegionSet(r1, 0);
-	#endif
 }
 
 void Say(void* args)

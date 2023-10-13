@@ -14,9 +14,7 @@ void ButtonClose(void* args)
 
 void ButtonMove(void* args)
 {
-    printf("go to move\n");
     ((Window*)(args))->moving = true;
-    printf("((Window*)(args))->moving = %d\n", ((Window*)(args))->moving);
 }
 
 Window::Window(Vector _position, Vector _size, char* header) :
@@ -30,7 +28,7 @@ moving(false)
     texture.LoadFromFile(kCloseImgFile);
 
     AddObject(new Button (position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
-                          Texture(), ButtonMove, (void*)this));
+                          Texture(), ButtonMove, (void*)this));                     //Window moving
     AddObject(new Label  (position, font, 40, header));
 
     Vector button_position = Vector(position.GetX() + size.GetX() - kButtonSize, 
@@ -68,15 +66,8 @@ bool Window::OnMouseMove(MouseCondition mouse)
             old_mouse_pos = mouse.position;
         else
         {
-            RegionSet prev_region;
-            prev_region.AddRegion(ClipRegion(position, size));
             Widget::Move(mouse.position - old_mouse_pos);
-
-            RegionSet new_region;
-            new_region.AddRegion(ClipRegion(position, size));
-            MinusRegionSetArgs args = {this, &new_region};
-            RecursiveUpdate(&parent, ReturnRegionSet, &prev_region);
-            RecursiveUpdate(&parent, MinusRegionSet, &args, CheckSelfMinusRegion);
+            parent->UpdateRegionSet();
 
             old_mouse_pos = mouse.position;
         }
@@ -104,6 +95,9 @@ bool Window::OnMouseRelease(MouseCondition mouse)
 void Window::Close()
 {
     available = false;
+
+    if (parent != nullptr)
+        parent->UpdateRegionSet();
     //this->~Window();
 }
 

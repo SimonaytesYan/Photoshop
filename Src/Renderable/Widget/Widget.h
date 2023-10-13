@@ -46,29 +46,15 @@ public :
     virtual bool OnMousePress  (MouseCondition mouse);
     virtual bool OnMouseRelease(MouseCondition mouse);
     virtual bool OnMouseMove   (MouseCondition mouse);
-
+    
     Vector GetPosition();
 
     RegionSet&       GetRegionSet()       { return reg_set; }
     const RegionSet& GetRegionSet() const { return reg_set; }
+    void             UpdateRegionSet();
 
     Vector&       GetSize()       { return size; }
     const Vector& GetSize() const { return size; }
-
-    friend void RecursiveUpdate(Widget **widget_ptr, transform_f func, void* args, check_f check);
 };
-
-
-
-struct MinusRegionSetArgs {
-    Widget *self;
-    RegionSet *reg_set;
-};
-
-void RecursiveUpdate(Widget **widget, transform_f func, void* args, check_f check = nullptr);
-Widget* ReturnRegionSet(Widget *widget, void *args_);
-Widget* MinusRegionSet(Widget *widget, void *args_);
-bool CheckSelfMinusRegion(Widget *const widget, void *args_);
-
 
 #endif  //SYM_SUB_WINDOW
