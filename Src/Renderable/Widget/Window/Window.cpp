@@ -27,8 +27,9 @@ moving(false)
 {
     Font font;
     font.LoadFont(kFontFile);
-    Texture texture;
-    texture.LoadFromFile(kCloseImgFile);
+    Texture close_texture_press, close_texture;
+    close_texture.LoadFromFile(kCloseImgFile);
+    close_texture_press.LoadFromFile(kClosePressedImgFile);
 
     AddObject(new Button (position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
                           kBorderColor, ButtonMove, (void*)this));                  //Button to move window
@@ -37,7 +38,9 @@ moving(false)
     Vector close_button_pos = Vector(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());
     AddObject(new Button(close_button_pos, Vector(kButtonSize, kButtonSize), 
-                         texture, ButtonClose, (void*)this));                       //Close button window
+                         close_texture, close_texture_press,
+                         nullptr, nullptr,
+                         ButtonClose, (void*)this));                       //Close button window
 }
 
 Window::~Window()

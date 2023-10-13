@@ -102,10 +102,11 @@ void AddMenu(Window* window)
 {
 	Font font;
 	font.LoadFont(kFontFile);
-	Texture texture;
+	Texture texture, press_texture;
 	texture.LoadFromFile(kBackgroundImgFile);
+	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
-	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, Say, nullptr);
+	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File"));
 
 	window->AddObject(file_button);
