@@ -11,6 +11,11 @@ void Swap(T* a, T* b)
     *b = c;
 }
 
+RegionSet::~RegionSet()
+{
+    data.~DynArray();
+}
+
 void RegionSet::AddRegion(ClipRegion region)
 {
     data.PushBack(region);
@@ -32,6 +37,11 @@ void RegionSet::Dump() const
 }
 
 ClipRegion RegionSet::operator[](const int index) const
+{
+    return data[index];
+}
+
+ClipRegion& RegionSet::operator[](const int index)
 {
     return data[index];
 }
@@ -77,7 +87,7 @@ void RegionSet::UnitSet()
                 }
             }
 
-            if (i_y0 == j_y1 && i_y1 == j_y1)
+            if (i_y0 == j_y0 && i_y1 == j_y1)
             {
                 if (i_x1 == j_x0)   //i j
                 {
@@ -99,6 +109,16 @@ void RegionSet::UnitSet()
             }
         }
     }
+
+    for (int i = 0; i < data.GetLength(); i++)
+    {
+        if (data[i] == kNullClipReg)
+        {   
+            Swap(&data[i], &data[data.GetLength() - 1]);
+            data.PopBack();
+            i--;
+        }
+    }
 }
 
 RegionSet& RegionSet::operator&=(const RegionSet& b)
@@ -107,7 +127,7 @@ RegionSet& RegionSet::operator&=(const RegionSet& b)
     tmp   -= b;             //tmp = this - b
     *this -= tmp;           //this = this - (this - other)
 
-    UnitSet();
+    //UnitSet();
 
     return *this;
 }
@@ -165,7 +185,7 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
         }
     }
 
-    UnitSet();
+    //UnitSet();
 
     return *this;
 }
@@ -174,11 +194,16 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
 RegionSet& RegionSet::operator+=(const RegionSet& b) {
     *this -= b;
 
+    printf("widget after -= in +=\n");
+    printf("----------------------\n");
+    this->Dump();
+    printf("----------------------\n");
+
     for (int i = 0; i < b.data.GetLength(); i++) {
         data.PushBack(b.data[i]);
     }
 
-    UnitSet();
+    //UnitSet();
 
     return *this;
 }
