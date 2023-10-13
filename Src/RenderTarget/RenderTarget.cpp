@@ -2,7 +2,7 @@
 #include "../RegionSet/RegionSet.h"
 #include "../ClipRegion/ClipRegion.h"
 
-#define DEBUG_REGIONS
+//#define DEBUG_REGIONS
 
 sf::Color ConvertColor(Color color)
 {
@@ -220,12 +220,12 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color, size_t c
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
         sf::RectangleShape rect(ConvertVecF(reg_set[i].GetSize()));
+        rect.setPosition(ConvertVecF(reg_set[i].GetPosition()));
 
         #ifdef DEBUG_REGIONS
-            rect.setFillColor(ConvertColor(ChooseDebugColor(color_type, i)));
-            rect.setPosition(ConvertVecF(reg_set[i].GetPosition()));
             rect.setOutlineColor(sf::Color::White);
             rect.setOutlineThickness(2);
+            rect.setFillColor(ConvertColor(ChooseDebugColor(color_type, i)));
         #else
             rect.setFillColor(ConvertColor(color));
         #endif        
@@ -233,10 +233,6 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color, size_t c
 
         data.draw(rect);
     }
-
-   // printf("==============================\n");
-   // reg_set.Dump();
-   // printf("==============================\n\n");
 
     data.display();
 }

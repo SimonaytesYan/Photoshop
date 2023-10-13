@@ -11,7 +11,7 @@ position    (_position),
 size        (_size),
 sub_widgets (List<Widget*>(0)),
 reg_set     (RegionSet()),
-parent      (nullptr) // adopted
+parent      (nullptr)
 {
     reg_set.AddRegion(ClipRegion(_position, _size));
 }

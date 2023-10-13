@@ -99,11 +99,6 @@ void TestRegClip(RenderTarget& rend_targ)
 {
 }
 
-void Say(void* args)
-{
-	fprintf(stderr, "Button say %s", (char*)args);
-}
-
 void AddMenu(Window* window)
 {
 	Menu* menu = new Menu();

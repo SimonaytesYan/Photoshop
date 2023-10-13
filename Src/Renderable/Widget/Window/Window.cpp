@@ -83,7 +83,6 @@ bool Window::OnMouseRelease(MouseCondition mouse)
 
     if (moving)
     {
-        printf("MouseRelease\n");
         old_mouse_pos = Vector(-1, -1);
         moving = false;
 
