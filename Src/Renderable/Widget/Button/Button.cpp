@@ -9,9 +9,7 @@ Widget   (_position, _size),
 on_click (_on_click),
 args     (_args),
 texture  (_texture)
-{
-    reg_set.AddRegion(ClipRegion(_position, _size));
-}
+{}
 
 Button::~Button()
 {}

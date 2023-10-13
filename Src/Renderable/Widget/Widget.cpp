@@ -13,7 +13,9 @@ size        (_size),
 sub_widgets (List<Widget*>(0)),
 reg_set     (RegionSet()),
 parent      (nullptr) // adopted
-{}
+{
+    reg_set.AddRegion(ClipRegion(_position, _size));
+}
 
 Widget::~Widget()
 {

@@ -38,8 +38,6 @@ moving(false)
 
     AddObject(new Button(button_position, Vector(kButtonSize, kButtonSize), 
                          texture, ButtonClose, (void*)this));
-
-    reg_set.AddRegion(ClipRegion(_position, _size));
 }
 
 Window::~Window()
