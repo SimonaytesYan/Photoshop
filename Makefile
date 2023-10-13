@@ -4,20 +4,10 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 
 EXE_FILE = Exe/run
 
-debug: vector_debug widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug
-	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o -o $(EXE_FILE)
-release: vector_release widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release
-	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o -o $(EXE_FILE)
-
-vector_debug:
-	g++ -c $(DEBUG_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
-vector_release:
-	g++ -c $(RELEASE_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
-
-render_target_debug:
-	g++ -c $(DEBUG_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o
-render_target_release:
-	g++ -c $(RELEASE_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o
+debug: vector_debug widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug canvas_debug tool_debug tool_manager_debug
+	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Tool.o Obj/ToolManager.o -o $(EXE_FILE)
+release: vector_release widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release tool_release tool_manager_release
+	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Tool.o Obj/ToolManager.o -o $(EXE_FILE)
 
 widget_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Widget.cpp -o Obj/Widget.o
@@ -34,16 +24,6 @@ menu_debug:
 menu_release:
 	g++ -c $(RELEASE_FLAGS) Src/Renderable/Widget/Menu/Menu.cpp -o Obj/Menu.o
 
-texture_debug:
-	g++ -c $(DEBUG_FLAGS) Src/Texture/Texture.cpp -o Obj/Texture.o
-texture_release:
-	g++ -c $(RELEASE_FLAGS) Src/Texture/Texture.cpp -o Obj/Texture.o
-
-font_debug:
-	g++ -c $(DEBUG_FLAGS) Src/Font/Font.cpp -o Obj/Font.o
-font_release:
-	g++ -c $(RELEASE_FLAGS) Src/Font/Font.cpp -o Obj/Font.o
-
 label_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Label/Label.cpp -o Obj/Label.o
 label_release:
@@ -54,6 +34,31 @@ window_debug:
 window_release:
 	g++ -c $(RELEASE_FLAGS) Src/Renderable/Widget/Window/Window.cpp -o Obj/Window.o
 
+canvas_debug:
+	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Canvas/Canvas.cpp -o Obj/Canvas.o
+canvas_release:
+	g++ -c $(RELEASE_FLAGS) Src/Renderable/Widget/Canvas/Canvas.cpp -o Obj/Canvas.o
+
+vector_debug:
+	g++ -c $(DEBUG_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
+vector_release:
+	g++ -c $(RELEASE_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
+
+render_target_debug:
+	g++ -c $(DEBUG_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o
+render_target_release:
+	g++ -c $(RELEASE_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o
+
+texture_debug:
+	g++ -c $(DEBUG_FLAGS) Src/Texture/Texture.cpp -o Obj/Texture.o
+texture_release:
+	g++ -c $(RELEASE_FLAGS) Src/Texture/Texture.cpp -o Obj/Texture.o
+
+font_debug:
+	g++ -c $(DEBUG_FLAGS) Src/Font/Font.cpp -o Obj/Font.o
+font_release:
+	g++ -c $(RELEASE_FLAGS) Src/Font/Font.cpp -o Obj/Font.o
+
 clip_region_debug:
 	g++ -c $(DEBUG_FLAGS) Src/ClipRegion/ClipRegion.cpp -o Obj/ClipRegion.o
 clip_region_release:
@@ -63,6 +68,16 @@ region_set_debug:
 	g++ -c $(DEBUG_FLAGS) Src/RegionSet/RegionSet.cpp -o Obj/RegionSet.o
 region_set_release:
 	g++ -c $(RELEASE_FLAGS) Src/RegionSet/RegionSet.cpp -o Obj/RegionSet.o
+
+tool_debug:
+	g++ -c $(DEBUG_FLAGS) Src/Tool/Tool.cpp -o Obj/Tool.o
+tool_release:
+	g++ -c $(RELEASE_FLAGS) Src/Tool/Tool.cpp -o Obj/Tool.o
+
+tool_manager_debug:
+	g++ -c $(DEBUG_FLAGS) Src/ToolManager/ToolManager.cpp -o Obj/ToolManager.o
+tool_manager_release:
+	g++ -c $(RELEASE_FLAGS) Src/ToolManager/ToolManager.cpp -o Obj/ToolManager.o
 
 run:
 	./$(EXE_FILE)
