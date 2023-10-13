@@ -11,9 +11,13 @@ void Swap(T* a, T* b)
     *b = c;
 }
 
+void RegionSet::Clear()
+{
+    data.Clear();
+}
+
 RegionSet::~RegionSet()
 {
-    data.~DynArray();
 }
 
 void RegionSet::AddRegion(ClipRegion region)
@@ -121,6 +125,13 @@ void RegionSet::UnitSet()
     }
 }
 
+RegionSet& RegionSet::operator=(const RegionSet& b)
+{
+    data = b.data;
+
+    return *this;
+}
+
 RegionSet& RegionSet::operator&=(const RegionSet& b)
 {
     RegionSet tmp = *this;
@@ -151,18 +162,18 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
             #ifdef DEBUG
                 printf("j = %d\n", j);
             #endif
-            RegionSet res = (data[i]) - (b.data[j]);
+            RegionSet res = (data[i]) - (b[j]);
 
-            if (res.GetLength() > 0 && !(res.data[0] == data[i]))
+            if (res.GetLength() > 0 && !(res[0] == data[i]))
             {
                 #ifdef DEBUG
                     printf("res = \n");
                     res.Dump();
                 #endif
 
-                data[i] = res.data[res.data.GetLength() - 1];
-                for (int k = 0; k < res.data.GetLength() - 1; k++)
-                    AddRegion(res.data[k]);
+                data[i] = res[res.GetLength() - 1];
+                for (int k = 0; k < res.GetLength() - 1; k++)
+                    AddRegion(res[k]);
                 i = -1;
                 j = 0;
 

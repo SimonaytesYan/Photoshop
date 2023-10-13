@@ -11,18 +11,25 @@ class RegionSet
 public:
     RegionSet() :
     data (DynArray<ClipRegion>(0))
-    {};
+    {}
+
+    RegionSet(const RegionSet& b) :
+    data (DynArray<ClipRegion>(b.data))
+    {}
 
     ~RegionSet();
 
     void UnitSet();
     void AddRegion(ClipRegion region);
     void ChangeElem(size_t index, ClipRegion region);
+    void Clear();
+    RegionSet&  operator= (const RegionSet& b);
     RegionSet&  operator-=(const RegionSet& b);
     RegionSet&  operator+=(const RegionSet& b);
     RegionSet&  operator&=(const RegionSet& b);
     ClipRegion& operator[](const int index);
     ClipRegion operator[](const int index) const;
+
 
     int GetLength() const
     { return data.GetLength(); };

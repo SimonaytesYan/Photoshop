@@ -23,10 +23,25 @@ public :
     {
         length   = a.length;
         capacity = a.capacity;
-        array    = (T*)calloc(length, sizeof(T));
+        array    = (T*)calloc(capacity, sizeof(T));
         for (int i = 0; i < length; i++)
             new(array + i) T(a[i]);
     };
+
+    DynArray<T>& operator=(const DynArray<T> &a)
+    {
+        for (int i = 0; i < capacity; i++)
+            delete(array + i);
+        free(array);
+
+        length   = a.length;
+        capacity = a.capacity;
+        array    = (T*)calloc(capacity, sizeof(T));
+        for (int i = 0; i < length; i++)
+            new(array + i) T(a[i]);
+
+        return *this;
+    }
 
     ~DynArray()
     {
@@ -51,19 +66,13 @@ public :
         if (capacity <= length)
         {
             capacity = capacity * 2 + 1;
-            // std::cout << "capacity " << capacity << " \n";
             if (array == nullptr)
                 array = (T*)calloc(capacity, sizeof(T));
             else
                 array = (T*)realloc(array, capacity * sizeof(T));
-            // std::cout << "resize\n";
-        } else {
-            // std::cout << "not resize\n";
         }
-
-        // std::cout << "length " << length << " capacity " << capacity;
+        
         array[length] = elem;
-        //new(array + length) T(elem);
         length++;
     };
 
@@ -72,6 +81,11 @@ public :
         if (length > 0)
             length--;
     };
+
+    void Clear()
+    {
+        length = 0;
+    }
 };
 
 #endif  //SYM_DYNAMIC_ARRAY
