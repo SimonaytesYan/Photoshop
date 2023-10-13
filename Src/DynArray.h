@@ -16,7 +16,7 @@ public :
     {
         length   = _length;
         capacity = _length;
-        array    = (T*)calloc(length+1, sizeof(T));
+        array    = (T*)calloc(capacity+1, sizeof(T));
     };
 
     DynArray(const DynArray<T> &a)
@@ -52,7 +52,10 @@ public :
         {
             capacity = capacity * 2 + 1;
             // std::cout << "capacity " << capacity << " \n";
-            array = (T*)realloc(array, capacity * sizeof(T));
+            if (array == nullptr)
+                array = (T*)calloc(capacity, sizeof(T));
+            else
+                array = (T*)realloc(array, capacity * sizeof(T));
             // std::cout << "resize\n";
         } else {
             // std::cout << "not resize\n";
