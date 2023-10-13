@@ -86,6 +86,7 @@ void RenderTarget::DrawRect(Vector position, Vector size,
                                                (position + size).GetY() - border_size),
                                         Vector(size.GetX(), border_size)));      //up
 
+        border_set &= rend_set;
         DrawRegionSet(border_set, border_color);
     #endif
 }
