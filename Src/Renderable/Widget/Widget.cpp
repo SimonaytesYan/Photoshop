@@ -14,10 +14,6 @@ reg_set     (RegionSet()),
 parent      (nullptr) // adopted
 {
     reg_set.AddRegion(ClipRegion(_position, _size));
-
-    printf("Ctor = \n");
-    reg_set.Dump();
-    printf("\n");
 }
 
 Widget::~Widget()
