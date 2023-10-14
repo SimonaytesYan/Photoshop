@@ -91,6 +91,11 @@ void RenderTarget::DrawRect(Vector position, Vector size,
     #endif
 }
 
+Texture RenderTarget::GetTexture()
+{
+    return Texture(data.getTexture());
+}
+
 void RenderTarget::Display(sf::RenderWindow* window)
 {
     data.display();
@@ -99,6 +104,11 @@ void RenderTarget::Display(sf::RenderWindow* window)
 	sprite.setPosition(0, 0);
 
     window->draw(sprite);
+}
+
+void RenderTarget::Display()
+{
+    data.display();
 }
 
 void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet& rend_set)

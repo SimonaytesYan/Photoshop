@@ -38,7 +38,9 @@ public :
     void DrawSprite   (Vector position, Texture texture);
     void DrawText     (Vector position, Font font, const char* text, int character_size);
 
+    Texture GetTexture();
     void Display(sf::RenderWindow* window);
+    void Display();
     void Draw(sf::RenderWindow* window);
     void Clear();
 };
