@@ -147,46 +147,39 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
 {
     RegionSet result;
 
-    int i = 0;
-    int j = 0;
     int b_len = b.data.GetLength();
-    for (i = 0; i < data.GetLength(); i++)
+
+    bool add_regions = true;
+    while (add_regions)
     {
-        if (data[i] == kNullClipReg)
-            continue;
-        #ifdef DEBUG
-            printf("i = %d\n", i);
-        #endif
-        for (j = 0; j < b_len; j++)
+        add_regions = false;
+    
+        for (int i = 0; i < data.GetLength(); i++)
         {
-            #ifdef DEBUG
-                printf("j = %d\n", j);
-            #endif
-            RegionSet res = (data[i]) - (b[j]);
-
-            if (res.GetLength() > 0 && !(res[0] == data[i]))
+            if (data[i] == kNullClipReg)
+                continue;
+            for (int j = 0; j < b_len; j++)
             {
-                #ifdef DEBUG
-                    printf("res = \n");
-                    res.Dump();
-                #endif
+                RegionSet res = (data[i]) - (b[j]);
 
-                data[i] = res[res.GetLength() - 1];
-                for (int k = 0; k < res.GetLength() - 1; k++)
-                    AddRegion(res[k]);
-                i = -1;
-                j = 0;
-
+                if (res.GetLength() > 0 && !(res[0] == data[i]))
+                {
+                    data[i] = res[res.GetLength() - 1];
+                    for (int k = 0; k < res.GetLength() - 1; k++)
+                        AddRegion(res[k]);
+                    
+                    add_regions = true;
+                    break;
+                }
+                if (res.GetLength() == 0)
+                    data[i] = kNullClipReg;
+            }
+            if (add_regions)
                 break;
-            }
-            else if (res.GetLength() == 0)
-            {
-                data[i] = kNullClipReg;
-            }
         }
     }
 
-    for (i = 0; i < data.GetLength(); i++)
+    for (int i = 0; i < data.GetLength(); i++)
     {
         if (data[i] == kNullClipReg)
         {   
@@ -196,19 +189,12 @@ RegionSet& RegionSet::operator-=(const RegionSet& b)
         }
     }
 
-    //UnitSet();
-
     return *this;
 }
 
 
 RegionSet& RegionSet::operator+=(const RegionSet& b) {
     *this -= b;
-
-    printf("widget after -= in +=\n");
-    printf("----------------------\n");
-    this->Dump();
-    printf("----------------------\n");
 
     for (int i = 0; i < b.data.GetLength(); i++) {
         data.PushBack(b.data[i]);
