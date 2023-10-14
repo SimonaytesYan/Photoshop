@@ -47,8 +47,6 @@ public :
     virtual bool OnMouseRelease(MouseCondition mouse);
     virtual bool OnMouseMove   (MouseCondition mouse);
     
-    Vector GetPosition();
-
     RegionSet&       GetRegionSet()       { return reg_set; }
     const RegionSet& GetRegionSet() const { return reg_set; }
     void             UpdateRegionSet();
@@ -56,6 +54,8 @@ public :
 
     Vector&       GetSize()       { return size; }
     const Vector& GetSize() const { return size; }
+    Vector        GetPosition();
+    bool          InsideP(Vector v);
 };
 
 #endif  //SYM_SUB_WINDOW

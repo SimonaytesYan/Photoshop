@@ -39,7 +39,6 @@ public :
             bool OnMousePress  (MouseCondition mouse)        override;
             bool OnMouseRelease(MouseCondition mouse)        override;
             bool OnMouseMove   (MouseCondition mouse)        override;
-            bool InsideP       (Vector v);
 };
 
 #endif //SYM_BUTTON

@@ -100,11 +100,3 @@ bool Button::OnMouseMove(MouseCondition mouse)
         pressed = false;
     return false;
 }
-
-bool Button::InsideP (Vector v)
-{
-    return v.GetX() - position.GetX() > 0           &&
-           v.GetX() - position.GetX() < size.GetX() &&
-           v.GetY() - position.GetY() > 0           && 
-           v.GetY() - position.GetY() < size.GetY();
-}
