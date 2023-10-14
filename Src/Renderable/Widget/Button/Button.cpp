@@ -46,8 +46,13 @@ void Button::Render(RenderTarget* render_target)
         else
             render_target->DrawSprite(position, texture, reg_set);
     }
-    else    
-        render_target->DrawRect(position, size, reg_set, background_color);
+    else
+    {
+        if (pressed)
+            render_target->DrawRect(position, size, reg_set, background_color.Inverse());
+        else
+            render_target->DrawRect(position, size, reg_set, background_color);
+    }
 
     Widget::Render(render_target);
 }

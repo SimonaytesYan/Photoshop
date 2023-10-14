@@ -26,6 +26,11 @@ struct Color
     b (_b),
     a (_a)
     {};
+
+    Color Inverse()
+    {
+        return Color(255 - r, 255 - g, 255 - b);
+    };
 };
 
 #endif //SYM_COLOR
