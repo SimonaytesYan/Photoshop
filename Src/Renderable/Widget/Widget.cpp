@@ -18,12 +18,6 @@ parent      (nullptr)
 
 Widget::~Widget()
 {
-    int index = sub_widgets.Begin();
-    while (index != -1)
-    {
-        delete sub_widgets[index].val;
-        index = sub_widgets.Iterate(index);
-    }
 }
 
 void Widget::Move(Vector delta)

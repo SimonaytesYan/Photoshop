@@ -101,12 +101,11 @@ bool Window::OnMouseRelease(MouseCondition mouse)
 void Window::Close()
 {
     available = false;
-
-    this->~Window();
-    //size = Vector(0, 0);
-
+    size = Vector(0, 0);
     if (parent != nullptr)
         parent->UpdateRegionSet();
+    
+    this->~Window();
 }
 
 bool Window::InsideP(Vector v)

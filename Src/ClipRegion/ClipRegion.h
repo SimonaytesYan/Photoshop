@@ -8,12 +8,15 @@ class RegionSet;
 
 class ClipRegion
 {
-    Vector position;
-    Vector size;
-    Color  color;
-
+    double x0;
+    double y0;
+    double x1;
+    double y1;
+    
+    bool   nulled;
 public:
-    ClipRegion(Vector position, Vector size, Color color = Color(255, 255, 255));
+    ClipRegion(double x0, double y0, double x1, double y1);
+    ClipRegion(Vector position, Vector size, bool nulled = false);
 
     Vector GetSize()     const;
     Vector GetPosition() const;
@@ -29,7 +32,7 @@ public:
 
 const ClipRegion kNullClipReg = ClipRegion(Vector(0, 0), 
                                            Vector(0, 0), 
-                                           Color(0, 0, 0, 0));
+                                           true);
 
 ClipRegion operator&&(ClipRegion a, ClipRegion b);
 RegionSet  operator||(ClipRegion a, ClipRegion b);

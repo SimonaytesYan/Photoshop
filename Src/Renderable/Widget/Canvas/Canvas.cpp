@@ -68,7 +68,6 @@ void Canvas::Render(RenderTarget* render_target)
 {
     if (available)
     {
-        
         data.Display();
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
         tmp.Display();

@@ -4,7 +4,9 @@
 #include "../RegionSet/RegionSet.h"
 #include "../ClipRegion/ClipRegion.h"
 
-#define DEBUG_REGIONS
+//#define DEBUG_REGIONS
+
+//TODO пересечение линии с прямоугольником
 
 sf::Color ConvertColor(Color color)
 {
@@ -256,11 +258,11 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color, size_t c
         #ifdef DEBUG_REGIONS
             rect.setOutlineColor(sf::Color::White);
             rect.setOutlineThickness(2);
+            
             rect.setFillColor(ConvertColor(ChooseDebugColor(color_type, i)));
         #else
             rect.setFillColor(ConvertColor(color));
         #endif        
-
 
         data.draw(rect);
     }

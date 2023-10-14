@@ -131,9 +131,6 @@ int main()
 				}
 			}
 		}
-
-		rend_targ.Clear();
-		window.clear();
 		main_window.Render(&rend_targ);
 
 		#ifdef DEBUG
@@ -141,7 +138,6 @@ int main()
 		#endif
 
 		rend_targ.Display(&window);
-
 		window.display();
 	}
 }
