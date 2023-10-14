@@ -43,6 +43,7 @@ public :
     void Display();
     void Draw(sf::RenderWindow* window);
     void Clear();
+    void Clear(Color color);
 };
 
 #endif //SYM_RENDER_TARGET

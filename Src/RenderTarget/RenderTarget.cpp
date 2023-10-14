@@ -273,6 +273,11 @@ void RenderTarget::Clear()
     data.clear();
 }
 
+void RenderTarget::Clear(Color color)
+{
+    data.clear(ConvertColor(color));
+}
+
 void RenderTarget::SetPixel(Vector position, Color color)
 {
     sf::RectangleShape shape(sf::Vector2f(1, 1));

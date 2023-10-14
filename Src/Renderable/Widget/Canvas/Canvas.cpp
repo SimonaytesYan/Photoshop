@@ -10,7 +10,10 @@ Widget(_position, _size),
 tm (_tm),
 data (RenderTarget(_size)),
 tmp  (RenderTarget(_size))
-{}
+{
+    data.Clear(kBackgroundColor);
+    tmp.Clear();
+}
 
 bool Canvas::OnMousePress(MouseCondition mouse)
 {
@@ -65,8 +68,6 @@ void Canvas::Render(RenderTarget* render_target)
 {
     if (available)
     {
-        render_target->DrawRect(position, size, reg_set, 
-                                kBackgroundColor, 0, Color(0, 0, 0));  //border + background
         
         data.Display();
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
@@ -74,4 +75,10 @@ void Canvas::Render(RenderTarget* render_target)
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
         Widget::Render(render_target);
     }
+}
+
+void Canvas::Clear()
+{
+    data.Clear(kBackgroundColor);
+    tmp.Clear();
 }

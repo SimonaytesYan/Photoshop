@@ -31,10 +31,12 @@ struct ColorStruct
 };
 
 void TestRegClip(RenderTarget& rend_targ);
+void AddMenu(Window* window, Canvas* canvas);
+
 void Say(void* args);
 void SwitchTool(void* args);
 void SwitchColor(void* args);
-void AddMenu(Window* window);
+void ClearCanvas(void* args);
 
 int main()
 {
@@ -89,7 +91,7 @@ int main()
 	main_window.AddObject(&canvas);
 	main_window.AddObject(&colors);
 	main_window.AddObject(&tools);
-	AddMenu(&main_window);
+	AddMenu(&main_window, &canvas);
 
 	while (window.isOpen())
 	{
@@ -163,7 +165,12 @@ void SwitchTool(void* args)
 	ts->tm->ChangeTool(ts->tool);
 }
 
-void AddMenu(Window* window)
+void ClearCanvas(void* args)
+{
+	((Canvas*)args)->Clear();
+}
+
+void AddMenu(Window* window, Canvas* canvas)
 {
 	Font font;
 	font.LoadFont(kFontFile);
@@ -174,7 +181,11 @@ void AddMenu(Window* window)
 	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File"));
 
+	Button* clear_button = new Button(Vector(110, 50), Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
+	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear"));
+
 	window->AddObject(file_button);
+	window->AddObject(clear_button);
 }
 
 void Say(void* args)

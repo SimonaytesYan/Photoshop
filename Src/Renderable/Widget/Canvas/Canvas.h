@@ -21,6 +21,7 @@ public :
     bool OnMouseRelease(MouseCondition mouse)        override;
     bool OnMouseMove   (MouseCondition mouse)        override;
     void Render        (RenderTarget* render_target) override;
+    void Clear();
 };
 
 #endif //SYM_CANVAS
