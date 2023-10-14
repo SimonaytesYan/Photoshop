@@ -1,1 +1,38 @@
 #include "ToolManager.h"
+#include "../RenderTarget/RenderTarget.h"
+
+void ToolManager::PaintOnPress(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+{
+    if (tool != nullptr)
+    {
+        tool->PaintOnPress(data, tmp, mouse, color);
+    }
+}
+
+void ToolManager::PaintOnMove(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+{   
+    if (tool != nullptr)
+    {
+        tool->PaintOnMove(data, tmp, mouse, color);
+    }
+}
+
+void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+{
+    if (tool != nullptr)
+    {
+        tool->PaintOnRelease(data, tmp, mouse, color);
+    }
+}
+
+void ToolManager::ChangeTool(Tool* new_tool)
+{
+    if (tool != nullptr)
+        tool->Disable();
+    tool = new_tool;
+}
+
+void ToolManager::ChangeColor(Color new_color)
+{
+    color = new_color;
+}

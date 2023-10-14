@@ -2,19 +2,25 @@
 #define SYM_CANVAS
 
 #include "../Widget.h"
-//#include "../../../ToolManager/ToolManager.h" 
+#include "../../../ToolManager/ToolManager.h" 
 
 class Canvas : public Widget
 {
+    bool         drawing;
     ToolManager* tm;
     RenderTarget data;
+    RenderTarget tmp;
 
 public :
-    Canvas();
+    Canvas(Vector position, Vector size, ToolManager* tm = nullptr);
 
-    Canvas(const Canvas& b);
-    ~Canvas();
-    Canvas& operator=(const Canvas& b); 
+    ~Canvas()
+    {};
+
+    bool OnMousePress  (MouseCondition mouse)        override;
+    bool OnMouseRelease(MouseCondition mouse)        override;
+    bool OnMouseMove   (MouseCondition mouse)        override;
+    void Render        (RenderTarget* render_target) override;
 };
 
 #endif //SYM_CANVAS
