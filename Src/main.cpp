@@ -3,27 +3,37 @@
 
 #include "List.h"
 #include "Resources.h"
-#include "Renderable/Widget/Button/Button.h"
 #include "Renderable/Widget/Widget.h"
+#include "Renderable/Widget/Button/Button.h"
+#include "Renderable/Widget/Canvas/Canvas.h"
 #include "Renderable/Widget/Label/Label.h"
-#include "Renderable/Widget/Window/Window.h"
 #include "Renderable/Widget/Menu/Menu.h"
+#include "Renderable/Widget/Window/Window.h"
 #include "RegionSet/RegionSet.h"
 #include "ClipRegion/ClipRegion.h"
+#include "Tool/Brush/Brush.h"
 
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
 size_t       WindowWidth     = 0;
 size_t       WindowHeight    = 0;
 
+struct ToolStruct
+{
+	ToolManager* tm;
+	Tool*		 tool;
+};
+
 void TestRegClip(RenderTarget& rend_targ);
 void Say(void* args);
+void SwitchTool(void* args);
 void AddMenu(Window* window);
 
 int main()
 {
-	Texture texture, close;
-	close.LoadFromFile  ("Resources/Close.png");
+	Texture brush_text, brush_pressed;
+	brush_text.LoadFromFile(kBrushImgFile);
+	brush_pressed.LoadFromFile(kBrushPressedImgFile);
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
@@ -35,10 +45,23 @@ int main()
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
 	
-	Window sub_window(Vector(500, 500), 
-			  		  Vector(300, 200), "Window2");
+	Window colors(Vector(1400, 150), 
+			  	  Vector(500, 300), "Colors");
+	Window tools(Vector(1400, 450), 
+			  	  Vector(500, 300), "Tools");
 
-	main_window.AddObject(&sub_window);
+	ToolManager tm;
+	Brush brush(10);
+	ToolStruct ts = {&tm, (Tool*)&brush};
+	tools.AddObject(new Button(tools.GetPosition() + Vector(10, 50), Vector(50, 50), 
+							   brush_text, brush_pressed, 
+							   SwitchTool, &ts));
+
+	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
+
+	main_window.AddObject(&canvas);
+	main_window.AddObject(&colors);
+	main_window.AddObject(&tools);
 	AddMenu(&main_window);
 
 	while (window.isOpen())
@@ -98,6 +121,13 @@ void TestRegClip(RenderTarget& rend_targ)
 {
 }
 
+void SwitchTool(void* args)
+{
+	printf("Switch tool\n");
+	ToolStruct* ts = (ToolStruct*)args;
+	ts->tm->ChangeTool(ts->tool);
+}
+
 void AddMenu(Window* window)
 {
 	Font font;
@@ -114,5 +144,5 @@ void AddMenu(Window* window)
 
 void Say(void* args)
 {
-	printf("Hello world!\n");
+	printf("Open file\n");
 }
