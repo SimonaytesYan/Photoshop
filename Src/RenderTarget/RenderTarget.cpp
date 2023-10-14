@@ -146,7 +146,6 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
             return;
         }
     }
-
 }
 
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
@@ -262,4 +261,55 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, Color color, size_t c
 void RenderTarget::Clear()
 {
     data.clear();
+}
+
+void RenderTarget::SetPixel(Vector position, Color color)
+{
+    sf::RectangleShape shape(sf::Vector2f(1, 1));
+    shape.setPosition(position.GetX(), position.GetY());
+    shape.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+
+    data.draw(shape);
+}
+
+void RenderTarget::DrawCircle(Vector position, double r, Color color)
+{
+    sf::CircleShape circle(r);
+    circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
+    circle.setFillColor(sf::Color(color.r, color.g, color.b));
+
+    data.draw(circle);
+}
+
+void RenderTarget::DrawLine(Vector v0, Vector v1)
+{
+    sf::Vertex line[] =
+    {
+        sf::Vertex(ConvertVecF(v0)),
+        sf::Vertex(ConvertVecF(v1))
+    };
+
+    data.draw(line, 2, sf::Lines);
+}
+
+void RenderTarget::DrawRect(Vector position, Vector size,
+                            Color fill_color,
+                            int border_size, Color border_color)
+{
+    sf::RectangleShape rect(ConvertVecF(size));
+    rect.setPosition(ConvertVecF(position));
+    rect.setFillColor(ConvertColor(fill_color));
+
+    rect.setOutlineColor(ConvertColor(border_color));
+    rect.setOutlineThickness(border_size);
+
+    data.draw(rect);
+}
+
+void RenderTarget::DrawSprite(Vector position, Texture texture)
+{
+    sf::Sprite sprite(*texture.GetTexture());
+    sprite.setPosition(position.GetX(), position.GetY());
+
+    data.draw(sprite);
 }
