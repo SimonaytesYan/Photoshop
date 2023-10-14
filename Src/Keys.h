@@ -1,3 +1,6 @@
+#ifndef SYM_KEYS
+#define SYM_KEYS
+
 #include "Vector/Vector.h"
 
 enum Key
@@ -28,3 +31,5 @@ struct MouseCondition
     key (_key)
     {};
 };
+
+#endif //SYM_KEYS
