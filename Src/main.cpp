@@ -24,17 +24,20 @@ struct ToolStruct
 	Tool*		 tool;
 };
 
+struct ColorStruct
+{
+	ToolManager* tm;
+	Color		 color;
+};
+
 void TestRegClip(RenderTarget& rend_targ);
 void Say(void* args);
 void SwitchTool(void* args);
+void SwitchColor(void* args);
 void AddMenu(Window* window);
 
 int main()
 {
-	Texture brush_text, brush_pressed;
-	brush_text.LoadFromFile(kBrushImgFile);
-	brush_pressed.LoadFromFile(kBrushPressedImgFile);
-
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
 	WindowWidth  = window.getSize().x;
@@ -44,18 +47,42 @@ int main()
 
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
-	
-	Window colors(Vector(1400, 150), 
-			  	  Vector(500, 300), "Colors");
+
+	ToolManager tm;
+
+	//Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
 
-	ToolManager tm;
+	Texture brush_text, brush_pressed;
+	brush_text.LoadFromFile(kBrushImgFile);
+	brush_pressed.LoadFromFile(kBrushPressedImgFile);
 	Brush brush(10);
 	ToolStruct ts = {&tm, (Tool*)&brush};
 	tools.AddObject(new Button(tools.GetPosition() + Vector(10, 50), Vector(50, 50), 
 							   brush_text, brush_pressed, 
 							   SwitchTool, &ts));
+
+	//Adding colors
+	int   colors_num    		 = 5;
+	Color all_colors[colors_num] = {Color(255, 255, 255),
+						  		    Color(0,     0,   0),
+						  		    Color(255,   0,   0),
+						  		    Color(0,   255,   0),
+						  		    Color(0,     0, 255),};
+
+	Window colors(Vector(1400, 150), 
+			  	  Vector(500, 300), "Colors");
+	
+	for (int i = 0; i < colors_num; i++)
+	{
+		ColorStruct* cs = new ColorStruct();
+		cs->color = all_colors[i];
+		cs->tm    = &tm;
+
+		Vector position = colors.GetPosition() + Vector(10 + 50 * i, 50);
+		colors.AddObject(new Button(position, Vector(50, 50), all_colors[i], SwitchColor, cs));
+	}
 
 	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
 
@@ -119,6 +146,14 @@ int main()
 
 void TestRegClip(RenderTarget& rend_targ)
 {
+}
+
+void SwitchColor(void* args)
+{
+	printf("Switch color\n");
+	ColorStruct* cs = (ColorStruct*)args;
+
+	cs->tm->ChangeColor(cs->color);
 }
 
 void SwitchTool(void* args)
