@@ -4,7 +4,7 @@
 #include "../RegionSet/RegionSet.h"
 #include "../ClipRegion/ClipRegion.h"
 
-//#define DEBUG_REGIONS
+#define DEBUG_REGIONS
 
 sf::Color ConvertColor(Color color)
 {

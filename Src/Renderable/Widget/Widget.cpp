@@ -79,7 +79,7 @@ bool WidgetEventRound(Events event, void*  event_args,
 
     bool intercepted = false;
     int index        = objects.End();
-    while (index != -1 && !intercepted)
+    while (index != -1)
     {
         switch (event)
         {
@@ -102,6 +102,8 @@ bool WidgetEventRound(Events event, void*  event_args,
         default:
             break;
         }
+        if (intercepted)
+            break;
         index = objects.Deterate(index);
     }
 

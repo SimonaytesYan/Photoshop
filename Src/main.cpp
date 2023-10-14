@@ -152,7 +152,6 @@ void TestRegClip(RenderTarget& rend_targ)
 
 void SwitchColor(void* args)
 {
-	printf("Switch color\n");
 	ColorStruct* cs = (ColorStruct*)args;
 
 	cs->tm->ChangeColor(cs->color);
@@ -160,7 +159,6 @@ void SwitchColor(void* args)
 
 void SwitchTool(void* args)
 {
-	printf("Switch tool\n");
 	ToolStruct* ts = (ToolStruct*)args;
 	ts->tm->ChangeTool(ts->tool);
 }
