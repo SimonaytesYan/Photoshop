@@ -70,6 +70,8 @@ void Canvas::Render(RenderTarget* render_target)
         
         data.Display();
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
+        tmp.Display();
+        render_target->DrawSprite(position, data.GetTexture(), reg_set);
         Widget::Render(render_target);
     }
 }
