@@ -25,7 +25,7 @@ void Widget::Move(Vector delta)
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
         reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].GetPosition(), 
-                                reg_set[i].GetSize(), reg_set[i].GetColor()));
+                                         reg_set[i].GetSize()));
     }
     position = position + delta;
 

@@ -7,16 +7,18 @@ class RegionSet;
 
 
 class ClipRegion
-{
+{    
+    bool   nulled;
+
+public:
     double x0;
     double y0;
     double x1;
     double y1;
-    
-    bool   nulled;
-public:
+
     ClipRegion(double x0, double y0, double x1, double y1);
     ClipRegion(Vector position, Vector size, bool nulled = false);
+    ClipRegion(const ClipRegion& a);
 
     Vector GetSize()     const;
     Vector GetPosition() const;
