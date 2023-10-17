@@ -16,7 +16,7 @@ public :
 
     void SetPixel     (Vector position,           Color color, const RegionSet& rend_set);
     void DrawCircle   (Vector position, double r, Color color, const RegionSet& rend_set);
-    void DrawLine     (Vector v0, Vector v1,                   const RegionSet& rend_set);
+    void DrawLine     (Vector v0, Vector v1,      Color color, const RegionSet& rend_set);
     void DrawRect     (Vector position, Vector size,
                        const RegionSet& rend_set, 
                        Color fill_color = Color(255, 255, 255),
@@ -31,7 +31,7 @@ public :
     void SetPixel     (Vector position,           Color color);
     void DrawCircle   (Vector position, double r, Color color, 
                        Vector scale = Vector(1, 1));
-    void DrawLine     (Vector v0, Vector v1);
+    void DrawLine     (Vector v0, Vector v1, Color color);
     void DrawRect     (Vector position, Vector size,
                        Color fill_color = Color(255, 255, 255),
                        int border_size = 0,
@@ -40,11 +40,11 @@ public :
     void DrawText     (Vector position, Font font, const char* text, int character_size);
 
     Texture GetTexture();
-    void Display(sf::RenderWindow* window);
-    void Display();
-    void Draw(sf::RenderWindow* window);
-    void Clear();
-    void Clear(Color color);
+    void    Display(sf::RenderWindow* window);
+    void    Display();
+    void    Draw(sf::RenderWindow* window);
+    void    Clear();
+    void    Clear(Color color);
 };
 
 #endif //SYM_RENDER_TARGET

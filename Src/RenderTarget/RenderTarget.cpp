@@ -76,7 +76,7 @@ int IntersectSections(Vector a0, Vector a1, Vector b0, Vector b1, Vector* res)
     return 0;
 }
 
-void DrawLine(Vector v0, Vector v1, const RegionSet& rend_set)
+void RenderTarget::DrawLine(Vector v0, Vector v1, Color color, const RegionSet& rend_set)
 {
     
 }
@@ -320,13 +320,15 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, Vector sca
     data.draw(circle);
 }
 
-void RenderTarget::DrawLine(Vector v0, Vector v1)
+void RenderTarget::DrawLine(Vector v0, Vector v1, Color color)
 {
     sf::Vertex line[] =
     {
         sf::Vertex(ConvertVecF(v0)),
         sf::Vertex(ConvertVecF(v1))
     };
+    line[0].color = ConvertColor(color);
+    line[1].color = ConvertColor(color);
 
     data.draw(line, 2, sf::Lines);
 }
