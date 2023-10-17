@@ -15,6 +15,13 @@ Vector Texture::GetSize()
     return Vector(data.getSize().x, data.getSize().y);
 }
 
+const u_int8_t* Texture::GetPixelArray(Vector& size)
+{
+    sf::Image image(data.copyToImage());
+    size = Vector(image.getSize().x, image.getSize().y);
+    return image.getPixelsPtr();
+}
+
 sf::Texture* Texture::GetTexture()
 {
     return &data;
