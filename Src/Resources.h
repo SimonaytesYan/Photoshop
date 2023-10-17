@@ -10,4 +10,6 @@ static const char* kBrushPressedImgFile      = "Resources/BrushPressed.png";
 static const char* kFontFile                 = "Resources/Font.ttf";
 static const char* kCircleImgFile            = "Resources/Circle.png";
 static const char* kCirclePressedImgFile     = "Resources/CirclePressed.png";
+static const char* kRectImgFile              = "Resources/Rect.png";
+static const char* kRectPressedImgFile       = "Resources/RectPressed.png";
 #endif //SYM_RESOURCES

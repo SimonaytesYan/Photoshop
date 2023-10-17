@@ -1,15 +1,6 @@
 #include "CircleTool.h"
 #include "../../../RenderTarget/RenderTarget.h"
-
-double min(double a, double b)
-{
-    return a < b ? a : b;
-}
-
-double max(double a, double b)
-{
-    return a < b ? b : a;
-}
+#include "../../../Useful.h"
 
 void CircleTool::CalcAndDrawShape(RenderTarget& target, MouseCondition mouse, Color color)
 {

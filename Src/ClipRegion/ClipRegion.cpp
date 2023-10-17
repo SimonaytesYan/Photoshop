@@ -1,15 +1,6 @@
 #include "ClipRegion.h"
 #include "../RegionSet/RegionSet.h"
-
-inline double max(double a, double b)
-{
-    return a < b ? b : a;
-}
-
-inline double min(double a, double b)
-{
-    return a < b ? a : b;
-}
+#include "../Useful.h"
 
 ClipRegion::ClipRegion(Vector _position, Vector _size, bool _nulled) :
 nulled    (_nulled)

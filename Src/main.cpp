@@ -13,6 +13,7 @@
 #include "ClipRegion/ClipRegion.h"
 #include "Tool/Brush/Brush.h"
 #include "Tool/ShapeTool/CircleTool/CircleTool.h"
+#include "Tool/ShapeTool/RectTool/RectTool.h"
 
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
@@ -75,6 +76,14 @@ int main()
 							   circle_text, circle_pressed, 
 							   SwitchTool, &ts1));
 
+	Texture rect_text, rect_pressed;
+	rect_text.LoadFromFile(kRectImgFile);
+	rect_pressed.LoadFromFile(kRectPressedImgFile);
+	RectTool rect_tool(10);
+	ToolStruct ts2 = {&tm, (Tool*)&rect_tool};
+	tools.AddObject(new Button(tools.GetPosition() + Vector(110, 50), Vector(50, 50), 
+							   rect_text, rect_pressed, 
+							   SwitchTool, &ts2));
 	//Adding colors
 	int   colors_num    		 = 5;
 	Color all_colors[colors_num] = {Color(255, 255, 255),
