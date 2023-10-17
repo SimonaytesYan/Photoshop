@@ -4,11 +4,13 @@
 
 #include <string.h>
 
-Label::Label(Vector _position, Font _font, int _character_size, const char* _text) :
-Widget(_position, Vector(strlen(_text) * (_character_size - 2), (_character_size + 10))),
-font (_font),
+Label::Label(Vector _position, Font _font, int _character_size, 
+             const char* _text, Color _background) :
+Widget(_position, Vector(strlen(_text) * (_character_size - 5), (_character_size + 10))),
+font           (_font),
 character_size (_character_size),
-text (_text)
+background     (_background),
+text           (_text)
 {
 }
 
@@ -22,6 +24,7 @@ void Label::SetText(const char* new_text)
 
 void Label::Render(RenderTarget* render_target)
 {
+    render_target->DrawRect(position, size, background);
     render_target->DrawText(position, font, text, character_size, reg_set);
 
     Widget::Render(render_target);
