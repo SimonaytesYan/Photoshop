@@ -12,7 +12,7 @@
 #include "RegionSet/RegionSet.h"
 #include "ClipRegion/ClipRegion.h"
 #include "Tool/Brush/Brush.h"
-#include "Tool/CircleTool/CircleTool.h"
+#include "Tool/ShapeTool/CircleTool/CircleTool.h"
 
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;

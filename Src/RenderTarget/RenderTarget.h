@@ -29,7 +29,8 @@ public :
 
 
     void SetPixel     (Vector position,           Color color);
-    void DrawCircle   (Vector position, double r, Color color);
+    void DrawCircle   (Vector position, double r, Color color, 
+                       Vector scale = Vector(1, 1));
     void DrawLine     (Vector v0, Vector v1);
     void DrawRect     (Vector position, Vector size,
                        Color fill_color = Color(255, 255, 255),

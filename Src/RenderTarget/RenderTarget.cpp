@@ -310,11 +310,12 @@ void RenderTarget::SetPixel(Vector position, Color color)
     data.draw(shape);
 }
 
-void RenderTarget::DrawCircle(Vector position, double r, Color color)
+void RenderTarget::DrawCircle(Vector position, double r, Color color, Vector scale)
 {
     sf::CircleShape circle(r);
     circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
     circle.setFillColor(sf::Color(color.r, color.g, color.b));
+    circle.setScale(ConvertVecF(scale));
 
     data.draw(circle);
 }

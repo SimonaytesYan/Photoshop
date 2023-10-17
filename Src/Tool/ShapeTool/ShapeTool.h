@@ -1,0 +1,31 @@
+#ifndef SYM_SHAPE_TOOL
+#define SYM_SHAPE_TOOL
+
+#include "../Tool.h"
+
+class ShapeTool : public Tool
+{
+protected:
+    bool   drawing;
+    double thickness;
+
+public : 
+    ShapeTool(double _thickness) :
+    drawing   (false),
+    thickness (_thickness)
+    {}
+
+    virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
+                                MouseCondition mouse, Color color) override;
+    virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
+                                MouseCondition mouse, Color color) override;
+    virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
+                                MouseCondition mouse, Color color) override;
+    virtual void Disable       () override;
+
+    virtual void CalcAndDrawShape(RenderTarget& target, 
+                                  MouseCondition mouse, 
+                                  Color color) = 0;
+};
+
+#endif //SYM_SHAPE_TOOL
