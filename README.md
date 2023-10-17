@@ -2,6 +2,8 @@
 
 This is a educational C++ project - GUI library based on SFML and simle version of photoshop implemented on it. 
 
+![Preview](https://github.com/SimonaytesYan/Photoshop/blob/master/Resources/Preview.png)
+
 ## Configuration ##
 
 To run the project you need install SFML.
