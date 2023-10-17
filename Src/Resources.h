@@ -8,5 +8,6 @@ static const char* kClosePressedImgFile      = "Resources/ClosePressed.png";
 static const char* kBrushImgFile             = "Resources/Brush.png";
 static const char* kBrushPressedImgFile      = "Resources/BrushPressed.png";
 static const char* kFontFile                 = "Resources/Font.ttf";
-
+static const char* kCircleImgFile            = "Resources/Circle.png";
+static const char* kCirclePressedImgFile     = "Resources/CirclePressed.png";
 #endif //SYM_RESOURCES

@@ -87,8 +87,6 @@ void ClipRegion::Dump() const
     printf("}\n");
 }
 
-//TODO переписать ClipRegion на 4 точки
-
 bool RegionIntersectP(ClipRegion a, ClipRegion b)
 {
     double X0 = max(a.x0, b.x0);
