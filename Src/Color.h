@@ -33,4 +33,12 @@ struct Color
     };
 };
 
+static bool operator==(Color a, Color b)
+{
+    return a.a == b.a &&
+           a.r == b.r &&
+           a.g == b.g &&
+           a.b == b.b;
+}
+
 #endif //SYM_COLOR
