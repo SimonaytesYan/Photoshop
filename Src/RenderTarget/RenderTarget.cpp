@@ -57,6 +57,30 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
     DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
+int IntersectSections(Vector a0, Vector a1, Vector b0, Vector b1, Vector* res)
+{
+    //a0 + (a1 - a0) * t_a = b0 + (b1 - b0) * t_b = b => 
+    //t_a = ((b0 - a0 + (b1 - b0).x * t_b).x / (a1 - a0).x) 
+    //t_b * (b1 - b0) =  a0 - b0 + (a1 - a0) * t_a
+    //
+
+    /*double t_a = (a0 - b0).GetX() / (b1 - b0 - a1 + a0).GetX();
+
+    if (0 <= t && t <= 1)
+    {
+        *res = a0 + (a1 - a0) * t;
+        return 0;
+    }
+    return -1;*/
+
+    return 0;
+}
+
+void DrawLine(Vector v0, Vector v1, const RegionSet& rend_set)
+{
+    
+}
+
 void RenderTarget::DrawRect(Vector position, Vector size, 
                             const RegionSet& rend_set, Color fill_color,
                             int border_size, Color border_color)
@@ -72,20 +96,18 @@ void RenderTarget::DrawRect(Vector position, Vector size,
     #else
         DrawRegionSet(rect_set, fill_color);
         RegionSet border_set;
-        border_set.AddRegion(ClipRegion(Vector(position.GetX(),
-                                               position.GetY()),
+        border_set.AddRegion(ClipRegion(position,
                                         Vector(border_size, size.GetY())));      //left
 
-        border_set.AddRegion(ClipRegion(Vector(position.GetX(),
-                                               position.GetY()),
+        border_set.AddRegion(ClipRegion(position,
                                         Vector(size.GetX(), border_size)));      //down
 
         border_set.AddRegion(ClipRegion(Vector((position + size).GetX() - border_size,
-                                                position.GetY()),
+                                        position.GetY()),
                                         Vector(border_size, size.GetY())));      //right
 
         border_set.AddRegion(ClipRegion(Vector(position.GetX(),
-                                               (position + size).GetY() - border_size),
+                                        (position + size).GetY() - border_size),
                                         Vector(size.GetX(), border_size)));      //up
 
         border_set &= rend_set;
@@ -163,7 +185,6 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
                             int character_size, const RegionSet& rend_set)
 {
-
     #ifdef DEBUG_REGIONS
         RegionSet result;
         result.AddRegion(ClipRegion(position, Vector(character_size * strlen(text), character_size + 10)));
