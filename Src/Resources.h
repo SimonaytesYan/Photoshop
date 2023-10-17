@@ -14,4 +14,6 @@ static const char* kRectImgFile              = "Resources/Rect.png";
 static const char* kRectPressedImgFile       = "Resources/RectPressed.png";
 static const char* kLineImgFile              = "Resources/Line.png";
 static const char* kLinePressedImgFile       = "Resources/LinePressed.png";
+static const char* kPolylineImgFile          = "Resources/Polyline.png";
+static const char* kPolylinePressedImgFile   = "Resources/PolylinePressed.png";
 #endif //SYM_RESOURCES

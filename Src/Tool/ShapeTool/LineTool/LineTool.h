@@ -6,8 +6,8 @@
 class LineTool : public ShapeTool
 {
 public : 
-    LineTool(double _thickness) :
-    ShapeTool(_thickness)
+    LineTool() :
+    ShapeTool(0)
     {}
     
     void CalcAndDrawShape(RenderTarget& target, 
