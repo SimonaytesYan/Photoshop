@@ -1,4 +1,5 @@
 #include "FillTool.h"
+#include "../../Image/Image.h"
 #include "../../RenderTarget/RenderTarget.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
@@ -9,14 +10,10 @@ const VectorI kTransitions[kTransNumb] = {VectorI(1,  0),
                                           VectorI(-1, 0), 
                                           VectorI(0,  -1)};
 
-Color GetC(const u_int8_t* pixels, VectorI size, VectorI index_v)
+Color* GetC(const u_int8_t* pixels, VectorI size, VectorI index_v)
 {
     int index = (index_v.y * size.x + index_v.x) * sizeof(Color);
-    Color res(pixels[index],
-              pixels[index + 1], 
-              pixels[index + 2], 
-              pixels[index + 3]);
-    return res;
+    return (Color*)(pixels + index);
 }
 
 bool GoToPixelP(VectorI cur, VectorI next, 
@@ -24,7 +21,7 @@ bool GoToPixelP(VectorI cur, VectorI next,
 {
     return 0 <= next.x && next.x < size.x &&
            0 <= next.y && next.y < size.y &&
-           GetC(pixels, size, cur) == GetC(pixels, size, next) &&
+           *GetC(pixels, size, cur) == *GetC(pixels, size, next) &&
            !visited[next.y][next.x];
 }
 
@@ -47,10 +44,18 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
     {
         DynArray<VectorI> queue(0);
 
-        VectorI   size(0, 0);
-        const u_int8_t* pixels = data.GetTexture().GetPixelArray(size);
-        bool**    visited      = (bool**)calloc(sizeof(bool*), size.y);
+        Image img(data.GetTexture());
 
+        VectorI         size(0, 0);
+        const u_int8_t* pixels  = img.GetPixelArray(size);
+
+        if (*GetC(pixels, size, start_pos) == color)
+        {
+            drawing = false;
+            return;
+        }
+
+        bool** visited = (bool**)calloc(sizeof(bool*), size.y);
         for (int i = 0; i < size.y; i++)
             visited[i] = (bool*)calloc(sizeof(bool), size.x);
 
@@ -59,18 +64,21 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
         while (queue.GetLength() != 0)
         {
             VectorI cur = queue[queue.GetLength() - 1];
+
+            Color* clr = GetC(pixels, size, cur);
             visited[cur.y][cur.x] = true;
-            data.SetPixel(Vector(cur.x, cur.y), color);
+
             queue.PopBack();
             
             AddTransitions(queue, cur, pixels, size, visited);
+            *GetC(pixels, size, cur) = color;
         }
 
-        drawing = false;
+        Texture res_texture;
+        res_texture.LoadFromImage(img);
+        data.DrawSprite(Vector(0, 0), res_texture);
 
-        for (int i = 0; i < size.y; i++)
-            free(visited[i]);
-        free(visited);
+        drawing = false;
     }
 }
 

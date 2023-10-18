@@ -5,6 +5,8 @@
 
 #include "../Vector/Vector.h"
 
+class Image;
+
 class Texture
 {
     sf::Texture data;
@@ -16,6 +18,7 @@ public:
     bool            Create      (int width, int height);
     bool            LoadFromFile(const char* filename);
     sf::Texture*    GetTexture  ();
+    bool            LoadFromImage(Image img);
     Vector          GetSize();
 
     //Calloc buffer to pixels 

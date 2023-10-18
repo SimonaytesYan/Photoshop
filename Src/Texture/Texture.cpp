@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "Texture.h"
+#include "../Image/Image.h"
 
 bool Texture::Create(int width, int height)
 {
@@ -17,15 +18,9 @@ Vector Texture::GetSize()
     return Vector(data.getSize().x, data.getSize().y);
 }
 
-u_int8_t* Texture::GetPixelArray(VectorI& size)
+bool Texture::LoadFromImage(Image img)
 {
-    sf::Image image(data.copyToImage());
-    size = Vector(image.getSize().x, image.getSize().y);
-
-    u_int8_t* pixels = (u_int8_t*)calloc(sizeof(u_int8_t), 
-                                         image.getSize().x * image.getSize().y * 4);
-    memcpy(pixels, image.getPixelsPtr(), image.getSize().x * image.getSize().y * 4);
-    return pixels;
+    return data.loadFromImage(img.GetImage());
 }
 
 sf::Texture* Texture::GetTexture()
