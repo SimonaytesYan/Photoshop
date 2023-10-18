@@ -16,6 +16,7 @@
 #include "Tool/ShapeTool/RectTool/RectTool.h"
 #include "Tool/ShapeTool/LineTool/LineTool.h"
 #include "Tool/PolylineTool/PolylineTool.h"
+#include "Tool/FillTool/FillTool.h"
 
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
@@ -104,6 +105,15 @@ int main()
 	tools.AddObject(new Button(tools.GetPosition() + Vector(210, 50), Vector(50, 50), 
 							   polyline_text, polyline_pressed, 
 							   SwitchTool, &ts4));
+	
+	Texture fill_text, fill_pressed;
+	fill_text.LoadFromFile(kFillImgFile);
+	fill_pressed.LoadFromFile(kFillPressedImgFile);
+	FillTool fill_tool;
+	ToolStruct ts5 = {&tm, (Tool*)&fill_tool};
+	tools.AddObject(new Button(tools.GetPosition() + Vector(260, 50), Vector(50, 50), 
+							   fill_text, fill_pressed, 
+							   SwitchTool, &ts5));
 	//Adding colors
 	int   colors_num    		 = 5;
 	Color all_colors[colors_num] = {Color(255, 255, 255),

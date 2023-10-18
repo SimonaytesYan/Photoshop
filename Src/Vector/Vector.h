@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+struct VectorI;
+
 class Vector
 {
     double x;
@@ -19,6 +21,8 @@ public :
     void   Rotate(double deg);
     double Length() const;
 
+    Vector operator=(VectorI v);
+
     friend Vector operator+(const Vector& a, const Vector& b);
     friend Vector operator-(const Vector& a);
     friend Vector operator-(const Vector& a, const Vector& b);
@@ -29,6 +33,33 @@ public :
     friend Vector operator+(const Vector& a);
     friend Vector operator^(const Vector& a, double b);
     friend bool   operator==(const Vector& a, const Vector& b);
+};
+
+struct VectorI
+{
+    int x;
+    int y;
+
+    VectorI(int _x, int _y) : 
+    x(_x), 
+    y(_y)
+    {}
+
+    VectorI(Vector v)
+    {
+        x = v.GetX();
+        y = v.GetY();
+    }
+
+    VectorI operator=(Vector v)
+    {
+        x = v.GetX();
+        y = v.GetY();
+
+        return *this;
+    }
+
+    friend VectorI operator+(const VectorI& a, const VectorI& b);
 };
 
 Vector operator+(const Vector& a, const Vector& b);

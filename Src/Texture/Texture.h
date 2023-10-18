@@ -17,7 +17,10 @@ public:
     bool            LoadFromFile(const char* filename);
     sf::Texture*    GetTexture  ();
     Vector          GetSize();
-    const u_int8_t* GetPixelArray(Vector& size);     
+
+    //Calloc buffer to pixels 
+    //You should free it
+    u_int8_t* GetPixelArray(VectorI& size);     
 };
 
 #endif //SYM_TEXTURE

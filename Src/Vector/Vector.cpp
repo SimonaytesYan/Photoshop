@@ -19,6 +19,19 @@ void Vector::Dump()
     printf("(%.2lf, %.2lf)", x, y);
 }
 
+Vector Vector::operator=(VectorI v)
+{
+    x = v.x;
+    y = v.y;
+
+    return *this;
+}
+
+VectorI operator+(const VectorI& a, const VectorI& b)
+{
+    return VectorI(a.x + b.x, a.y + b.y);
+}
+
 Vector operator+(const Vector& a, const Vector& b)
 {
     Vector res = Vector(a.x + b.x, a.y + b.y);

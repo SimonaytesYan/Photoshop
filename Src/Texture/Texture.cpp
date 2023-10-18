@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "Texture.h"
 
 bool Texture::Create(int width, int height)
@@ -15,11 +17,15 @@ Vector Texture::GetSize()
     return Vector(data.getSize().x, data.getSize().y);
 }
 
-const u_int8_t* Texture::GetPixelArray(Vector& size)
+u_int8_t* Texture::GetPixelArray(VectorI& size)
 {
     sf::Image image(data.copyToImage());
     size = Vector(image.getSize().x, image.getSize().y);
-    return image.getPixelsPtr();
+
+    u_int8_t* pixels = (u_int8_t*)calloc(sizeof(u_int8_t), 
+                                         image.getSize().x * image.getSize().y * 4);
+    memcpy(pixels, image.getPixelsPtr(), image.getSize().x * image.getSize().y * 4);
+    return pixels;
 }
 
 sf::Texture* Texture::GetTexture()
