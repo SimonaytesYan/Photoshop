@@ -17,11 +17,14 @@ void PolylineTool::Disable()
 void PolylineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
                                 MouseCondition mouse, Color color)
 {
-    tmp.Clear(Color(0, 0, 0, 0));
-    start_pos = mouse.position;
-    vertexes.PushBack(mouse.position);
-    CalcAndDrawPolyline(tmp, mouse, color);
-    drawing = true;
+    if (!drawing)
+    {
+        tmp.Clear(Color(0, 0, 0, 0));
+        start_pos = mouse.position;
+        vertexes.PushBack(mouse.position);
+        CalcAndDrawPolyline(tmp, mouse, color);
+        drawing = true;
+    }
 }
 
 void PolylineTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
