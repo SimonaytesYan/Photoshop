@@ -37,7 +37,8 @@ struct ColorStruct
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Window* window, Canvas* canvas);
-void AddTools(Window* main_window, Window* tool, ToolManager* tm);
+void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
+void AddColor(Window* main_window, Window* colors, ToolManager* tm);
 
 void Say(void* args);
 void SwitchTool(void* args);
@@ -63,25 +64,9 @@ int main()
 	AddTools(&main_window, &tools, &tm);
 
 	//Adding colors
-	int   colors_num    		 = 5;
-	Color all_colors[colors_num] = {Color(255, 255, 255),
-						  		    Color(0,     0,   0),
-						  		    Color(255,   0,   0),
-						  		    Color(0,   255,   0),
-						  		    Color(0,     0, 255),};
-
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
-	
-	for (int i = 0; i < colors_num; i++)
-	{
-		ColorStruct* cs = new ColorStruct();
-		cs->color = all_colors[i];
-		cs->tm    = &tm;
-
-		Vector position = colors.GetPosition() + Vector(10 + 50 * i, 50);
-		colors.AddObject(new Button(position, Vector(50, 50), all_colors[i], SwitchColor, cs));
-	}
+	AddColor(&main_window, &colors, &tm);
 
 	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
 
@@ -162,8 +147,8 @@ void ClearCanvas(void* args)
 
 void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 {
-
-	ToolStruct* ts = new ToolStruct[6];
+	const int ToolsNumber = 6;
+	ToolStruct* ts = new ToolStruct[ToolsNumber];
 	ts[0] = {tm, (Tool*)(new Brush(10))};
 	ts[1] = {tm, (Tool*)(new CircleTool(10))},
 	ts[2] = {tm, (Tool*)(new RectTool(10))},
@@ -193,7 +178,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 
 	Texture common_texture, pressed_texture;
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < ToolsNumber; i++)
 	{
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
@@ -204,6 +189,28 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	}
 
 	main_window->AddObject(tools);
+}
+
+void AddColor(Window* main_window, Window* colors, ToolManager* tm)
+{
+	const int colors_num   = 5;
+	Color     all_colors[] = {Color(255, 255, 255),
+						 	  Color(0,     0,   0),
+						 	  Color(255,   0,   0),
+						 	  Color(0,   255,   0),
+						 	  Color(0,     0, 255),};
+
+	
+	ColorStruct* cs = new ColorStruct[colors_num];
+	for (int i = 0; i < colors_num; i++)
+	{
+		cs[i].color       = all_colors[i];
+		cs[i].tm          = tm;
+
+		Vector position = colors->GetPosition() + Vector(10 + 50 * i, 50);
+		colors->AddObject(new Button(position, Vector(50, 50), all_colors[i], 
+								  	 SwitchColor, &cs[i]));
+	}
 }
 
 void AddMenu(Window* window, Canvas* canvas)
