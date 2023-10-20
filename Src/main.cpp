@@ -37,6 +37,7 @@ struct ColorStruct
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Window* window, Canvas* canvas);
+void AddTools(Window* main_window, Window* tool, ToolManager* tm);
 
 void Say(void* args);
 void SwitchTool(void* args);
@@ -55,65 +56,12 @@ int main()
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
 
-	ToolManager tm;
-
 	//Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
+	ToolManager tm;
+	AddTools(&main_window, &tools, &tm);
 
-	Texture brush_text, brush_pressed;
-	brush_text.LoadFromFile(kBrushImgFile);
-	brush_pressed.LoadFromFile(kBrushPressedImgFile);
-	Brush brush(10);
-	ToolStruct ts = {&tm, (Tool*)&brush};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(10, 50), Vector(50, 50), 
-							   brush_text, brush_pressed, 
-							   SwitchTool, &ts));
-	
-	Texture circle_text, circle_pressed;
-	circle_text.LoadFromFile(kCircleImgFile);
-	circle_pressed.LoadFromFile(kCirclePressedImgFile);
-	CircleTool circle_tool(10);
-	ToolStruct ts1 = {&tm, (Tool*)&circle_tool};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(60, 50), Vector(50, 50), 
-							   circle_text, circle_pressed, 
-							   SwitchTool, &ts1));
-
-	Texture rect_text, rect_pressed;
-	rect_text.LoadFromFile(kRectImgFile);
-	rect_pressed.LoadFromFile(kRectPressedImgFile);
-	RectTool rect_tool(10);
-	ToolStruct ts2 = {&tm, (Tool*)&rect_tool};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(110, 50), Vector(50, 50), 
-							   rect_text, rect_pressed, 
-							   SwitchTool, &ts2));
-	
-	Texture line_text, line_pressed;
-	line_text.LoadFromFile(kLineImgFile);
-	line_pressed.LoadFromFile(kLinePressedImgFile);
-	LineTool line_tool;
-	ToolStruct ts3 = {&tm, (Tool*)&line_tool};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(160, 50), Vector(50, 50), 
-							   line_text, line_pressed, 
-							   SwitchTool, &ts3));
-
-	Texture polyline_text, polyline_pressed;
-	polyline_text.LoadFromFile(kPolylineImgFile);
-	polyline_pressed.LoadFromFile(kPolylinePressedImgFile);
-	PolylineTool polyline_tool;
-	ToolStruct ts4 = {&tm, (Tool*)&polyline_tool};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(210, 50), Vector(50, 50), 
-							   polyline_text, polyline_pressed, 
-							   SwitchTool, &ts4));
-	
-	Texture fill_text, fill_pressed;
-	fill_text.LoadFromFile(kFillImgFile);
-	fill_pressed.LoadFromFile(kFillPressedImgFile);
-	FillTool fill_tool;
-	ToolStruct ts5 = {&tm, (Tool*)&fill_tool};
-	tools.AddObject(new Button(tools.GetPosition() + Vector(260, 50), Vector(50, 50), 
-							   fill_text, fill_pressed, 
-							   SwitchTool, &ts5));
 	//Adding colors
 	int   colors_num    		 = 5;
 	Color all_colors[colors_num] = {Color(255, 255, 255),
@@ -139,7 +87,6 @@ int main()
 
 	main_window.AddObject(&canvas);
 	main_window.AddObject(&colors);
-	main_window.AddObject(&tools);
 	AddMenu(&main_window, &canvas);
 
 	while (window.isOpen())
@@ -211,6 +158,52 @@ void SwitchTool(void* args)
 void ClearCanvas(void* args)
 {
 	((Canvas*)args)->Clear();
+}
+
+void AddTools(Window* main_window, Window* tools, ToolManager* tm)
+{
+
+	ToolStruct* ts = new ToolStruct[6];
+	ts[0] = {tm, (Tool*)(new Brush(10))};
+	ts[1] = {tm, (Tool*)(new CircleTool(10))},
+	ts[2] = {tm, (Tool*)(new RectTool(10))},
+	ts[3] = {tm, (Tool*)(new LineTool)},
+	ts[4] = {tm, (Tool*)(new PolylineTool)},
+	ts[5] = {tm, (Tool*)(new FillTool)};
+
+	const char* textures[] = 
+	{
+		kBrushImgFile,
+		kCircleImgFile,
+		kRectImgFile,
+		kLineImgFile,
+		kPolylineImgFile,
+		kFillImgFile
+	};
+
+	const char* press_textures[] = 
+	{
+		kBrushPressedImgFile,
+		kCirclePressedImgFile,
+		kRectPressedImgFile,
+		kLinePressedImgFile,
+		kPolylinePressedImgFile,
+		kFillPressedImgFile
+	};
+
+	Texture common_texture, pressed_texture;
+
+	for (int i = 0; i < 6; i++)
+	{
+		common_texture.LoadFromFile(textures[i]);
+		pressed_texture.LoadFromFile(press_textures[i]);
+		tools->AddObject(new Button(tools->GetPosition() + Vector(10 + 50 * i, 50), 
+								   Vector(50, 50), 
+							   	   common_texture, pressed_texture, 
+							   	   SwitchTool, &ts[i]));
+	}
+
+	main_window->AddObject(tools);
 }
 
 void AddMenu(Window* window, Canvas* canvas)
