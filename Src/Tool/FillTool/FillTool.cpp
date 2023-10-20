@@ -25,7 +25,7 @@ bool GoToPixelP(VectorI cur, VectorI next,
            !visited[next.y][next.x];
 }
 
-void AddTransitions(DynArray<VectorI> &queue, VectorI cur,
+void AddTransitions(DynArray<VectorI> &stack, VectorI cur,
                     const u_int8_t* pixels, VectorI size, bool** visited)
 {
     for (int i = 0; i < kTransNumb; i++)
@@ -33,7 +33,7 @@ void AddTransitions(DynArray<VectorI> &queue, VectorI cur,
         VectorI next = cur + kTransitions[i];
 
         if (GoToPixelP(cur, next, size, pixels, visited))
-            queue.PushBack(next);
+            stack.PushBack(next);
     }
 }
 
@@ -42,7 +42,7 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
 {
     if (drawing)
     {
-        DynArray<VectorI> queue(0);
+        DynArray<VectorI> stack(0);
 
         Image img(data.GetTexture());
 
@@ -59,18 +59,21 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
         for (int i = 0; i < size.y; i++)
             visited[i] = (bool*)calloc(sizeof(bool), size.x);
 
-        queue.PushBack(start_pos);
+        stack.PushBack(start_pos);
 
-        while (queue.GetLength() != 0)
+        while (stack.GetLength() != 0)
         {
-            VectorI cur = queue[queue.GetLength() - 1];
+            VectorI cur = stack[stack.GetLength() - 1];
 
             Color* clr = GetC(pixels, size, cur);
             visited[cur.y][cur.x] = true;
 
-            queue.PopBack();
+            stack.PopBack();
             
-            AddTransitions(queue, cur, pixels, size, visited);
+            //Add in stack neighboring pixels
+            AddTransitions(stack, cur, pixels, size, visited);
+
+            //Colorize cur pixel
             *GetC(pixels, size, cur) = color;
         }
 
