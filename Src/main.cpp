@@ -38,7 +38,7 @@ struct ColorStruct
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Window* window, Canvas* canvas);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
-void AddColor(Window* main_window, Window* colors, ToolManager* tm);
+void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 void Say(void* args);
 void SwitchTool(void* args);
@@ -66,12 +66,11 @@ int main()
 	//Adding colors
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
-	AddColor(&main_window, &colors, &tm);
+	AddColors(&main_window, &colors, &tm);
 
 	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
 
 	main_window.AddObject(&canvas);
-	main_window.AddObject(&colors);
 	AddMenu(&main_window, &canvas);
 
 	while (window.isOpen())
@@ -85,6 +84,7 @@ int main()
 				case sf::Event::Closed:
 				{
 					window.close();
+					break;
 				}
 
 				case sf::Event::MouseButtonPressed:
@@ -191,7 +191,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	main_window->AddObject(tools);
 }
 
-void AddColor(Window* main_window, Window* colors, ToolManager* tm)
+void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 {
 	const int colors_num   = 5;
 	Color     all_colors[] = {Color(255, 255, 255),
@@ -211,6 +211,8 @@ void AddColor(Window* main_window, Window* colors, ToolManager* tm)
 		colors->AddObject(new Button(position, Vector(50, 50), all_colors[i], 
 								  	 SwitchColor, &cs[i]));
 	}
+
+	main_window->AddObject(colors);
 }
 
 void AddMenu(Window* window, Canvas* canvas)

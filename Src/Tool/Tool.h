@@ -23,11 +23,11 @@ public :
     {};
 
     virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) = 0;
+                                MouseCondition mouse, Color color) = 0;
     virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) = 0;
+                                MouseCondition mouse, Color color) = 0;
     virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) = 0;
+                                MouseCondition mouse, Color color) = 0;
     virtual void Disable       () = 0;
 };
 

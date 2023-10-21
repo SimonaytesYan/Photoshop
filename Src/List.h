@@ -26,16 +26,20 @@ struct List
 
     List(int _capacity);
     ~List();
-    int Insert    (T value, int after_which);
-    int Remove    (int index);
-    int Iterate   (int index);
-    int Deterate  (int index);
-    int Begin     ();
-    int End       ();
-    int FindFree  (int* index);
-    int ResizeUp  (int new_capacity);
-    int PushFront (T value);
-    int PushBack  (T value);
+    int  Insert    (T value, int after_which);
+    int  Remove    (int index);
+    int  Iterate   (int index);
+    int  Deterate  (int index);
+    int  Begin     ();
+    int  End       ();
+    int  FindFree  (int* index);
+    int  ResizeUp  (int new_capacity);
+    int  PushFront (T value);
+    int  PushBack  (T value);
+    void PopFront  ();
+    void PopBack ();
+
+    void Clear();
 
     ListElem<T>& operator[](int index);
 };
@@ -96,9 +100,10 @@ List<T>::List(int _capacity)
     data     = (ListElem<T>*)calloc(capacity + 1, sizeof(ListElem<T>));
     if (data != nullptr)
         for(int i = capacity; i >= 1; i--)
-        {
-            data[i] = {0, -1, free_i};
-            free_i    = i;
+        {            
+            data[i].next = -1;
+            data[i].prev = free_i;
+            free_i  = i;
         }
 }
 
@@ -107,9 +112,23 @@ List<T>::~List()
 {
     capacity  = -1;
     size      = -1;
-    free_i      = -1;
+    free_i    = -1;
 
     free(data);
+}
+
+template <class T>
+void List<T>::Clear()
+{
+    size   = 0;
+    free_i = -1;
+
+    for (int i = capacity; i >= 1; i--)
+    {
+        data[i].next = -1;
+        data[i].prev = free_i;
+        free_i  = i;
+    }
 }
 
 template <class T>
@@ -220,6 +239,31 @@ int List<T>::PushBack(T value)
     if (after_which == -1)
         after_which = 0;
     return Insert(value, after_which);    
+}
+
+template <class T>
+void List<T>::PopFront()
+{
+    int first = Begin();
+    if (first != -1)
+    {
+        T result = data[first];
+        Remove(first);
+    }    
+}
+
+template <class T>
+void List<T>::PopBack()
+{
+    int last = End();
+    if (last != -1)
+    {
+        T result = data[last];
+        Remove(last);
+        return result;
+    }
+
+    abort();
 }
 
 #endif  //SYM_LIST

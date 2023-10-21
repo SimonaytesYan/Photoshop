@@ -53,6 +53,11 @@ Vector operator*(const Vector& a, double b)
     return Vector(a.x * b, a.y * b);
 }
 
+Vector operator*(double a, const Vector& b)
+{
+    return Vector(b.x * a, b.y * a);
+}
+
 Vector operator/(const Vector& a, double b)
 {
     return Vector(a.x / b, a.y / b);

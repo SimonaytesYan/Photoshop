@@ -48,7 +48,6 @@ void PolylineTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
         if (drawing)
         {
             tmp.Clear(Color(0, 0, 0, 0));
-            vertexes.PopBack();
             CalcAndDrawPolyline(data, mouse, color);
             
             vertexes.Clear();

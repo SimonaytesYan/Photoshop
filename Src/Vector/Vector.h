@@ -27,6 +27,7 @@ public :
     friend Vector operator-(const Vector& a);
     friend Vector operator-(const Vector& a, const Vector& b);
     friend Vector operator*(const Vector& a, double b);
+    friend Vector operator*(double a, const Vector& b);
     friend Vector operator/(const Vector& a, double b);
     friend double operator,(const Vector& a, const Vector& b);  
     friend Vector operator!(const Vector& a);
