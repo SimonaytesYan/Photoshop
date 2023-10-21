@@ -4,6 +4,8 @@
 #include "../Widget.h"
 #include "../../../ToolManager/ToolManager.h" 
 
+const Color kCanvasBackgroundColor = Color(50, 50, 50);
+
 class Canvas : public Widget
 {
     bool         drawing;

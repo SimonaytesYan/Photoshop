@@ -129,6 +129,9 @@ void List<T>::Clear()
         data[i].prev = free_i;
         free_i  = i;
     }
+
+    data[0].next = 0;
+    data[0].prev = 0;
 }
 
 template <class T>
@@ -151,7 +154,6 @@ int List<T>::Remove(int index)
     data[next_ind].prev = prev_ind;
     data[prev_ind].next = next_ind;
 
-    data[index].val  = 0;
     data[index].prev = free_i;
     data[index].next = -1;
 
@@ -172,7 +174,8 @@ int List<T>::ResizeUp(int new_capacity)
 
     for(int i = new_capacity; i >= capacity + 1; i--)
     {
-        data[i] = {0, -1, free_i};
+        data[i].next = -1;
+        data[i].prev = free_i;
         free_i = i;
     }
     
@@ -246,10 +249,7 @@ void List<T>::PopFront()
 {
     int first = Begin();
     if (first != -1)
-    {
-        T result = data[first];
         Remove(first);
-    }    
 }
 
 template <class T>
@@ -257,11 +257,7 @@ void List<T>::PopBack()
 {
     int last = End();
     if (last != -1)
-    {
-        T result = data[last];
         Remove(last);
-        return result;
-    }
 
     abort();
 }

@@ -3,15 +3,13 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-const Color kBackgroundColor = Color(50, 50, 50);
-
 Canvas::Canvas(Vector _position, Vector _size, ToolManager* _tm) :
 Widget(_position, _size),
 tm (_tm),
 data (RenderTarget(_size)),
 tmp  (RenderTarget(_size))
 {
-    data.Clear(kBackgroundColor);
+    data.Clear(kCanvasBackgroundColor);
     tmp.Clear(Color(0, 0, 0, 0));
 }
 
@@ -78,6 +76,6 @@ void Canvas::Render(RenderTarget* render_target)
 
 void Canvas::Clear()
 {
-    data.Clear(kBackgroundColor);
+    data.Clear(kCanvasBackgroundColor);
     tmp.Clear(Color(0, 0, 0, 0));
 }

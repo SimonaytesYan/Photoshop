@@ -16,6 +16,7 @@
 #include "Tool/ShapeTool/RectTool/RectTool.h"
 #include "Tool/ShapeTool/LineTool/LineTool.h"
 #include "Tool/PolylineTool/PolylineTool.h"
+#include "Tool/SplineTool/SplineTool.h"
 #include "Tool/FillTool/FillTool.h"
 
 const char   kWindowHeader[] = "Photoshop";
@@ -147,7 +148,7 @@ void ClearCanvas(void* args)
 
 void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 {
-	const int ToolsNumber = 6;
+	const int ToolsNumber = 7;
 	ToolStruct* ts = new ToolStruct[ToolsNumber];
 	ts[0] = {tm, (Tool*)(new Brush(10))};
 	ts[1] = {tm, (Tool*)(new CircleTool(10))},
@@ -155,25 +156,28 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	ts[3] = {tm, (Tool*)(new LineTool)},
 	ts[4] = {tm, (Tool*)(new PolylineTool)},
 	ts[5] = {tm, (Tool*)(new FillTool)};
+	ts[6] = {tm, (Tool*)(new SplineTool(10))};
 
-	const char* textures[] = 
+	const char* textures[ToolsNumber] = 
 	{
 		kBrushImgFile,
 		kCircleImgFile,
 		kRectImgFile,
 		kLineImgFile,
 		kPolylineImgFile,
-		kFillImgFile
+		kFillImgFile,
+		kSplineImgFile,
 	};
 
-	const char* press_textures[] = 
+	const char* press_textures[ToolsNumber] = 
 	{
 		kBrushPressedImgFile,
 		kCirclePressedImgFile,
 		kRectPressedImgFile,
 		kLinePressedImgFile,
 		kPolylinePressedImgFile,
-		kFillPressedImgFile
+		kFillPressedImgFile,
+		kSplinePressedImgFile,
 	};
 
 	Texture common_texture, pressed_texture;
@@ -200,7 +204,6 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 						 	  Color(0,   255,   0),
 						 	  Color(0,     0, 255),};
 
-	
 	ColorStruct* cs = new ColorStruct[colors_num];
 	for (int i = 0; i < colors_num; i++)
 	{
