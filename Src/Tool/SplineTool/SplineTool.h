@@ -14,9 +14,7 @@ public :
     vertexes (List<Vector>(0)),
     thickness(_thickness)
     {}
-    
-    void DrawSpline      (RenderTarget& data, RenderTarget& tmp, 
-                          Color color);
+
     void PaintOnPress    (RenderTarget& data, RenderTarget& tmp, 
                           MouseCondition mouse, Color color) override;
     void PaintOnMove     (RenderTarget& data, RenderTarget& tmp, 
