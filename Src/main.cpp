@@ -58,20 +58,23 @@ int main()
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
 
+	ToolManager tm;
+
+	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
+	main_window.AddObject(&canvas);
+	Canvas canvas2(Vector(900, 200), Vector(500, 500), &tm);
+	main_window.AddObject(&canvas2);
+
 	//Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
-	ToolManager tm;
 	AddTools(&main_window, &tools, &tm);
 
 	//Adding colors
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);
-
-	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
-
-	main_window.AddObject(&canvas);
+	
 	AddMenu(&main_window, &canvas);
 
 	while (window.isOpen())
