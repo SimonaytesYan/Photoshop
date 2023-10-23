@@ -6,8 +6,6 @@
 
 //#define DEBUG_REGIONS
 
-//TODO пересечение линии с прямоугольником
-
 sf::Color ConvertColor(Color color)
 {
     return sf::Color(color.r, color.g, color.b, color.a);
@@ -55,30 +53,6 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
     tmp_target.display();
 
     DrawWithRegionSet(rend_set, data, tmp_target);
-}
-
-int IntersectSections(Vector a0, Vector a1, Vector b0, Vector b1, Vector* res)
-{
-    //a0 + (a1 - a0) * t_a = b0 + (b1 - b0) * t_b = b => 
-    //t_a = ((b0 - a0 + (b1 - b0).x * t_b).x / (a1 - a0).x) 
-    //t_b * (b1 - b0) =  a0 - b0 + (a1 - a0) * t_a
-    //
-
-    /*double t_a = (a0 - b0).GetX() / (b1 - b0 - a1 + a0).GetX();
-
-    if (0 <= t && t <= 1)
-    {
-        *res = a0 + (a1 - a0) * t;
-        return 0;
-    }
-    return -1;*/
-
-    return 0;
-}
-
-void RenderTarget::DrawLine(Vector v0, Vector v1, Color color, const RegionSet& rend_set)
-{
-    
 }
 
 void RenderTarget::DrawRect(Vector position, Vector size, 
