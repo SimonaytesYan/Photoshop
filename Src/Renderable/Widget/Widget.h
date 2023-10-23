@@ -8,6 +8,7 @@
 #include "../../List.h"
 #include "../../Keys.h"
 #include "../../RegionSet/RegionSet.h"
+#include "../../EventProcessable.h"
 
 class Widget;
 using transform_f =  Widget*(*)(Widget *, void *);
@@ -22,7 +23,7 @@ enum Events
     MOUSE_MOVE
 };
 
-class Widget : public Renderable
+class Widget : public Renderable, public EventProcessable
 {
 
 protected:
@@ -37,15 +38,16 @@ public :
     Widget (Vector position = Vector(0, 0), Vector size = Vector(0,0), bool available = true);
     virtual ~Widget();
 
+    virtual bool OnKeyPress    (Key key)              override;
+    virtual bool OnKeyRelease  (Key key)              override;
+    virtual bool OnMousePress  (MouseCondition mouse) override;
+    virtual bool OnMouseRelease(MouseCondition mouse) override;
+    virtual bool OnMouseMove   (MouseCondition mouse) override;
+    virtual bool OnClock       (u_int64_t delta)      override;
+
     virtual void Render        (RenderTarget* render_target) override;
     virtual void Move          (Vector delta);
     virtual void AddObject     (Widget* new_widget);
-
-    virtual bool OnKeyPress    (Key key);
-    virtual bool OnKeyRelease  (Key key);
-    virtual bool OnMousePress  (MouseCondition mouse);
-    virtual bool OnMouseRelease(MouseCondition mouse);
-    virtual bool OnMouseMove   (MouseCondition mouse);
     
     RegionSet&       GetRegionSet()       { return reg_set; }
     const RegionSet& GetRegionSet() const { return reg_set; }

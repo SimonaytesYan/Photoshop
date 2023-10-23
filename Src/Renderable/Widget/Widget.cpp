@@ -5,7 +5,8 @@
 #include "../../ClipRegion/ClipRegion.h"
 
 Widget::Widget (Vector _position, Vector _size, bool _available) :
-Renderable  (),
+Renderable      (),
+EventProcessable(0),
 available   (_available),
 position    (_position),
 size        (_size),
