@@ -24,7 +24,8 @@ public :
     void PaintOnRelease  (RenderTarget& data, RenderTarget& tmp, 
                           MouseCondition mouse, Color color)
     {};
-    void Disable         () override;
+    void Disable         (RenderTarget&  data,  RenderTarget& tmp, 
+                          MouseCondition mouse, Color         color) override;
 };
 
 #endif //SYM_SPLINE_TOOL

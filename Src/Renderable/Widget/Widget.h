@@ -44,7 +44,9 @@ public :
     virtual bool OnMouseRelease(MouseCondition mouse) override;
     virtual bool OnMouseMove   (MouseCondition mouse) override;
     virtual bool OnClock       (u_int64_t delta)      override
-    {};
+    {
+        return true;
+    };
 
     virtual void Render        (RenderTarget* render_target) override;
     virtual void Move          (Vector delta);

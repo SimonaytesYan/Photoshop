@@ -21,7 +21,8 @@ public :
                                 MouseCondition mouse, Color color) override;
     virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
                                 MouseCondition mouse, Color color) override;
-    virtual void Disable       () override;
+    virtual void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
+                                MouseCondition mouse, Color         color) override;
 
     virtual void CalcAndDrawShape(RenderTarget& target, 
                                   MouseCondition mouse, 

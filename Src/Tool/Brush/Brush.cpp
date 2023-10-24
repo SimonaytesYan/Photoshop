@@ -32,14 +32,20 @@ void Brush::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
     DrawTmpToData(data, tmp, color, thickness, vertexes);
 
     start_pos = Vector(-1, -1);
-    vertexes.Clear();
     drawing   = false;
+    vertexes.Clear();
 }
 
-void Brush::Disable()
+void Brush::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+                    MouseCondition mouse, Color         color)
 {
-    start_pos = Vector(1, -1);
-    drawing   = false;
-    vertexes.Clear();
+    if (drawing)
+    {
+        DrawTmpToData(data, tmp, color, thickness, vertexes);
+
+        start_pos = Vector(1, -1);
+        drawing   = false;
+        vertexes.Clear();
+    }
 }
 

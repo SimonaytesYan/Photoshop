@@ -23,7 +23,8 @@ public :
                         MouseCondition mouse, Color color) override;
     void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
                         MouseCondition mouse, Color color) override;
-    void Disable       () override;
+    void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
+                        MouseCondition mouse, Color         color) override;
     void Interpolation(RenderTarget& data, RenderTarget& tmp, Color color);
 };
 

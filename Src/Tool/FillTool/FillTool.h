@@ -15,7 +15,8 @@ public :
                         MouseCondition mouse, Color color) override;
     void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
                         MouseCondition mouse, Color color) override;
-    void Disable       () override;
+    void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
+                        MouseCondition mouse, Color         color) override;
 };
 
 #endif //SYM_FILL_TOOL

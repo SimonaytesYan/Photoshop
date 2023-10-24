@@ -12,6 +12,8 @@ class Canvas : public Widget
     ToolManager* tm;
     RenderTarget data;
     RenderTarget tmp;
+    
+    void DisableTool(MouseCondition mouse);
 
 public :
     Canvas(Vector position, Vector size, ToolManager* tm = nullptr);

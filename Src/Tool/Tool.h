@@ -22,13 +22,14 @@ public :
     drawing   (false)
     {};
 
-    virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
+    virtual void PaintOnPress  (RenderTarget&  data,  RenderTarget& tmp, 
                                 MouseCondition mouse, Color color) = 0;
-    virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
+    virtual void PaintOnMove   (RenderTarget&  data,  RenderTarget& tmp, 
                                 MouseCondition mouse, Color color) = 0;
-    virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
+    virtual void PaintOnRelease(RenderTarget&  data,  RenderTarget& tmp, 
                                 MouseCondition mouse, Color color) = 0;
-    virtual void Disable       () = 0;
+    virtual void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
+                                MouseCondition mouse, Color color) = 0;
 };
 
 #endif //SYM_TOOL

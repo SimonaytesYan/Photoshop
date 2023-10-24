@@ -98,7 +98,12 @@ void FillTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp,
 {
 }
 
-void FillTool::Disable()
+void FillTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+                       MouseCondition mouse, Color         color)
 {
-    start_pos = Vector(1, -1);
+    if (drawing)
+    {
+        start_pos = Vector(1, -1);
+        drawing   = false;
+    }
 }

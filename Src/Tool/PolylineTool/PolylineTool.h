@@ -20,8 +20,10 @@ public :
     void PaintOnMove     (RenderTarget& data, RenderTarget& tmp, 
                           MouseCondition mouse, Color color) override;
     void PaintOnRelease  (RenderTarget& data, RenderTarget& tmp, 
-                          MouseCondition mouse, Color color) override;
-    void Disable         () override;
+                          MouseCondition mouse, Color color) override
+    {}
+    void Disable         (RenderTarget&  data,  RenderTarget& tmp, 
+                          MouseCondition mouse, Color         color) override;
 };
 
 #endif //SYM_POLYLINE_TOOL

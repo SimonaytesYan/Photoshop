@@ -35,7 +35,15 @@ void ShapeTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
     }
 }
 
-void ShapeTool::Disable()
+void ShapeTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+                        MouseCondition mouse, Color         color)
 {
-    start_pos = Vector(1, -1);
+    if (drawing)
+    {
+        tmp.Clear(Color(0, 0, 0, 0));
+        CalcAndDrawShape(data, mouse, color);
+        
+        start_pos = Vector(-1, -1);
+        drawing   = false;
+    }
 }

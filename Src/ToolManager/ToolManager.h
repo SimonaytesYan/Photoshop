@@ -22,6 +22,7 @@ public :
     void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, MouseCondition mouse);
     void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, MouseCondition mouse);
     void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse);
+    void DisableTool   (RenderTarget& data, RenderTarget& tmp, MouseCondition mouse);
 
     void ChangeTool    (Tool* new_tool);
     void ChangeColor   (Color new_color);

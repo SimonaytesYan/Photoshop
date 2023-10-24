@@ -25,10 +25,14 @@ void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseCon
     }
 }
 
-void ToolManager::ChangeTool(Tool* new_tool)
+void ToolManager::DisableTool(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
 {
     if (tool != nullptr)
-        tool->Disable();
+        tool->Disable(data, tmp, mouse, color);
+}
+
+void ToolManager::ChangeTool(Tool* new_tool)
+{
     tool = new_tool;
 }
 

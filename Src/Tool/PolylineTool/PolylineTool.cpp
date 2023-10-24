@@ -8,21 +8,37 @@ void PolylineTool::CalcAndDrawPolyline(RenderTarget& target, MouseCondition mous
         target.DrawLine(vertexes[i], vertexes[i - 1], color);
 }
 
-void PolylineTool::Disable()
+void PolylineTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+                           MouseCondition mouse, Color         color)
 {
+    tmp.Clear(Color(0, 0, 0, 0));
+    CalcAndDrawPolyline(data, mouse, color);
+        
     vertexes.Clear();
     start_pos = Vector(1, -1);
+    drawing   = false;
 }
 
 void PolylineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
                                 MouseCondition mouse, Color color)
 {
-    if (!drawing)
+    if (mouse.key == RIGHT)
     {
-        tmp.Clear(Color(0, 0, 0, 0));
-        start_pos = mouse.position;
+        if (drawing)
+        {
+            tmp.Clear(Color(0, 0, 0, 0));
+            CalcAndDrawPolyline(data, mouse, color);
+            
+            vertexes.Clear();
+            drawing   = false;
+        }
+    }
+    else
+    {
         vertexes.PushBack(mouse.position);
-        CalcAndDrawPolyline(tmp, mouse, color);
+        tmp.Clear(Color(0, 0, 0, 0));
+        CalcAndDrawPolyline(data, mouse, color);
+        
         drawing = true;
     }
 }
@@ -37,31 +53,5 @@ void PolylineTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp,
         vertexes.PushBack(mouse.position);
         CalcAndDrawPolyline(tmp, mouse, color);
         vertexes.PopBack();
-    }
-}
-
-void PolylineTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                                  MouseCondition mouse, Color color)
-{
-    if (mouse.key == RIGHT)
-    {
-        if (drawing)
-        {
-            tmp.Clear(Color(0, 0, 0, 0));
-            CalcAndDrawPolyline(data, mouse, color);
-            
-            vertexes.Clear();
-            start_pos = Vector(-1, -1);
-            drawing   = false;
-        }
-    }
-    else
-    {
-        if (drawing)
-        {
-            vertexes.PushBack(mouse.position);
-            tmp.Clear(Color(0, 0, 0, 0));
-            CalcAndDrawPolyline(tmp, mouse, color);
-        }
     }
 }
