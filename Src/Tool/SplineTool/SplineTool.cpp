@@ -8,10 +8,9 @@
 void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
                          MouseCondition mouse, Color         color)
 {
-    drawing = false;
     DrawTmpToData(data, tmp, color, thickness, vertexes);
     vertexes.Clear();
-    tmp.Clear(Color(0, 0, 0, 0));
+    drawing   = false;
 }
 
 void SplineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 

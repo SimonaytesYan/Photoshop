@@ -136,7 +136,8 @@ void DrawTmpToData(RenderTarget& data, RenderTarget& tmp, Color color, double th
     Vector p2 = vertexes[index].val;
     if (vertexes.size == 3)
     {
-        CutMullRom3Vert(data,  color, thickness, p0, p1, p2);
+        CutMullRom3Vert(data, color, thickness, p0, p1, p2);
+        CutMullRom3Vert(data, color, thickness, p2, p1, p0);
         return;
     }
 
