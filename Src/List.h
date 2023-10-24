@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "Swap/Swap.h"
-
 const int ResizeCoef = 2;
 
 template <class T>
@@ -122,6 +120,8 @@ void List<T>::Clear()
 {
     size   = 0;
     free_i = -1;
+    data[0].next = 0;
+    data[0].prev = 0;
 
     for (int i = capacity; i >= 1; i--)
     {
@@ -129,9 +129,6 @@ void List<T>::Clear()
         data[i].prev = free_i;
         free_i  = i;
     }
-
-    data[0].next = 0;
-    data[0].prev = 0;
 }
 
 template <class T>
