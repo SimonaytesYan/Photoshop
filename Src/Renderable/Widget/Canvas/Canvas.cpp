@@ -25,6 +25,9 @@ void Canvas::DisableTool(MouseCondition mouse)
 
 bool Canvas::OnMousePress(MouseCondition mouse)
 {
+    if (Widget::OnMousePress(mouse))
+        return true;
+
     if (InsideP(mouse.position) && tm != nullptr)
     {
         drawing = true;
@@ -32,20 +35,21 @@ bool Canvas::OnMousePress(MouseCondition mouse)
         tm->PaintOnPress(data, tmp, mouse);
         return true;
     }
-    if (tm != nullptr && drawing)
-        DisableTool(mouse);
-
+    
     return false;
 }
 
 bool Canvas::OnMouseMove(MouseCondition mouse)
 {
+    if (Widget::OnMouseMove(mouse))
+        return true;
+        
     static int cnt = 0;
-    printf("Want draw %d\n", cnt++);   
     if (!InsideP(mouse.position))
     {
         if (tm != nullptr && drawing)
             DisableTool(mouse);
+        drawing = false;
         return false;
     }
 
@@ -54,8 +58,7 @@ bool Canvas::OnMouseMove(MouseCondition mouse)
         DisableTool(mouse);
         drawing = true;
     }
-    
-    printf("Go to draw %d\n", cnt++);   
+
     mouse.position = mouse.position - position;
     tm->PaintOnMove(data, tmp, mouse);
     return true;

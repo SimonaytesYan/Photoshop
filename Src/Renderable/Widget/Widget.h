@@ -32,7 +32,7 @@ protected:
     Vector        position;
     Vector        size;
     RegionSet     reg_set;
-    Widget *      parent;
+    Widget*       parent;
 
 public : 
     Widget (Vector position = Vector(0, 0), Vector size = Vector(0,0), bool available = true);
@@ -51,7 +51,8 @@ public :
     virtual void Render        (RenderTarget* render_target) override;
     virtual void Move          (Vector delta);
     virtual void AddObject     (Widget* new_widget);
-    
+    void         ToForeground  (Widget* son);
+
     RegionSet&       GetRegionSet()       { return reg_set; }
     const RegionSet& GetRegionSet() const { return reg_set; }
     void             UpdateRegionSet();

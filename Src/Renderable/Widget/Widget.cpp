@@ -3,6 +3,7 @@
 #include "../../Vector/Vector.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
+#include "../../Useful.h"
 
 Widget::Widget (Vector _position, Vector _size, bool _available) :
 Renderable      (),
@@ -115,9 +116,36 @@ bool Widget::OnKeyRelease(Key key)
     return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
 }
 
+void Widget::ToForeground(Widget* son)
+{
+    int index = 0;
+    for (index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
+    {
+        if (son == sub_widgets[index].val)
+            break;
+    }
+
+    if (index == -1)    // Son didn`t found
+        return;
+
+    // Put son to foreground
+    if (sub_widgets.End() != index)
+    {
+        Swap(&sub_widgets[sub_widgets.End()].val, &sub_widgets[index].val);
+
+        UpdateRegionSet();
+    }
+}
+
 bool Widget::OnMousePress(MouseCondition mouse)
 {
-    return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available);
+    if (InsideP(mouse.position))
+    {
+        if (parent != nullptr)
+            parent->ToForeground(this);
+        return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available);
+    }
+    return false;
 }
  
 bool Widget::OnMouseRelease(MouseCondition mouse)
@@ -132,7 +160,7 @@ bool Widget::OnMouseMove(MouseCondition mouse)
 
 void Widget::UpdateRegionSet()
 {
-    while (parent != nullptr)
+    if (parent != nullptr)
         parent->UpdateRegionSet();
     
     UpdateRegionSetFromRoot();
@@ -140,6 +168,7 @@ void Widget::UpdateRegionSet()
 
 void Widget::UpdateRegionSetFromRoot()
 {
+
     reg_set.Clear();
     reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
 
