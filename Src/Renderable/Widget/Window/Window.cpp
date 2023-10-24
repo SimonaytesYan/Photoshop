@@ -31,9 +31,11 @@ moving(false)
     close_texture.LoadFromFile(kCloseImgFile);
     close_texture_press.LoadFromFile(kClosePressedImgFile);
 
-    AddObject(new Button (position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
-                          kBorderColor, ButtonMove, (void*)this));                  //Button to move window
-    AddObject(new Label  (position, font, 40, header));                             //Header
+    Button* header_button = new Button(position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
+                                       kBorderColor, ButtonMove, (void*)this);         //Button to move window
+
+    header_button->AddObject(new Label(position, font, 40, header, kBorderColor));    //Header
+    AddObject(header_button);
 
     Vector close_button_pos = Vector(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());

@@ -24,8 +24,11 @@ void Label::SetText(const char* new_text)
 
 void Label::Render(RenderTarget* render_target)
 {
-    render_target->DrawRect(position, size, background);
-    render_target->DrawText(position, font, text, character_size, reg_set);
+    if (available)
+    {
+        render_target->DrawRect(position, size, reg_set, background);
+        render_target->DrawText(position, font, text, character_size, reg_set);
 
-    Widget::Render(render_target);
+        Widget::Render(render_target);
+    }
 }
