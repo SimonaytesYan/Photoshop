@@ -61,14 +61,13 @@ int main()
 
 	ToolManager tm;
 
-
-	Window canvas_window1(Vector(100, 100), Vector(1250, 800), "Canvas1");
-	Canvas canvas(Vector(100, 150), Vector(1200, 800), &tm);
+	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
+	Canvas canvas(Vector(110, 160), Vector(1180, 780), &tm);
 	canvas_window1.AddObject(&canvas);
 	main_window.AddObject(&canvas_window1);
 
 	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
-	Canvas canvas2(Vector(900, 200), Vector(500, 500), &tm);
+	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm);
 	canvas_window2.AddObject(&canvas2);
 	main_window.AddObject(&canvas_window2);
 

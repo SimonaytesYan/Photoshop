@@ -64,9 +64,6 @@ bool Window::OnMousePress(MouseCondition mouse)
 
 bool Window::OnMouseMove(MouseCondition mouse)
 {
-    if (Widget::OnMouseMove(mouse))
-        return true;
-
     if (moving)
     {
         if (old_mouse_pos == Vector(-1, -1))
@@ -82,7 +79,8 @@ bool Window::OnMouseMove(MouseCondition mouse)
         }
         return true;
     }
-    return false;
+
+    return Widget::OnMouseMove(mouse);
 }
 
 bool Window::OnMouseRelease(MouseCondition mouse)
