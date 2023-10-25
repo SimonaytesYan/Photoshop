@@ -10,6 +10,7 @@
 #include "Renderable/Widget/Label/Label.h"
 #include "Renderable/Widget/Menu/Menu.h"
 #include "Renderable/Widget/Window/Window.h"
+#include "Renderable/Widget/Window/ModalWindow.h"
 #include "RegionSet/RegionSet.h"
 #include "ClipRegion/ClipRegion.h"
 #include "Tool/Brush/Brush.h"
@@ -84,6 +85,10 @@ int main()
 
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
+
+	ModalWindow notification(Vector(100, 100), Vector(500, 300), "Notification", &event_manager);
+
+	main_window.AddObject(&notification);
 
 	while (window.isOpen())
 	{
