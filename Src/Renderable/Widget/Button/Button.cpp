@@ -66,7 +66,6 @@ bool Button::OnMousePress(MouseCondition mouse)
         if (!intercepted)
         {
             pressed = true;
-            fprintf(stderr, "pressed = %d\n", pressed);
             if (on_press == nullptr)
                 return false;
 

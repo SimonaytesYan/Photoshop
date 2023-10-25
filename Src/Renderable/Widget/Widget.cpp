@@ -119,7 +119,6 @@ void Widget::ToForeground(Widget* son)
         if (son == sub_widgets[index].val)
             break;
     }
-    fprintf(stderr, "\nfound index = %d\n", index);
 
     // Check if son didn`t found
     if (index == -1)
