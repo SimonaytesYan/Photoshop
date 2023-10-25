@@ -44,13 +44,8 @@ void Widget::Render(RenderTarget* render_target)
 {
     if (available)
     {
-        int index = sub_widgets.Begin();
-        while (index != -1)
-        {
+        for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
             sub_widgets[index].val->Render(render_target);
-
-            index = sub_widgets.Iterate(index);
-        }
     }
 }
 
@@ -124,16 +119,20 @@ void Widget::ToForeground(Widget* son)
         if (son == sub_widgets[index].val)
             break;
     }
+    fprintf(stderr, "\nfound index = %d\n", index);
 
-    if (index == -1)    // Son didn`t found
+    // Check if son didn`t found
+    if (index == -1)
         return;
 
     // Put son to foreground
     if (sub_widgets.End() != index)
-    {
-        Swap(&sub_widgets[sub_widgets.End()].val, &sub_widgets[index].val);
+    {   
+        sub_widgets.Remove(index);
+        sub_widgets.PushBack(son);
 
         UpdateRegionSet();
+
     }
 }
 
@@ -158,28 +157,43 @@ bool Widget::OnMouseMove(MouseCondition mouse)
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
 
-void Widget::UpdateRegionSet()
+void Widget::UpdateRegionSet(bool debug)
 {
-    if (parent != nullptr)
-        parent->UpdateRegionSet();
-    
-    UpdateRegionSetFromRoot();
+    Widget* root = this;
+    while (root->parent != nullptr)
+        root = root->parent;
+
+    root->UpdateRegionSetFromRoot(debug);
 }
 
-void Widget::UpdateRegionSetFromRoot()
+void Widget::UpdateRegionSetFromRoot(bool debug)
 {
-
+    static int cnt = 0;
     reg_set.Clear();
-    reg_set.AddRegion(ClipRegion(position, size));      //Clear region set
+    reg_set.AddRegion(ClipRegion(position, size));      // Clear region set
+
+    if (debug)
+    {
+        fprintf(stderr, "\nthis = %p\n", this);
+        reg_set.Dump();
+    }
 
     RegionSet tmp_rs;
     tmp_rs.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
 
     if (parent != nullptr)                              
     {
-        reg_set &= parent->reg_set;                 //Intersect with parent
+        reg_set &= parent->reg_set;                 // Intersect with parent
 
-        //Remove upper brothers from this
+        if (debug)
+        {
+            fprintf(stderr, "after parent %p\n", parent);
+            fprintf(stderr, "parent = ");
+            parent->reg_set.Dump();
+            reg_set.Dump();
+        }
+
+        // Remove upper brothers from this
         int index = 0;
         for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
         {
@@ -187,32 +201,51 @@ void Widget::UpdateRegionSetFromRoot()
                 break;
         }
         
-        index = parent->sub_widgets.Iterate(index);     //Skip itself
+        index = parent->sub_widgets.Iterate(index);     // Skip itself
+        
+        // Intersect with brothers
         for (index; index != -1; index = parent->sub_widgets.Iterate(index))
         {
             Widget* brother = parent->sub_widgets[index].val;
             tmp_rs[0] = ClipRegion(brother->position, brother->size);
             reg_set -= tmp_rs;
+
+            if (debug)
+            {
+                fprintf(stderr, "after brother %p\n", brother);
+                reg_set.Dump();
+            }
         }
     }
 
-    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))  //Update children
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))  // Update children
     {
         Widget* sub_w = sub_widgets[index].val;
         
         if (sub_w->available)
+        {
             sub_w->UpdateRegionSetFromRoot();
+        }
     }
 
-    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) //Remove children from this
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) // Remove children from this
     {
         Widget* sub_w = sub_widgets[index].val;
         if (sub_w->available)
         {
             tmp_rs[0] = ClipRegion(sub_w->position, sub_w->size);
             reg_set -= tmp_rs;
+
+            if (debug)
+            {
+                fprintf(stderr, "after son %p\n", sub_w);
+                reg_set.Dump();
+            }
         }
     }
+
+    if (debug)
+        fprintf(stderr, "End region set update\n\n");
 }
 
 bool Widget::InsideP(Vector v)

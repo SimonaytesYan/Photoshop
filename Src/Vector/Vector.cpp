@@ -16,7 +16,7 @@ Vector::~Vector()
 
 void Vector::Dump()
 {
-    printf("(%.2lf, %.2lf)", x, y);
+    fprintf(stderr, "(%.2lf, %.2lf)", x, y);
 }
 
 Vector Vector::operator=(VectorI v)

@@ -71,11 +71,11 @@ inline bool YInsideRegion(ClipRegion a, double y)
 
 void ClipRegion::Dump() const
 {
-    printf("{ ");
+    fprintf(stderr, "{ ");
     GetPosition().Dump();
-    printf(" ");
+    fprintf(stderr, " ");
     (GetSize() + GetPosition()).Dump();
-    printf("}\n");
+    fprintf(stderr, "}\n");
 }
 
 bool RegionIntersectP(ClipRegion a, ClipRegion b)
