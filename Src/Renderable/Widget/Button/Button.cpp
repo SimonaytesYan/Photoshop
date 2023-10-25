@@ -66,10 +66,11 @@ bool Button::OnMousePress(MouseCondition mouse)
         if (!intercepted)
         {
             pressed = true;
+            printf("pressed = %d\n", pressed);
             if (on_press == nullptr)
                 return false;
 
-            on_press(args_press);
+            on_press(args_press);   // call button function 
         }
 
         return true;
@@ -102,6 +103,8 @@ bool Button::OnMouseRelease(MouseCondition mouse)
 bool Button::OnMouseMove(MouseCondition mouse)
 {
     if (!InsideP(mouse.position))
+    {
         pressed = false;
+    }
     return false;
 }

@@ -230,10 +230,10 @@ void AddMenu(Window* window, Canvas* canvas)
 	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
 	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
-	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File"));
-
+	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File", Color(199, 181, 173)));
+	//78, 71, 67
 	Button* clear_button = new Button(Vector(110, 50), Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear"));
+	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear", Color(199, 181, 173)));
 
 	window->AddObject(file_button);
 	window->AddObject(clear_button);

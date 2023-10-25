@@ -146,10 +146,8 @@ int List<T>::Remove(int index)
     int next_ind = data[index].next;
     int prev_ind = data[index].prev;
 
-    int tail = End();
-
-    data[next_ind].prev = prev_ind;
     data[prev_ind].next = next_ind;
+    data[next_ind].prev = prev_ind;
 
     data[index].prev = free_i;
     data[index].next = -1;
