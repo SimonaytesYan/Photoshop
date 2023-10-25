@@ -3,6 +3,7 @@
 
 #include "List.h"
 #include "Resources.h"
+#include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Button/Button.h"
 #include "Renderable/Widget/Canvas/Canvas.h"
@@ -65,17 +66,19 @@ int main()
 	Canvas canvas2(Vector(900, 200), Vector(500, 500), &tm);
 	main_window.AddObject(&canvas2);
 
-	//Adding tools	
+	// Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
 	AddTools(&main_window, &tools, &tm);
 
-	//Adding colors
+	// Adding colors
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
-	AddColors(&main_window, &colors, &tm);
-	
+	AddColors(&main_window, &colors, &tm);	
 	AddMenu(&main_window, &canvas);
+
+	EventManager event_manager;
+	event_manager.AddObject(&main_window);
 
 	while (window.isOpen())
 	{
@@ -95,7 +98,7 @@ int main()
 				{
 					Vector position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					main_window.OnMousePress({position, (MouseKey)event.mouseButton.button});
+					event_manager.OnMousePress({position, (MouseKey)event.mouseButton.button});
 					break;
 				}
 				
@@ -103,7 +106,7 @@ int main()
 				{
 					Vector position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					main_window.OnMouseMove(MouseCondition(position, (MouseKey)1));
+					event_manager.OnMouseMove(MouseCondition(position, (MouseKey)1));
 					break;
 				}
 				
@@ -111,7 +114,7 @@ int main()
 				{
 					Vector position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					main_window.OnMouseRelease({position, (MouseKey)event.mouseButton.button});
+					event_manager.OnMouseRelease({position, (MouseKey)event.mouseButton.button});
 					break;
 				}
 			}
@@ -125,10 +128,6 @@ int main()
 		rend_targ.Display(&window);
 		window.display();
 	}
-}
-
-void TestRegClip(RenderTarget& rend_targ)
-{
 }
 
 void SwitchColor(void* args)
@@ -231,7 +230,7 @@ void AddMenu(Window* window, Canvas* canvas)
 
 	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File", Color(199, 181, 173)));
-	//78, 71, 67
+	
 	Button* clear_button = new Button(Vector(110, 50), Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
 	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear", Color(199, 181, 173)));
 

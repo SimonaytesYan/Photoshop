@@ -8,6 +8,7 @@ enum Events
     MOUSE_MOVE,
     MOUSE_PRESS,
     MOUSE_RELEASE,
+    ON_CLOCK,
     EVENTS_NUMBER
 };
 

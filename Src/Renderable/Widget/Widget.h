@@ -8,20 +8,12 @@
 #include "../../List.h"
 #include "../../Keys.h"
 #include "../../RegionSet/RegionSet.h"
+#include "../../Event.h"
 #include "../../EventProcessable.h"
 
 class Widget;
 using transform_f =  Widget*(*)(Widget *, void *);
 using check_f     =  bool   (*)(Widget *, void *);
-
-enum Events
-{
-    KEY_PRESS,
-    KEY_RELEASE,
-    MOUSE_PRESS,
-    MOUSE_RELEASE,
-    MOUSE_MOVE
-};
 
 class Widget : public Renderable, public EventProcessable
 {
