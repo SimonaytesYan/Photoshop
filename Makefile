@@ -4,10 +4,10 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 
 EXE_FILE = Exe/run
 
-debug: vector_debug widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug canvas_debug brush_debug tool_manager_debug circle_tool_debug shape_tool_debug rect_tool_debug line_tool_debug polyline_tool_debug fill_tool_debug image_debug spline_tool_debug cut_mull_rom_debug event_manager_debug
-	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/Image.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o -o $(EXE_FILE)
-release: vector_release widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release brush_release tool_manager_release circle_tool_release shape_tool_release rect_tool_release line_tool_release polyline_tool_release fill_tool_release image_release spline_tool_release cut_mull_rom_release event_manager_release
-	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/Image.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o -o $(EXE_FILE)
+debug: vector_debug widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug canvas_debug brush_debug tool_manager_debug circle_tool_debug shape_tool_debug rect_tool_debug line_tool_debug polyline_tool_debug fill_tool_debug image_debug spline_tool_debug cut_mull_rom_debug event_manager_debug filter_manager_debug
+	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/Image.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o -o $(EXE_FILE)
+release: vector_release widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release brush_release tool_manager_release circle_tool_release shape_tool_release rect_tool_release line_tool_release polyline_tool_release fill_tool_release image_release spline_tool_release cut_mull_rom_release event_manager_release filter_manager_release
+	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/Image.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o -o $(EXE_FILE)
 
 widget_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Widget.cpp -o Obj/Widget.o
@@ -129,6 +129,10 @@ event_manager_debug:
 event_manager_release:
 	g++ -c $(RELEASE_FLAGS) Src/EventManager/EventManager.cpp -o Obj/EventManager.o
 
+filter_manager_debug:
+	g++ -c $(DEBUG_FLAGS) Src/FilterManager/FilterManager.cpp -o Obj/FilterManager.o
+filter_manager_release:
+	g++ -c $(RELEASE_FLAGS) Src/FilterManager/FilterManager.cpp -o Obj/FilterManager.o
 
 run:
 	./$(EXE_FILE)

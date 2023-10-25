@@ -3,9 +3,11 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-Canvas::Canvas(Vector _position, Vector _size, ToolManager* _tm) :
+Canvas::Canvas(Vector _position, Vector _size, 
+               ToolManager* _tm, FilterManager* _fm) :
 Widget(_position, _size),
-tm (_tm),
+tm   (_tm),
+fm   (_fm),
 data (RenderTarget(_size)),
 tmp  (RenderTarget(_size))
 {
@@ -28,11 +30,15 @@ bool Canvas::OnMousePress(MouseCondition mouse)
     if (Widget::OnMousePress(mouse))
         return true;
 
-    if (InsideP(mouse.position) && tm != nullptr)
+    if (InsideP(mouse.position))
     {
         drawing = true;
         mouse.position = mouse.position - position;
-        tm->PaintOnPress(data, tmp, mouse);
+        
+        if (fm != nullptr && fm->GetActive())
+            fm->ApplyLastFilter();
+        else if (tm != nullptr)
+            tm->PaintOnPress(data, tmp, mouse);
         return true;
     }
     

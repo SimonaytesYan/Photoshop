@@ -3,20 +3,23 @@
 
 #include "../Widget.h"
 #include "../../../ToolManager/ToolManager.h" 
+#include "../../../FilterManager/FilterManager.h"
 
 const Color kCanvasBackgroundColor = Color(50, 50, 50);
 
 class Canvas : public Widget
 {
-    bool         drawing;
-    ToolManager* tm;
-    RenderTarget data;
-    RenderTarget tmp;
+    bool           drawing;
+    ToolManager*   tm;
+    FilterManager* fm;
+    RenderTarget   data;
+    RenderTarget   tmp;
     
     void DisableTool(MouseCondition mouse);
 
 public :
-    Canvas(Vector position, Vector size, ToolManager* tm = nullptr);
+    Canvas(Vector position, Vector size, 
+           ToolManager* tm = nullptr, FilterManager* fm = nullptr);
 
     ~Canvas()
     {};
