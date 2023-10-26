@@ -18,8 +18,11 @@ public:
 
     void      Create      (int width, int height);
     bool      LoadFromFile(const char* filename);
-    sf::Image GetImage  ();
-    Vector    GetSize();    
+    sf::Image GetImage    ();
+    Vector    GetSize     ();
+
+    // Calloc buffer to pixels 
+    // You should free it after using
     u_int8_t* GetPixelArray(VectorI& size);
 };
 

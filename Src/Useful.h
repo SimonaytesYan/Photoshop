@@ -1,6 +1,8 @@
 #ifndef SYM_USEFUL
 #define SYM_USEFUL
 
+#include "Color.h"
+
 template <class T1, class T2>
 struct Pair 
 {
@@ -24,6 +26,17 @@ static void Swap(T* a, T* b)
     T c = *a;
     *a = *b;
     *b = c;
+}
+
+static Color* GetC(const u_int8_t* pixels, VectorI size, VectorI index_v)
+{
+    int index = (index_v.y * size.x + index_v.x) * sizeof(Color);
+    return (Color*)(pixels + index);
+}
+
+static double BorderPlus(double a, double b, double border)
+{
+    return border <= (a + b) ? border : (a + b);
 }
 
 #endif //SYM_USEFUL

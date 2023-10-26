@@ -19,11 +19,7 @@ public:
     bool            LoadFromFile(const char* filename);
     sf::Texture*    GetTexture  ();
     bool            LoadFromImage(Image img);
-    Vector          GetSize();
-
-    //Calloc buffer to pixels 
-    //You should free it
-    u_int8_t* GetPixelArray(VectorI& size);     
+    Vector          GetSize(); 
 };
 
 #endif //SYM_TEXTURE

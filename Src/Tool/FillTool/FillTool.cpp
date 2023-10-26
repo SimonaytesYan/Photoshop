@@ -3,18 +3,13 @@
 #include "../../RenderTarget/RenderTarget.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
+#include "../../Useful.h"
 
 const size_t  kTransNumb               = 4;
 const VectorI kTransitions[kTransNumb] = {VectorI(1,  0), 
                                           VectorI(0,  1), 
                                           VectorI(-1, 0), 
                                           VectorI(0,  -1)};
-
-Color* GetC(const u_int8_t* pixels, VectorI size, VectorI index_v)
-{
-    int index = (index_v.y * size.x + index_v.x) * sizeof(Color);
-    return (Color*)(pixels + index);
-}
 
 bool GoToPixelP(VectorI cur, VectorI next, 
                 VectorI size, const u_int8_t* pixels, bool** visited)
