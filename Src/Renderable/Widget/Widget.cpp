@@ -167,7 +167,6 @@ void Widget::UpdateRegionSet(bool debug)
 
 void Widget::UpdateRegionSetFromRoot(bool debug)
 {
-    static int cnt = 0;
     reg_set.Clear();
     reg_set.AddRegion(ClipRegion(position, size));      // Clear region set
 

@@ -20,6 +20,8 @@
 #include "Tool/PolylineTool/PolylineTool.h"
 #include "Tool/SplineTool/SplineTool.h"
 #include "Tool/FillTool/FillTool.h"
+#include "Renderable/Widget/Menu/HorizontalMenu/HorizontalMenu.h"
+#include "Renderable/Widget/Menu/VerticalMenu/VerticalMenu.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 
 const char   kWindowHeader[] = "Photoshop";
@@ -244,12 +246,17 @@ void AddMenu(Window* window, Canvas* canvas)
 
 	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File", Color(199, 181, 173)));
-	
-	Button* clear_button = new Button(Vector(110, 50), Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear", Color(199, 181, 173)));
 
-	window->AddObject(file_button);
-	window->AddObject(clear_button);
+	HorizontalMenu* main_menu = new HorizontalMenu(file_button, true);
+	
+	Button* clear_button = new Button(Vector(0, 0), Vector(0, 0), texture, press_texture, ClearCanvas, canvas);
+	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear", Color(199, 181, 173)));
+	
+	main_menu->AddObject(clear_button);
+
+	main_menu->AddObject(file_button);
+	main_menu->AddObject(clear_button);
+	window->AddObject(main_menu);
 }
 
 void Say(void* args)

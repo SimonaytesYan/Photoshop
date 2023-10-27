@@ -35,6 +35,12 @@ public :
            void*  _args_release        = nullptr);
     ~Button();
 
+    void ChangePressFunction(void (*new_on_press)(void*), void* new_args_press)
+    {
+        on_press   = new_on_press;
+        args_press = new_args_press;
+    }
+       
     virtual void Render        (RenderTarget* render_target) override;
             bool OnMousePress  (MouseCondition mouse)        override;
             bool OnMouseRelease(MouseCondition mouse)        override;
