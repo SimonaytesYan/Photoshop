@@ -20,6 +20,7 @@
 #include "Tool/PolylineTool/PolylineTool.h"
 #include "Tool/SplineTool/SplineTool.h"
 #include "Tool/FillTool/FillTool.h"
+#include "Filter/BrightnessFilter/BrightnessFilter.h"
 
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
@@ -60,8 +61,10 @@ int main()
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
 
-	ToolManager   tm;
 	FilterManager fm;
+	fm.SetFilter(new BrightnessFilter());
+
+	ToolManager   tm;
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
 	Canvas canvas(Vector(110, 160), Vector(1180, 780), &tm, &fm);

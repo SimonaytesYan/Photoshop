@@ -8,7 +8,7 @@ class Filter
 {
 
 public:
-    virtual const DynArray<const char*>& GetParamNames()   = 0;
+    virtual DynArray<const char*> GetParamNames()   = 0;
     
     virtual void Apply    (RenderTarget& rt)               = 0;
     virtual void SetParams(const DynArray<double>& params) = 0;
