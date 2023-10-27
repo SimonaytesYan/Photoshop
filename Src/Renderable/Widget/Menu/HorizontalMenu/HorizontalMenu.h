@@ -8,8 +8,8 @@ class HorizontalMenu : public Menu
 
 public:
 
-    HorizontalMenu(Button* button, bool _static_menu) : 
-    Menu(button, _static_menu)
+    HorizontalMenu(Button* button, bool static_menu) : 
+    Menu(button, static_menu)
     {}
 
     void AddObject(Widget* new_widget) override;

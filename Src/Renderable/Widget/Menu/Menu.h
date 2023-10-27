@@ -29,7 +29,7 @@ protected:
 
 public:
     
-    Menu(Button* button, bool _static_menu);
+    Menu(Button* button, bool static_menu);
 
     void ChangeExpandedStatus()
     {
