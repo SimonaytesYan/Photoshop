@@ -22,6 +22,7 @@
 #include "Tool/FillTool/FillTool.h"
 #include "Renderable/Widget/Menu/HorizontalMenu/HorizontalMenu.h"
 #include "Renderable/Widget/Menu/VerticalMenu/VerticalMenu.h"
+#include "Filter/Filter.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 
 const char   kWindowHeader[] = "Photoshop";
@@ -41,14 +42,21 @@ struct ColorStruct
 	Color		 color;
 };
 
+struct FilterStruct
+{
+	FilterManager* fm;
+	Filter*        filter;
+};
+
 void TestRegClip(RenderTarget& rend_targ);
-void AddMenu(Window* window, Canvas* canvas);
+void AddMenu(Window* window, Canvas* canvas, FilterManager* fm);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 void Say(void* args);
 void SwitchTool(void* args);
 void SwitchColor(void* args);
+void SelectFilter(void* args);
 void ClearCanvas(void* args);
 
 int main()
@@ -64,8 +72,6 @@ int main()
 					   Vector(WindowWidth, WindowHeight), "Window1");
 
 	FilterManager fm;
-	fm.SetFilter(new BrightnessFilter());
-
 	ToolManager   tm;
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
@@ -87,7 +93,7 @@ int main()
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);	
-	AddMenu(&main_window, &canvas);
+	AddMenu(&main_window, &canvas, &fm);
 
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
@@ -236,7 +242,7 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	main_window->AddObject(colors);
 }
 
-void AddMenu(Window* window, Canvas* canvas)
+void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 {
 	Font font;
 	font.LoadFont(kFontFile);
@@ -244,17 +250,41 @@ void AddMenu(Window* window, Canvas* canvas)
 	texture.LoadFromFile(kBackgroundImgFile);
 	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
-	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), texture, press_texture, Say, nullptr);
-	file_button->AddObject(new Label(Vector(25, 60), font, 20, "File", Color(199, 181, 173)));
+	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), 
+									 texture, press_texture, 
+									 Say, nullptr);
+	file_button->AddObject(new Label(Vector(25, 60), font, 20, 
+									 "File", Color(199, 181, 173)));
 
 	HorizontalMenu* main_menu = new HorizontalMenu(file_button, true);
 	
-	Button* clear_button = new Button(Vector(0, 0),  Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(25, 10), font, 20, "Clear", Color(199, 181, 173)));
+	Button* clear_button = new Button(Vector(0, 0),  Vector(100, 50), 
+									  texture, press_texture, 
+									  ClearCanvas, canvas);
+	clear_button->AddObject(new Label(Vector(25, 10), font, 20, 
+									  "Clear", Color(199, 181, 173)));
 	
 	main_menu->AddObject(clear_button);
+	
+	FilterStruct* fs = new FilterStruct();
+	fs->fm     = fm;
+	fs->filter = new BrightnessFilter();
+
+	Button* filter_button = new Button(Vector(0, 0),  Vector(100, 50), 
+									  texture, press_texture, 
+									  SelectFilter, fs);
+	filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+									   "Filter", Color(199, 181, 173)));
+
+	main_menu->AddObject(filter_button);
 
 	window->AddObject(main_menu);
+}
+
+void SelectFilter(void* _args)
+{
+	FilterStruct* args = (FilterStruct*)_args;
+	args->fm->SetFilter(args->filter);
 }
 
 void Say(void* args)
