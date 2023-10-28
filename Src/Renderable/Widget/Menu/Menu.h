@@ -33,11 +33,32 @@ public:
 
     void ChangeExpandedStatus()
     {
+        fprintf(stderr, "ChangeExpandedStatus\n");
         expanded = !expanded;
+
+        if (!static_menu)
+        {
+            if (expanded)
+            {
+                size = expanded_size;
+                for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+                    sub_widgets[i].val->SetAvailable(true);
+            }
+            else
+            {
+                size = collapsed_size;
+                for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+                    sub_widgets[i].val->SetAvailable(false);
+                
+                sub_widgets[sub_widgets.Begin()].val->SetAvailable(true);
+            }
+
+            UpdateRegionSet();
+        }
     }
 
-    virtual void AddObject   (Widget* new_widget)          override;
-            void Render      (RenderTarget* render_target) override;
+    virtual void AddObject(Widget* new_widget) override;
+            void Render(RenderTarget* rt)      override; 
 };
 
 #endif //SYM_BUTTON_MANAGER

@@ -167,6 +167,9 @@ void Widget::UpdateRegionSet(bool debug)
 
 void Widget::UpdateRegionSetFromRoot(bool debug)
 {
+    if (!available)
+        return;
+        
     reg_set.Clear();
     reg_set.AddRegion(ClipRegion(position, size));      // Clear region set
 
@@ -188,10 +191,13 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
             fprintf(stderr, "after parent %p\n", parent);
             fprintf(stderr, "parent = ");
             parent->reg_set.Dump();
+            fprintf(stderr, "me = \n");
             reg_set.Dump();
         }
 
         // Remove upper brothers from this
+
+        // Skip lower brothers 
         int index = 0;
         for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
         {
@@ -222,7 +228,7 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         
         if (sub_w->available)
         {
-            sub_w->UpdateRegionSetFromRoot();
+            sub_w->UpdateRegionSetFromRoot(debug);
         }
     }
 

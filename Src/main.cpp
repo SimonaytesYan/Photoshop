@@ -256,29 +256,35 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 	file_button->AddObject(new Label(Vector(25, 60), font, 20, 
 									 "File", Color(199, 181, 173)));
 
-	HorizontalMenu* main_menu = new HorizontalMenu(file_button, true);
-	
-	Button* clear_button = new Button(Vector(0, 0),  Vector(100, 50), 
+	Button* clear_button = new Button(Vector(110, 50),  Vector(100, 50), 
 									  texture, press_texture, 
 									  ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(25, 10), font, 20, 
+	clear_button->AddObject(new Label(Vector(135, 60), font, 20, 
 									  "Clear", Color(199, 181, 173)));
 	
-	main_menu->AddObject(clear_button);
+	window->AddObject(file_button);
+	window->AddObject(clear_button);
 	
+	Button* filter_button = new Button(Vector(210, 50),  Vector(100, 50), 
+									  texture, press_texture, 
+									  nullptr, nullptr);
+	filter_button->AddObject(new Label(Vector(235, 60), font, 20, 
+									  "Filter", Color(199, 181, 173)));
+
+	VerticalMenu* filters = new VerticalMenu(filter_button, false);
+
 	FilterStruct* fs = new FilterStruct();
 	fs->fm     = fm;
 	fs->filter = new BrightnessFilter();
-
-	Button* filter_button = new Button(Vector(0, 0),  Vector(100, 50), 
+	Button* select_filter_button = new Button(Vector(0, 0),  Vector(100, 50), 
 									  texture, press_texture, 
 									  SelectFilter, fs);
-	filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
-									   "Filter", Color(199, 181, 173)));
+	select_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+									   "Brightness", Color(199, 181, 173)));
 
-	main_menu->AddObject(filter_button);
+	filters->AddObject(select_filter_button);
 
-	window->AddObject(main_menu);
+	window->AddObject(filters);
 }
 
 void SelectFilter(void* _args)

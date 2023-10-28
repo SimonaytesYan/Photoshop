@@ -54,6 +54,8 @@ public :
     const Vector& GetSize() const { return size; }
     Vector        GetPosition();
     bool          InsideP(Vector v);
+    void          SetAvailable(bool new_available) { available = new_available; }
+    bool          GetAvailable() { return available; }
 };
 
 #endif  //SYM_SUB_WINDOW
