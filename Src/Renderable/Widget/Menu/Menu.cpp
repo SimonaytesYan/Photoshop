@@ -5,6 +5,7 @@ Menu::Menu(Button* button, bool _static_menu) :
            Widget(button->GetPosition(), button->GetSize()),
 expanded_size (button->GetSize()),
 collapsed_size(button->GetSize()),
+main_button   (button),
 static_menu   (_static_menu)
 {
     if (!_static_menu)
@@ -40,4 +41,14 @@ void Menu::AddObject(Widget* new_widget)
 void Menu::Render(RenderTarget* rt)
 {
     Widget::Render(rt);
+}
+
+bool Menu::OnMouseMove(MouseCondition mouse)
+{
+    if (!InsideP(mouse.position))
+        if (expanded)
+            ChangeExpandedStatus();
+            
+
+    return Widget::OnMouseRelease(mouse);
 }

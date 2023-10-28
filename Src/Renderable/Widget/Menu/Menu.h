@@ -22,10 +22,11 @@ class Menu : public Widget
 {
 
 protected:
-    bool   expanded;
-    bool   static_menu;
-    Vector expanded_size;
-    Vector collapsed_size;
+    Widget* main_button;
+    bool    expanded;
+    bool    static_menu;
+    Vector  expanded_size;
+    Vector  collapsed_size;
 
 public:
     
@@ -41,24 +42,27 @@ public:
             if (expanded)
             {
                 size = expanded_size;
+                UpdateRegionSet();
                 for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                    sub_widgets[i].val->SetAvailable(true);
+                    sub_widgets[i].val->SetAvailable(true);                
             }
             else
             {
                 size = collapsed_size;
+                UpdateRegionSet();
                 for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
                     sub_widgets[i].val->SetAvailable(false);
                 
-                sub_widgets[sub_widgets.Begin()].val->SetAvailable(true);
+                main_button->SetAvailable(true);
             }
 
             UpdateRegionSet();
         }
     }
 
-    virtual void AddObject(Widget* new_widget) override;
-            void Render(RenderTarget* rt)      override; 
+    virtual void AddObject(Widget* new_widget)     override;
+            void Render(RenderTarget* rt)          override; 
+            bool OnMouseMove(MouseCondition mouse) override;
 };
 
 #endif //SYM_BUTTON_MANAGER
