@@ -3,21 +3,17 @@
 
 Menu::Menu(Button* button, bool _static_menu) :
            Widget(button->GetPosition(), button->GetSize()),
-           expanded_objects (List<Widget*>(0)),
-           collapsed_objects(List<Widget*>(0))
+expanded_size (button->GetSize()),
+collapsed_size(button->GetSize()),
+static_menu   (_static_menu)
 {
-    static_menu = _static_menu;
     if (!_static_menu)
     {
         button->ChangePressFunction(CallChangeExpandedStatus, this);
-
-        collapsed_objects.PushBack(button);
-        expanded_objects.PushBack(button);
-        
         expanded = false;
     }
-    else if (button != nullptr)
-        AddObject(button);
+    else
+        Widget::AddObject(button);
 };
 
 void CallChangeExpandedStatus(void* _args)
@@ -28,26 +24,32 @@ void CallChangeExpandedStatus(void* _args)
 
 void Menu::AddObject(Widget* new_widget)
 {
-    if (!static_menu)
-        expanded_objects.PushBack(new_widget);
+    if (static_menu)
+    {
+        size = new_widget->GetPosition() + new_widget->GetSize() - position;
+    }
     else
-        Widget::AddObject(new_widget);
+    {
+        expanded_size = new_widget->GetPosition() + new_widget->GetSize();
+    }
+
+    Widget::AddObject(new_widget);
 }
 
 void Menu::Render(RenderTarget* render_target)
 {
+    static bool first_enter_after_change_view = true;
     if (!static_menu)
     {
-        static bool first_enter_after_change_view = true;
 
         if (first_enter_after_change_view)
         {
             first_enter_after_change_view = false;
 
             if (expanded)
-                sub_widgets = expanded_objects;
+                size = expanded_size;
             else
-                sub_widgets = collapsed_objects;
+                size = collapsed_size;
             
             UpdateRegionSet();
         }

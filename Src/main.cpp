@@ -249,13 +249,11 @@ void AddMenu(Window* window, Canvas* canvas)
 
 	HorizontalMenu* main_menu = new HorizontalMenu(file_button, true);
 	
-	Button* clear_button = new Button(Vector(0, 0), Vector(0, 0), texture, press_texture, ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(135, 60), font, 20, "Clear", Color(199, 181, 173)));
+	Button* clear_button = new Button(Vector(0, 0),  Vector(100, 50), texture, press_texture, ClearCanvas, canvas);
+	clear_button->AddObject(new Label(Vector(25, 10), font, 20, "Clear", Color(199, 181, 173)));
 	
 	main_menu->AddObject(clear_button);
 
-	main_menu->AddObject(file_button);
-	main_menu->AddObject(clear_button);
 	window->AddObject(main_menu);
 }
 

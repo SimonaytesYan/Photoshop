@@ -22,10 +22,10 @@ class Menu : public Widget
 {
 
 protected:
-    bool          expanded;
-    bool          static_menu;
-    List<Widget*> expanded_objects;
-    List<Widget*> collapsed_objects; 
+    bool   expanded;
+    bool   static_menu;
+    Vector expanded_size;
+    Vector collapsed_size;
 
 public:
     
