@@ -26,6 +26,7 @@
 #include "Renderable/Widget/Menu/VerticalMenu/VerticalMenu.h"
 #include "Filter/Filter.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
+#include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 
 const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";
@@ -103,10 +104,6 @@ int main()
 
 	Font font;
 	font.LoadFont(kFontFile);
-
-	EditBox edit_box(Vector(700, 700), Vector(400, 50), font, 0.57, 1.5, 30);
-
-	main_window.AddObject(&edit_box);
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -289,7 +286,7 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 	window->AddObject(file_button);
 	window->AddObject(clear_button);
 	
-	Button* filter_button = new Button(Vector(210, 50),  Vector(100, 50), 
+	Button* filter_button = new Button(Vector(210, 50),  Vector(200, 50), 
 									  texture, press_texture, 
 									  nullptr, nullptr);
 	filter_button->AddObject(new Label(Vector(235, 60), font, 20, 
@@ -297,16 +294,25 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
-	FilterStruct* fs = new FilterStruct();
-	fs->fm     = fm;
-	fs->filter = new BrightnessFilter();
-	Button* select_filter_button = new Button(Vector(0, 0),  Vector(100, 50), 
+	FilterStruct* brightness_fs = new FilterStruct();
+	brightness_fs->fm     = fm;
+	brightness_fs->filter = new BrightnessFilter();
+	Button* brightness_filter_button = new Button(Vector(0, 0), Vector(200, 50), 
 									  texture, press_texture, 
-									  SelectFilter, fs);
-	select_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
-									   "Brightness", Color(199, 181, 173)));
-
-	filters->AddObject(select_filter_button);
+									  SelectFilter, brightness_fs);
+	brightness_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+									   			  "Bright", Color(199, 181, 173)));
+	filters->AddObject(brightness_filter_button);
+	
+	FilterStruct* black_white_fs = new FilterStruct();
+	black_white_fs->fm     = fm;
+	black_white_fs->filter = new BlackAndWhiteFilter();
+	Button* black_white_filter_button = new Button(Vector(0, 0),  Vector(200, 50), 
+									  			   texture, press_texture, 
+									  			   SelectFilter, black_white_fs);
+	black_white_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+									   			   "Black-White", Color(199, 181, 173)));
+	filters->AddObject(black_white_filter_button);
 
 	window->AddObject(filters);
 }
