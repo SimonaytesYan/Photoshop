@@ -157,7 +157,8 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
 }
 
 void RenderTarget::DrawText(Vector position, Font font, const char* text, 
-                            int character_size, const RegionSet& rend_set)
+                            int character_size, Color color, 
+                            const RegionSet& rend_set)
 {
     #ifdef DEBUG_REGIONS
         RegionSet result;
@@ -169,6 +170,7 @@ void RenderTarget::DrawText(Vector position, Font font, const char* text,
     #else
         sf::Text label;
 
+        label.setFillColor(ConvertColor(color));
         label.setFont(*font.GetFont());
         label.setCharacterSize(character_size);
         label.setPosition(position.GetX(), position.GetY());

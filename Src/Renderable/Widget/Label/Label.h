@@ -9,11 +9,13 @@ class Label : public Widget
     Font        font;
     int         character_size;
     const char* text;
+    Color       text_color;
     Color       background;
 
 public:
     Label(Vector _position, Font font, int character_size, 
-          const char* text = "Label", Color background = Color(0, 0, 0));
+          const char* text = "Label", Color background = Color(0, 0, 0), 
+          Color text_color = Color(255, 255, 255));
     ~Label();
 
     void SetText(const char* new_text);

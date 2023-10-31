@@ -24,7 +24,8 @@ public :
                        Color border_color = Color(0, 0, 0));
     void DrawSprite   (Vector position, Texture texture, const RegionSet& rend_set);
     void DrawText     (Vector position, Font font, const char* text, 
-                       int character_size, const RegionSet& rend_set);
+                       int character_size, Color color,
+                       const RegionSet& rend_set);
     void DrawRegionSet(const RegionSet& reg_set, Color color, size_t color_type = 0);
 
 
@@ -37,7 +38,8 @@ public :
                        int border_size = 0,
                        Color border_color = Color(0, 0, 0));
     void DrawSprite   (Vector position, Texture texture);
-    void DrawText     (Vector position, Font font, const char* text, int character_size);
+    void DrawText     (Vector position, Font font, const char* text, 
+                       int character_size, Color color);
 
     Texture GetTexture();
     void    Display(sf::RenderWindow* window);
