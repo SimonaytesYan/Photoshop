@@ -3,6 +3,12 @@
 
 #include "../Widget.h"
 
+enum CursorCond
+{
+    EDIT_BOX_UNUSED = -2,
+    EDIT_BOX_UNABLE = -1,
+};
+
 class EditBox : public Widget
 {
     Font  font;
@@ -21,7 +27,7 @@ public:
     letter_width   (_letter_width),
     letter_height  (_letter_height),
     chapter_size   (_chapter_size),
-    cursor_pos     (-1),
+    cursor_pos     (EDIT_BOX_UNUSED),
     cursor_visible (0),
     text           (DynArray<char>(0))
     {

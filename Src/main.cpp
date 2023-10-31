@@ -99,14 +99,11 @@ int main()
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
 
-	ModalWindow notification(Vector(100, 100), Vector(500, 300), "Notification", &event_manager);
-
 	Font font;
 	font.LoadFont(kFontFile);
 
 	EditBox edit_box(Vector(700, 700), Vector(400, 50), font, 0.57, 1.5, 30);
 
-	main_window.AddObject(&notification);
 	main_window.AddObject(&edit_box);
 
 	while (window.isOpen())

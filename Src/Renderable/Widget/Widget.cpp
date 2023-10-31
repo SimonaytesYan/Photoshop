@@ -131,7 +131,6 @@ void Widget::ToForeground(Widget* son)
         sub_widgets.PushBack(son);
 
         UpdateRegionSet();
-
     }
 }
 

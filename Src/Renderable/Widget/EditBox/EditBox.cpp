@@ -8,9 +8,13 @@ Vector kIndent = Vector(10, 0);
 
 bool EditBox::OnMousePress(MouseCondition mouse)
 {
+    bool widget_return = Widget::OnMousePress(mouse);
+    if (widget_return)
+        return widget_return;
+    
     if (InsideP(mouse.position))
     {
-        if (cursor_pos == -1)
+        if (cursor_pos == EDIT_BOX_UNUSED)
         {
             text.Clear();
             cursor_pos = 0;
@@ -25,24 +29,22 @@ bool EditBox::OnMousePress(MouseCondition mouse)
             if (i       * letter_width * chapter_size <= mouse_x &&
                 (i + 1) * letter_width * chapter_size >  mouse_x)
             {
-                printf("cursor_pos = %d\n", cursor_pos);
                 cursor_pos = i;
                 return true;
             }
         }
 
-        printf("cursor_pos = %d\n", cursor_pos);
         cursor_pos = text_length;
         return true;
     }
     
-    cursor_pos = -1;
+    cursor_pos = EDIT_BOX_UNABLE;
     return false;
 }
 
 bool EditBox::OnKeyPress(Key key)
 {
-    if (cursor_pos != -1)
+    if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED)
     {
         if (key == Backspace || key == Left || key == Right) // keys, control 
         {
