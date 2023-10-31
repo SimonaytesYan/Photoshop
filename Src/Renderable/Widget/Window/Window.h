@@ -9,7 +9,7 @@ class Window : public Widget
     bool   moving;
 
 public:
-    Window(Vector position, Vector size, char* header);
+    Window(Vector position, Vector size, const char* header);
     ~Window();
 
     void Render(RenderTarget* render_target)  override;

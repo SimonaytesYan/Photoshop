@@ -20,7 +20,7 @@ void ButtonMove(void* args)
     ((Window*)(args))->moving = true;
 }
 
-Window::Window(Vector _position, Vector _size, char* header) :
+Window::Window(Vector _position, Vector _size, const char* header) :
 Widget(_position, _size),
 old_mouse_pos (Vector(-1, -1)),
 moving(false)

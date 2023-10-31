@@ -6,11 +6,11 @@
 
 class Label : public Widget
 {
-    Font        font;
-    int         character_size;
-    const char* text;
-    Color       text_color;
-    Color       background;
+    Font  font;
+    int   character_size;
+    char* text;
+    Color text_color;
+    Color background;
 
 public:
     Label(Vector _position, Font font, int character_size, 
