@@ -7,6 +7,7 @@
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Button/Button.h"
 #include "Renderable/Widget/Canvas/Canvas.h"
+#include "Renderable/Widget/EditBox/EditBox.h"
 #include "Renderable/Widget/Label/Label.h"
 #include "Renderable/Widget/Menu/Menu.h"
 #include "Renderable/Widget/Window/Window.h"
@@ -100,7 +101,13 @@ int main()
 
 	ModalWindow notification(Vector(100, 100), Vector(500, 300), "Notification", &event_manager);
 
+	Font font;
+	font.LoadFont(kFontFile);
+
+	EditBox edit_box(Vector(700, 700), Vector(400, 50), font, 0.57, 1.5, 30);
+
 	main_window.AddObject(&notification);
+	main_window.AddObject(&edit_box);
 
 	while (window.isOpen())
 	{
@@ -137,6 +144,18 @@ int main()
 					Vector position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
 					event_manager.OnMouseRelease({position, (MouseKey)event.mouseButton.button});
+					break;
+				}
+
+				case sf::Event::KeyPressed:
+				{
+					event_manager.OnKeyPress((Key)event.key.code);
+					break;
+				}
+
+				case sf::Event::KeyReleased:
+				{
+					event_manager.OnKeyRelease((Key)event.key.code);
 					break;
 				}
 			}

@@ -77,6 +77,34 @@ public :
         length++;
     };
 
+    void Insert(T elem, int pos)
+    {
+        if (pos < 0 || pos > length)
+            return;
+        if (pos == length)
+        {
+            PushBack(elem);
+            return;
+        }
+
+        T last_one = array[length - 1];
+        PushBack(last_one);
+        
+        for (int i = length - 1; i > pos; i--)
+            array[i] = array[i - 1];
+        array[pos] = elem;
+    };
+
+    void Remove(int pos)
+    {
+        if (pos < 0 || pos >= length)
+            return;
+        
+        for (int i = pos; i < length - 1; i++)
+            array[i] = array[i + 1];
+        PopBack();
+    };
+
     void PopBack()
     {
         if (length > 0)
