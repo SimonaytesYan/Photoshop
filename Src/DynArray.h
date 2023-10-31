@@ -54,6 +54,7 @@ public :
 
     int GetLength()   const { return length;   };
     int GetCapacity() const { return capacity; };
+    T*  GetArray()    const { return array; };
 
     T& operator[](int index)
     { return array[index]; };
