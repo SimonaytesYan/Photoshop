@@ -242,12 +242,15 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 
 void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 {
-	const int colors_num   = 5;
+	const int colors_num   = 8;
 	Color     all_colors[] = {Color(255, 255, 255),
 						 	  Color(0,     0,   0),
 						 	  Color(255,   0,   0),
 						 	  Color(0,   255,   0),
-						 	  Color(0,     0, 255),};
+						 	  Color(0,     0, 255),
+						 	  Color(255, 255,   0),
+						 	  Color(255,   0, 255),
+						 	  Color(0,   255, 255),};
 
 	ColorStruct* cs = new ColorStruct[colors_num];
 	for (int i = 0; i < colors_num; i++)
