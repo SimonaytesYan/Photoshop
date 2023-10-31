@@ -88,6 +88,12 @@ bool EditBox::OnKeyPress(Key key)
     return false;
 }
 
+bool EditBox::OnClock(size_t delta)
+{
+    cursor_visible = !cursor_visible;
+    return false;
+}
+
 void EditBox::Render(RenderTarget* rt)
 {
     if (available)
@@ -103,10 +109,8 @@ void EditBox::Render(RenderTarget* rt)
                      output_text, chapter_size, Color(0, 0, 0), reg_set);
 
         // Cursor
-        if (cursor_pos != -1 && cursor_visible < 50)
+        if (cursor_pos != -1 && cursor_visible)
             rt->DrawRect(position + Vector(letter_width * chapter_size * cursor_pos, 0) + kIndent, 
                          Vector(4, chapter_size * letter_height), reg_set, Color(0, 0, 0));
-
-        cursor_visible = (cursor_visible + 1) % 100;
     }
 }

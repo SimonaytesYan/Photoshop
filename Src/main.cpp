@@ -2,6 +2,7 @@
 #include <assert.h>
 
 #include "List.h"
+#include "Stopwatch.h"
 #include "Resources.h"
 #include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
@@ -26,6 +27,7 @@
 #include "Filter/Filter.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 
+const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
 size_t       WindowWidth     = 0;
@@ -106,6 +108,8 @@ int main()
 
 	main_window.AddObject(&edit_box);
 
+	INIT_TIMER();
+	RESTART_TIMER();
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -157,12 +161,16 @@ int main()
 				}
 			}
 		}
+
+		STOP_TIMER();
+		if (GET_TIMER_SECONDS() > kDeltaTime)
+		{
+			event_manager.OnClock(GET_TIMER_SECONDS());
+			RESTART_TIMER();
+		}
+
 		main_window.Render(&rend_targ);
-
-		#ifdef DEBUG
-			TestRegClip(rend_targ);
-		#endif
-
+		
 		rend_targ.Display(&window);
 		window.display();
 	}

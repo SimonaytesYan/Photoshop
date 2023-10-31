@@ -89,6 +89,9 @@ bool WidgetEventRound(Events event, void*  event_args,
         case MOUSE_MOVE:
             intercepted = objects[index].val->OnMouseMove(*(MouseCondition*)event_args);
             break;
+        case ON_CLOCK:
+            intercepted = objects[index].val->OnClock(*(size_t*)event_args);
+            break;
         
         default:
             break;
@@ -153,6 +156,11 @@ bool Widget::OnMouseRelease(MouseCondition mouse)
 bool Widget::OnMouseMove(MouseCondition mouse)
 {
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
+}
+
+bool Widget::OnClock(size_t delta)
+{
+    return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
 }
 
 void Widget::UpdateRegionSet(bool debug)

@@ -17,7 +17,7 @@ class EditBox : public Widget
     int    chapter_size;
     double letter_width;
     double letter_height;
-    int    cursor_visible;
+    bool   cursor_visible;
 
 public: 
     EditBox(Vector position, Vector size, 
@@ -28,7 +28,7 @@ public:
     letter_height  (_letter_height),
     chapter_size   (_chapter_size),
     cursor_pos     (EDIT_BOX_UNUSED),
-    cursor_visible (0),
+    cursor_visible (false),
     text           (DynArray<char>(0))
     {
         text.PushBack('T');
@@ -39,7 +39,7 @@ public:
 
     bool OnMousePress(MouseCondition mouse) override;
     bool OnKeyPress  (Key key)              override;
-    //TODO Implement Render 
+    bool OnClock     (size_t delta)         override;
     void Render      (RenderTarget* rt)     override;
 };
 
