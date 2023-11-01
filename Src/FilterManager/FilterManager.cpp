@@ -24,7 +24,7 @@ void FilterManager::SetRenderTarget(RenderTarget* _rt)
 
 void FilterManager::ApplyLastFilter()
 {
-    if (active)
+    if (active && last_filter != nullptr)
     {
         last_filter->Apply(*rt);
         active = false;

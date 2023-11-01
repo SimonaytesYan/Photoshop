@@ -101,7 +101,7 @@ void EditBox::Render(RenderTarget* rt)
         // Frame
         rt->DrawRect(position, size, reg_set, Color(255, 255, 255), 3);
         
-        char* output_text = (char*)calloc(sizeof(char), text.GetLength());
+        char* output_text = (char*)calloc(sizeof(char), text.GetLength() + 1);
         memcpy(output_text, text.GetArray(), text.GetLength() * sizeof(char));
 
         // Text inside

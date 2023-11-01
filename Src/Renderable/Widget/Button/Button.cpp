@@ -36,8 +36,8 @@ pressed          (false)
 
 Button::~Button()
 {
-    free(args_press);
-    free(args_release);
+    delete args_press;
+    delete args_release;
 }
 
 void Button::Render(RenderTarget* render_target)

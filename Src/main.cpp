@@ -31,6 +31,8 @@
 const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
+const double kLetterWidth    = 0.57;
+const double kLetterHeight   = 1.5;
 size_t       WindowWidth     = 0;
 size_t       WindowHeight    = 0;
 
@@ -48,12 +50,23 @@ struct ColorStruct
 
 struct FilterStruct
 {
-	FilterManager* fm;
+	FilterManager* filter_manager;
 	Filter*        filter;
+	Font           font;
+	EventManager*  event_manager;
+	Window*		   main_window;
+};
+
+struct FilterArgsStruct
+{
+	FilterManager*      filter_manager;
+	Filter* 	        filter;
+	DynArray<EditBox*>* edit_boxes;
+	ModalWindow*		dialog_box;				
 };
 
 void TestRegClip(RenderTarget& rend_targ);
-void AddMenu(Window* window, Canvas* canvas, FilterManager* fm);
+void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
@@ -61,6 +74,7 @@ void Say(void* args);
 void SwitchTool(void* args);
 void SwitchColor(void* args);
 void SelectFilter(void* args);
+void SelectFilterArgs(void* _args);
 void UseLastFilter(void* args);
 void ClearCanvas(void* args);
 
@@ -98,14 +112,11 @@ int main()
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);	
-	AddMenu(&main_window, &canvas, &fm);
 
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
 
-	Font font;
-	font.LoadFont(kFontFile);
-
+	AddMenu(&main_window, &canvas, &fm, &event_manager);
 	INIT_TIMER();
 	RESTART_TIMER();
 	while (window.isOpen())
@@ -267,7 +278,7 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	main_window->AddObject(colors);
 }
 
-void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
+void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
 {
 	Font font;
 	font.LoadFont(kFontFile);
@@ -299,18 +310,24 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
 	FilterStruct* brightness_fs = new FilterStruct();
-	brightness_fs->fm     = fm;
-	brightness_fs->filter = new BrightnessFilter();
+	brightness_fs->filter_manager = fm;
+	brightness_fs->filter 	      = new BrightnessFilter();
+	brightness_fs->event_manager  = em;
+	brightness_fs->main_window	  = window;
+	brightness_fs->font			  = font;
+
 	Button* brightness_filter = new Button(Vector(0, 0), Vector(200, 50), 
 									  	   texture, press_texture, 
-									  	   SelectFilter, brightness_fs);
+									  	   SelectFilterArgs, brightness_fs);
 	brightness_filter->AddObject(new Label(Vector(25, 10), font, 20, 
 									   			  "Bright", Color(199, 181, 173)));
 	filters->AddObject(brightness_filter);
 	
-	FilterStruct* black_white_fs = new FilterStruct();
-	black_white_fs->fm     = fm;
-	black_white_fs->filter = new BlackAndWhiteFilter();
+	FilterArgsStruct* black_white_fs = new FilterArgsStruct();
+	black_white_fs->filter_manager = fm;
+	black_white_fs->filter 	  	   = new BlackAndWhiteFilter();
+	black_white_fs->dialog_box	   = nullptr;
+
 	Button* black_white_filter = new Button(Vector(0, 0),  Vector(200, 50), 
 									  			   texture, press_texture, 
 									  			   SelectFilter, black_white_fs);
@@ -327,16 +344,76 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 	window->AddObject(filters);
 }
 
+void SelectFilterArgs(void* _args)
+{
+	FilterStruct* fs = (FilterStruct*)_args;
+
+	DynArray<const char*> filter_args = fs->filter->GetParamNames();
+	
+	int filter_args_n = filter_args.GetLength();
+	if (filter_args_n > 0)
+	{
+		Vector position = fs->main_window->GetPosition() + fs->main_window->GetSize() / 2;
+		Vector size(400, 
+					2 * 50 + (filter_args_n + 1) * 100);
+		ModalWindow* dialog_box = new ModalWindow(position, fs->main_window->GetSize() / 4, 
+												  "Enter filter params", fs->event_manager);
+
+		position = position + Vector(0, 100);
+		DynArray<EditBox*>* edit_boxes = new DynArray<EditBox*>(0);
+
+		for (int i = 0; i < filter_args_n; i++)
+		{
+			EditBox* edit_box = new EditBox(position + Vector(200, i * 100), Vector(100, 50), 
+											fs->font, kLetterWidth, kLetterHeight, 20);
+			edit_boxes->PushBack(edit_box);
+
+			dialog_box->AddObject(edit_box);
+			dialog_box->AddObject(new Label(position + Vector(25, i * 100), 
+											fs->font, 20, filter_args[i]));
+		}
+
+		FilterArgsStruct* fas = new FilterArgsStruct(); 
+		fas->edit_boxes     = edit_boxes;
+		fas->filter		    = fs->filter;
+		fas->filter_manager = fs->filter_manager;
+		fas->dialog_box		= dialog_box;
+
+		Button* ok_button = new Button(position + Vector(200, filter_args_n * 100), 
+									   Vector(50, 50), Color(255, 255, 255), SelectFilter, fas);
+		ok_button->AddObject(new Label(position + Vector(200, filter_args_n * 100), fs->font, 20, "Ok"));
+		dialog_box->AddObject(ok_button);		
+		
+		fs->main_window->AddObject(dialog_box);
+	}
+	else
+	{
+
+	}
+}
+
 void SelectFilter(void* _args)
 {
-	FilterStruct* args = (FilterStruct*)_args;
-	args->fm->SetFilter(args->filter);
+	FilterArgsStruct* fas = (FilterArgsStruct*)_args;
+	if (fas->edit_boxes != nullptr)
+	{
+		DynArray<double> filter_params(fas->edit_boxes->GetLength());
+
+		for (int i = 0; i < fas->edit_boxes->GetLength(); i++)
+		{
+			filter_params[i] = atof((*fas->edit_boxes)[i]->GetText());
+		}
+
+		fas->filter->SetParams(filter_params);
+		fas->dialog_box->Close();
+	}
+	fas->filter_manager->SetFilter(fas->filter);
 }
 
 void UseLastFilter(void* _args)
 {
 	FilterManager* args = (FilterManager*)_args;
-	
+
 	args->SetFilter(args->GetFilter());
 	args->ApplyLastFilter();
 }
