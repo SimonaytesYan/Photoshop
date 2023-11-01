@@ -9,7 +9,7 @@ class ModalWindow : public Window
     EventManager* event_manager;
 
 public:
-    ModalWindow(Vector _position, Vector _size, char* _header, 
+    ModalWindow(Vector _position, Vector _size, const char* _header, 
                 EventManager* _event_manager) :
     Window(_position, _size, _header),
     event_manager (_event_manager)

@@ -37,6 +37,11 @@ public:
         text.PushBack('t');
     }
 
+    const char* GetText()
+    {
+        return text.GetArray();
+    }
+
     bool OnMousePress(MouseCondition mouse) override;
     bool OnKeyPress  (Key key)              override;
     bool OnClock     (size_t delta)         override;
