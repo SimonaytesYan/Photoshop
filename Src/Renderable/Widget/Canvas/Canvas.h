@@ -24,6 +24,8 @@ public :
     ~Canvas()
     {};
 
+    RenderTarget* GetData() { return &data; }
+
     bool OnMousePress  (MouseCondition mouse)        override;
     bool OnMouseRelease(MouseCondition mouse)        override;
     bool OnMouseMove   (MouseCondition mouse)        override;

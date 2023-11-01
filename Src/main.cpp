@@ -4,6 +4,7 @@
 #include "List.h"
 #include "Stopwatch.h"
 #include "Resources.h"
+#include "Image/Image.h"
 #include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Button/Button.h"
@@ -65,6 +66,21 @@ struct FilterArgsStruct
 	ModalWindow*		dialog_box;				
 };
 
+struct GetFilename
+{
+	Window* 	  main_window;
+	EventManager* event_manager;
+	Canvas* 	  canvas;
+	Font 		  font;
+};
+
+struct SaveCanvasStruct
+{
+	Canvas*	     canvas;
+	EditBox*     file_name_edit;  
+	ModalWindow* dialog_box;
+};
+
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
@@ -74,9 +90,11 @@ void Say(void* args);
 void SwitchTool(void* args);
 void SwitchColor(void* args);
 void SelectFilter(void* args);
-void SelectFilterArgs(void* _args);
+void SelectFilterArgs(void* args);
+void SaveCanvasInFile(void* args);
 void UseLastFilter(void* args);
 void ClearCanvas(void* args);
+void SavingParams(void* args);
 
 int main()
 {
@@ -291,13 +309,26 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 									 		 font, 20, "File", 
 									 		 Color(255, 255, 255),
 									 		 Say, nullptr);
+	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
+
+	GetFilename* get_fn = new GetFilename();
+	get_fn->canvas        = canvas;
+	get_fn->font          = font;
+	get_fn->event_manager = em;
+	get_fn->main_window   = window;
+
+	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
+									 	Color(199, 181, 173),
+										font, 20, "Save", 
+										Color(255, 255, 255),
+										SavingParams, get_fn));
+	window->AddObject(file_menu);
 
 	TextButton* clear_button = new TextButton(Vector(110, 50), Vector(100, 50), 
 									 		  Color(199, 181, 173),
 									  		  font, 20, "Clear",
 									  		  Color(255, 255, 255),
 									  		  ClearCanvas, canvas);
-	window->AddObject(file_button);
 	window->AddObject(clear_button);
 	
 	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
@@ -354,9 +385,8 @@ void SelectFilterArgs(void* _args)
 	if (filter_args_n > 0)
 	{
 		Vector position = fs->main_window->GetPosition() + fs->main_window->GetSize() / 2;
-		Vector size(400, 
-					2 * 50 + (filter_args_n + 1) * 100);
-		ModalWindow* dialog_box = new ModalWindow(position, fs->main_window->GetSize() / 4, 
+		Vector size(400, 2 * 50 + (filter_args_n + 1) * 100);
+		ModalWindow* dialog_box = new ModalWindow(position, size, 
 												  "Enter filter params", fs->event_manager);
 
 		position = position + Vector(0, 100);
@@ -389,6 +419,49 @@ void SelectFilterArgs(void* _args)
 	}
 }
 
+void SavingParams(void* _args)
+{
+	GetFilename* args = (GetFilename*)_args;
+
+	Vector position = args->main_window->GetPosition() + args->main_window->GetSize() / 2;
+	Vector size(400, 300);
+	ModalWindow* dialog_box = new ModalWindow(position, size, 
+											  "Enter file name params", 
+											  args->event_manager);
+
+	position = position + Vector(50, 100);
+	dialog_box->AddObject(new Label(position, 
+									args->font, 20, "Filename"));
+	EditBox* edit_box = new EditBox(position + Vector(200, 0), Vector(100, 50), 
+									args->font, kLetterWidth, kLetterHeight, 20);
+	dialog_box->AddObject(edit_box);
+	
+	SaveCanvasStruct* save_canvas_struct = new SaveCanvasStruct();
+	save_canvas_struct->canvas		   = args->canvas;
+	save_canvas_struct->file_name_edit = edit_box;
+	save_canvas_struct->dialog_box	   = dialog_box;
+
+	TextButton* ok_button = new TextButton(position + Vector(200, 100), 
+								   		   Vector(50, 50), Color(255, 255, 255), 
+										   args->font, 20, "Ok", Color(0, 0, 0),
+								   		   SaveCanvasInFile, save_canvas_struct);
+	dialog_box->AddObject(ok_button);		
+		
+	args->main_window->AddObject(dialog_box);
+}
+
+void SaveCanvasInFile(void* _args)
+{
+	SaveCanvasStruct* args = (SaveCanvasStruct*)_args;
+
+	Image img(args->canvas->GetData()->GetTexture());
+	sf::Image image = img.GetImage();
+	const char* file_name = args->file_name_edit->GetText();
+	
+	image.saveToFile(file_name);
+	args->dialog_box->Close();
+}
+
 void SelectFilter(void* _args)
 {
 	FilterArgsStruct* fas = (FilterArgsStruct*)_args;
@@ -410,9 +483,7 @@ void SelectFilter(void* _args)
 void UseLastFilter(void* _args)
 {
 	FilterManager* args = (FilterManager*)_args;
-
 	args->SetFilter(args->GetFilter());
-	args->ApplyLastFilter();
 }
 
 void Say(void* args)

@@ -39,6 +39,10 @@ public:
 
     const char* GetText()
     {
+        if (text.GetCapacity() > text.GetLength() + 1)
+            text[text.GetLength()] = 0;
+        else
+            text.PushBack(0);
         return text.GetArray();
     }
 

@@ -101,12 +101,14 @@ void EditBox::Render(RenderTarget* rt)
         // Frame
         rt->DrawRect(position, size, reg_set, Color(255, 255, 255), 3);
         
-        char* output_text = (char*)calloc(sizeof(char), text.GetLength() + 1);
-        memcpy(output_text, text.GetArray(), text.GetLength() * sizeof(char));
+        if (text.GetCapacity() > text.GetLength() + 1)
+            text[text.GetLength()] = 0;
+        else
+            text.PushBack(0);
 
         // Text inside
         rt->DrawText(position + kIndent, font, 
-                     output_text, chapter_size, Color(0, 0, 0), reg_set);
+                     text.GetArray(), chapter_size, Color(0, 0, 0), reg_set);
 
         // Cursor
         if (cursor_pos != -1 && cursor_visible)
