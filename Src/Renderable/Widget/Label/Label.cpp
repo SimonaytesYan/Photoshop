@@ -12,7 +12,7 @@ character_size (_character_size),
 background     (_background),
 text_color     (_text_color)
 {
-    text = (char*)calloc(sizeof(char), strlen(_text));
+    text = (char*)calloc(sizeof(char), strlen(_text) + 1);
     strcpy(text, _text);
 }
 
@@ -24,7 +24,7 @@ Label::~Label()
 void Label::SetText(const char* new_text)
 {
     free(text);
-    text = (char*)calloc(sizeof(char), strlen(new_text));
+    text = (char*)calloc(sizeof(char), strlen(new_text) + 1);
     strcpy(text, new_text);
 }
 
