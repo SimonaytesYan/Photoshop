@@ -386,10 +386,6 @@ void SelectFilterArgs(void* _args)
 		
 		fs->main_window->AddObject(dialog_box);
 	}
-	else
-	{
-
-	}
 }
 
 void SelectFilter(void* _args)

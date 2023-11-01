@@ -47,4 +47,27 @@ public :
             bool OnMouseMove   (MouseCondition mouse)        override;
 };
 
+class TextButton : public Button
+{
+    public : 
+    TextButton(Vector   _position, Vector   _size, 
+               Texture  _texture,  Texture  _press_texture,
+               Font font, int character_size, const char* text = "Button",
+               Color text_color = Color(0, 0, 0), 
+               Color background_color = Color(255, 255, 255),
+               void  (*_on_press)(void*)   = nullptr, 
+               void* _args_press           = nullptr,
+               void  (*_on_release)(void*) = nullptr,
+               void* _args_release         = nullptr);
+    
+    TextButton(Vector   _position, Vector   _size, 
+               Color    _background_color,
+               Font font, int character_size, const char* text = "Button",
+               Color text_color = Color(0, 0, 0), 
+               void  (*_on_press)(void*)   = nullptr, 
+               void* _args_press           = nullptr,
+               void  (*_on_release)(void*) = nullptr,
+               void*  _args_release        = nullptr);
+};
+
 #endif //SYM_BUTTON

@@ -2,6 +2,7 @@
 #include "../../../Vector/Vector.h"
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
+#include "../Label/Label.h"
 
 Button::Button(Vector _position, Vector _size, 
                Texture _texture, Texture  _press_texture,
@@ -109,4 +110,30 @@ bool Button::OnMouseMove(MouseCondition mouse)
         pressed = false;
     }
     return false;
+}
+
+//==============================TEXT BUTTON=========================
+
+TextButton::TextButton(Vector   position, Vector  size, 
+                       Texture  texture, Texture  press_texture,
+                       Font font, int character_size, const char* text,
+                       Color text_color, Color background_color,
+                       void  (*on_press)(void*),   void* args_press,
+                       void  (*on_release)(void*), void* args_release) : 
+Button(position, size, texture, press_texture, on_press, args_press, on_release, args_release)
+{
+    AddObject(new Label(position, font, character_size, text));
+}
+    
+TextButton::TextButton(Vector   position,  Vector   size, 
+                       Color    background_color,
+                       Font font, int character_size, const char* text,
+                       Color text_color,
+                       void  (*on_press)(void*), 
+                       void* args_press,
+                       void  (*on_release)(void*),
+                       void*  args_release) :
+Button(position, size, background_color, on_press, args_press, on_release, args_release)
+{
+    AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }
