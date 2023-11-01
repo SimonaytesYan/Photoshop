@@ -37,8 +37,8 @@ pressed          (false)
 
 Button::~Button()
 {
-    delete args_press;
-    delete args_release;
+    free(args_press);
+    free(args_release);
 }
 
 void Button::Render(RenderTarget* render_target)
@@ -122,7 +122,7 @@ TextButton::TextButton(Vector   position, Vector  size,
                        void  (*on_release)(void*), void* args_release) : 
 Button(position, size, texture, press_texture, on_press, args_press, on_release, args_release)
 {
-    AddObject(new Label(position, font, character_size, text));
+    AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }
     
 TextButton::TextButton(Vector   position,  Vector   size, 

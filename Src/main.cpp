@@ -286,26 +286,25 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 	texture.LoadFromFile(kBackgroundImgFile);
 	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
-	Button* file_button = new Button(Vector(10, 50), Vector(100, 50), 
-									 texture, press_texture, 
-									 Say, nullptr);
-	file_button->AddObject(new Label(Vector(25, 60), font, 20, 
-									 "File", Color(199, 181, 173)));
+	TextButton* file_button = new TextButton(Vector(10, 50), Vector(100, 50), 
+									 		 Color(199, 181, 173),
+									 		 font, 20, "File", 
+									 		 Color(255, 255, 255),
+									 		 Say, nullptr);
 
-	Button* clear_button = new Button(Vector(110, 50),  Vector(100, 50), 
-									  texture, press_texture, 
-									  ClearCanvas, canvas);
-	clear_button->AddObject(new Label(Vector(135, 60), font, 20, 
-									  "Clear", Color(199, 181, 173)));
-	
+	TextButton* clear_button = new TextButton(Vector(110, 50), Vector(100, 50), 
+									 		  Color(199, 181, 173),
+									  		  font, 20, "Clear",
+									  		  Color(255, 255, 255),
+									  		  ClearCanvas, canvas);
 	window->AddObject(file_button);
 	window->AddObject(clear_button);
 	
-	Button* filter_button = new Button(Vector(210, 50),  Vector(200, 50), 
-									  texture, press_texture, 
-									  nullptr, nullptr);
-	filter_button->AddObject(new Label(Vector(235, 60), font, 20, 
-									  "Filter", Color(199, 181, 173)));
+	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
+									  		   Color(199, 181, 173),
+									  		   font, 20, "Filters",
+									  		   Color(255, 255, 255),
+											   nullptr, nullptr);
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
@@ -316,11 +315,11 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 	brightness_fs->main_window	  = window;
 	brightness_fs->font			  = font;
 
-	Button* brightness_filter = new Button(Vector(0, 0), Vector(200, 50), 
-									  	   texture, press_texture, 
-									  	   SelectFilterArgs, brightness_fs);
-	brightness_filter->AddObject(new Label(Vector(25, 10), font, 20, 
-									   			  "Bright", Color(199, 181, 173)));
+	TextButton* brightness_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+									  		   	   Color(199, 181, 173),
+									  	   		   font, 20, "Bright",
+									  	   		   Color(255, 255, 255),
+									  	   		   SelectFilterArgs, brightness_fs);
 	filters->AddObject(brightness_filter);
 	
 	FilterArgsStruct* black_white_fs = new FilterArgsStruct();
@@ -328,17 +327,18 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 	black_white_fs->filter 	  	   = new BlackAndWhiteFilter();
 	black_white_fs->dialog_box	   = nullptr;
 
-	Button* black_white_filter = new Button(Vector(0, 0),  Vector(200, 50), 
-									  			   texture, press_texture, 
-									  			   SelectFilter, black_white_fs);
-	black_white_filter->AddObject(new Label(Vector(25, 10), font, 20, 
-									   			   "Black-White", Color(199, 181, 173)));
+	TextButton* black_white_filter = new TextButton(Vector(0, 0),  Vector(200, 50),  
+									  		   	    Color(199, 181, 173),
+									  			    font, 20, "Black-White",
+									  			    Color(255, 255, 255),
+									  			    SelectFilter, black_white_fs);
 	filters->AddObject(black_white_filter);
 
-	Button* last_filter = new Button(Vector(0, 0), Vector(200, 50),
-									texture, press_texture, UseLastFilter, fm);
-	last_filter->AddObject(new Label(Vector(25, 10), font, 20,
-									"Last filter", Color(199, 181, 173)));
+	TextButton* last_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+									  		 Color(199, 181, 173),
+											 font, 20, "Last filter",
+											 Color(255, 255, 255),
+											 UseLastFilter, fm);
 	filters->AddObject(last_filter);
 
 	window->AddObject(filters);
@@ -379,9 +379,10 @@ void SelectFilterArgs(void* _args)
 		fas->filter_manager = fs->filter_manager;
 		fas->dialog_box		= dialog_box;
 
-		Button* ok_button = new Button(position + Vector(200, filter_args_n * 100), 
-									   Vector(50, 50), Color(255, 255, 255), SelectFilter, fas);
-		ok_button->AddObject(new Label(position + Vector(200, filter_args_n * 100), fs->font, 20, "Ok"));
+		TextButton* ok_button = new TextButton(position + Vector(200, filter_args_n * 100), 
+									   		   Vector(50, 50), Color(255, 255, 255), 
+											   fs->font, 20, "Ok", Color(0, 0, 0),
+									   		   SelectFilter, fas);
 		dialog_box->AddObject(ok_button);		
 		
 		fs->main_window->AddObject(dialog_box);
