@@ -34,7 +34,6 @@ public:
 
     void ChangeExpandedStatus()
     {
-        fprintf(stderr, "ChangeExpandedStatus\n");
         expanded = !expanded;
 
         if (!static_menu)

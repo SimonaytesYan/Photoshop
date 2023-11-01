@@ -61,6 +61,7 @@ void Say(void* args);
 void SwitchTool(void* args);
 void SwitchColor(void* args);
 void SelectFilter(void* args);
+void UseLastFilter(void* args);
 void ClearCanvas(void* args);
 
 int main()
@@ -300,22 +301,28 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm)
 	FilterStruct* brightness_fs = new FilterStruct();
 	brightness_fs->fm     = fm;
 	brightness_fs->filter = new BrightnessFilter();
-	Button* brightness_filter_button = new Button(Vector(0, 0), Vector(200, 50), 
-									  texture, press_texture, 
-									  SelectFilter, brightness_fs);
-	brightness_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+	Button* brightness_filter = new Button(Vector(0, 0), Vector(200, 50), 
+									  	   texture, press_texture, 
+									  	   SelectFilter, brightness_fs);
+	brightness_filter->AddObject(new Label(Vector(25, 10), font, 20, 
 									   			  "Bright", Color(199, 181, 173)));
-	filters->AddObject(brightness_filter_button);
+	filters->AddObject(brightness_filter);
 	
 	FilterStruct* black_white_fs = new FilterStruct();
 	black_white_fs->fm     = fm;
 	black_white_fs->filter = new BlackAndWhiteFilter();
-	Button* black_white_filter_button = new Button(Vector(0, 0),  Vector(200, 50), 
+	Button* black_white_filter = new Button(Vector(0, 0),  Vector(200, 50), 
 									  			   texture, press_texture, 
 									  			   SelectFilter, black_white_fs);
-	black_white_filter_button->AddObject(new Label(Vector(25, 10), font, 20, 
+	black_white_filter->AddObject(new Label(Vector(25, 10), font, 20, 
 									   			   "Black-White", Color(199, 181, 173)));
-	filters->AddObject(black_white_filter_button);
+	filters->AddObject(black_white_filter);
+
+	Button* last_filter = new Button(Vector(0, 0), Vector(200, 50),
+									texture, press_texture, UseLastFilter, fm);
+	last_filter->AddObject(new Label(Vector(25, 10), font, 20,
+									"Last filter", Color(199, 181, 173)));
+	filters->AddObject(last_filter);
 
 	window->AddObject(filters);
 }
@@ -324,6 +331,14 @@ void SelectFilter(void* _args)
 {
 	FilterStruct* args = (FilterStruct*)_args;
 	args->fm->SetFilter(args->filter);
+}
+
+void UseLastFilter(void* _args)
+{
+	FilterManager* args = (FilterManager*)_args;
+	
+	args->SetFilter(args->GetFilter());
+	args->ApplyLastFilter();
 }
 
 void Say(void* args)
