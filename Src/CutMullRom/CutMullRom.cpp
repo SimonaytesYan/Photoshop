@@ -46,7 +46,7 @@ void CutMullRom2Vert(RenderTarget& target, Color color, double thickness,
 {
     double t0 = 0;
     double t1 = CalcNextT(p0, p1, t0);
-    
+
     for (double it = 0; it <= 1; it += kCatMullRomStep)
     {
         double t = LinearInterpol(t0, t1, it);

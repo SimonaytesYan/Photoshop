@@ -17,6 +17,8 @@ void Brush::PaintOnMove(RenderTarget& data, RenderTarget& tmp,
 {
     if (drawing)
     {
+        if (vertexes.size != 0 && vertexes[vertexes.End()].val == mouse.position)
+            return;
         vertexes.PushBack(mouse.position);
         if (vertexes.size >= 5)
             vertexes.PopFront();

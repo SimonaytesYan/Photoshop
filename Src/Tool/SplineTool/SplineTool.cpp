@@ -10,7 +10,7 @@ void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp,
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);
     vertexes.Clear();
-    drawing   = false;
+    drawing = false;
 }
 
 void SplineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
@@ -18,6 +18,8 @@ void SplineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp,
 {
     if (mouse.key == LEFT)
     {
+        if (vertexes.size != 0 && vertexes[vertexes.End()].val == mouse.position)
+            return;
         vertexes.PushBack(mouse.position);
         if (vertexes.size >= 5)
             vertexes.PopFront();
