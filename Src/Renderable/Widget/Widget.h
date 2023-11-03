@@ -24,6 +24,7 @@ protected:
     Vector        position;
     Vector        size;
     RegionSet     reg_set;
+    RegionSet     default_reg_set;
     Widget*       parent;
 
 public : 

@@ -8,13 +8,15 @@
 Widget::Widget (Vector _position, Vector _size, bool _available) :
 Renderable      (),
 EventProcessable(0),
-available   (_available),
-position    (_position),
-size        (_size),
-sub_widgets (List<Widget*>(0)),
-reg_set     (RegionSet()),
-parent      (nullptr)
+available       (_available),
+position        (_position),
+size            (_size),
+sub_widgets     (List<Widget*>(0)),
+reg_set         (RegionSet()),
+default_reg_set (RegionSet()),
+parent          (nullptr)
 {
+    default_reg_set.AddRegion(ClipRegion(_position, _size));
     reg_set.AddRegion(ClipRegion(_position, _size));
 }
 
@@ -24,6 +26,13 @@ Widget::~Widget()
 
 void Widget::Move(Vector delta)
 {
+    for (int i = 0; i < default_reg_set.GetLength(); i++)
+    {
+        ClipRegion reg = ClipRegion(delta + default_reg_set[i].GetPosition(), 
+                                    default_reg_set[i].GetSize());
+        default_reg_set.ChangeElem(i, reg);
+    }
+
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
         reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].GetPosition(), 
@@ -176,9 +185,8 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
 {
     if (!available)
         return;
-        
-    reg_set.Clear();
-    reg_set.AddRegion(ClipRegion(position, size));      // Clear region set
+    
+    reg_set = default_reg_set;  // Set region set to default region set
 
     if (debug)
     {
