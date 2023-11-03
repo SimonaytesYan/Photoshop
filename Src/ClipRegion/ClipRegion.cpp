@@ -2,6 +2,15 @@
 #include "../RegionSet/RegionSet.h"
 #include "../Useful.h"
 
+ClipRegion::ClipRegion() :
+nulled (false)
+{
+    x0 = 0;
+    y0 = 0;
+    x1 = 0;
+    y1 = 0;
+}
+
 ClipRegion::ClipRegion(Vector _position, Vector _size, bool _nulled) :
 nulled    (_nulled)
 {

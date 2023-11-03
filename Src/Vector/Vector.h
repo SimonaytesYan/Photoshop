@@ -11,6 +11,7 @@ class Vector
     double y;
 
 public : 
+    Vector();
     Vector(double _x, double _y);
     ~Vector();
 
@@ -40,6 +41,12 @@ struct VectorI
 {
     int x;
     int y;
+
+    VectorI()
+    {
+        x = 0;
+        y = 0;
+    }
 
     VectorI(int _x, int _y) : 
     x(_x), 

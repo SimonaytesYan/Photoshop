@@ -16,6 +16,7 @@ public:
     double x1;
     double y1;
 
+    ClipRegion();
     ClipRegion(double x0, double y0, double x1, double y1);
     ClipRegion(Vector position, Vector size, bool nulled = false);
     ClipRegion(const ClipRegion& a);
