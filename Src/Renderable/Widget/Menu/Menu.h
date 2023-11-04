@@ -31,33 +31,9 @@ protected:
 public:
     
     Menu(Button* button, bool static_menu);
+    Menu(Widget* widget);
 
-    void ChangeExpandedStatus()
-    {
-        expanded = !expanded;
-
-        if (!static_menu)
-        {
-            if (expanded)
-            {
-                size = expanded_size;
-                UpdateRegionSet();
-                for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                    sub_widgets[i].val->SetAvailable(true);                
-            }
-            else
-            {
-                size = collapsed_size;
-                UpdateRegionSet();
-                for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                    sub_widgets[i].val->SetAvailable(false);
-                
-                main_button->SetAvailable(true);
-            }
-
-            UpdateRegionSet();
-        }
-    }
+    void ChangeExpandedStatus();
 
     virtual void AddObject(Widget* new_widget)     override;
             void Render(RenderTarget* rt)          override; 

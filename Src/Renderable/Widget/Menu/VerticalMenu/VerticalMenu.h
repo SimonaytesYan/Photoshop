@@ -7,6 +7,9 @@ class VerticalMenu : public Menu
 {
 
 public:
+    VerticalMenu(Widget* widget) :
+    Menu(widget)
+    {}
 
     VerticalMenu(Button* button, bool static_menu) : 
     Menu(button, static_menu)

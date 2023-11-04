@@ -2,7 +2,7 @@
 #include "../../../ClipRegion/ClipRegion.h"
 
 Menu::Menu(Button* button, bool _static_menu) :
-           Widget(button->GetPosition(), button->GetSize()),
+Widget        (button->GetPosition(), button->GetSize()),
 expanded_size (button->GetSize()),
 collapsed_size(button->GetSize()),
 main_button   (button),
@@ -15,7 +15,45 @@ static_menu   (_static_menu)
         expanded = false;
     }
     Widget::AddObject(button);
-};
+}
+
+Menu::Menu(Widget* widget) :
+Widget        (widget->GetPosition(), widget->GetSize()),
+expanded_size (widget->GetSize()),
+collapsed_size(widget->GetSize()),
+main_button   (widget),
+static_menu   (true)
+{
+    Widget::AddObject(widget);
+    expanded = true;
+}
+
+void Menu::ChangeExpandedStatus()
+{
+    expanded = !expanded;
+
+    if (!static_menu)
+    {
+        if (expanded)
+        {
+            size = expanded_size;
+            UpdateRegionSet();
+            for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+                sub_widgets[i].val->SetAvailable(true);                
+        }
+        else
+        {
+            size = collapsed_size;
+            UpdateRegionSet();
+            for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+                sub_widgets[i].val->SetAvailable(false);
+                
+            main_button->SetAvailable(true);
+        }
+
+        UpdateRegionSet();
+    }
+}
 
 void CallChangeExpandedStatus(void* _args)
 {
@@ -26,15 +64,18 @@ void CallChangeExpandedStatus(void* _args)
 void Menu::AddObject(Widget* new_widget)
 {
     if (static_menu)
+    {
         size = new_widget->GetPosition() + new_widget->GetSize() - position;
+        default_reg_set.ChangeElem(0, ClipRegion(position, size));
+        Widget::AddObject(new_widget);
+    }
     else
     {
         expanded_size = new_widget->GetPosition() + new_widget->GetSize() - position;
+        Widget::AddObject(new_widget);
+        new_widget->SetAvailable(false);
     }
 
-    Widget::AddObject(new_widget);
-    
-    new_widget->SetAvailable(false);
     UpdateRegionSet();
 }
 

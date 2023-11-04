@@ -8,6 +8,10 @@ class HorizontalMenu : public Menu
 
 public:
 
+    HorizontalMenu(Widget* widget) :
+    Menu(widget)
+    {}
+
     HorizontalMenu(Button* button, bool static_menu) : 
     Menu(button, static_menu)
     {}
