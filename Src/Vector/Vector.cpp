@@ -22,7 +22,7 @@ Vector::~Vector()
 
 void Vector::Dump()
 {
-    fprintf(stderr, "(%.2lf, %.2lf)", x, y);
+    printf("(%.2lf, %.2lf)", x, y);
 }
 
 Vector Vector::operator=(VectorI v)
