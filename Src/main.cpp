@@ -29,7 +29,7 @@
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 
-const double kDeltaTime      = 0.25;
+const double kDeltaTime      = 2;
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
 const double kLetterWidth    = 0.57;
@@ -113,28 +113,29 @@ int main()
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
 	Canvas canvas(Vector(110, 160), Vector(1180, 780), &tm, &fm);
-	canvas_window1.AddObject(&canvas);
-	main_window.AddObject(&canvas_window1);
+	//canvas_window1.AddObject(&canvas);
+	//main_window.AddObject(&canvas_window1);
 
 	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
 	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm, &fm);
-	canvas_window2.AddObject(&canvas2);
-	main_window.AddObject(&canvas_window2);
+	//canvas_window2.AddObject(&canvas2);
+	//main_window.AddObject(&canvas_window2);
 
 	// Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
-	AddTools(&main_window, &tools, &tm);
+	//AddTools(&main_window, &tools, &tm);
 
 	// Adding colors
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
-	AddColors(&main_window, &colors, &tm);	
+	//AddColors(&main_window, &colors, &tm);	
 
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
 
 	AddMenu(&main_window, &canvas, &fm, &event_manager);
+
 	INIT_TIMER();
 	RESTART_TIMER();
 	while (window.isOpen())
@@ -201,6 +202,95 @@ int main()
 		rend_targ.Display(&window);
 		window.display();
 	}
+}
+
+void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
+{
+	// Get resources
+	Font font;
+	font.LoadFont(kFontFile);
+	Texture texture, press_texture;
+	texture.LoadFromFile(kBackgroundImgFile);
+	press_texture.LoadFromFile(kBackgroundPressedImgFile);
+
+	// Create file menu
+	TextButton* file_button = new TextButton(Vector(10, 50), Vector(100, 50), 
+									 		 Color(199, 181, 173),
+									 		 font, 20, "File", 
+									 		 Color(255, 255, 255),
+									 		 Say, nullptr);
+	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
+
+	GetFilename* get_fn   = new GetFilename();
+	get_fn->canvas        = canvas;
+	get_fn->font          = font;
+	get_fn->event_manager = em;
+	get_fn->main_window   = window;
+
+	//TODO Исправить появление чёрной хуйни на месте меню кнопки в главном меню
+
+	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
+									 	Color(199, 181, 173),
+										font, 20, "Save", 
+										Color(255, 255, 255),
+										SavingParams, get_fn));
+	
+	// Create main menu
+	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
+
+	// Create clear button 
+	TextButton* clear_button = new TextButton(Vector(110, 50), Vector(100, 50), 
+									 		  Color(199, 181, 173),
+									  		  font, 20, "Clear",
+									  		  Color(255, 255, 255),
+									  		  ClearCanvas, canvas);
+	main_menu->AddObject(clear_button);
+	
+	// Create filter menu
+	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
+									  		   Color(199, 181, 173),
+									  		   font, 20, "Filters",
+									  		   Color(255, 255, 255),
+											   nullptr, nullptr);
+
+	VerticalMenu* filters = new VerticalMenu(filter_button, false);
+
+	FilterStruct* brightness_fs   = new FilterStruct();
+	brightness_fs->filter_manager = fm;
+	brightness_fs->filter 	      = new BrightnessFilter();
+	brightness_fs->event_manager  = em;
+	brightness_fs->main_window	  = window;
+	brightness_fs->font			  = font;
+
+	TextButton* brightness_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+									  		   	   Color(199, 181, 173),
+									  	   		   font, 20, "Bright",
+									  	   		   Color(255, 255, 255),
+									  	   		   SelectFilterArgs, brightness_fs);
+	filters->AddObject(brightness_filter);
+	
+	FilterArgsStruct* black_white_fs = new FilterArgsStruct();
+	black_white_fs->filter_manager = fm;
+	black_white_fs->filter 	  	   = new BlackAndWhiteFilter();
+	black_white_fs->dialog_box	   = nullptr;
+
+	TextButton* black_white_filter = new TextButton(Vector(0, 0),  Vector(200, 50),  
+									  		   	    Color(199, 181, 173),
+									  			    font, 20, "Black-White",
+									  			    Color(255, 255, 255),
+									  			    SelectFilter, black_white_fs);
+	filters->AddObject(black_white_filter);
+
+	TextButton* last_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+									  		 Color(199, 181, 173),
+											 font, 20, "Last filter",
+											 Color(255, 255, 255),
+											 UseLastFilter, fm);
+	filters->AddObject(last_filter);
+
+	main_menu->AddObject(filters);
+	
+	window->AddObject(main_menu);
 }
 
 void SwitchColor(void* args)
@@ -294,85 +384,6 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	}
 
 	main_window->AddObject(colors);
-}
-
-void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
-{
-	Font font;
-	font.LoadFont(kFontFile);
-	Texture texture, press_texture;
-	texture.LoadFromFile(kBackgroundImgFile);
-	press_texture.LoadFromFile(kBackgroundPressedImgFile);
-
-	TextButton* file_button = new TextButton(Vector(10, 50), Vector(100, 50), 
-									 		 Color(199, 181, 173),
-									 		 font, 20, "File", 
-									 		 Color(255, 255, 255),
-									 		 Say, nullptr);
-	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
-
-	GetFilename* get_fn = new GetFilename();
-	get_fn->canvas        = canvas;
-	get_fn->font          = font;
-	get_fn->event_manager = em;
-	get_fn->main_window   = window;
-
-	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
-									 	Color(199, 181, 173),
-										font, 20, "Save", 
-										Color(255, 255, 255),
-										SavingParams, get_fn));
-	window->AddObject(file_menu);
-
-	TextButton* clear_button = new TextButton(Vector(110, 50), Vector(100, 50), 
-									 		  Color(199, 181, 173),
-									  		  font, 20, "Clear",
-									  		  Color(255, 255, 255),
-									  		  ClearCanvas, canvas);
-	window->AddObject(clear_button);
-	
-	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
-									  		   Color(199, 181, 173),
-									  		   font, 20, "Filters",
-									  		   Color(255, 255, 255),
-											   nullptr, nullptr);
-
-	VerticalMenu* filters = new VerticalMenu(filter_button, false);
-
-	FilterStruct* brightness_fs = new FilterStruct();
-	brightness_fs->filter_manager = fm;
-	brightness_fs->filter 	      = new BrightnessFilter();
-	brightness_fs->event_manager  = em;
-	brightness_fs->main_window	  = window;
-	brightness_fs->font			  = font;
-
-	TextButton* brightness_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
-									  		   	   Color(199, 181, 173),
-									  	   		   font, 20, "Bright",
-									  	   		   Color(255, 255, 255),
-									  	   		   SelectFilterArgs, brightness_fs);
-	filters->AddObject(brightness_filter);
-	
-	FilterArgsStruct* black_white_fs = new FilterArgsStruct();
-	black_white_fs->filter_manager = fm;
-	black_white_fs->filter 	  	   = new BlackAndWhiteFilter();
-	black_white_fs->dialog_box	   = nullptr;
-
-	TextButton* black_white_filter = new TextButton(Vector(0, 0),  Vector(200, 50),  
-									  		   	    Color(199, 181, 173),
-									  			    font, 20, "Black-White",
-									  			    Color(255, 255, 255),
-									  			    SelectFilter, black_white_fs);
-	filters->AddObject(black_white_filter);
-
-	TextButton* last_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
-									  		 Color(199, 181, 173),
-											 font, 20, "Last filter",
-											 Color(255, 255, 255),
-											 UseLastFilter, fm);
-	filters->AddObject(last_filter);
-
-	window->AddObject(filters);
 }
 
 void SelectFilterArgs(void* _args)
@@ -488,5 +499,5 @@ void UseLastFilter(void* _args)
 
 void Say(void* args)
 {
-	printf("Open file\n");
+	fprintf(stderr, "Open file\n");
 }

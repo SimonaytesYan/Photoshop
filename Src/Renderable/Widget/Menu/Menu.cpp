@@ -30,10 +30,8 @@ static_menu   (true)
 
 void Menu::ChangeExpandedStatus()
 {
-    static int k = 0;
     expanded = !expanded;
-    fprintf(stderr, "%d: Change status = %d\n", k++, expanded);
-
+    
     if (!static_menu)
     {
         if (expanded)
@@ -112,14 +110,9 @@ bool Menu::InsideP(Vector v)
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val->InsideP(v))
-        {   
-            fprintf(stderr, "Son InsideP %d\n", k++);
-            if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))
-            {
-                fprintf(stderr, "Menu InsideP %d\n", k++);
-                return true;
-            }
+        if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))
+        {
+            return true;
         }
     }
 
