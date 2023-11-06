@@ -204,3 +204,11 @@ RegionSet& RegionSet::operator+=(const RegionSet& b) {
 
     return *this;
 }
+
+bool RegionSet::InsideP(Vector v) const
+{
+    bool result = false;
+    for (int i = 0; i < data.GetLength(); i++)
+        result |= data[i].InsideP(v);
+    return result;
+}

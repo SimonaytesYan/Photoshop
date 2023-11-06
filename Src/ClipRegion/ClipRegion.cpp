@@ -78,6 +78,11 @@ inline bool YInsideRegion(ClipRegion a, double y)
            a.y1 > y;
 }
 
+bool ClipRegion::InsideP(Vector v) const
+{
+    return XInsideRegion(*this, v.GetX()) && YInsideRegion(*this, v.GetY());
+}
+
 void ClipRegion::Dump() const
 {
     fprintf(stderr, "{ ");

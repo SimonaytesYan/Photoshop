@@ -19,16 +19,18 @@ public:
 
     ~RegionSet();
 
-    void UnitSet();
-    void AddRegion(ClipRegion region);
+    void UnitSet   ();
+    void AddRegion (ClipRegion region);
     void ChangeElem(size_t index, ClipRegion region);
-    void Clear();
+    void Clear     ();
+    bool InsideP   (Vector v) const;
+
     RegionSet&  operator= (const RegionSet& b);
     RegionSet&  operator-=(const RegionSet& b);
     RegionSet&  operator+=(const RegionSet& b);
     RegionSet&  operator&=(const RegionSet& b);
     ClipRegion& operator[](const int index);
-    ClipRegion operator[](const int index) const;
+    ClipRegion  operator[](const int index) const;
 
 
     int GetLength() const

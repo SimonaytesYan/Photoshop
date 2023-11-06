@@ -25,6 +25,8 @@ public:
     Vector GetPosition() const;
     Color  GetColor()    const;
 
+    bool InsideP(Vector v) const;
+
     void Dump() const;
 
     friend ClipRegion operator&&(ClipRegion a, ClipRegion b);
