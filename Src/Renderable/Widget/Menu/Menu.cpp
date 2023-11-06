@@ -3,8 +3,6 @@
 
 Menu::Menu(Button* button, bool _static_menu) :
 Widget        (button->GetPosition(), button->GetSize()),
-expanded_size (button->GetSize()),
-collapsed_size(button->GetSize()),
 main_button   (button),
 static_menu   (_static_menu)
 {
@@ -19,8 +17,6 @@ static_menu   (_static_menu)
 
 Menu::Menu(Widget* widget) :
 Widget        (widget->GetPosition(), widget->GetSize()),
-expanded_size (widget->GetSize()),
-collapsed_size(widget->GetSize()),
 main_button   (widget),
 static_menu   (true)
 {
@@ -65,7 +61,6 @@ void Menu::AddObject(Widget* new_widget)
     }
     else
     {
-        expanded_size = new_widget->GetPosition() + new_widget->GetSize() - position;
         Widget::AddObject(new_widget);
         new_widget->SetAvailable(false);
     }

@@ -25,8 +25,6 @@ protected:
     Widget* main_button;
     bool    expanded;
     bool    static_menu;
-    Vector  expanded_size;
-    Vector  collapsed_size;
 
 public:
     
