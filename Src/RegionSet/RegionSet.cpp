@@ -33,7 +33,7 @@ void RegionSet::ChangeElem(size_t index, ClipRegion region)
 void RegionSet::Dump() const
 {
     if (data.GetLength() == 0)
-        printf("{reg set in empty}\n");
+        fprintf(stderr, "{reg set in empty}\n");
     for (int i = 0; i < data.GetLength(); i++)
     {
         data[i].Dump();
@@ -137,8 +137,6 @@ RegionSet& RegionSet::operator&=(const RegionSet& b)
     RegionSet tmp = *this;
     tmp   -= b;             //tmp = this - b
     *this -= tmp;           //this = this - (this - other)
-
-    //UnitSet();
 
     return *this;
 }

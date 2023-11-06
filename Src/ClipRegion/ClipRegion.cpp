@@ -85,11 +85,11 @@ bool ClipRegion::InsideP(Vector v) const
 
 void ClipRegion::Dump() const
 {
-    printf( "{ ");
+    fprintf(stderr,  "{ ");
     GetPosition().Dump();
-    printf(" ");
+    fprintf(stderr, " ");
     (GetSize() + GetPosition()).Dump();
-    printf("}\n");
+    fprintf(stderr, "}\n");
 }
 
 bool RegionIntersectP(ClipRegion a, ClipRegion b)
