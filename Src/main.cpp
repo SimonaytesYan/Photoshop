@@ -113,23 +113,23 @@ int main()
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
 	Canvas canvas(Vector(110, 160), Vector(1180, 780), &tm, &fm);
-	//canvas_window1.AddObject(&canvas);
-	//main_window.AddObject(&canvas_window1);
+	canvas_window1.AddObject(&canvas);
+	main_window.AddObject(&canvas_window1);
 
 	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
 	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm, &fm);
-	//canvas_window2.AddObject(&canvas2);
-	//main_window.AddObject(&canvas_window2);
+	canvas_window2.AddObject(&canvas2);
+	main_window.AddObject(&canvas_window2);
 
 	// Adding tools	
 	Window tools(Vector(1400, 450), 
 			  	  Vector(500, 300), "Tools");
-	//AddTools(&main_window, &tools, &tm);
+	AddTools(&main_window, &tools, &tm);
 
 	// Adding colors
 	Window colors(Vector(1400, 150), 
 			  	  Vector(500, 300), "Colors");
-	//AddColors(&main_window, &colors, &tm);	
+	AddColors(&main_window, &colors, &tm);	
 
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
@@ -226,8 +226,6 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 	get_fn->font          = font;
 	get_fn->event_manager = em;
 	get_fn->main_window   = window;
-
-	//TODO Исправить появление чёрной хуйни на месте меню кнопки в главном меню
 
 	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
 									 	Color(199, 181, 173),
