@@ -76,11 +76,6 @@ void Menu::AddObject(Widget* new_widget)
     UpdateRegionSet();
 }
 
-void Menu::Render(RenderTarget* rt)
-{
-    Widget::Render(rt);
-}
-
 void Menu::UpdateDefaultRegionSet()
 {
     default_reg_set.Clear();
@@ -89,17 +84,12 @@ void Menu::UpdateDefaultRegionSet()
     {
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         {
-            fprintf(stderr, "sub_widgets[%d] available = %d\n", i, sub_widgets[i].val->GetAvailable());
             if (sub_widgets[i].val->GetAvailable())
                 default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
         }
     }
     else
         default_reg_set.AddRegion(ClipRegion(position, collapsed_size));
-    
-    fprintf(stderr, "default reg set:\n");
-    default_reg_set.Dump();
-    fprintf(stderr, "--------------\n");
     
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         sub_widgets[i].val->UpdateDefaultRegionSet();
@@ -122,10 +112,14 @@ bool Menu::InsideP(Vector v)
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))
-        {
-            fprintf(stderr, "Menu InsideP %d\n", k++);
-            return true;
+        if (sub_widgets[i].val->InsideP(v))
+        {   
+            fprintf(stderr, "Son InsideP %d\n", k++);
+            if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))
+            {
+                fprintf(stderr, "Menu InsideP %d\n", k++);
+                return true;
+            }
         }
     }
 
