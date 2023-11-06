@@ -49,6 +49,18 @@ void Widget::Move(Vector delta)
     }
 }
 
+void Widget::RemoveSon(Widget* son)
+{
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+    {
+        if (sub_widgets[i].val == son)
+        {
+            sub_widgets.Remove(i);
+            break;
+        }
+    }
+}
+
 void Widget::Render(RenderTarget* render_target)
 {
     if (available)
@@ -193,6 +205,15 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         return;
     
     reg_set = default_reg_set;  // Set region set to default region set
+    if (debug)
+    {
+        fprintf(stderr, "[\n");
+        fprintf(stderr, "default:\n");
+        default_reg_set.Dump();
+        fprintf(stderr, "reg:\n");
+        reg_set.Dump();
+        fprintf(stderr, "]\n");
+    }
 
     if (debug)
     {
@@ -210,7 +231,7 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         if (debug)
         {
             fprintf(stderr, "after parent %p\n", parent);
-            fprintf(stderr, "parent = ");
+            fprintf(stderr, "parent = \n");
             parent->reg_set.Dump();
             fprintf(stderr, "me = \n");
             reg_set.Dump();

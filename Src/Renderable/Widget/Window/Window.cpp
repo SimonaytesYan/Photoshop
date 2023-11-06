@@ -103,7 +103,10 @@ void Window::Close()
     available = false;
     size = Vector(0, 0);
     if (parent != nullptr)
+    {
+        parent->RemoveSon(this);
         parent->UpdateRegionSet();
+    }
     
     this->~Window();
 }

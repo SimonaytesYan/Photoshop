@@ -49,6 +49,7 @@ public :
     const RegionSet& GetRegionSet()    const  { return reg_set; }
     void             UpdateRegionSet(bool debug = false);
     void             UpdateRegionSetFromRoot(bool debug = false);
+    void             RemoveSon(Widget* son);
     
     virtual bool  InsideP(Vector v);
 
