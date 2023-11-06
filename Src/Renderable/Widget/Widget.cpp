@@ -288,8 +288,8 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
 
 bool Widget::InsideP(Vector v)
 {
-    return v.GetX() - position.GetX() > 0           &&
-           v.GetX() - position.GetX() < size.GetX() &&
-           v.GetY() - position.GetY() > 0           && 
-           v.GetY() - position.GetY() < size.GetY();
+    return v.GetX() - position.GetX() >= 0           &&
+           v.GetX() - position.GetX() <= size.GetX() &&
+           v.GetY() - position.GetY() >= 0           && 
+           v.GetY() - position.GetY() <= size.GetY();
 }
