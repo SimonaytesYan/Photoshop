@@ -43,22 +43,25 @@ Button::~Button()
 
 void Button::Render(RenderTarget* render_target)
 {
-    if (use_texture)
+    if (available)
     {
-        if (pressed)
-            render_target->DrawSprite(position, press_texture, reg_set);
+        if (use_texture)
+        {
+            if (pressed)
+                render_target->DrawSprite(position, press_texture, reg_set);
+            else
+                render_target->DrawSprite(position, texture, reg_set);
+        }
         else
-            render_target->DrawSprite(position, texture, reg_set);
+        {
+            if (pressed)
+                render_target->DrawRect(position, size, reg_set, background_color.Inverse());
+            else
+                render_target->DrawRect(position, size, reg_set, background_color);
+        }
+    
+        Widget::Render(render_target);
     }
-    else
-    {
-        if (pressed)
-            render_target->DrawRect(position, size, reg_set, background_color.Inverse());
-        else
-            render_target->DrawRect(position, size, reg_set, background_color);
-    }
-
-    Widget::Render(render_target);
 }
 
 bool Button::OnMousePress(MouseCondition mouse)

@@ -61,7 +61,10 @@ void Widget::Render(RenderTarget* render_target)
     if (available)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
-            sub_widgets[index].val->Render(render_target);
+        {
+            if (sub_widgets[index].val->GetAvailable())
+                sub_widgets[index].val->Render(render_target);
+        }
     }
 }
 
