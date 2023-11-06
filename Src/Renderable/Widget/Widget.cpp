@@ -40,13 +40,8 @@ void Widget::Move(Vector delta)
     }
     position = position + delta;
 
-    int index = sub_widgets.Begin();
-    while (index != -1)
-    {
-        sub_widgets[index].val->Move(delta);
-
-        index = sub_widgets.Iterate(index);
-    }
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+        sub_widgets[i].val->Move(delta);
 }
 
 void Widget::RemoveSon(Widget* son)
@@ -82,6 +77,9 @@ void Widget::UpdateDefaultRegionSet()
 {
     default_reg_set.Clear();
     default_reg_set.AddRegion(ClipRegion(position, size));
+
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+        sub_widgets[i].val->UpdateDefaultRegionSet();
 }
 
 Vector Widget::GetPosition()
@@ -205,8 +203,10 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         return;
     
     reg_set = default_reg_set;  // Set region set to default region set
+
     if (debug)
     {
+        fprintf(stderr, "\nthis = %p\n", this);
         fprintf(stderr, "[\n");
         fprintf(stderr, "default:\n");
         default_reg_set.Dump();
@@ -214,15 +214,6 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         reg_set.Dump();
         fprintf(stderr, "]\n");
     }
-
-    if (debug)
-    {
-        fprintf(stderr, "\nthis = %p\n", this);
-        reg_set.Dump();
-    }
-
-    RegionSet tmp_rs;
-    tmp_rs.AddRegion(ClipRegion(Vector(0, 0), Vector(0, 0)));
 
     if (parent != nullptr)                              
     {
@@ -253,8 +244,7 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         for (index; index != -1; index = parent->sub_widgets.Iterate(index))
         {
             Widget* brother = parent->sub_widgets[index].val;
-            tmp_rs[0] = ClipRegion(brother->position, brother->size);
-            reg_set -= tmp_rs;
+            reg_set -= brother->GetDefaultRegSet();
 
             if (debug)
             {
@@ -279,8 +269,7 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         Widget* sub_w = sub_widgets[index].val;
         if (sub_w->available)
         {
-            tmp_rs[0] = ClipRegion(sub_w->position, sub_w->size);
-            reg_set -= tmp_rs;
+            reg_set -= sub_w->GetDefaultRegSet();
 
             if (debug)
             {

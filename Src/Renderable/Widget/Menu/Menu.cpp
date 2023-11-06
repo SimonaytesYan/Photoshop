@@ -31,36 +31,23 @@ static_menu   (true)
 void Menu::ChangeExpandedStatus()
 {
     static int k = 0;
-    fprintf(stderr, "Change status %d\n", k++);
     expanded = !expanded;
+    fprintf(stderr, "%d: Change status = %d\n", k++, expanded);
 
     if (!static_menu)
     {
         if (expanded)
         {
-            static int k = 0;
-            fprintf(stderr, "Update reg sets %d\n", k++);
-
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
                 sub_widgets[i].val->SetAvailable(true);
-
-            UpdateDefaultRegionSet();
-            fprintf(stderr, "default:\n");
-            default_reg_set.Dump();
-
-            UpdateRegionSet(true);
-            fprintf(stderr, "real:\n");
-            reg_set.Dump();
         }
         else
         {
-            UpdateRegionSet();
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val->SetAvailable(false);
-                
+                sub_widgets[i].val->SetAvailable(false);            
             main_button->SetAvailable(true);
         }
-
+        UpdateDefaultRegionSet();
         UpdateRegionSet();
     }
 }
@@ -99,20 +86,32 @@ void Menu::UpdateDefaultRegionSet()
     default_reg_set.Clear();
 
     if (expanded)
+    {
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         {
+            fprintf(stderr, "sub_widgets[%d] available = %d\n", i, sub_widgets[i].val->GetAvailable());
             if (sub_widgets[i].val->GetAvailable())
                 default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
         }
+    }
     else
         default_reg_set.AddRegion(ClipRegion(position, collapsed_size));
+    
+    fprintf(stderr, "default reg set:\n");
+    default_reg_set.Dump();
+    fprintf(stderr, "--------------\n");
+    
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+        sub_widgets[i].val->UpdateDefaultRegionSet();
 }
 
 bool Menu::OnMouseMove(MouseCondition mouse)
 {
     if (!InsideP(mouse.position))
+    {
         if (expanded)
             ChangeExpandedStatus();
+    }
 
     return Widget::OnMouseMove(mouse);
 }
@@ -120,6 +119,7 @@ bool Menu::OnMouseMove(MouseCondition mouse)
 bool Menu::InsideP(Vector v)
 {
     static int k = 0;
+
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
         if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))

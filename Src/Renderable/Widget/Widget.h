@@ -47,17 +47,19 @@ public :
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
     RegionSet&       GetRegionSet()           { return reg_set; }
     const RegionSet& GetRegionSet()    const  { return reg_set; }
-    void             UpdateRegionSet(bool debug = false);
+    void             UpdateRegionSet        (bool debug = false);
     void             UpdateRegionSetFromRoot(bool debug = false);
-    void             RemoveSon(Widget* son);
+    void             RemoveSon              (Widget* son);
     
     virtual bool  InsideP(Vector v);
 
-    Vector&       GetSize()       { return size; }
-    const Vector& GetSize() const { return size; }
+    Vector&       GetSize()            { return size; }
+    const Vector& GetSize()      const { return size; }
     Vector        GetPosition();
+    bool          GetAvailable() const { return available; }
+    Widget*       GetParent()    const { return parent;    }
+
     void          SetAvailable(bool new_available) { available = new_available; }
-    bool          GetAvailable() { return available; }
 };
 
 #endif  //SYM_SUB_WINDOW
