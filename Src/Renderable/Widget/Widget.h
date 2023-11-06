@@ -38,20 +38,23 @@ public :
     virtual bool OnMouseMove   (MouseCondition mouse) override;
     virtual bool OnClock       (size_t delta)         override;
 
-    virtual void Render        (RenderTarget* render_target) override;
-    virtual void Move          (Vector delta);
-    virtual void AddObject     (Widget* new_widget);
-    void         ToForeground  (Widget* son);
+    virtual void Render                (RenderTarget* render_target) override;
+    virtual void Move                  (Vector delta);
+    virtual void AddObject             (Widget* new_widget);
+    virtual void UpdateDefaultRegionSet();
+    void         ToForeground          (Widget* son);
 
-    RegionSet&       GetRegionSet()       { return reg_set; }
-    const RegionSet& GetRegionSet() const { return reg_set; }
+    const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
+    RegionSet&       GetRegionSet()           { return reg_set; }
+    const RegionSet& GetRegionSet()    const  { return reg_set; }
     void             UpdateRegionSet(bool debug = false);
     void             UpdateRegionSetFromRoot(bool debug = false);
+    
+    virtual bool  InsideP(Vector v);
 
     Vector&       GetSize()       { return size; }
     const Vector& GetSize() const { return size; }
     Vector        GetPosition();
-    bool          InsideP(Vector v);
     void          SetAvailable(bool new_available) { available = new_available; }
     bool          GetAvailable() { return available; }
 };

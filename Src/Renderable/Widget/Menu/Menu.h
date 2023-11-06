@@ -35,9 +35,11 @@ public:
 
     void ChangeExpandedStatus();
 
-    virtual void AddObject(Widget* new_widget)     override;
-            void Render(RenderTarget* rt)          override; 
+    virtual void AddObject  (Widget* new_widget)   override;
+            void Render     (RenderTarget* rt)     override; 
             bool OnMouseMove(MouseCondition mouse) override;
+            bool InsideP    (Vector v)             override;
+            void UpdateDefaultRegionSet()          override;
 };
 
 #endif //SYM_BUTTON_MANAGER

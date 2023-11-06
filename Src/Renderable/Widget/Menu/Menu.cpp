@@ -36,14 +36,14 @@ void Menu::ChangeExpandedStatus()
     {
         if (expanded)
         {
-            size = expanded_size;
-            UpdateRegionSet();
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val->SetAvailable(true);                
+                sub_widgets[i].val->SetAvailable(true);
+            UpdateDefaultRegionSet();
+
+            UpdateRegionSet();             
         }
         else
         {
-            size = collapsed_size;
             UpdateRegionSet();
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
                 sub_widgets[i].val->SetAvailable(false);
@@ -84,12 +84,36 @@ void Menu::Render(RenderTarget* rt)
     Widget::Render(rt);
 }
 
+void Menu::UpdateDefaultRegionSet()
+{
+    default_reg_set.Clear();
+
+    if (expanded)
+        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+        {
+            if (sub_widgets[i].val->GetAvailable())
+                default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
+        }
+    else
+        default_reg_set.AddRegion(ClipRegion(position, collapsed_size));
+}
+
 bool Menu::OnMouseMove(MouseCondition mouse)
 {
     if (!InsideP(mouse.position))
         if (expanded)
             ChangeExpandedStatus();
-            
 
-    return Widget::OnMouseRelease(mouse);
+    return Widget::OnMouseMove(mouse);
+}
+
+bool Menu::InsideP(Vector v)
+{
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+    {
+        if (sub_widgets[i].val->GetAvailable() && sub_widgets[i].val->InsideP(v))
+            return true;
+    }
+
+    return false;
 }

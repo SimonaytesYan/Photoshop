@@ -16,7 +16,7 @@ reg_set         (RegionSet()),
 default_reg_set (RegionSet()),
 parent          (nullptr)
 {
-    default_reg_set.AddRegion(ClipRegion(_position, _size));
+    UpdateDefaultRegionSet();
     reg_set.AddRegion(ClipRegion(_position, _size));
 }
 
@@ -64,6 +64,12 @@ void Widget::AddObject(Widget* new_widget)
     sub_widgets.PushBack(new_widget);
 
     UpdateRegionSet();
+}
+
+void Widget::UpdateDefaultRegionSet()
+{
+    default_reg_set.Clear();
+    default_reg_set.AddRegion(ClipRegion(position, size));
 }
 
 Vector Widget::GetPosition()
