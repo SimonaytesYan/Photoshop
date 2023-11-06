@@ -41,7 +41,6 @@ public :
     virtual void Render                (RenderTarget* render_target) override;
     virtual void Move                  (Vector delta);
     virtual void AddObject             (Widget* new_widget);
-    virtual void UpdateDefaultRegionSet();
     void         ToForeground          (Widget* son);
 
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
@@ -49,6 +48,9 @@ public :
     const RegionSet& GetRegionSet()    const  { return reg_set; }
     void             UpdateRegionSet        (bool debug = false);
     void             UpdateRegionSetFromRoot(bool debug = false);
+    void             UpdateDefaultRegionSet();
+    void             UpdateParentDefaultRegionSet();
+    virtual void     UpdateOwnDefaultRegionSet();
     void             RemoveSon              (Widget* son);
     
     virtual bool  InsideP(Vector v);

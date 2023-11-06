@@ -76,15 +76,6 @@ void Widget::AddObject(Widget* new_widget)
     UpdateRegionSet();
 }
 
-void Widget::UpdateDefaultRegionSet()
-{
-    default_reg_set.Clear();
-    default_reg_set.AddRegion(ClipRegion(position, size));
-
-    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-        sub_widgets[i].val->UpdateDefaultRegionSet();
-}
-
 Vector Widget::GetPosition()
 {
     return position;
@@ -284,6 +275,28 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
 
     if (debug)
         fprintf(stderr, "End region set update\n\n");
+}
+
+void Widget::UpdateParentDefaultRegionSet()
+{
+    Widget* current = this;
+    while (current != nullptr)
+    {
+        current->UpdateOwnDefaultRegionSet();
+        current = current->parent;
+    }
+}
+
+void Widget::UpdateOwnDefaultRegionSet()
+{
+    default_reg_set.Clear();
+    default_reg_set.AddRegion(ClipRegion(position, size));
+}
+
+void Widget::UpdateDefaultRegionSet()
+{
+    UpdateOwnDefaultRegionSet();
+    UpdateParentDefaultRegionSet();
 }
 
 bool Widget::InsideP(Vector v)

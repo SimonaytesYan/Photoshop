@@ -38,7 +38,7 @@ public:
     virtual void AddObject  (Widget* new_widget)   override;
             bool OnMouseMove(MouseCondition mouse) override;
             bool InsideP    (Vector v)             override;
-            void UpdateDefaultRegionSet()          override;
+            void UpdateOwnDefaultRegionSet()       override;
 };
 
 #endif //SYM_BUTTON_MANAGER

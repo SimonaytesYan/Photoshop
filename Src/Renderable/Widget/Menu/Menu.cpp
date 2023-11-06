@@ -31,7 +31,7 @@ static_menu   (true)
 void Menu::ChangeExpandedStatus()
 {
     expanded = !expanded;
-    
+
     if (!static_menu)
     {
         if (expanded)
@@ -60,9 +60,8 @@ void Menu::AddObject(Widget* new_widget)
 {
     if (static_menu)
     {
-        size = new_widget->GetPosition() + new_widget->GetSize() - position;
-        default_reg_set.ChangeElem(0, ClipRegion(position, size));
         Widget::AddObject(new_widget);
+        UpdateOwnDefaultRegionSet();
     }
     else
     {
@@ -74,23 +73,15 @@ void Menu::AddObject(Widget* new_widget)
     UpdateRegionSet();
 }
 
-void Menu::UpdateDefaultRegionSet()
+void Menu::UpdateOwnDefaultRegionSet()
 {
     default_reg_set.Clear();
 
-    if (expanded)
-    {
-        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-        {
-            if (sub_widgets[i].val->GetAvailable())
-                default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
-        }
-    }
-    else
-        default_reg_set.AddRegion(ClipRegion(position, collapsed_size));
-    
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-        sub_widgets[i].val->UpdateDefaultRegionSet();
+    {
+        if (sub_widgets[i].val->GetAvailable())
+            default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
+    }
 }
 
 bool Menu::OnMouseMove(MouseCondition mouse)
