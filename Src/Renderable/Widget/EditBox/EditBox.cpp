@@ -14,12 +14,10 @@ bool EditBox::OnMousePress(MouseCondition mouse)
     
     if (InsideP(mouse.position))
     {
-        fprintf(stderr, "InsideP EditBox\n");
         if (cursor_pos == EDIT_BOX_UNUSED || cursor_pos == EDIT_BOX_UNABLE)
         {
             text.Clear();
             cursor_pos = 0;
-            fprintf(stderr, "cursor pos = %d\n", cursor_pos);
             return true;
         }
 
@@ -32,13 +30,11 @@ bool EditBox::OnMousePress(MouseCondition mouse)
                 (i + 1) * letter_width * chapter_size >  mouse_x)
             {
                 cursor_pos = i;
-                fprintf(stderr, "cursor pos = %d\n", cursor_pos);
                 return true;
             }
         }
 
         cursor_pos = text_length;
-        fprintf(stderr, "cursor pos = %d\n", cursor_pos);
         return true;
     }
     
