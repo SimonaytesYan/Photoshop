@@ -7,12 +7,14 @@ bool ScrollBar::OnMouseMove(MouseCondition mouse)
     {
         if (pressed)
         {
-            Vector delta = (mouse.position - slider->GetPosition()) * sensitivity;
+            Vector delta = (mouse.position - last_mouse_pos) * sensitivity;
 
             slider->Move(delta);
             UpdateRegionSet();
             if (scroll != nullptr)
                 scroll(scroll_args, delta);
+            
+            last_mouse_pos = mouse.position;
         }
     }
     else
@@ -26,9 +28,13 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
     if (InsideP(mouse.position))
     {
         pressed = true;
-        Vector delta = (mouse.position - slider->GetPosition()) * sensitivity;
-        slider->Move(delta);
-        UpdateRegionSet();
+        last_mouse_pos = mouse.position;
+        if (!slider->InsideP(mouse.position))
+        {
+            Vector delta = (mouse.position - slider->GetPosition()) * sensitivity;
+            slider->Move(delta);
+            UpdateRegionSet();
+        }
 
         return true;
     }

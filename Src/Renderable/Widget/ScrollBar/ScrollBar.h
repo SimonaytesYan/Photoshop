@@ -28,7 +28,6 @@ public:
     pressed         (false)
     {
         slider = new RectangleWidget(_position, _size / 2, _slider_color);
-        fprintf(stderr, "slider = %p\n", slider);
         AddObject(slider);
     }
 
