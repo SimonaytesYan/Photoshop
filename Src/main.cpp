@@ -119,6 +119,14 @@ int main()
 	canvas_window1.AddObject(&canvas);
 	main_window.AddObject(&canvas_window1);
 
+	ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas.GetSize().GetY()), 
+						 Color(255, 128, 128), Color(128, 255, 128), 1);
+
+	/*ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas.GetSize().GetY()), 
+						 Color(255, 128, 128), Color(128, 255, 128), 1, 
+						 &canvas, Vector(0, 0), Vector(300, 300));*/
+	canvas_window1.AddObject(&scroll_bar);
+
 	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
 	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm, &fm);
 	canvas_window2.AddObject(&canvas2);
@@ -138,10 +146,6 @@ int main()
 	event_manager.AddObject(&main_window);
 
 	AddMenu(&the_root, &main_window, &canvas, &fm, &event_manager);
-
-	ScrollBar scroll_bar(Vector(300, 300), Vector(500, 500), 
-						 Color(255, 128, 128), Color(128, 255, 128), 1);
-	main_window.AddObject(&scroll_bar);
 
 	INIT_TIMER();
 	RESTART_TIMER();

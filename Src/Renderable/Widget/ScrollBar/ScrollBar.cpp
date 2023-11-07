@@ -28,21 +28,16 @@ Vector FixDelta(const Widget& parent, const Widget& slider, Vector delta)
 
 bool ScrollBar::OnMouseMove(MouseCondition mouse)
 {
-    if (InsideP(mouse.position))
+    if (pressed)
     {
-        if (pressed)
-        {
-            Vector delta = FixDelta(*this, *slider, (mouse.position - last_mouse_pos) * sensitivity);
+        Vector delta = FixDelta(*this, *slider, (mouse.position - last_mouse_pos) * sensitivity);
 
-            slider->Move(delta);
-            UpdateRegionSet();
-            if (scroll != nullptr)
-                scroll(scroll_args, delta);
-            last_mouse_pos = mouse.position;
-        }
+        slider->Move(delta);
+        UpdateRegionSet();
+        if (scroll != nullptr)
+            scroll(scroll_args, delta);
+        last_mouse_pos = mouse.position;
     }
-    else
-        pressed = false;
     
     return false;
 }
