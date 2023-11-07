@@ -193,10 +193,10 @@ int main()
 		}
 
 		STOP_TIMER();
-		size_t delta_time = GET_TIMER_SECONDS();
+		double delta_time = GET_TIMER_SECONDS();
 		if (delta_time > kDeltaTime)
 		{
-			fprintf(stderr, "Timer\n");
+			fprintf(stderr, "Timer = %lg\n", delta_time);
 			RESTART_TIMER();
 			event_manager.OnClock(delta_time);
 		}
