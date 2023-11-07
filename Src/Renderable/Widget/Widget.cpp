@@ -5,6 +5,8 @@
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../Useful.h"
 
+const double kPrecision = 1e-6;
+
 Widget::Widget (Vector _position, Vector _size, bool _available) :
 Renderable      (),
 EventProcessable(0),
@@ -74,11 +76,6 @@ void Widget::AddObject(Widget* new_widget)
     sub_widgets.PushBack(new_widget);
 
     UpdateRegionSet();
-}
-
-Vector Widget::GetPosition()
-{
-    return position;
 }
 
 bool WidgetEventRound(Events event, void*  event_args, 
@@ -301,8 +298,8 @@ void Widget::UpdateDefaultRegionSet()
 
 bool Widget::InsideP(Vector v)
 {
-    return v.GetX() - position.GetX() >= 0           &&
-           v.GetX() - position.GetX() <= size.GetX() &&
-           v.GetY() - position.GetY() >= 0           && 
-           v.GetY() - position.GetY() <= size.GetY();
+    return v.GetX() - position.GetX() >= -kPrecision &&
+           v.GetX() - position.GetX() <= size.GetX() + kPrecision &&
+           v.GetY() - position.GetY() >= -kPrecision && 
+           v.GetY() - position.GetY() <= size.GetY() + kPrecision;
 }

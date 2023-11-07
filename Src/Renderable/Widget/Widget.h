@@ -55,9 +55,9 @@ public :
     
     virtual bool  InsideP(Vector v);
 
-    Vector&       GetSize()            { return size; }
-    const Vector& GetSize()      const { return size; }
-    Vector        GetPosition();
+    Vector&       GetSize()            { return size;      }
+    const Vector& GetSize()      const { return size;      }
+    Vector        GetPosition()  const { return position;  }
     bool          GetAvailable() const { return available; }
     Widget*       GetParent()    const { return parent;    }
 

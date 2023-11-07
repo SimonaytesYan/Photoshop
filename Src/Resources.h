@@ -20,4 +20,5 @@ static const char* kSplineImgFile            = "Resources/Spline.png";
 static const char* kSplinePressedImgFile     = "Resources/SplinePressed.png";
 static const char* kFillImgFile              = "Resources/Fill.png";
 static const char* kFillPressedImgFile       = "Resources/FillPressed.png";
+
 #endif //SYM_RESOURCES
