@@ -53,7 +53,7 @@ public :
     virtual void     UpdateOwnDefaultRegionSet();
     void             RemoveSon              (Widget* son);
     
-    virtual bool  InsideP(Vector v);
+    virtual bool InsideP(Vector v);
 
     Vector&       GetSize()            { return size;      }
     const Vector& GetSize()      const { return size;      }

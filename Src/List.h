@@ -28,8 +28,8 @@ struct List
     int  Remove    (int index);
     int  Iterate   (int index);
     int  Deterate  (int index);
-    int  Begin     ();
-    int  End       ();
+    int  Begin     () const;
+    int  End       () const;
     int  FindFree  (int* index);
     int  ResizeUp  (int new_capacity);
     int  PushFront (T value);
@@ -73,7 +73,7 @@ int List<T>::Deterate(int index)
 }
 
 template <class T>
-int List<T>::Begin()
+int List<T>::Begin() const
 {
     if (capacity >= 1)
         return data[0].next;
@@ -81,7 +81,7 @@ int List<T>::Begin()
 }
 
 template <class T>
-int List<T>::End()
+int List<T>::End() const
 {
     if (capacity >= 1)
         return data[0].prev;
