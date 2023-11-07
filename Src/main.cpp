@@ -29,7 +29,7 @@
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 
-const double kDeltaTime      = 2;
+const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
 const double kLetterWidth    = 0.57;
@@ -55,7 +55,7 @@ struct FilterStruct
 	Filter*        filter;
 	Font           font;
 	EventManager*  event_manager;
-	Window*		   main_window;
+	Widget*		   root;
 };
 
 struct FilterArgsStruct
@@ -82,7 +82,7 @@ struct SaveCanvasStruct
 };
 
 void TestRegClip(RenderTarget& rend_targ);
-void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
+void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
@@ -105,8 +105,10 @@ int main()
 
 	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
 
+	RectangleWidget the_root(Vector(0, 0), Vector(WindowWidth, WindowHeight));
 	Window main_window(Vector(0, 0), 
 					   Vector(WindowWidth, WindowHeight), "Window1");
+	the_root.AddObject(&main_window);
 
 	FilterManager fm;
 	ToolManager   tm;
@@ -134,7 +136,7 @@ int main()
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
 
-	AddMenu(&main_window, &canvas, &fm, &event_manager);
+	AddMenu(&the_root, &main_window, &canvas, &fm, &event_manager);
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -191,20 +193,22 @@ int main()
 		}
 
 		STOP_TIMER();
-		if (GET_TIMER_SECONDS() > kDeltaTime)
+		size_t delta_time = GET_TIMER_SECONDS();
+		if (delta_time > kDeltaTime)
 		{
-			event_manager.OnClock(GET_TIMER_SECONDS());
+			fprintf(stderr, "Timer\n");
 			RESTART_TIMER();
+			event_manager.OnClock(delta_time);
 		}
 
-		main_window.Render(&rend_targ);
+		the_root.Render(&rend_targ);
 		
 		rend_targ.Display(&window);
 		window.display();
 	}
 }
 
-void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
+void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
 {
 	// Get resources
 	Font font;
@@ -257,7 +261,7 @@ void AddMenu(Window* window, Canvas* canvas, FilterManager* fm, EventManager* em
 	brightness_fs->filter_manager = fm;
 	brightness_fs->filter 	      = new BrightnessFilter();
 	brightness_fs->event_manager  = em;
-	brightness_fs->main_window	  = window;
+	brightness_fs->root	          = root;
 	brightness_fs->font			  = font;
 
 	TextButton* brightness_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
@@ -393,7 +397,7 @@ void SelectFilterArgs(void* _args)
 	int filter_args_n = filter_args.GetLength();
 	if (filter_args_n > 0)
 	{
-		Vector position = fs->main_window->GetPosition() + fs->main_window->GetSize() / 2;
+		Vector position = fs->root->GetPosition() + fs->root->GetSize() / 2;
 		Vector size(400, 2 * 50 + (filter_args_n + 1) * 100);
 		ModalWindow* dialog_box = new ModalWindow(position, size, 
 												  "Enter filter params", fs->event_manager);
@@ -424,7 +428,7 @@ void SelectFilterArgs(void* _args)
 									   		   SelectFilter, fas);
 		dialog_box->AddObject(ok_button);		
 		
-		fs->main_window->AddObject(dialog_box);
+		fs->root->AddObject(dialog_box);
 	}
 }
 

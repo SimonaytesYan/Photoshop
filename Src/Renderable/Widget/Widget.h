@@ -64,4 +64,22 @@ public :
     void          SetAvailable(bool new_available) { available = new_available; }
 };
 
+class RectangleWidget : public Widget
+{
+    Color background;
+
+public:
+    RectangleWidget(Vector position = Vector(0, 0), Vector size = Vector(0,0),
+                    Color background = Color(255, 255, 255), bool available = true) :
+    Widget     (position, size, available),
+    background (background)
+    {}
+
+    void Render(RenderTarget* render_target)
+    {
+        render_target->DrawRect(position, size, reg_set, background);
+        Widget::Render(render_target);
+    }
+};
+
 #endif  //SYM_SUB_WINDOW
