@@ -28,7 +28,7 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
         pressed = true;
         Vector delta = (mouse.position - slider->GetPosition()) * sensitivity;
         slider->Move(delta);
-        fprintf(stderr, "Inside Scroll Bar\n");
+        UpdateRegionSet();
 
         return true;
     }
