@@ -8,6 +8,7 @@
 #include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Button/Button.h"
+#include "Renderable/Widget/ScrollBar/ScrollBar.h"
 #include "Renderable/Widget/Canvas/Canvas.h"
 #include "Renderable/Widget/EditBox/EditBox.h"
 #include "Renderable/Widget/Label/Label.h"
@@ -138,6 +139,10 @@ int main()
 
 	AddMenu(&the_root, &main_window, &canvas, &fm, &event_manager);
 
+	ScrollBar scroll_bar(Vector(300, 300), Vector(500, 500), 
+						 Color(255, 128, 128), Color(128, 255, 128), 1);
+	main_window.AddObject(&scroll_bar);
+
 	INIT_TIMER();
 	RESTART_TIMER();
 	while (window.isOpen())
@@ -196,7 +201,6 @@ int main()
 		double delta_time = GET_TIMER_SECONDS();
 		if (delta_time > kDeltaTime)
 		{
-			fprintf(stderr, "Timer = %lg\n", delta_time);
 			RESTART_TIMER();
 			event_manager.OnClock(delta_time);
 		}

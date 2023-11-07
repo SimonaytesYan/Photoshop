@@ -6,6 +6,7 @@
 
 class Button : public Widget
 {
+protected :
     void*   args_press;
     void*   args_release;
     void    (*on_press)(void*);
