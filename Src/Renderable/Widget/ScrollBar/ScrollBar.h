@@ -24,7 +24,8 @@ public:
     last_mouse_pos  (Vector(-1, -1)),
     scroll          (_scroll),
     scroll_args     (_scroll_args),
-    sensitivity     (_sensitivity)
+    sensitivity     (_sensitivity),
+    pressed         (false)
     {
         slider = new RectangleWidget(_position, _size / 2, _slider_color);
         fprintf(stderr, "slider = %p\n", slider);
