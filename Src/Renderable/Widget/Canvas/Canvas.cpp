@@ -56,8 +56,7 @@ bool Canvas::OnMouseMove(MouseCondition mouse)
     static int cnt = 0;
     if (!InsideP(mouse.position))
     {
-        if (tm != nullptr && drawing)
-            DisableTool(mouse);
+        DisableTool(mouse);
         drawing = false;
         return false;
     }
@@ -66,6 +65,7 @@ bool Canvas::OnMouseMove(MouseCondition mouse)
     {
         DisableTool(mouse);
         drawing = true;
+        return false;
     }
 
     mouse.position = mouse.position - position;
@@ -88,8 +88,6 @@ bool Canvas::OnMouseRelease(MouseCondition mouse)
             mouse.position = mouse.position - position;
             tm->PaintOnRelease(data, tmp, mouse);    
         }
-        
-        return true;
     }
 
     return false;

@@ -28,10 +28,11 @@ Widget::~Widget()
 
 void Widget::Move(Vector delta)
 {
+    position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
     {
-        ClipRegion reg = ClipRegion(delta + default_reg_set[i].GetPosition(), 
-                                    default_reg_set[i].GetSize());
+        ClipRegion reg(delta + default_reg_set[i].GetPosition(), 
+                       default_reg_set[i].GetSize());
         default_reg_set.ChangeElem(i, reg);
     }
 
@@ -40,7 +41,6 @@ void Widget::Move(Vector delta)
         reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].GetPosition(), 
                                          reg_set[i].GetSize()));
     }
-    position = position + delta;
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         sub_widgets[i].val->Move(delta);
@@ -48,11 +48,11 @@ void Widget::Move(Vector delta)
 
 void Widget::RemoveSon(Widget* son)
 {
-    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+    for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
     {
-        if (sub_widgets[i].val == son)
+        if (sub_widgets[index].val == son)
         {
-            sub_widgets.Remove(i);
+            sub_widgets.Remove(index);
             break;
         }
     }
@@ -62,11 +62,21 @@ void Widget::Render(RenderTarget* render_target)
 {
     if (available)
     {
+        #ifdef DEBUG
+            fprintf(stderr, "render = %p\n",           this);
+            fprintf(stderr, "sub_widgets.size = %d\n", sub_widgets.size);
+            fprintf(stderr, "{\n");
+        #endif
+
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
             if (sub_widgets[index].val->GetAvailable())
                 sub_widgets[index].val->Render(render_target);
         }
+
+        #ifdef DEBUG
+            fprintf(stderr, "}\n");
+        #endif
     }
 }
 

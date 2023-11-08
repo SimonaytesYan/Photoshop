@@ -115,17 +115,15 @@ int main()
 	ToolManager   tm;
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
-	Canvas canvas(Vector(110, 160), Vector(1180, 780), &tm, &fm);
+	Canvas canvas(Vector(110, 160), Vector(1500, 1000), &tm, &fm);
 	canvas_window1.AddObject(&canvas);
-	main_window.AddObject(&canvas_window1);
 
-	ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas.GetSize().GetY()), 
-						 Color(255, 128, 128), Color(128, 255, 128), 1);
-
-	/*ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas.GetSize().GetY()), 
-						 Color(255, 128, 128), Color(128, 255, 128), 1, 
-						 &canvas, Vector(0, 0), Vector(300, 300));*/
+	ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas_window1.GetSize().GetY() - 50),
+						 Color(255, 128, 128), Color(128, 255, 128),
+						 &canvas, Vector(21, 0), canvas_window1.GetSize());
 	canvas_window1.AddObject(&scroll_bar);
+
+	main_window.AddObject(&canvas_window1);
 
 	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
 	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm, &fm);

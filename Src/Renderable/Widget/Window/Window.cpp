@@ -71,9 +71,7 @@ bool Window::OnMouseMove(MouseCondition mouse)
         else
         {
             Widget::Move(mouse.position - old_mouse_pos);
-
-            if (parent != nullptr)
-                parent->UpdateRegionSet();
+            UpdateRegionSet();
 
             old_mouse_pos = mouse.position;
         }

@@ -26,11 +26,22 @@ Vector FixDelta(const Widget& parent, const Widget& slider, Vector delta)
     return delta;
 }
 
+Vector CalcDelta(MouseCondition mouse, Vector sens, Widget* slider, Widget* scroll_bar)
+{
+    Vector delta((mouse.position - slider->GetPosition()).GetX() * sens.GetX(),
+                 (mouse.position - slider->GetPosition()).GetY() * sens.GetY());
+    delta = FixDelta(*scroll_bar, *slider, delta);
+
+    return delta;
+}
+
 bool ScrollBar::OnMouseMove(MouseCondition mouse)
 {
     if (pressed)
     {
-        Vector delta = FixDelta(*this, *slider, (mouse.position - last_mouse_pos) * sensitivity);
+        fprintf(stderr, "Move after press\n");
+
+        Vector delta = CalcDelta(mouse, sensitivity, slider, this);
 
         slider->Move(delta);
         UpdateRegionSet();
@@ -46,14 +57,15 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
 {
     if (InsideP(mouse.position))
     {
-        pressed = true;
+        fprintf(stderr, "Click inside scrollbar\n");
+        pressed        = true;
         last_mouse_pos = mouse.position;
         if (!slider->InsideP(mouse.position))
         {
-            Vector delta = FixDelta(*this, *slider, 
-                                    (mouse.position - slider->GetPosition()) * sensitivity);
-            slider->Move(delta);
+            Vector delta = CalcDelta(mouse, sensitivity, slider, this);
             UpdateRegionSet();
+            if (scroll != nullptr)
+                scroll(scroll_args, delta);
         }
 
         return true;
