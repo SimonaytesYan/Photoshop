@@ -9,7 +9,7 @@ This is a educational C++ project - GUI library based on SFML and simle version 
 To run the project you need install SFML.
 Then use command
 ```
-make prepare
+make preparation
 ```
 to prepare project to build.
 
