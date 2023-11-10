@@ -11,13 +11,6 @@ public :
     {
     }
 
-    bool OnMouseMove(MouseCondition mouse)    override
-    {
-        if (InsideP(mouse.position))
-            return Widget::OnMouseMove(mouse);
-        return false;
-    }
-
     bool OnMousePress(MouseCondition mouse)   override
     {
         if (InsideP(mouse.position))
@@ -47,8 +40,10 @@ class ScrollBar : public Widget
     void (*scroll)(void*, Vector);
 
 public:
+    // slider_size specified as a fraction of the scrollbar size
     ScrollBar(Vector _position,  Vector _size, 
               Color _background, Color _slider_color,
+              Vector _slider_size,
               void (*_scroll)(void*, Vector) = nullptr, 
               void* _scroll_args             = nullptr) :
     Widget          (_position, _size),
@@ -60,7 +55,10 @@ public:
     {
         // Create slider
 
-        slider = new RectangleWidget(position, size / 2, _slider_color);
+        slider = new RectangleWidget(position, 
+                                     Vector(size.GetX() * _slider_size.GetX(), 
+                                            size.GetY() * _slider_size.GetY()), 
+                                     _slider_color);
         AddObject(slider);
 
         // Calculate sens 
@@ -77,6 +75,7 @@ public:
 
     ScrollBar(Vector _position,  Vector _size, 
               Color _background, Color _slider_color,
+              Vector _slider_size,
               Widget* target, 
               Vector visible_box_offset, Vector visible_box_size) :
     Widget          (_position, _size),
@@ -86,6 +85,13 @@ public:
     scroll_args     (target),
     pressed         (false)
     {
+        // Create slider
+        slider = new RectangleWidget(position, 
+                                     Vector(size.GetX() * _slider_size.GetX(), 
+                                            size.GetY() * _slider_size.GetY()), 
+                                     _slider_color);
+        AddObject(slider);
+        
         // Calculate sens 
         double x_sens = 0;
         if ((target->GetSize() - visible_box_size).GetX() > 0 &&
@@ -100,10 +106,6 @@ public:
                      (size - slider->GetSize()).GetY();
 
         sensitivity = Vector(x_sens, y_sens);
-
-        // Create slider
-        slider = new RectangleWidget(_position, _size / 2, _slider_color);
-        AddObject(slider);
 
         // Create interlayer between target->parent and target
         Widget* parent = target->GetParent();

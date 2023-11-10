@@ -26,10 +26,11 @@ Vector FixDelta(const Widget& parent, const Widget& slider, Vector delta)
     return delta;
 }
 
-Vector CalcDelta(MouseCondition mouse, Vector sens, Widget* slider, Widget* scroll_bar)
+Vector CalcDelta(MouseCondition mouse, Vector last_mouse_pos, 
+                 Widget* slider, Widget* scroll_bar)
 {
-    Vector delta((mouse.position - slider->GetPosition()).GetX() * sens.GetX(),
-                 (mouse.position - slider->GetPosition()).GetY() * sens.GetY());
+    Vector delta((mouse.position - last_mouse_pos).GetX(),
+                 (mouse.position - last_mouse_pos).GetY());
     delta = FixDelta(*scroll_bar, *slider, delta);
 
     return delta;
@@ -39,14 +40,16 @@ bool ScrollBar::OnMouseMove(MouseCondition mouse)
 {
     if (pressed)
     {
-        fprintf(stderr, "Move after press\n");
-
-        Vector delta = CalcDelta(mouse, sensitivity, slider, this);
+        Vector delta = CalcDelta(mouse, last_mouse_pos, slider, this);
 
         slider->Move(delta);
         UpdateRegionSet();
         if (scroll != nullptr)
-            scroll(scroll_args, delta);
+        {
+            scroll(scroll_args, Vector(delta.GetX() * sensitivity.GetX(), 
+                                       delta.GetY() * sensitivity.GetY()));
+        }
+
         last_mouse_pos = mouse.position;
     }
     
@@ -65,7 +68,10 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
             Vector delta = CalcDelta(mouse, sensitivity, slider, this);
             UpdateRegionSet();
             if (scroll != nullptr)
-                scroll(scroll_args, delta);
+            {
+                scroll(scroll_args, Vector(delta.GetX()  * sensitivity.GetY(), 
+                                           delta.GetY() * sensitivity.GetY()));
+            }
         }
 
         return true;

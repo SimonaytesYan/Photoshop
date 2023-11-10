@@ -63,8 +63,8 @@ bool Canvas::OnMouseMove(MouseCondition mouse)
 
     if (drawing == false)
     {
-        DisableTool(mouse);
-        drawing = true;
+        //DisableTool(mouse);
+        //drawing = true;
         return false;
     }
 

@@ -115,13 +115,20 @@ int main()
 	ToolManager   tm;
 
 	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
-	Canvas canvas(Vector(110, 160), Vector(1500, 1000), &tm, &fm);
+	Canvas canvas(Vector(110, 160), Vector(1500, 1200), &tm, &fm);
 	canvas_window1.AddObject(&canvas);
 
-	ScrollBar scroll_bar(canvas.GetPosition(), Vector(20, canvas_window1.GetSize().GetY() - 50),
-						 Color(255, 128, 128), Color(128, 255, 128),
-						 &canvas, Vector(21, 0), canvas_window1.GetSize());
-	canvas_window1.AddObject(&scroll_bar);
+	ScrollBar vertical_scroll_bar(canvas.GetPosition(), Vector(20, canvas_window1.GetSize().GetY() - 50),
+						 		  Color(255, 128, 128), 
+						 		  Color(128, 255, 128), Vector(1, 0.5),
+						 		  &canvas, Vector(20, 20), canvas_window1.GetSize());
+	
+	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), Vector(canvas_window1.GetSize().GetX(), 20),
+						 		    Color(255, 128, 128), 
+						 		    Color(128, 255, 128), Vector(0.5, 1),
+						 		    &canvas, Vector(0, 20), canvas_window1.GetSize());
+	canvas_window1.AddObject(&vertical_scroll_bar);
+	canvas_window1.AddObject(&horizontal_scroll_bar);
 
 	main_window.AddObject(&canvas_window1);
 
@@ -131,7 +138,7 @@ int main()
 	main_window.AddObject(&canvas_window2);
 
 	// Adding tools	
-	Window tools(Vector(1400, 450), 
+	Window tools(Vector(1400, 450),
 			  	  Vector(500, 300), "Tools");
 	AddTools(&main_window, &tools, &tm);
 
