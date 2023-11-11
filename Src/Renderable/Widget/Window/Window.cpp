@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "../Button/Button.h"
 #include "../Label/Label.h"
-#include "../../../Resources.h"
+#include "../../../Constants.h"
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 

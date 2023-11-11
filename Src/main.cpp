@@ -3,7 +3,8 @@
 
 #include "List.h"
 #include "Stopwatch.h"
-#include "Resources.h"
+#include "Functors.h"
+#include "Constants.h"
 #include "Image/Image.h"
 #include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
@@ -30,282 +31,17 @@
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 
-const double kDeltaTime      = 0.25;
-const char   kWindowHeader[] = "Photoshop";
-const int    kMaxTextLength  = 50;
-const double kLetterWidth    = 0.57;
-const double kLetterHeight   = 1.5;
-size_t       WindowWidth     = 0;
-size_t       WindowHeight    = 0;
-
-struct ColorStruct
-{
-	ToolManager* tm;
-	Color		 color;
-};
-
-
-struct SaveCanvasStruct
-{
-	Canvas*	     canvas;
-	EditBox*     file_name_edit;  
-	ModalWindow* dialog_box;
-};
-
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
-struct SwitchTool : ButtonFunction
-{
-	ToolManager* tool_manager;
-	Tool*		 tool;
-
-	SwitchTool() :
-	tool_manager (nullptr),
-	tool 		 (nullptr)
-	{}
-
-	SwitchTool(ToolManager* _tool_manager, Tool* _tool) :
-	tool 		 (_tool),
-	tool_manager (_tool_manager)
-	{}
-
-	void operator()() override
-	{
-		tool_manager->ChangeTool(tool);
-	}
-
-	~SwitchTool() { delete tool; }
-};
-
-struct SwitchColor : ButtonFunction
-{
-	ToolManager* tool_manager;
-	Color		 color;
-
-	SwitchColor() :
-	tool_manager (nullptr),
-	color 		 (Color(0, 0, 0))
-	{}
-
-	SwitchColor(ToolManager* _tool_manager, Color _color) :
-	color 		 (_color),
-	tool_manager (_tool_manager)
-	{}
-
-	void operator()() override
-	{
-		tool_manager->ChangeColor(color);
-	}
-};
-
-struct SelectFilter : ButtonFunction
-{
-	FilterManager*      filter_manager;
-	Filter* 	        filter;
-	DynArray<EditBox*>* edit_boxes;
-	ModalWindow*		dialog_box;	
-	
-	SelectFilter()
-	{}
-
-	SelectFilter(FilterManager* filter_manager, Filter* filter, 
-			     DynArray<EditBox*>* edit_boxes, ModalWindow* dialog_box) :
-	filter_manager (filter_manager),
-	filter         (filter),
-	edit_boxes     (edit_boxes),
-	dialog_box     (dialog_box)
-	{}
-
-	void operator()() override
-	{
-		if (edit_boxes != nullptr)
-		{
-			DynArray<double> filter_params(edit_boxes->GetLength());
-
-			for (int i = 0; i < edit_boxes->GetLength(); i++)
-			{
-				filter_params[i] = atof((*edit_boxes)[i]->GetText());
-			}
-
-			filter->SetParams(filter_params);
-			dialog_box->Close();
-		}
-		filter_manager->SetFilter(filter);
-	}
-};
-
-
-struct SelectFilterArgs : ButtonFunction
-{
-	FilterManager* filter_manager;
-	Filter*        filter;
-	Font           font;
-	EventManager*  event_manager;
-	Widget*		   root;
-	
-	SelectFilterArgs()
-	{}
-
-	SelectFilterArgs(FilterManager* filter_manager, Filter* filter, 
-				     Font font, EventManager* event_manager, 
-				     Widget* root) :
-	filter_manager (filter_manager),
-	filter         (filter),
-	font           (font),
-	event_manager  (event_manager),
-	root		   (root)
-	{}
-
-	void operator()() override
-	{
-		DynArray<const char*> filter_args = filter->GetParamNames();
-
-		int filter_args_n = filter_args.GetLength();
-		if (filter_args_n > 0)
-		{
-			Vector position = root->GetPosition() + root->GetSize() / 2;
-			Vector size(400, 2 * 50 + (filter_args_n + 1) * 100);
-			ModalWindow* dialog_box = new ModalWindow(position, size, 
-													  "Enter filter params", event_manager);
-
-			position = position + Vector(0, 100);
-			DynArray<EditBox*>* edit_boxes = new DynArray<EditBox*>(0);
-
-			for (int i = 0; i < filter_args_n; i++)
-			{
-				EditBox* edit_box = new EditBox(position + Vector(200, i * 100), Vector(100, 50), 
-												font, kLetterWidth, kLetterHeight, 20);
-				edit_boxes->PushBack(edit_box);
-
-				dialog_box->AddObject(edit_box);
-				dialog_box->AddObject(new Label(position + Vector(25, i * 100), 
-												font, 20, filter_args[i]));
-			}
-
-			SelectFilter* select_filter_func = new SelectFilter(filter_manager, 
-																filter, 
-																edit_boxes, 
-																dialog_box);
-			TextButton* ok_button = new TextButton(position + Vector(200, filter_args_n * 100), 
-										   		   Vector(50, 50), Color(255, 255, 255), 
-												   font, 20, "Ok", Color(0, 0, 0),
-										   		   select_filter_func);
-			dialog_box->AddObject(ok_button);		
-
-			root->AddObject(dialog_box);
-		}
-	}
-};
-
-struct LastFilter : ButtonFunction
-{
-	FilterManager* filter_manager;
-
-	LastFilter() :
-	filter_manager (nullptr)
-	{}
-
-	LastFilter(FilterManager* _filter_manager) :
-	filter_manager (_filter_manager)
-	{}
-
-	void operator()() override
-	{
-		filter_manager->ApplyLastFilter();
-	}
-};
-
-
-struct SavingParams : ButtonFunction
-{
-	Window* 	  main_window;
-	EventManager* event_manager;
-	Canvas* 	  canvas;
-	Font 		  font;
-
-	SavingParams() :
-	main_window   (nullptr),
-	event_manager (nullptr),
-	canvas        (nullptr)
-	{}
-
-	SavingParams(Window* 	   main_window,
-				 EventManager* event_manager,
-				 Canvas* 	   canvas,
-				 Font 		   font) :
-	main_window   (main_window),
-	event_manager (event_manager),
-	canvas        (canvas),
-	font 		  (font)
-	{}
-
-	void operator()() override
-	{
-		Vector position = main_window->GetPosition() + main_window->GetSize() / 2;
-		Vector size(400, 300);
-		ModalWindow* dialog_box = new ModalWindow(position, size, 
-												  "Enter file name params", 
-												  event_manager);
-
-		position = position + Vector(50, 100);
-		dialog_box->AddObject(new Label(position, 
-										font, 20, "Filename"));
-		EditBox* edit_box = new EditBox(position + Vector(200, 0), Vector(100, 50), 
-										font, kLetterWidth, kLetterHeight, 20);
-		dialog_box->AddObject(edit_box);
-
-		SaveInFile* save_canvas_func = new SaveInFile(canvas, edit_box, dialog_box);
-		
-		TextButton* ok_button = new TextButton(position + Vector(200, 100), 
-									   		   Vector(50, 50), Color(255, 255, 255), 
-											   font, 20, "Ok", Color(0, 0, 0),
-									   		   save_canvas_func);
-		dialog_box->AddObject(ok_button);		
-
-		main_window->AddObject(dialog_box);
-	}
-};
-
-struct SaveInFile : ButtonFunction
-{
-	Canvas*	     canvas;
-	EditBox*     file_name_edit;  
-	ModalWindow* dialog_box;
-
-	SaveInFile() :
-	canvas         (nullptr),
-	file_name_edit (nullptr),
-	dialog_box     (nullptr)
-	{}
-
-	SaveInFile(Canvas*     canvas, 
-			  EditBox*     file_name_edit,
-			  ModalWindow* dialog_box) :
-	canvas         (canvas),
-	file_name_edit (file_name_edit),
-	dialog_box     (dialog_box)
-	{}
-
-	void operator()() override
-	{
-		Image img(canvas->GetData()->GetTexture());
-		sf::Image image = img.GetImage();
-		const char* file_name = file_name_edit->GetText();
-
-		image.saveToFile(file_name);
-		dialog_box->Close();
-	}
-};
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
-	WindowWidth  = window.getSize().x;
-	WindowHeight = window.getSize().y;
+	size_t WindowWidth  = window.getSize().x;
+	size_t WindowHeight = window.getSize().y;
 
 	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
 
@@ -502,12 +238,11 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	const int ToolsNumber = 7;
 	SwitchTool** tools_func = new SwitchTool*[ToolsNumber];
 	tools_func[0] = new SwitchTool(tm, new Brush(10));
-	tools_func[0] = new SwitchTool(tm, new CircleTool(10));
-	tools_func[1] = new SwitchTool(tm, new RectTool(10));
-	tools_func[2] = new SwitchTool(tm, new LineTool);
-	tools_func[3] = new SwitchTool(tm, new PolylineTool);
-	tools_func[4] = new SwitchTool(tm, new FillTool);
-	tools_func[5] = new SwitchTool(tm, new CircleTool(10));
+	tools_func[1] = new SwitchTool(tm, new CircleTool(10));
+	tools_func[2] = new SwitchTool(tm, new RectTool(10));
+	tools_func[3] = new SwitchTool(tm, new LineTool);
+	tools_func[4] = new SwitchTool(tm, new PolylineTool);
+	tools_func[5] = new SwitchTool(tm, new FillTool);
 	tools_func[6] = new SwitchTool(tm, new SplineTool(10));
 
 	const char* textures[ToolsNumber] = 
@@ -570,10 +305,4 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	}
 
 	main_window->AddObject(colors);
-}
-
-void UseLastFilter(void* _args)
-{
-	FilterManager* args = (FilterManager*)_args;
-	args->SetFilter(args->GetFilter());
 }

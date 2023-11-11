@@ -1,6 +1,8 @@
 #ifndef SYM_RESOURCES
 #define SYM_RESOURCES
 
+#include <stdlib.h>
+
 static const char* kBackgroundImgFile        = "Resources/SimpleButton.png";
 static const char* kBackgroundPressedImgFile = "Resources/SimpleButtonPressed.png";
 static const char* kCloseImgFile             = "Resources/Close.png";
@@ -20,5 +22,11 @@ static const char* kSplineImgFile            = "Resources/Spline.png";
 static const char* kSplinePressedImgFile     = "Resources/SplinePressed.png";
 static const char* kFillImgFile              = "Resources/Fill.png";
 static const char* kFillPressedImgFile       = "Resources/FillPressed.png";
+
+const double kDeltaTime      = 0.25;
+const char   kWindowHeader[] = "Photoshop";
+const int    kMaxTextLength  = 50;
+const double kLetterWidth    = 0.57;
+const double kLetterHeight   = 1.5;
 
 #endif //SYM_RESOURCES

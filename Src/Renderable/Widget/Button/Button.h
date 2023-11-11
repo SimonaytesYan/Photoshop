@@ -7,7 +7,8 @@
 struct ButtonFunction
 {
     virtual void operator()() = 0;
-    virtual ~ButtonFunction();
+    virtual ~ButtonFunction()
+    {}
 };
 
 class Button : public Widget
