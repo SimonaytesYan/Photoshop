@@ -38,12 +38,6 @@ const double kLetterHeight   = 1.5;
 size_t       WindowWidth     = 0;
 size_t       WindowHeight    = 0;
 
-struct ToolStruct
-{
-	ToolManager* tm;
-	Tool*		 tool;
-};
-
 struct ColorStruct
 {
 	ToolManager* tm;
@@ -108,9 +102,31 @@ struct SwitchTool : ButtonFunction
 	{
 		tool_manager->ChangeTool(tool);
 	}
+
+	~SwitchTool() { delete tool; }
 };
 
-void SwitchColor(void* args);
+struct SwitchColor : ButtonFunction
+{
+	ToolManager* tool_manager;
+	Color		 color;
+
+	SwitchColor() :
+	tool_manager (nullptr),
+	color 		 (Color(0, 0, 0))
+	{}
+
+	SwitchColor(ToolManager* _tool_manager, Color _color) :
+	color 		 (_color),
+	tool_manager (_tool_manager)
+	{}
+
+	void operator()() override
+	{
+		tool_manager->ChangeColor(color);
+	}
+};
+
 void SelectFilter(void* args);
 void SelectFilterArgs(void* args);
 void SaveCanvasInFile(void* args);
@@ -329,13 +345,6 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, Ev
 	window->AddObject(main_menu);
 }
 
-void SwitchColor(void* args)
-{
-	ColorStruct* cs = (ColorStruct*)args;
-
-	cs->tm->ChangeColor(cs->color);
-}
-
 void ClearCanvas(void* args)
 {
 	((Canvas*)args)->Clear();
@@ -344,15 +353,15 @@ void ClearCanvas(void* args)
 void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 {
 	const int ToolsNumber = 7;
-	SwitchTool* ts = new SwitchTool[ToolsNumber];
-	ts[0] = SwitchTool(tm, new Brush(10));
-	ts[0] = SwitchTool(tm, new CircleTool(10));
-	ts[1] = SwitchTool(tm, new RectTool(10));
-	ts[2] = SwitchTool(tm, new LineTool);
-	ts[3] = SwitchTool(tm, new PolylineTool);
-	ts[4] = SwitchTool(tm, new FillTool);
-	ts[5] = SwitchTool(tm, new CircleTool(10));
-	ts[6] = SwitchTool(tm, new SplineTool(10));
+	SwitchTool** tools_func = new SwitchTool*[ToolsNumber];
+	tools_func[0] = new SwitchTool(tm, new Brush(10));
+	tools_func[0] = new SwitchTool(tm, new CircleTool(10));
+	tools_func[1] = new SwitchTool(tm, new RectTool(10));
+	tools_func[2] = new SwitchTool(tm, new LineTool);
+	tools_func[3] = new SwitchTool(tm, new PolylineTool);
+	tools_func[4] = new SwitchTool(tm, new FillTool);
+	tools_func[5] = new SwitchTool(tm, new CircleTool(10));
+	tools_func[6] = new SwitchTool(tm, new SplineTool(10));
 
 	const char* textures[ToolsNumber] = 
 	{
@@ -385,7 +394,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 		tools->AddObject(new Button(tools->GetPosition() + Vector(10 + 50 * i, 50), 
 								   Vector(50, 50), 
 							   	   common_texture, pressed_texture, 
-							   	   new SwitchTool(tm, )));
+							   	   tools_func[i]));
 	}
 
 	main_window->AddObject(tools);
@@ -403,15 +412,14 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 						 	  Color(255,   0, 255),
 						 	  Color(0,   255, 255),};
 
-	ColorStruct* cs = new ColorStruct[colors_num];
+	SwitchColor* colors_func = nullptr;
 	for (int i = 0; i < colors_num; i++)
 	{
-		cs[i].color       = all_colors[i];
-		cs[i].tm          = tm;
+		colors_func = new SwitchColor(tm, all_colors[i]);
 
 		Vector position = colors->GetPosition() + Vector(10 + 50 * i, 50);
 		colors->AddObject(new Button(position, Vector(50, 50), all_colors[i], 
-								  	 SwitchColor, &cs[i]));
+								  	 colors_func));
 	}
 
 	main_window->AddObject(colors);
@@ -444,7 +452,7 @@ void SelectFilterArgs(void* _args)
 			dialog_box->AddObject(new Label(position + Vector(25, i * 100), 
 											fs->font, 20, filter_args[i]));
 		}
-
+	
 		FilterArgsStruct* fas = new FilterArgsStruct(); 
 		fas->edit_boxes     = edit_boxes;
 		fas->filter		    = fs->filter;
