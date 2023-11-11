@@ -10,15 +10,35 @@ const size_t kBorderThick     = 10;
 const Color  kBorderColor     = Color(175, 200, 175); //Color(0,   255, 255);
 const Color  kBackgroundColor = Color(255, 255, 255);
 
-void ButtonClose(void* args)
+struct ButtonMove : ButtonFunction
 {
-	((Window*)(args))->Close();
-}
+    Window* window;
 
-void ButtonMove(void* args)
+    ButtonMove() {}
+    ButtonMove(Window* window) : 
+    window (window) 
+    {}
+
+    void operator()() override
+    {
+        window->SetMoving(true);
+    }
+};
+
+struct ButtonClose : ButtonFunction
 {
-    ((Window*)(args))->moving = true;
-}
+    Window* window;
+
+    ButtonClose() {}
+    ButtonClose(Window* window) : 
+    window (window) 
+    {}
+
+    void operator()() override
+    {
+        window->Close();
+    }
+};
 
 Window::Window(Vector _position, Vector _size, const char* header) :
 Widget(_position, _size),
@@ -30,9 +50,9 @@ moving(false)
     Texture close_texture_press, close_texture;
     close_texture.LoadFromFile(kCloseImgFile);
     close_texture_press.LoadFromFile(kClosePressedImgFile);
-
+    
     Button* header_button = new Button(position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
-                                       kBorderColor, ButtonMove, (void*)this);         //Button to move window
+                                       kBorderColor, new ButtonMove(this));         //Button to move window
 
     header_button->AddObject(new Label(position, font, 40, header, kBorderColor));    //Header
     AddObject(header_button);
@@ -41,8 +61,8 @@ moving(false)
                                     position.GetY());
     AddObject(new Button(close_button_pos, Vector(kButtonSize, kButtonSize), 
                          close_texture, close_texture_press,
-                         nullptr, nullptr,
-                         ButtonClose, (void*)this));                       //Close button window
+                         nullptr,
+                         new ButtonClose(this)));                       //Close button window
 }
 
 Window::~Window()

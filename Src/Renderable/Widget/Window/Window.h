@@ -17,9 +17,9 @@ public:
     bool OnMousePress(MouseCondition mouse)   override;
     bool OnMouseMove (MouseCondition mouse)   override;
     bool OnMouseRelease(MouseCondition mouse) override;
+    
     void Close();
-
-    friend void ButtonMove(void* args);
+    void SetMoving(bool new_moving) { moving = new_moving; }
 };
 
 #endif //SYM_WINDOW
