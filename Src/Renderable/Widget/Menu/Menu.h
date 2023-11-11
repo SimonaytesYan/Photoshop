@@ -6,8 +6,6 @@
 #include "../Widget.h"
 #include "../Button/Button.h"
 
-void CallChangeExpandedStatus(void* _args);
-
 //
 // First element in Menu.objects is main button, 
 // press or it expand or collapse menu. 

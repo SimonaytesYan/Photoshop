@@ -3,7 +3,7 @@
 
 #include "../Tool.h"
 
-class FillTool : Tool
+class FillTool : public Tool
 {
 public : 
     FillTool()

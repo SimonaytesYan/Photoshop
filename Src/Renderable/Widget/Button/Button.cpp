@@ -6,13 +6,11 @@
 
 Button::Button(Vector _position, Vector _size, 
                Texture _texture, Texture  _press_texture,
-               void  (*_on_press)  (void*), void* _args_press,  
-               void  (*_on_release)(void*), void* _args_release) :
+               ButtonFunction*  _on_press,
+               ButtonFunction*  _on_release) :
 Widget           (_position, _size),
 on_press         (_on_press),
-args_press       (_args_press),
 on_release       (_on_release),
-args_release     (_args_release),
 press_texture    (_press_texture),
 texture          (_texture),
 background_color (Color(0, 0, 0, 0)),
@@ -21,13 +19,11 @@ pressed          (false)
 {}
 
 Button::Button(Vector _position, Vector _size, Color _background_color,
-               void  (*_on_press)  (void*), void* _args_press,  
-               void  (*_on_release)(void*), void* _args_release) :
+               ButtonFunction*  _on_press,
+               ButtonFunction*  _on_release) :
 Widget           (_position, _size),
 on_press         (_on_press),
-args_press       (_args_press),
 on_release       (_on_release),
-args_release     (_args_release),
 press_texture    (Texture()),
 texture          (Texture()),
 background_color (_background_color),
@@ -37,8 +33,8 @@ pressed          (false)
 
 Button::~Button()
 {
-    free(args_press);
-    free(args_release);
+    delete on_press;
+    delete on_release;
 }
 
 void Button::Render(RenderTarget* render_target)
@@ -75,8 +71,7 @@ bool Button::OnMousePress(MouseCondition mouse)
             pressed = true;
             if (on_press == nullptr)
                 return false;
-
-            on_press(args_press);   // call button function 
+            (*on_press)();      // call button function
         }
 
         return true;
@@ -97,7 +92,7 @@ bool Button::OnMouseRelease(MouseCondition mouse)
             if (on_release == nullptr)
                 return false;
 
-            on_release(args_release);
+            (*on_release)();
         }
 
         return true;
@@ -121,9 +116,9 @@ TextButton::TextButton(Vector   position, Vector  size,
                        Texture  texture, Texture  press_texture,
                        Font font, int character_size, const char* text,
                        Color text_color, Color background_color,
-                       void  (*on_press)(void*),   void* args_press,
-                       void  (*on_release)(void*), void* args_release) : 
-Button(position, size, texture, press_texture, on_press, args_press, on_release, args_release)
+                       ButtonFunction*  _on_press,
+                       ButtonFunction*  _on_release) : 
+Button(position, size, texture, press_texture, _on_press, _on_release)
 {
     AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }
@@ -132,11 +127,9 @@ TextButton::TextButton(Vector   position,  Vector   size,
                        Color    background_color,
                        Font font, int character_size, const char* text,
                        Color text_color,
-                       void  (*on_press)(void*), 
-                       void* args_press,
-                       void  (*on_release)(void*),
-                       void*  args_release) :
-Button(position, size, background_color, on_press, args_press, on_release, args_release)
+                       ButtonFunction*  _on_press,
+                       ButtonFunction*  _on_release) :
+Button(position, size, background_color, _on_press, _on_release)
 {
     AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }

@@ -1,6 +1,20 @@
 #include "Menu.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
+struct CallChangeExpandedStatus : public ButtonFunction
+{
+    Menu* menu;
+
+    CallChangeExpandedStatus(Menu* _menu) :
+    menu(_menu)
+    {}
+
+    void operator()() override
+    {
+        menu->ChangeExpandedStatus();
+    }
+};
+
 Menu::Menu(Button* button, bool _static_menu) :
 Widget        (button->GetPosition(), button->GetSize()),
 main_button   (button),
@@ -8,7 +22,7 @@ static_menu   (_static_menu)
 {
     if (!_static_menu)
     {
-        button->ChangePressFunction(CallChangeExpandedStatus, this);
+        button->ChangePressFunction(new CallChangeExpandedStatus(this));
         button->SetAvailable(true);
         expanded = false;
     }
@@ -44,12 +58,6 @@ void Menu::ChangeExpandedStatus()
         UpdateDefaultRegionSet();
         UpdateRegionSet();
     }
-}
-
-void CallChangeExpandedStatus(void* _args)
-{
-    Menu* args = (Menu*)_args;
-    args->ChangeExpandedStatus();
 }
 
 void Menu::AddObject(Widget* new_widget)

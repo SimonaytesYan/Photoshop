@@ -88,7 +88,28 @@ void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 void Say(void* args);
-void SwitchTool(void* args);
+
+struct SwitchTool : ButtonFunction
+{
+	ToolManager* tool_manager;
+	Tool*		 tool;
+
+	SwitchTool() :
+	tool_manager (nullptr),
+	tool 		 (nullptr)
+	{}
+
+	SwitchTool(ToolManager* _tool_manager, Tool* _tool) :
+	tool 		 (_tool),
+	tool_manager (_tool_manager)
+	{}
+
+	void operator()() override
+	{
+		tool_manager->ChangeTool(tool);
+	}
+};
+
 void SwitchColor(void* args);
 void SelectFilter(void* args);
 void SelectFilterArgs(void* args);
@@ -119,13 +140,13 @@ int main()
 	canvas_window1.AddObject(&canvas);
 
 	ScrollBar vertical_scroll_bar(canvas.GetPosition(), Vector(20, canvas_window1.GetSize().GetY() - 50),
-						 		  Color(255, 128, 128), 
-						 		  Color(128, 255, 128), Vector(1, 0.5),
+						 		  Color(100, 100, 100), 
+						 		  Color(200, 200, 200), Vector(1, 0.5),
 						 		  &canvas, Vector(20, 20), canvas_window1.GetSize());
 	
 	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), Vector(canvas_window1.GetSize().GetX(), 20),
-						 		    Color(255, 128, 128), 
-						 		    Color(128, 255, 128), Vector(0.5, 1),
+						 		    Color(100, 100, 100), 
+						 		    Color(200, 200, 200), Vector(0.5, 1),
 						 		    &canvas, Vector(0, 20), canvas_window1.GetSize());
 	canvas_window1.AddObject(&vertical_scroll_bar);
 	canvas_window1.AddObject(&horizontal_scroll_bar);
@@ -315,12 +336,6 @@ void SwitchColor(void* args)
 	cs->tm->ChangeColor(cs->color);
 }
 
-void SwitchTool(void* args)
-{
-	ToolStruct* ts = (ToolStruct*)args;
-	ts->tm->ChangeTool(ts->tool);
-}
-
 void ClearCanvas(void* args)
 {
 	((Canvas*)args)->Clear();
@@ -329,14 +344,15 @@ void ClearCanvas(void* args)
 void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 {
 	const int ToolsNumber = 7;
-	ToolStruct* ts = new ToolStruct[ToolsNumber];
-	ts[0] = {tm, (Tool*)(new Brush(10))};
-	ts[1] = {tm, (Tool*)(new CircleTool(10))},
-	ts[2] = {tm, (Tool*)(new RectTool(10))},
-	ts[3] = {tm, (Tool*)(new LineTool)},
-	ts[4] = {tm, (Tool*)(new PolylineTool)},
-	ts[5] = {tm, (Tool*)(new FillTool)};
-	ts[6] = {tm, (Tool*)(new SplineTool(10))};
+	SwitchTool* ts = new SwitchTool[ToolsNumber];
+	ts[0] = SwitchTool(tm, new Brush(10));
+	ts[0] = SwitchTool(tm, new CircleTool(10));
+	ts[1] = SwitchTool(tm, new RectTool(10));
+	ts[2] = SwitchTool(tm, new LineTool);
+	ts[3] = SwitchTool(tm, new PolylineTool);
+	ts[4] = SwitchTool(tm, new FillTool);
+	ts[5] = SwitchTool(tm, new CircleTool(10));
+	ts[6] = SwitchTool(tm, new SplineTool(10));
 
 	const char* textures[ToolsNumber] = 
 	{
@@ -369,7 +385,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 		tools->AddObject(new Button(tools->GetPosition() + Vector(10 + 50 * i, 50), 
 								   Vector(50, 50), 
 							   	   common_texture, pressed_texture, 
-							   	   SwitchTool, &ts[i]));
+							   	   new SwitchTool(tm, )));
 	}
 
 	main_window->AddObject(tools);

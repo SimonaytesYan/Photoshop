@@ -4,7 +4,7 @@
 #include "../Tool.h"
 #include "../../List.h"
 
-class Brush : Tool
+class Brush : public Tool
 {
     double       thickness;
     bool         drawing;
