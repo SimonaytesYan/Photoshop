@@ -44,13 +44,6 @@ struct ColorStruct
 	Color		 color;
 };
 
-struct GetFilename
-{
-	Window* 	  main_window;
-	EventManager* event_manager;
-	Canvas* 	  canvas;
-	Font 		  font;
-};
 
 struct SaveCanvasStruct
 {
@@ -207,7 +200,6 @@ struct SelectFilterArgs : ButtonFunction
 	}
 };
 
-
 struct LastFilter : ButtonFunction
 {
 	FilterManager* filter_manager;
@@ -226,9 +218,89 @@ struct LastFilter : ButtonFunction
 	}
 };
 
-void SaveCanvasInFile(void* args);
+
+struct SavingParams : ButtonFunction
+{
+	Window* 	  main_window;
+	EventManager* event_manager;
+	Canvas* 	  canvas;
+	Font 		  font;
+
+	SavingParams() :
+	main_window   (nullptr),
+	event_manager (nullptr),
+	canvas        (nullptr)
+	{}
+
+	SavingParams(Window* 	   main_window,
+				 EventManager* event_manager,
+				 Canvas* 	   canvas,
+				 Font 		   font) :
+	main_window   (main_window),
+	event_manager (event_manager),
+	canvas        (canvas),
+	font 		  (font)
+	{}
+
+	void operator()() override
+	{
+		Vector position = main_window->GetPosition() + main_window->GetSize() / 2;
+		Vector size(400, 300);
+		ModalWindow* dialog_box = new ModalWindow(position, size, 
+												  "Enter file name params", 
+												  event_manager);
+
+		position = position + Vector(50, 100);
+		dialog_box->AddObject(new Label(position, 
+										font, 20, "Filename"));
+		EditBox* edit_box = new EditBox(position + Vector(200, 0), Vector(100, 50), 
+										font, kLetterWidth, kLetterHeight, 20);
+		dialog_box->AddObject(edit_box);
+
+		SaveInFile* save_canvas_func = new SaveInFile(canvas, edit_box, dialog_box);
+		
+		TextButton* ok_button = new TextButton(position + Vector(200, 100), 
+									   		   Vector(50, 50), Color(255, 255, 255), 
+											   font, 20, "Ok", Color(0, 0, 0),
+									   		   save_canvas_func);
+		dialog_box->AddObject(ok_button);		
+
+		main_window->AddObject(dialog_box);
+	}
+};
+
+struct SaveInFile : ButtonFunction
+{
+	Canvas*	     canvas;
+	EditBox*     file_name_edit;  
+	ModalWindow* dialog_box;
+
+	SaveInFile() :
+	canvas         (nullptr),
+	file_name_edit (nullptr),
+	dialog_box     (nullptr)
+	{}
+
+	SaveInFile(Canvas*     canvas, 
+			  EditBox*     file_name_edit,
+			  ModalWindow* dialog_box) :
+	canvas         (canvas),
+	file_name_edit (file_name_edit),
+	dialog_box     (dialog_box)
+	{}
+
+	void operator()() override
+	{
+		Image img(canvas->GetData()->GetTexture());
+		sf::Image image = img.GetImage();
+		const char* file_name = file_name_edit->GetText();
+
+		image.saveToFile(file_name);
+		dialog_box->Close();
+	}
+};
+
 void ClearCanvas(void* args);
-void SavingParams(void* args);
 
 int main()
 {
@@ -370,17 +442,13 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, Ev
 									 		 Color(255, 255, 255));
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
-	GetFilename* get_fn   = new GetFilename();
-	get_fn->canvas        = canvas;
-	get_fn->font          = font;
-	get_fn->event_manager = em;
-	get_fn->main_window   = window;
+	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
 
 	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
 									 	Color(199, 181, 173),
 										font, 20, "Save", 
 										Color(255, 255, 255),
-										SavingParams, get_fn));
+										saving_func));
 	
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
@@ -512,49 +580,6 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	}
 
 	main_window->AddObject(colors);
-}
-
-void SavingParams(void* _args)
-{
-	GetFilename* args = (GetFilename*)_args;
-
-	Vector position = args->main_window->GetPosition() + args->main_window->GetSize() / 2;
-	Vector size(400, 300);
-	ModalWindow* dialog_box = new ModalWindow(position, size, 
-											  "Enter file name params", 
-											  args->event_manager);
-
-	position = position + Vector(50, 100);
-	dialog_box->AddObject(new Label(position, 
-									args->font, 20, "Filename"));
-	EditBox* edit_box = new EditBox(position + Vector(200, 0), Vector(100, 50), 
-									args->font, kLetterWidth, kLetterHeight, 20);
-	dialog_box->AddObject(edit_box);
-	
-	SaveCanvasStruct* save_canvas_struct = new SaveCanvasStruct();
-	save_canvas_struct->canvas		   = args->canvas;
-	save_canvas_struct->file_name_edit = edit_box;
-	save_canvas_struct->dialog_box	   = dialog_box;
-
-	TextButton* ok_button = new TextButton(position + Vector(200, 100), 
-								   		   Vector(50, 50), Color(255, 255, 255), 
-										   args->font, 20, "Ok", Color(0, 0, 0),
-								   		   SaveCanvasInFile, save_canvas_struct);
-	dialog_box->AddObject(ok_button);		
-		
-	args->main_window->AddObject(dialog_box);
-}
-
-void SaveCanvasInFile(void* _args)
-{
-	SaveCanvasStruct* args = (SaveCanvasStruct*)_args;
-
-	Image img(args->canvas->GetData()->GetTexture());
-	sf::Image image = img.GetImage();
-	const char* file_name = args->file_name_edit->GetText();
-	
-	image.saveToFile(file_name);
-	args->dialog_box->Close();
 }
 
 void UseLastFilter(void* _args)
