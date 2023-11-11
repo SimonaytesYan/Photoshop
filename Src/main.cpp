@@ -300,8 +300,6 @@ struct SaveInFile : ButtonFunction
 	}
 };
 
-void ClearCanvas(void* args);
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
@@ -452,14 +450,6 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, Ev
 	
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
-
-	// Create clear button 
-	TextButton* clear_button = new TextButton(Vector(110, 50), Vector(100, 50), 
-									 		  Color(199, 181, 173),
-									  		  font, 20, "Clear",
-									  		  Color(255, 255, 255),
-									  		  ClearCanvas, canvas);
-	main_menu->AddObject(clear_button);
 	
 	// Create filter menu
 	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
