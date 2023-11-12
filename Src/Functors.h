@@ -162,6 +162,67 @@ struct SaveInFile : ButtonFunction
 	void operator()() override;
 };
 
+struct OpeningParams : ButtonFunction
+{
+	Window* 	   main_window;
+	EventManager*  event_manager;
+	Font 		   font;
+	ToolManager*   tool_manager;
+	FilterManager* filter_manager;
+
+	OpeningParams() :
+	main_window    (nullptr),
+	event_manager  (nullptr),
+	tool_manager   (nullptr),
+	filter_manager (nullptr)
+	{}
+
+	OpeningParams(Window* 	   main_window,
+				  EventManager* event_manager,
+				  Font 		   font,
+			 	  ToolManager*   tool_manager,
+			 	  FilterManager* filter_manager) :
+	main_window   (main_window),
+	event_manager (event_manager),
+	font 		  (font),
+	tool_manager  (tool_manager),
+	filter_manager(filter_manager)
+	{}
+
+	void operator()() override;
+};
+
+struct OpenFile : ButtonFunction
+{
+	Window*		   main_window;
+	EditBox*       file_name_edit;  
+	ModalWindow*   dialog_box;
+	ToolManager*   tool_manager;
+	FilterManager* filter_manager;
+
+	OpenFile() :
+	main_window	   (nullptr),
+	file_name_edit (nullptr),
+	dialog_box     (nullptr),
+	tool_manager   (nullptr),
+	filter_manager (nullptr)
+	{}
+
+	OpenFile(Window*        main_window,
+	         EditBox*       file_name_edit,
+			 ModalWindow*   dialog_box,
+			 ToolManager*   tool_manager,
+			 FilterManager* filter_manager) :
+	file_name_edit (file_name_edit),
+	dialog_box     (dialog_box),
+	main_window	   (main_window),
+	tool_manager   (tool_manager),
+	filter_manager (filter_manager)
+	{}
+
+	void operator()() override;
+};
+
 //==============================FUNCTIONS IMPLEMENTATION========================
 
 void SwitchTool::operator()()
@@ -267,6 +328,52 @@ void SaveInFile::operator()()
 	const char* file_name = file_name_edit->GetText();
 
 	image.saveToFile(file_name);
+	dialog_box->Close();
+}
+
+void OpeningParams::operator()()
+{
+	Vector position = main_window->GetPosition() + main_window->GetSize() / 2;
+	Vector size(400, 300);
+	ModalWindow* dialog_box = new ModalWindow(position, size, 
+											  "Enter file name", 
+											  event_manager);
+
+	position = position + Vector(50, 100);
+	dialog_box->AddObject(new Label(position, 
+									font, 20, "File"));
+	EditBox* edit_box = new EditBox(position + Vector(200, 0), Vector(100, 50), 
+									font, kLetterWidth, kLetterHeight, 20);
+	dialog_box->AddObject(edit_box);
+
+	OpenFile* save_canvas_func = new OpenFile(main_window, edit_box, dialog_box, 
+											  tool_manager, filter_manager);
+	TextButton* ok_button = new TextButton(position + Vector(200, 100), 
+								   		   Vector(50, 50), Color(255, 255, 255), 
+										   font, 20, "Ok", Color(0, 0, 0),
+								   		   save_canvas_func);
+	dialog_box->AddObject(ok_button);		
+
+	main_window->AddObject(dialog_box);
+}
+
+void OpenFile::operator()()
+{
+	const char* file_name = file_name_edit->GetText();
+
+	Texture texture;
+	texture.LoadFromFile(file_name);
+
+	Vector position = main_window->GetPosition() + main_window->GetSize() / 10;
+	Window* canvas_window = new Window(position          - Vector(10, 50), 
+									   texture.GetSize() + Vector(20, 0), file_name);
+
+	Canvas* new_canvas = new Canvas(position, texture.GetSize(), tool_manager, filter_manager);
+	new_canvas->GetData()->DrawSprite(position, texture);	
+	canvas_window->AddObject(new_canvas);
+
+	main_window->AddObject(canvas_window);
+
 	dialog_box->Close();
 }
 

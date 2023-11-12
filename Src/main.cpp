@@ -32,7 +32,8 @@
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 
 void TestRegClip(RenderTarget& rend_targ);
-void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, EventManager* em);
+void AddMenu(Widget* root, Window* window, Canvas* canvas, 
+			FilterManager* fm, ToolManager* tm, EventManager* em);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
@@ -89,7 +90,7 @@ int main()
 	EventManager event_manager;
 	event_manager.AddObject(&main_window);
 
-	AddMenu(&the_root, &main_window, &canvas, &fm, &event_manager);
+	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager);
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -160,7 +161,8 @@ int main()
 	}
 }
 
-void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, EventManager* em)
+void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, 
+			 ToolManager* tm, EventManager* em)
 {
 	// Get resources
 	Font font;
@@ -177,13 +179,19 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, Ev
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
 	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
-
 	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
 									 	Color(199, 181, 173),
 										font, 20, "Save", 
 										Color(255, 255, 255),
 										saving_func));
 	
+	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
+	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
+									 	Color(199, 181, 173),
+										font, 20, "Open", 
+										Color(255, 255, 255),
+										opening_func));
+
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
 	
