@@ -1,10 +1,10 @@
 #include "Button.h"
-#include "../../../Vector/Vector.h"
+#include "../../../Vec2/Vec2.h"
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 #include "../Label/Label.h"
 
-Button::Button(Vector _position, Vector _size, 
+Button::Button(Vec2 _position, Vec2 _size, 
                Texture _texture, Texture  _press_texture,
                ButtonFunction*  _on_press,
                ButtonFunction*  _on_release) :
@@ -18,7 +18,7 @@ use_texture      (true),
 pressed          (false)
 {}
 
-Button::Button(Vector _position, Vector _size, Color _background_color,
+Button::Button(Vec2 _position, Vec2 _size, Color _background_color,
                ButtonFunction*  _on_press,
                ButtonFunction*  _on_release) :
 Widget           (_position, _size),
@@ -60,7 +60,7 @@ void Button::Render(RenderTarget* render_target)
     }
 }
 
-bool Button::OnMousePress(MouseCondition mouse)
+bool Button::OnMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -80,7 +80,7 @@ bool Button::OnMousePress(MouseCondition mouse)
     return false;
 }
 
-bool Button::OnMouseRelease(MouseCondition mouse)
+bool Button::OnMouseRelease(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -101,7 +101,7 @@ bool Button::OnMouseRelease(MouseCondition mouse)
     return false;
 }
 
-bool Button::OnMouseMove(MouseCondition mouse)
+bool Button::OnMouseMove(MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {
@@ -112,7 +112,7 @@ bool Button::OnMouseMove(MouseCondition mouse)
 
 //==============================TEXT BUTTON=========================
 
-TextButton::TextButton(Vector   position, Vector  size, 
+TextButton::TextButton(Vec2   position, Vec2  size, 
                        Texture  texture, Texture  press_texture,
                        Font font, int character_size, const char* text,
                        Color text_color, Color background_color,
@@ -123,7 +123,7 @@ Button(position, size, texture, press_texture, _on_press, _on_release)
     AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }
     
-TextButton::TextButton(Vector   position,  Vector   size, 
+TextButton::TextButton(Vec2   position,  Vec2   size, 
                        Color    background_color,
                        Font font, int character_size, const char* text,
                        Color text_color,

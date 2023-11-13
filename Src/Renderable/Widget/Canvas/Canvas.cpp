@@ -3,7 +3,7 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-Canvas::Canvas(Vector _position, Vector _size, 
+Canvas::Canvas(Vec2 _position, Vec2 _size, 
                ToolManager* _tm, FilterManager* _fm) :
 Widget(_position, _size),
 tm   (_tm),
@@ -15,7 +15,7 @@ tmp  (RenderTarget(_size))
     tmp.Clear(Color(0, 0, 0, 0));
 }
 
-void Canvas::DisableTool(MouseCondition mouse)
+void Canvas::DisableTool(MouseContext mouse)
 {
     if (tm != nullptr && drawing)
     {
@@ -25,7 +25,7 @@ void Canvas::DisableTool(MouseCondition mouse)
     }
 }
 
-bool Canvas::OnMousePress(MouseCondition mouse)
+bool Canvas::OnMousePress(MouseContext mouse)
 {
     if (Widget::OnMousePress(mouse))
         return true;
@@ -48,7 +48,7 @@ bool Canvas::OnMousePress(MouseCondition mouse)
     return false;
 }
 
-bool Canvas::OnMouseMove(MouseCondition mouse)
+bool Canvas::OnMouseMove(MouseContext mouse)
 {
     if (Widget::OnMouseMove(mouse))
         return true;
@@ -73,7 +73,7 @@ bool Canvas::OnMouseMove(MouseCondition mouse)
     return true;
 }
 
-bool Canvas::OnMouseRelease(MouseCondition mouse)
+bool Canvas::OnMouseRelease(MouseContext mouse)
 {
     if (Widget::OnMouseRelease(mouse))
     {

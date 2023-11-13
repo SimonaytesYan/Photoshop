@@ -44,47 +44,47 @@ int main()
 	size_t WindowWidth  = window.getSize().x;
 	size_t WindowHeight = window.getSize().y;
 
-	RenderTarget rend_targ(Vector(WindowWidth, WindowHeight));
+	RenderTarget rend_targ(Vec2(WindowWidth, WindowHeight));
 
-	RectangleWidget the_root(Vector(0, 0), Vector(WindowWidth, WindowHeight));
-	Window main_window(Vector(0, 0), 
-					   Vector(WindowWidth, WindowHeight), "Window1");
+	RectangleWidget the_root(Vec2(0, 0), Vec2(WindowWidth, WindowHeight));
+	Window main_window(Vec2(0, 0), 
+					   Vec2(WindowWidth, WindowHeight), "Window1");
 	the_root.AddObject(&main_window);
 
 	FilterManager fm;
 	ToolManager   tm;
 
-	Window canvas_window1(Vector(100, 100), Vector(1200, 850), "Canvas1");
-	Canvas canvas(Vector(110, 160), Vector(1500, 1200), &tm, &fm);
+	Window canvas_window1(Vec2(100, 100), Vec2(1200, 850), "Canvas1");
+	Canvas canvas(Vec2(110, 160), Vec2(1500, 1200), &tm, &fm);
 	canvas_window1.AddObject(&canvas);
 
-	ScrollBar vertical_scroll_bar(canvas.GetPosition(), Vector(20, canvas_window1.GetSize().GetY() - 50),
+	ScrollBar vertical_scroll_bar(canvas.GetPosition(), Vec2(20, canvas_window1.GetSize().GetY() - 50),
 						 		  Color(100, 100, 100), 
-						 		  Color(200, 200, 200), Vector(1, 0.5),
-						 		  &canvas, Vector(20, 20), canvas_window1.GetSize());
+						 		  Color(200, 200, 200), Vec2(1, 0.5),
+						 		  &canvas, Vec2(20, 20), canvas_window1.GetSize());
 	
-	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), Vector(canvas_window1.GetSize().GetX(), 20),
+	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), Vec2(canvas_window1.GetSize().GetX(), 20),
 						 		    Color(100, 100, 100), 
-						 		    Color(200, 200, 200), Vector(0.5, 1),
-						 		    &canvas, Vector(0, 20), canvas_window1.GetSize());
+						 		    Color(200, 200, 200), Vec2(0.5, 1),
+						 		    &canvas, Vec2(0, 20), canvas_window1.GetSize());
 	canvas_window1.AddObject(&vertical_scroll_bar);
 	canvas_window1.AddObject(&horizontal_scroll_bar);
 
 	main_window.AddObject(&canvas_window1);
 
-	Window canvas_window2(Vector(900, 150), Vector(500, 550), "Canvas2");
-	Canvas canvas2(Vector(910, 210), Vector(480, 480), &tm, &fm);
+	Window canvas_window2(Vec2(900, 150), Vec2(500, 550), "Canvas2");
+	Canvas canvas2(Vec2(910, 210), Vec2(480, 480), &tm, &fm);
 	canvas_window2.AddObject(&canvas2);
 	main_window.AddObject(&canvas_window2);
 
 	// Adding tools	
-	Window tools(Vector(1400, 450),
-			  	  Vector(500, 300), "Tools");
+	Window tools(Vec2(1400, 450),
+			  	  Vec2(500, 300), "Tools");
 	AddTools(&main_window, &tools, &tm);
 
 	// Adding colors
-	Window colors(Vector(1400, 150), 
-			  	  Vector(500, 300), "Colors");
+	Window colors(Vec2(1400, 150), 
+			  	  Vec2(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);	
 
 	EventManager event_manager;
@@ -110,25 +110,25 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
-					Vector position(sf::Mouse::getPosition().x,
+					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMousePress({position, (MouseKey)event.mouseButton.button});
+					event_manager.OnMousePress({position, (MouseButton)event.mouseButton.button});
 					break;
 				}
 				
 				case sf::Event::MouseMoved:
 				{
-					Vector position(sf::Mouse::getPosition().x,
+					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMouseMove(MouseCondition(position, (MouseKey)1));
+					event_manager.OnMouseMove(MouseContext(position, (MouseButton)1));
 					break;
 				}
 				
 				case sf::Event::MouseButtonReleased:
 				{
-					Vector position(sf::Mouse::getPosition().x,
+					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMouseRelease({position, (MouseKey)event.mouseButton.button});
+					event_manager.OnMouseRelease({position, (MouseButton)event.mouseButton.button});
 					break;
 				}
 
@@ -172,21 +172,21 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
 	// Create file menu
-	TextButton* file_button = new TextButton(Vector(10, 50), Vector(100, 50), 
+	TextButton* file_button = new TextButton(Vec2(10, 50), Vec2(100, 50), 
 									 		 Color(199, 181, 173),
 									 		 font, 20, "File", 
 									 		 Color(255, 255, 255));
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
 	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
-	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
+	file_menu->AddObject(new TextButton(Vec2(0, 0), Vec2(100, 50), 
 									 	Color(199, 181, 173),
 										font, 20, "Save", 
 										Color(255, 255, 255),
 										saving_func));
 	
 	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
-	file_menu->AddObject(new TextButton(Vector(0, 0), Vector(100, 50), 
+	file_menu->AddObject(new TextButton(Vec2(0, 0), Vec2(100, 50), 
 									 	Color(199, 181, 173),
 										font, 20, "Open", 
 										Color(255, 255, 255),
@@ -196,7 +196,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
 	
 	// Create filter menu
-	TextButton* filter_button = new TextButton(Vector(210, 50),  Vector(200, 50),
+	TextButton* filter_button = new TextButton(Vec2(210, 50),  Vec2(200, 50),
 									  		   Color(199, 181, 173),
 									  		   font, 20, "Filters",
 									  		   Color(255, 255, 255));
@@ -206,7 +206,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	SelectFilterArgs* brightness_func = new SelectFilterArgs(fm, new BrightnessFilter(), 
 															 font, em, root);
 
-	TextButton* brightness_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+	TextButton* brightness_filter = new TextButton(Vec2(0, 0), Vec2(200, 50), 
 									  		   	   Color(199, 181, 173),
 									  	   		   font, 20, "Bright",
 									  	   		   Color(255, 255, 255),
@@ -216,7 +216,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	SelectFilter* black_white_func = new SelectFilter(fm, new BlackAndWhiteFilter(), 
 													  nullptr, nullptr);
 
-	TextButton* black_white_filter = new TextButton(Vector(0, 0),  Vector(200, 50),  
+	TextButton* black_white_filter = new TextButton(Vec2(0, 0),  Vec2(200, 50),  
 									  		   	    Color(199, 181, 173),
 									  			    font, 20, "Black-White",
 									  			    Color(255, 255, 255),
@@ -224,7 +224,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	filters->AddObject(black_white_filter);
 
 	LastFilter* last_filter_func = new LastFilter(fm); 
-	TextButton* last_filter = new TextButton(Vector(0, 0), Vector(200, 50), 
+	TextButton* last_filter = new TextButton(Vec2(0, 0), Vec2(200, 50), 
 									  		 Color(199, 181, 173),
 											 font, 20, "Last filter",
 											 Color(255, 255, 255),
@@ -281,8 +281,8 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	{
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
-		tools->AddObject(new Button(tools->GetPosition() + Vector(10 + 50 * i, 50), 
-								   Vector(50, 50), 
+		tools->AddObject(new Button(tools->GetPosition() + Vec2(10 + 50 * i, 50), 
+								   Vec2(50, 50), 
 							   	   common_texture, pressed_texture, 
 							   	   tools_func[i]));
 	}
@@ -307,8 +307,8 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	{
 		colors_func = new SwitchColor(tm, all_colors[i]);
 
-		Vector position = colors->GetPosition() + Vector(10 + 50 * i, 50);
-		colors->AddObject(new Button(position, Vector(50, 50), all_colors[i], 
+		Vec2 position = colors->GetPosition() + Vec2(10 + 50 * i, 50);
+		colors->AddObject(new Button(position, Vec2(50, 50), all_colors[i], 
 								  	 colors_func));
 	}
 

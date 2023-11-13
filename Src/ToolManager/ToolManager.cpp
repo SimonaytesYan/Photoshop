@@ -1,7 +1,7 @@
 #include "ToolManager.h"
 #include "../RenderTarget/RenderTarget.h"
 
-void ToolManager::PaintOnPress(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+void ToolManager::PaintOnPress(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
 {
     if (tool != nullptr)
     {
@@ -9,7 +9,7 @@ void ToolManager::PaintOnPress(RenderTarget& data, RenderTarget& tmp, MouseCondi
     }
 }
 
-void ToolManager::PaintOnMove(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+void ToolManager::PaintOnMove(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
 {   
     if (tool != nullptr)
     {
@@ -17,7 +17,7 @@ void ToolManager::PaintOnMove(RenderTarget& data, RenderTarget& tmp, MouseCondit
     }
 }
 
-void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
 {
     if (tool != nullptr)
     {
@@ -25,7 +25,7 @@ void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseCon
     }
 }
 
-void ToolManager::DisableTool(RenderTarget& data, RenderTarget& tmp, MouseCondition mouse)
+void ToolManager::DisableTool(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
 {
     if (tool != nullptr)
         tool->Disable(data, tmp, mouse, color);

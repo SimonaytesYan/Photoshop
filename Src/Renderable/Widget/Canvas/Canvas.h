@@ -15,10 +15,10 @@ class Canvas : public Widget
     RenderTarget   data;
     RenderTarget   tmp;
     
-    void DisableTool(MouseCondition mouse);
+    void DisableTool(MouseContext mouse);
 
 public :
-    Canvas(Vector position, Vector size, 
+    Canvas(Vec2 position, Vec2 size, 
            ToolManager* tm = nullptr, FilterManager* fm = nullptr);
 
     ~Canvas()
@@ -26,9 +26,9 @@ public :
 
     RenderTarget* GetData() { return &data; }
 
-    bool OnMousePress  (MouseCondition mouse)        override;
-    bool OnMouseRelease(MouseCondition mouse)        override;
-    bool OnMouseMove   (MouseCondition mouse)        override;
+    bool OnMousePress  (MouseContext mouse)        override;
+    bool OnMouseRelease(MouseContext mouse)        override;
+    bool OnMouseMove   (MouseContext mouse)        override;
     void Render        (RenderTarget* render_target) override;
     void Clear();
 };

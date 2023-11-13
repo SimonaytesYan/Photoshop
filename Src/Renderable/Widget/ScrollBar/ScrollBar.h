@@ -6,12 +6,12 @@
 class Interlayer : public Widget
 {
 public :
-    Interlayer(Vector position, Vector size) :
+    Interlayer(Vec2 position, Vec2 size) :
     Widget(position, size)
     {
     }
 
-    bool OnMousePress(MouseCondition mouse)   override
+    bool OnMousePress(MouseContext mouse)   override
     {
         if (InsideP(mouse.position))
             return Widget::OnMousePress(mouse);
@@ -22,7 +22,7 @@ public :
 
 struct ScrollBarFunction 
 {
-    Vector delta;
+    Vec2 delta;
     virtual void operator()() = 0;
 
     virtual ~ScrollBarFunction() {};
@@ -48,29 +48,29 @@ struct MoveTarget : ScrollBarFunction
 class ScrollBar : public Widget
 {
     bool             pressed;
-    Vector           sensitivity;
+    Vec2           sensitivity;
     Color            background_color;
     RectangleWidget* slider;
-    Vector           last_mouse_pos;
+    Vec2           last_mouse_pos;
 
     ScrollBarFunction* scroll;
 
 public:
     // slider_size specified as a fraction of the scrollbar size
-    ScrollBar(Vector _position,  Vector _size, 
+    ScrollBar(Vec2 _position,  Vec2 _size, 
               Color _background, Color _slider_color,
-              Vector _slider_size,
+              Vec2 _slider_size,
               ScrollBarFunction* _scroll = nullptr);
 
-    ScrollBar(Vector _position,  Vector _size, 
+    ScrollBar(Vec2 _position,  Vec2 _size, 
               Color _background, Color _slider_color,
-              Vector _slider_size,
+              Vec2 _slider_size,
               Widget* target, 
-              Vector visible_box_offset, Vector visible_box_size);
+              Vec2 visible_box_offset, Vec2 visible_box_size);
 
-    bool OnMouseRelease(MouseCondition mouse) override;
-    bool OnMousePress  (MouseCondition mouse) override;
-    bool OnMouseMove   (MouseCondition mouse) override;
+    bool OnMouseRelease(MouseContext mouse) override;
+    bool OnMousePress  (MouseContext mouse) override;
+    bool OnMouseMove   (MouseContext mouse) override;
     void Render        (RenderTarget* tr)     override;
 
     ~ScrollBar();

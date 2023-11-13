@@ -13,9 +13,9 @@ bool Texture::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-Vector Texture::GetSize()
+Vec2 Texture::GetSize()
 {
-    return Vector(data.getSize().x, data.getSize().y);
+    return Vec2(data.getSize().x, data.getSize().y);
 }
 
 bool Texture::LoadFromImage(Image img)

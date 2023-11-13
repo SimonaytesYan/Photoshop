@@ -8,23 +8,23 @@ class Brush : public Tool
 {
     double       thickness;
     bool         drawing;
-    List<Vector> vertexes;
+    List<Vec2> vertexes;
 
 public : 
     Brush(double _thickness) :
     thickness(_thickness),
     drawing  (false),
-    vertexes (List<Vector>(0))
+    vertexes (List<Vec2>(0))
     {}
 
     void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) override;
+                        MouseContext mouse, Color color) override;
     void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) override;
+                        MouseContext mouse, Color color) override;
     void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                        MouseCondition mouse, Color color) override;
+                        MouseContext mouse, Color color) override;
     void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
-                        MouseCondition mouse, Color         color) override;
+                        MouseContext mouse, Color         color) override;
     void Interpolation(RenderTarget& data, RenderTarget& tmp, Color color);
 };
 

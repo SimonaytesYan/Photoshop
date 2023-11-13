@@ -1,20 +1,20 @@
 #include "ScrollBar.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-ScrollBar::ScrollBar(Vector _position,  Vector _size, 
+ScrollBar::ScrollBar(Vec2 _position,  Vec2 _size, 
                      Color _background, Color _slider_color,
-                     Vector _slider_size,
+                     Vec2 _slider_size,
                      ScrollBarFunction* _scroll) :
 Widget          (_position, _size),
 background_color(_background),
-last_mouse_pos  (Vector(-1, -1)),
+last_mouse_pos  (Vec2(-1, -1)),
 scroll          (_scroll),
 pressed         (false)
 {
     // Create slider
 
     slider = new RectangleWidget(position, 
-                                 Vector(size.GetX() * _slider_size.GetX(), 
+                                 Vec2(size.GetX() * _slider_size.GetX(), 
                                         size.GetY() * _slider_size.GetY()), 
                                  _slider_color);
     AddObject(slider);
@@ -27,23 +27,23 @@ pressed         (false)
     if ((size - slider->GetSize()).GetY() != 0)
         y_sens = size.GetY() / (size - slider->GetSize()).GetY();
 
-    sensitivity = Vector(x_sens, y_sens);
+    sensitivity = Vec2(x_sens, y_sens);
 }
 
-ScrollBar::ScrollBar(Vector _position,  Vector _size, 
+ScrollBar::ScrollBar(Vec2 _position,  Vec2 _size, 
                      Color _background, Color _slider_color,
-                     Vector _slider_size,
+                     Vec2 _slider_size,
                      Widget* target, 
-                     Vector visible_box_offset, Vector visible_box_size) :
+                     Vec2 visible_box_offset, Vec2 visible_box_size) :
 Widget          (_position, _size),
 background_color(_background),
-last_mouse_pos  (Vector(-1, -1)),
+last_mouse_pos  (Vec2(-1, -1)),
 scroll          (new MoveTarget(target)),
 pressed         (false)
 {
     // Create slider
     slider = new RectangleWidget(position, 
-                                 Vector(size.GetX() * _slider_size.GetX(), 
+                                 Vec2(size.GetX() * _slider_size.GetX(), 
                                         size.GetY() * _slider_size.GetY()), 
                                  _slider_color);
     AddObject(slider);
@@ -61,7 +61,7 @@ pressed         (false)
         y_sens = (target->GetSize() - visible_box_size).GetY() / 
                  (size - slider->GetSize()).GetY();
 
-    sensitivity = Vector(x_sens, y_sens);
+    sensitivity = Vec2(x_sens, y_sens);
 
     // Create interlayer between target->parent and target
     Widget* parent = target->GetParent();
@@ -74,52 +74,52 @@ pressed         (false)
 }
 
 // Change delta if delta move child from parent
-Vector FixDelta(const Widget& parent, const Widget& slider, Vector delta)
+Vec2 FixDelta(const Widget& parent, const Widget& slider, Vec2 delta)
 {
-    Vector v0 = delta + slider.GetPosition();
-    Vector v1 = v0 + slider.GetSize();
+    Vec2 v0 = delta + slider.GetPosition();
+    Vec2 v1 = v0 + slider.GetSize();
 
     if (v0.GetX() < parent.GetPosition().GetX())
-        delta = Vector((parent.GetPosition() - slider.GetPosition()).GetX(), 
+        delta = Vec2((parent.GetPosition() - slider.GetPosition()).GetX(), 
                        delta.GetY());
     if (v0.GetY() < parent.GetPosition().GetY())
-        delta = Vector(delta.GetX(),
+        delta = Vec2(delta.GetX(),
                        (parent.GetPosition() - slider.GetPosition()).GetY());
 
     if (v1.GetX() > (parent.GetPosition() + parent.GetSize()).GetX())
-        delta = Vector((parent.GetPosition() + parent.GetSize() - 
+        delta = Vec2((parent.GetPosition() + parent.GetSize() - 
                         (slider.GetPosition() + slider.GetSize())).GetX(), 
                        delta.GetY());
     if (v1.GetY() > (parent.GetPosition() + parent.GetSize()).GetY())
-        delta = Vector(delta.GetX(),
+        delta = Vec2(delta.GetX(),
                        (parent.GetPosition() + parent.GetSize() - 
                         (slider.GetPosition() + slider.GetSize())).GetY());
 
     return delta;
 }
 
-Vector CalcDelta(MouseCondition mouse, Vector last_mouse_pos, 
+Vec2 CalcDelta(MouseContext mouse, Vec2 last_mouse_pos, 
                  Widget* slider, Widget* scroll_bar)
 {
-    Vector delta((mouse.position - last_mouse_pos).GetX(),
+    Vec2 delta((mouse.position - last_mouse_pos).GetX(),
                  (mouse.position - last_mouse_pos).GetY());
     delta = FixDelta(*scroll_bar, *slider, delta);
 
     return delta;
 }
 
-bool ScrollBar::OnMouseMove(MouseCondition mouse)
+bool ScrollBar::OnMouseMove(MouseContext mouse)
 {
     if (pressed)
     {
-        Vector delta = CalcDelta(mouse, last_mouse_pos, slider, this);
+        Vec2 delta = CalcDelta(mouse, last_mouse_pos, slider, this);
 
         slider->Move(delta);
         UpdateRegionSet();
         if (scroll != nullptr)
         {
             fprintf(stderr, "Want to move\n");
-            scroll->delta = Vector(delta.GetX() * sensitivity.GetX(), 
+            scroll->delta = Vec2(delta.GetX() * sensitivity.GetX(), 
                                    delta.GetY() * sensitivity.GetY());
             (*scroll)();
         }
@@ -130,7 +130,7 @@ bool ScrollBar::OnMouseMove(MouseCondition mouse)
     return false;
 }
 
-bool ScrollBar::OnMousePress(MouseCondition mouse)
+bool ScrollBar::OnMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -139,11 +139,11 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
         last_mouse_pos = mouse.position;
         if (!slider->InsideP(mouse.position))
         {
-            Vector delta = CalcDelta(mouse, sensitivity, slider, this);
+            Vec2 delta = CalcDelta(mouse, sensitivity, slider, this);
             UpdateRegionSet();
             if (scroll != nullptr)
             {
-                scroll->delta = Vector(delta.GetX() * sensitivity.GetX(), 
+                scroll->delta = Vec2(delta.GetX() * sensitivity.GetX(), 
                                        delta.GetY() * sensitivity.GetY());
                 (*scroll)();
             }
@@ -155,7 +155,7 @@ bool ScrollBar::OnMousePress(MouseCondition mouse)
     return false;
 }
 
-bool ScrollBar::OnMouseRelease(MouseCondition mouse)
+bool ScrollBar::OnMouseRelease(MouseContext mouse)
 {
     pressed = false;
     return false;

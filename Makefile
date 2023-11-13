@@ -60,9 +60,9 @@ edit_box_release:
 	g++ -c $(RELEASE_FLAGS) Src/Renderable/Widget/EditBox/EditBox.cpp -o Obj/EditBox.o
 
 vector_debug:
-	g++ -c $(DEBUG_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
+	g++ -c $(DEBUG_FLAGS) Src/Vec2/Vec2.cpp -o Obj/Vector.o
 vector_release:
-	g++ -c $(RELEASE_FLAGS) Src/Vector/Vector.cpp -o Obj/Vector.o
+	g++ -c $(RELEASE_FLAGS) Src/Vec2/Vec2.cpp -o Obj/Vector.o
 
 render_target_debug:
 	g++ -c $(DEBUG_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o

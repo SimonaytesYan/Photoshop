@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../Vector/Vector.h"
+#include "../Vec2/Vec2.h"
 
 class Image;
 
@@ -19,7 +19,7 @@ public:
     bool            LoadFromFile(const char* filename);
     sf::Texture*    GetTexture  ();
     bool            LoadFromImage(Image img);
-    Vector          GetSize(); 
+    Vec2          GetSize(); 
 };
 
 #endif //SYM_TEXTURE

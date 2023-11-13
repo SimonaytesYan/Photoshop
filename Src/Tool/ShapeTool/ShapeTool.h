@@ -16,16 +16,16 @@ public :
     {}
 
     virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                                MouseCondition mouse, Color color) override;
+                                MouseContext mouse, Color color) override;
     virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
-                                MouseCondition mouse, Color color) override;
+                                MouseContext mouse, Color color) override;
     virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                                MouseCondition mouse, Color color) override;
+                                MouseContext mouse, Color color) override;
     virtual void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
-                                MouseCondition mouse, Color         color) override;
+                                MouseContext mouse, Color         color) override;
 
     virtual void CalcAndDrawShape(RenderTarget& target, 
-                                  MouseCondition mouse, 
+                                  MouseContext mouse, 
                                   Color color) = 0;
 };
 

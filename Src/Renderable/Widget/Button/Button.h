@@ -25,14 +25,14 @@ protected :
     Color           background_color;       //use only if texture_button == false
 
 public :
-    Button(Vector          _position, 
-           Vector          _size, 
+    Button(Vec2          _position, 
+           Vec2          _size, 
            Texture         _texture,
            Texture         _press_texture,
            ButtonFunction*  _on_press   = nullptr,
            ButtonFunction*  _on_release = nullptr);
-    Button(Vector   _position, 
-           Vector   _size, 
+    Button(Vec2   _position, 
+           Vec2   _size, 
            Color    _background_color,
            ButtonFunction* _on_press   = nullptr,
            ButtonFunction* _on_release = nullptr);
@@ -44,15 +44,15 @@ public :
     }
        
     virtual void Render        (RenderTarget* render_target) override;
-            bool OnMousePress  (MouseCondition mouse)        override;
-            bool OnMouseRelease(MouseCondition mouse)        override;
-            bool OnMouseMove   (MouseCondition mouse)        override;
+            bool OnMousePress  (MouseContext mouse)        override;
+            bool OnMouseRelease(MouseContext mouse)        override;
+            bool OnMouseMove   (MouseContext mouse)        override;
 };
 
 class TextButton : public Button
 {
     public : 
-    TextButton(Vector   _position, Vector   _size, 
+    TextButton(Vec2   _position, Vec2   _size, 
                Texture  _texture,  Texture  _press_texture,
                Font font, int character_size, const char* text = "Button",
                Color text_color = Color(0, 0, 0), 
@@ -60,7 +60,7 @@ class TextButton : public Button
                ButtonFunction*  _on_press   = nullptr,
                ButtonFunction*  _on_release = nullptr);
     
-    TextButton(Vector   _position, Vector   _size, 
+    TextButton(Vec2   _position, Vec2   _size, 
                Color    _background_color,
                Font font, int character_size, const char* text = "Button",
                Color text_color = Color(0, 0, 0), 

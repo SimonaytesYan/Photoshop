@@ -20,7 +20,7 @@ class EditBox : public Widget
     bool   cursor_visible;
 
 public: 
-    EditBox(Vector position, Vector size, 
+    EditBox(Vec2 position, Vec2 size, 
             Font _font, double _letter_width, double _letter_height, int _chapter_size) :
     Widget         (position, size),
     font           (_font),
@@ -46,7 +46,7 @@ public:
         return text.GetArray();
     }
 
-    bool OnMousePress(MouseCondition mouse) override;
+    bool OnMousePress(MouseContext mouse) override;
     bool OnKeyPress  (Key key)              override;
     bool OnClock     (size_t delta)         override;
     void Render      (RenderTarget* rt)     override;

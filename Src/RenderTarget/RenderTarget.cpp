@@ -11,17 +11,17 @@ sf::Color ConvertColor(Color color)
     return sf::Color(color.r, color.g, color.b, color.a);
 }
 
-sf::Vector2f ConvertVecF(Vector vec)
+sf::Vector2f ConvertVecF(Vec2 vec)
 {
     return sf::Vector2f(vec.GetX(), vec.GetY());
 }
 
-sf::Vector2i ConvertVecI(Vector vec)
+sf::Vector2i ConvertVecI(Vec2 vec)
 {
     return sf::Vector2i(vec.GetX(), vec.GetY());
 }
 
-RenderTarget::RenderTarget(Vector size)
+RenderTarget::RenderTarget(Vec2 size)
 {
     data.create(size.GetX(), size.GetY()); 
 }
@@ -40,7 +40,7 @@ void DrawWithRegionSet(const RegionSet& rend_set, sf::RenderTexture& data,
     }
 }
 
-void RenderTarget::DrawCircle(Vector position, double r, Color color, const RegionSet& rend_set)
+void RenderTarget::DrawCircle(Vec2 position, double r, Color color, const RegionSet& rend_set)
 {
     sf::CircleShape circle(r);
     circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
@@ -55,14 +55,14 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, const Regi
     DrawWithRegionSet(rend_set, data, tmp_target);
 }
 
-void RenderTarget::DrawRect(Vector position, Vector size, 
+void RenderTarget::DrawRect(Vec2 position, Vec2 size, 
                             const RegionSet& rend_set, Color fill_color,
                             int border_size, Color border_color)
 {
     RegionSet rect_set;
-    rect_set.AddRegion(ClipRegion(Vector(position.GetX(),
+    rect_set.AddRegion(ClipRegion(Vec2(position.GetX(),
                                          position.GetY()),
-                                  Vector(size.GetX(),
+                                  Vec2(size.GetX(),
                                          size.GetY())));
     rect_set &= rend_set;
     #ifdef DEBUG_REGIONS
@@ -71,18 +71,18 @@ void RenderTarget::DrawRect(Vector position, Vector size,
         DrawRegionSet(rect_set, fill_color);
         RegionSet border_set;
         border_set.AddRegion(ClipRegion(position,
-                                        Vector(border_size, size.GetY())));      //left
+                                        Vec2(border_size, size.GetY())));      //left
 
         border_set.AddRegion(ClipRegion(position,
-                                        Vector(size.GetX(), border_size)));      //down
+                                        Vec2(size.GetX(), border_size)));      //down
 
-        border_set.AddRegion(ClipRegion(Vector((position + size).GetX() - border_size,
+        border_set.AddRegion(ClipRegion(Vec2((position + size).GetX() - border_size,
                                         position.GetY()),
-                                        Vector(border_size, size.GetY())));      //right
+                                        Vec2(border_size, size.GetY())));      //right
 
-        border_set.AddRegion(ClipRegion(Vector(position.GetX(),
+        border_set.AddRegion(ClipRegion(Vec2(position.GetX(),
                                         (position + size).GetY() - border_size),
-                                        Vector(size.GetX(), border_size)));      //up
+                                        Vec2(size.GetX(), border_size)));      //up
 
         border_set &= rend_set;
         DrawRegionSet(border_set, border_color);
@@ -109,7 +109,7 @@ void RenderTarget::Display()
     data.display();
 }
 
-void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet& rend_set)
+void RenderTarget::DrawSprite(Vec2 position, Texture texture, const RegionSet& rend_set)
 {
     #ifdef DEBUG_REGIONS
         RegionSet result;
@@ -132,7 +132,7 @@ void RenderTarget::DrawSprite(Vector position, Texture texture, const RegionSet&
     #endif
 }
 
-bool InsideP(Vector v, Vector position, Vector size)
+bool InsideP(Vec2 v, Vec2 position, Vec2 size)
 {
     return v.GetX() - position.GetX() > 0           &&
            v.GetX() - position.GetX() < size.GetX() &&
@@ -140,7 +140,7 @@ bool InsideP(Vector v, Vector position, Vector size)
            v.GetY() - position.GetY() < size.GetY();
 }
 
-void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_set)
+void RenderTarget::SetPixel(Vec2 position, Color color, const RegionSet& rend_set)
 {
     sf::RectangleShape shape(sf::Vector2f(1, 1));
     shape.setPosition(position.GetX(), position.GetY());
@@ -156,13 +156,13 @@ void RenderTarget::SetPixel(Vector position, Color color, const RegionSet& rend_
     }
 }
 
-void RenderTarget::DrawText(Vector position, Font font, const char* text, 
+void RenderTarget::DrawText(Vec2 position, Font font, const char* text, 
                             int character_size, Color color, 
                             const RegionSet& rend_set)
 {
     #ifdef DEBUG_REGIONS
         RegionSet result;
-        result.AddRegion(ClipRegion(position, Vector(character_size * strlen(text), character_size + 10)));
+        result.AddRegion(ClipRegion(position, Vec2(character_size * strlen(text), character_size + 10)));
 
         result &= rend_set;
 
@@ -277,7 +277,7 @@ void RenderTarget::Clear(Color color)
     data.clear(ConvertColor(color));
 }
 
-void RenderTarget::SetPixel(Vector position, Color color)
+void RenderTarget::SetPixel(Vec2 position, Color color)
 {
     sf::RectangleShape shape(sf::Vector2f(1, 1));
     shape.setPosition(position.GetX(), position.GetY());
@@ -286,7 +286,7 @@ void RenderTarget::SetPixel(Vector position, Color color)
     data.draw(shape);
 }
 
-void RenderTarget::DrawCircle(Vector position, double r, Color color, Vector scale)
+void RenderTarget::DrawCircle(Vec2 position, double r, Color color, Vec2 scale)
 {
     sf::CircleShape circle(r);
     circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
@@ -296,7 +296,7 @@ void RenderTarget::DrawCircle(Vector position, double r, Color color, Vector sca
     data.draw(circle);
 }
 
-void RenderTarget::DrawLine(Vector v0, Vector v1, Color color)
+void RenderTarget::DrawLine(Vec2 v0, Vec2 v1, Color color)
 {
     sf::Vertex line[] =
     {
@@ -309,7 +309,7 @@ void RenderTarget::DrawLine(Vector v0, Vector v1, Color color)
     data.draw(line, 2, sf::Lines);
 }
 
-void RenderTarget::DrawRect(Vector position, Vector size,
+void RenderTarget::DrawRect(Vec2 position, Vec2 size,
                             Color fill_color,
                             int border_size, Color border_color)
 {
@@ -323,7 +323,7 @@ void RenderTarget::DrawRect(Vector position, Vector size,
     data.draw(rect);
 }
 
-void RenderTarget::DrawSprite(Vector position, Texture texture)
+void RenderTarget::DrawSprite(Vec2 position, Texture texture)
 {
     sf::Sprite sprite(*texture.GetTexture());
     sprite.setPosition(position.GetX(), position.GetY());

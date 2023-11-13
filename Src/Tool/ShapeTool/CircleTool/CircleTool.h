@@ -11,7 +11,7 @@ public :
     {}
 
     void CalcAndDrawShape(RenderTarget& target, 
-                           MouseCondition mouse, 
+                           MouseContext mouse, 
                            Color color) override;
 };
 

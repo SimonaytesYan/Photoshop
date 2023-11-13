@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "../Renderable.h"
-#include "../../Vector/Vector.h"
+#include "../../Vec2/Vec2.h"
 #include "../../List.h"
 #include "../../Keys.h"
 #include "../../RegionSet/RegionSet.h"
@@ -21,25 +21,25 @@ class Widget : public Renderable, public EventProcessable
 protected:
     bool          available;
     List<Widget*> sub_widgets;
-    Vector        position;
-    Vector        size;
+    Vec2        position;
+    Vec2        size;
     RegionSet     reg_set;
     RegionSet     default_reg_set;
     Widget*       parent;
 
 public : 
-    Widget (Vector position = Vector(0, 0), Vector size = Vector(0,0), bool available = true);
+    Widget (Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0), bool available = true);
     virtual ~Widget();
 
     virtual bool OnKeyPress    (Key key)              override;
     virtual bool OnKeyRelease  (Key key)              override;
-    virtual bool OnMousePress  (MouseCondition mouse) override;
-    virtual bool OnMouseRelease(MouseCondition mouse) override;
-    virtual bool OnMouseMove   (MouseCondition mouse) override;
+    virtual bool OnMousePress  (MouseContext mouse) override;
+    virtual bool OnMouseRelease(MouseContext mouse) override;
+    virtual bool OnMouseMove   (MouseContext mouse) override;
     virtual bool OnClock       (size_t delta)         override;
 
     virtual void Render                (RenderTarget* render_target) override;
-    virtual void Move                  (Vector delta);
+    virtual void Move                  (Vec2 delta);
     virtual void AddObject             (Widget* new_widget);
     void         ToForeground          (Widget* son);
 
@@ -53,11 +53,11 @@ public :
     virtual void     UpdateOwnDefaultRegionSet();
     void             RemoveSon              (Widget* son);
     
-    virtual bool InsideP(Vector v);
+    virtual bool InsideP(Vec2 v);
 
-    Vector&       GetSize()            { return size;      }
-    const Vector& GetSize()      const { return size;      }
-    Vector        GetPosition()  const { return position;  }
+    Vec2&       GetSize()            { return size;      }
+    const Vec2& GetSize()      const { return size;      }
+    Vec2        GetPosition()  const { return position;  }
     bool          GetAvailable() const { return available; }
     Widget*       GetParent()    const { return parent;    }
 
@@ -69,7 +69,7 @@ class RectangleWidget : public Widget
     Color background;
 
 public:
-    RectangleWidget(Vector position = Vector(0, 0), Vector size = Vector(0,0),
+    RectangleWidget(Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0),
                     Color background = Color(255, 255, 255), bool available = true) :
     Widget     (position, size, available),
     background (background)

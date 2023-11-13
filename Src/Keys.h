@@ -1,9 +1,9 @@
 #ifndef SYM_KEYS
 #define SYM_KEYS
 
-#include "Vector/Vector.h"
+#include "Vec2/Vec2.h"
 
-enum Key
+enum class Key
 {
     A = 0,       // The A key
     B,           // The B key
@@ -82,27 +82,21 @@ enum Key
     Down,        // Down arrow
 };
 
-enum MouseKey
+enum class MouseButton
 {
-    LEFT,
-    RIGHT,
-    MIDDLE
+    Left,
+    Right
 };
 
-struct MouseCondition
+struct MouseContext
 {
-    Vector   position;
-    MouseKey key;
+    Vec2        position;
+    MouseButton key;
 
-    MouseCondition() :
-    position(Vector(0, 0)),
-    key(LEFT)
-    {};
-
-    MouseCondition(Vector _position, MouseKey _key) : 
+    MouseContext (Vec2 _position, MouseButton _key) : 
     position (_position),
-    key (_key)
-    {};
+    key      (_key)
+    {}
 };
 
 #endif //SYM_KEYS

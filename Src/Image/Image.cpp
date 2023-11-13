@@ -18,14 +18,14 @@ bool Image::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-Vector Image::GetSize()
+Vec2 Image::GetSize()
 {
-    return Vector(data.getSize().x, data.getSize().y);
+    return Vec2(data.getSize().x, data.getSize().y);
 }
 
 u_int8_t* Image::GetPixelArray(VectorI& size)
 {
-    size = Vector(data.getSize().x, data.getSize().y);
+    size = Vec2(data.getSize().x, data.getSize().y);
     return (u_int8_t*)data.getPixelsPtr();
 }
 

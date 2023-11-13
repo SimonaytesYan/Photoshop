@@ -6,24 +6,24 @@
 
 class PolylineTool : public Tool
 {
-    DynArray<Vector> vertexes;
+    DynArray<Vec2> vertexes;
 
 public : 
     PolylineTool() :
-    vertexes(DynArray<Vector>(0))
+    vertexes(DynArray<Vec2>(0))
     {}
     
     void CalcAndDrawPolyline(RenderTarget& target, 
-                          MouseCondition mouse, Color color);
+                          MouseContext mouse, Color color);
     void PaintOnPress    (RenderTarget& data, RenderTarget& tmp, 
-                          MouseCondition mouse, Color color) override;
+                          MouseContext mouse, Color color) override;
     void PaintOnMove     (RenderTarget& data, RenderTarget& tmp, 
-                          MouseCondition mouse, Color color) override;
+                          MouseContext mouse, Color color) override;
     void PaintOnRelease  (RenderTarget& data, RenderTarget& tmp, 
-                          MouseCondition mouse, Color color) override
+                          MouseContext mouse, Color color) override
     {}
     void Disable         (RenderTarget&  data,  RenderTarget& tmp, 
-                          MouseCondition mouse, Color         color) override;
+                          MouseContext mouse, Color         color) override;
 };
 
 #endif //SYM_POLYLINE_TOOL

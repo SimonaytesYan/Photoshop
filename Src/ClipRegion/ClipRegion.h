@@ -2,7 +2,7 @@
 #define SYM_CLIP_REGION
 
 class RegionSet;
-#include "../Vector/Vector.h"
+#include "../Vec2/Vec2.h"
 #include "../Color.h"
 
 
@@ -18,14 +18,14 @@ public:
 
     ClipRegion();
     ClipRegion(double x0, double y0, double x1, double y1);
-    ClipRegion(Vector position, Vector size, bool nulled = false);
+    ClipRegion(Vec2 position, Vec2 size, bool nulled = false);
     ClipRegion(const ClipRegion& a);
 
-    Vector GetSize()     const;
-    Vector GetPosition() const;
+    Vec2 GetSize()     const;
+    Vec2 GetPosition() const;
     Color  GetColor()    const;
 
-    bool InsideP(Vector v) const;
+    bool InsideP(Vec2 v) const;
 
     void Dump() const;
 
@@ -35,8 +35,8 @@ public:
     friend bool       operator==(ClipRegion a, ClipRegion b);
 };
 
-const ClipRegion kNullClipReg = ClipRegion(Vector(0, 0), 
-                                           Vector(0, 0), 
+const ClipRegion kNullClipReg = ClipRegion(Vec2(0, 0), 
+                                           Vec2(0, 0), 
                                            true);
 
 ClipRegion operator&&(ClipRegion a, ClipRegion b);

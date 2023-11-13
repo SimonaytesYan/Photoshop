@@ -4,9 +4,9 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-Vector kIndent = Vector(10, 0);
+Vec2 kIndent = Vec2(10, 0);
 
-bool EditBox::OnMousePress(MouseCondition mouse)
+bool EditBox::OnMousePress(MouseContext mouse)
 {
     bool widget_return = Widget::OnMousePress(mouse);
     if (widget_return)
@@ -46,19 +46,19 @@ bool EditBox::OnKeyPress(Key key)
 {
     if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED)
     {
-        if (key == Backspace || key == Left || key == Right) // keys, control 
+        if (key == Key::Backspace || key == Key::Left || key == Key::Right) // keys, control 
         {
-            if (key == Left)
+            if (key == Key::Left)
             {
                 if (cursor_pos > 0)
                     cursor_pos--;
             }
-            else if (key == Right)
+            else if (key == Key::Right)
             {
                 if (cursor_pos < text.GetLength())
                     cursor_pos++;
             }
-            else if (key == Backspace)
+            else if (key == Key::Backspace)
             {
                 if (cursor_pos > 0)
                 {
@@ -69,13 +69,14 @@ bool EditBox::OnKeyPress(Key key)
         }
         else
         {
-            if (key <= Z)
-                text.Insert(key + 'a', cursor_pos);
-            else if (key <= Num9)
-                text.Insert(key - Num0 + '0', cursor_pos);
-            else if (key == Comma)
+            int int_key = (int)key;
+            if (key <= Key::Z)
+                text.Insert((int)key + 'a', cursor_pos);
+            else if (key <= Key::Num9)
+                text.Insert((int)key - (int)Key::Num0 + '0', cursor_pos);
+            else if (key == Key::Comma)
                 text.Insert(',', cursor_pos);
-            else if (key == Period)
+            else if (key == Key::Period)
                 text.Insert('.', cursor_pos);
             else 
                 return true;
@@ -114,8 +115,8 @@ void EditBox::Render(RenderTarget* rt)
         if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED && 
             cursor_visible)
         {
-            rt->DrawRect(position + Vector(letter_width * chapter_size * cursor_pos, 0) + kIndent, 
-                         Vector(4, chapter_size * letter_height), reg_set, Color(0, 0, 0));
+            rt->DrawRect(position + Vec2(letter_width * chapter_size * cursor_pos, 0) + kIndent, 
+                         Vec2(4, chapter_size * letter_height), reg_set, Color(0, 0, 0));
         }
     }
 }

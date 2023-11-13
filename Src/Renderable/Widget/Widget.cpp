@@ -1,13 +1,13 @@
 #include "Widget.h"
 #include "../Renderable.h"
-#include "../../Vector/Vector.h"
+#include "../../Vec2/Vec2.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../Useful.h"
 
 const double kPrecision = 1e-6;
 
-Widget::Widget (Vector _position, Vector _size, bool _available) :
+Widget::Widget (Vec2 _position, Vec2 _size, bool _available) :
 Renderable      (),
 EventProcessable(0),
 available       (_available),
@@ -26,7 +26,7 @@ Widget::~Widget()
 {
 }
 
-void Widget::Move(Vector delta)
+void Widget::Move(Vec2 delta)
 {
     position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
@@ -107,13 +107,13 @@ bool WidgetEventRound(Events event, void*  event_args,
             intercepted = objects[index].val->OnKeyRelease(*(Key*)event_args);
             break;
         case MOUSE_PRESS:
-            intercepted = objects[index].val->OnMousePress(*(MouseCondition*)event_args);
+            intercepted = objects[index].val->OnMousePress(*(MouseContext*)event_args);
             break;
         case MOUSE_RELEASE:
-            intercepted = objects[index].val->OnMouseRelease(*(MouseCondition*)event_args);
+            intercepted = objects[index].val->OnMouseRelease(*(MouseContext*)event_args);
             break;
         case MOUSE_MOVE:
-            intercepted = objects[index].val->OnMouseMove(*(MouseCondition*)event_args);
+            intercepted = objects[index].val->OnMouseMove(*(MouseContext*)event_args);
             break;
         case ON_CLOCK:
             intercepted = objects[index].val->OnClock(*(size_t*)event_args);
@@ -163,7 +163,7 @@ void Widget::ToForeground(Widget* son)
     }
 }
 
-bool Widget::OnMousePress(MouseCondition mouse)
+bool Widget::OnMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -174,12 +174,12 @@ bool Widget::OnMousePress(MouseCondition mouse)
     return false;
 }
  
-bool Widget::OnMouseRelease(MouseCondition mouse)
+bool Widget::OnMouseRelease(MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
 }
 
-bool Widget::OnMouseMove(MouseCondition mouse)
+bool Widget::OnMouseMove(MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
@@ -306,7 +306,7 @@ void Widget::UpdateDefaultRegionSet()
     UpdateParentDefaultRegionSet();
 }
 
-bool Widget::InsideP(Vector v)
+bool Widget::InsideP(Vec2 v)
 {
     return v.GetX() - position.GetX() >= -kPrecision &&
            v.GetX() - position.GetX() <= size.GetX() + kPrecision &&

@@ -5,8 +5,8 @@
 #include "../List.h"
 
 void DrawUsingCatMullRom(RenderTarget& data, RenderTarget& tmp, Color color,
-                         double thickness, List<Vector> &vertexes);
+                         double thickness, List<Vec2> &vertexes);
 void DrawTmpToData      (RenderTarget& data, RenderTarget& tmp, Color color, 
-                        double thickness, List<Vector> &vertexes);
+                        double thickness, List<Vec2> &vertexes);
 
 #endif

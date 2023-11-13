@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../Vector/Vector.h"
+#include "../Vec2/Vec2.h"
 
 class Texture;
 
@@ -19,7 +19,7 @@ public:
     void      Create      (int width, int height);
     bool      LoadFromFile(const char* filename);
     sf::Image GetImage    ();
-    Vector    GetSize     ();
+    Vec2    GetSize     ();
 
     // Calloc buffer to pixels 
     // You should free it after using

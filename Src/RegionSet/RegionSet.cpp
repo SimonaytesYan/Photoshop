@@ -74,8 +74,8 @@ void RegionSet::UnitSet()
             {
                 if (i_y1 == j_y0)   //j
                 {                   //i
-                    data[i] = ClipRegion(Vector(i_x0,        i_y0), 
-                                         Vector(j_x1 - j_x0, j_y1 - i_y0));
+                    data[i] = ClipRegion(Vec2(i_x0,        i_y0), 
+                                         Vec2(j_x1 - j_x0, j_y1 - i_y0));
                     data[j] = kNullClipReg;
                     j = i;
                     continue;
@@ -83,8 +83,8 @@ void RegionSet::UnitSet()
 
                 if (j_y1 == i_y0)   //i
                 {                   //j
-                    data[i] = ClipRegion(Vector(j_x0,        j_y0), 
-                                         Vector(j_x1 - j_x0, i_y1 - j_y0));
+                    data[i] = ClipRegion(Vec2(j_x0,        j_y0), 
+                                         Vec2(j_x1 - j_x0, i_y1 - j_y0));
                     data[j] = kNullClipReg;
                     j = i;
                     continue;
@@ -95,8 +95,8 @@ void RegionSet::UnitSet()
             {
                 if (i_x1 == j_x0)   //i j
                 {
-                    data[i] = ClipRegion(Vector(i_x0,        i_y0),
-                                         Vector(j_x1 - i_x0, i_y1 - i_y0));
+                    data[i] = ClipRegion(Vec2(i_x0,        i_y0),
+                                         Vec2(j_x1 - i_x0, i_y1 - i_y0));
                     data[j] = kNullClipReg;
                     j = i;
                     continue;
@@ -104,8 +104,8 @@ void RegionSet::UnitSet()
 
                 if (j_x1 == i_x0)   //j i
                 {
-                    data[i] = ClipRegion(Vector(j_x0,        j_y0), 
-                                         Vector(i_x1 - j_x0, i_y1 - i_y0));
+                    data[i] = ClipRegion(Vec2(j_x0,        j_y0), 
+                                         Vec2(i_x1 - j_x0, i_y1 - i_y0));
                     data[j] = kNullClipReg;
                     j = i;
                     continue;
@@ -203,7 +203,7 @@ RegionSet& RegionSet::operator+=(const RegionSet& b) {
     return *this;
 }
 
-bool RegionSet::InsideP(Vector v) const
+bool RegionSet::InsideP(Vec2 v) const
 {
     bool result = false;
     for (int i = 0; i < data.GetLength(); i++)

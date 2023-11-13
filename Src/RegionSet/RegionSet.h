@@ -1,7 +1,7 @@
 #ifndef SYM_REGION_SET
 #define SYM_REGION_SET
 
-#include "../Vector/Vector.h"
+#include "../Vec2/Vec2.h"
 #include "../DynArray.h"
 class ClipRegion;
 
@@ -24,7 +24,7 @@ public:
     void AddRegion (ClipRegion region);
     void ChangeElem(size_t index, ClipRegion region);
     void Clear     ();
-    bool InsideP   (Vector v) const;
+    bool InsideP   (Vec2 v) const;
 
     RegionSet&  operator= (const RegionSet& b);
     RegionSet&  operator-=(const RegionSet& b);

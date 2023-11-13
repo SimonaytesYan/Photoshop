@@ -87,7 +87,7 @@ void Menu::UpdateOwnDefaultRegionSet()
     }
 }
 
-bool Menu::OnMouseMove(MouseCondition mouse)
+bool Menu::OnMouseMove(MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {
@@ -98,7 +98,7 @@ bool Menu::OnMouseMove(MouseCondition mouse)
     return Widget::OnMouseMove(mouse);
 }
 
-bool Menu::InsideP(Vector v)
+bool Menu::InsideP(Vec2 v)
 {
     static int k = 0;
 

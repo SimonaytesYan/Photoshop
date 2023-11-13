@@ -22,7 +22,7 @@ bool EventManager::OnKeyRelease(Key key)
     return true;
 }
 
-bool EventManager::OnMousePress(MouseCondition mouse)
+bool EventManager::OnMousePress(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -33,7 +33,7 @@ bool EventManager::OnMousePress(MouseCondition mouse)
     return true;
 }
 
-bool EventManager::OnMouseRelease(MouseCondition mouse)
+bool EventManager::OnMouseRelease(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -44,7 +44,7 @@ bool EventManager::OnMouseRelease(MouseCondition mouse)
     return true;
 }
 
-bool EventManager::OnMouseMove(MouseCondition mouse)
+bool EventManager::OnMouseMove(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {

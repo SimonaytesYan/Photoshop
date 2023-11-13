@@ -30,7 +30,7 @@ void BrightnessFilter::Apply(RenderTarget& rt)
 
     Texture texture;
     texture.LoadFromImage(img);
-    rt.DrawSprite(Vector(0, 0), texture);
+    rt.DrawSprite(Vec2(0, 0), texture);
 }
 
 void BrightnessFilter::SetParams(const DynArray<double>& params)

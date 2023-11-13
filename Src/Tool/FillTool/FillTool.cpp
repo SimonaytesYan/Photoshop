@@ -33,7 +33,7 @@ void AddTransitions(DynArray<VectorI> &stack, VectorI cur,
 }
 
 void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                              MouseCondition mouse, Color color)
+                              MouseContext mouse, Color color)
 {
     if (drawing)
     {
@@ -74,7 +74,7 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
 
         Texture res_texture;
         res_texture.LoadFromImage(img);
-        data.DrawSprite(Vector(0, 0), res_texture);
+        data.DrawSprite(Vec2(0, 0), res_texture);
 
         drawing = false;
     }
@@ -82,23 +82,23 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
 
 
 void FillTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
-                            MouseCondition mouse, Color color)
+                            MouseContext mouse, Color color)
 {
     start_pos = mouse.position;
     drawing   = true;
 }
 
 void FillTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
-                           MouseCondition mouse, Color color)
+                           MouseContext mouse, Color color)
 {
 }
 
 void FillTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
-                       MouseCondition mouse, Color         color)
+                       MouseContext mouse, Color         color)
 {
     if (drawing)
     {
-        start_pos = Vector(1, -1);
+        start_pos = Vec2(1, -1);
         drawing   = false;
     }
 }

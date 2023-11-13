@@ -31,9 +31,9 @@ public:
 
     bool OnKeyPress    (Key key)              override;
     bool OnKeyRelease  (Key key)              override;
-    bool OnMousePress  (MouseCondition mouse) override;
-    bool OnMouseRelease(MouseCondition mouse) override;
-    bool OnMouseMove   (MouseCondition mouse) override;
+    bool OnMousePress  (MouseContext mouse) override;
+    bool OnMouseRelease(MouseContext mouse) override;
+    bool OnMouseMove   (MouseContext mouse) override;
     bool OnClock       (u_int64_t delta)      override;
 };
 

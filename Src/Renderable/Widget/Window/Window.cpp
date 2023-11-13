@@ -40,9 +40,9 @@ struct ButtonClose : ButtonFunction
     }
 };
 
-Window::Window(Vector _position, Vector _size, const char* header) :
+Window::Window(Vec2 _position, Vec2 _size, const char* header) :
 Widget(_position, _size),
-old_mouse_pos (Vector(-1, -1)),
+old_mouse_pos (Vec2(-1, -1)),
 moving(false)
 {
     Font font;
@@ -51,15 +51,15 @@ moving(false)
     close_texture.LoadFromFile(kCloseImgFile);
     close_texture_press.LoadFromFile(kClosePressedImgFile);
     
-    Button* header_button = new Button(position, Vector(_size.GetX() - kButtonSize, kButtonSize), 
+    Button* header_button = new Button(position, Vec2(_size.GetX() - kButtonSize, kButtonSize), 
                                        kBorderColor, new ButtonMove(this));         //Button to move window
 
     header_button->AddObject(new Label(position, font, 40, header, kBorderColor));    //Header
     AddObject(header_button);
 
-    Vector close_button_pos = Vector(position.GetX() + size.GetX() - kButtonSize, 
+    Vec2 close_button_pos = Vec2(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());
-    AddObject(new Button(close_button_pos, Vector(kButtonSize, kButtonSize), 
+    AddObject(new Button(close_button_pos, Vec2(kButtonSize, kButtonSize), 
                          close_texture, close_texture_press,
                          nullptr,
                          new ButtonClose(this)));                       //Close button window
@@ -69,7 +69,7 @@ Window::~Window()
 {
 }
 
-bool Window::OnMousePress(MouseCondition mouse)
+bool Window::OnMousePress(MouseContext mouse)
 {
     if (available)
     {
@@ -82,11 +82,11 @@ bool Window::OnMousePress(MouseCondition mouse)
     return false;
 }
 
-bool Window::OnMouseMove(MouseCondition mouse)
+bool Window::OnMouseMove(MouseContext mouse)
 {
     if (moving)
     {
-        if (old_mouse_pos == Vector(-1, -1))
+        if (old_mouse_pos == Vec2(-1, -1))
             old_mouse_pos = mouse.position;
         else
         {
@@ -101,14 +101,14 @@ bool Window::OnMouseMove(MouseCondition mouse)
     return Widget::OnMouseMove(mouse);
 }
 
-bool Window::OnMouseRelease(MouseCondition mouse)
+bool Window::OnMouseRelease(MouseContext mouse)
 {
     if (Widget::OnMouseRelease(mouse))
         return true;
 
     if (moving)
     {
-        old_mouse_pos = Vector(-1, -1);
+        old_mouse_pos = Vec2(-1, -1);
         moving = false;
 
         return true;
@@ -119,7 +119,7 @@ bool Window::OnMouseRelease(MouseCondition mouse)
 void Window::Close()
 {
     available = false;
-    size = Vector(0, 0);
+    size = Vec2(0, 0);
     if (parent != nullptr)
     {
         parent->RemoveSon(this);
@@ -129,7 +129,7 @@ void Window::Close()
     this->~Window();
 }
 
-bool Window::InsideP(Vector v)
+bool Window::InsideP(Vec2 v)
 {
     return v.GetX() - position.GetX() > 0           &&
            v.GetX() - position.GetX() < size.GetX() &&

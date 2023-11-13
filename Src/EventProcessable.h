@@ -11,9 +11,9 @@ protected :
 public :
     virtual bool OnKeyPress    (Key key)              = 0;
     virtual bool OnKeyRelease  (Key key)              = 0;
-    virtual bool OnMousePress  (MouseCondition mouse) = 0;
-    virtual bool OnMouseRelease(MouseCondition mouse) = 0;
-    virtual bool OnMouseMove   (MouseCondition mouse) = 0;
+    virtual bool OnMousePress  (MouseContext mouse) = 0;
+    virtual bool OnMouseRelease(MouseContext mouse) = 0;
+    virtual bool OnMouseMove   (MouseContext mouse) = 0;
     virtual bool OnClock       (u_int64_t delta)      = 0;
 
     u_int8_t GetPriority()
