@@ -47,7 +47,7 @@ public:
     }
 
     bool OnMousePress(MouseContext mouse) override;
-    bool OnKeyPress  (Key key)              override;
+    bool OnKeyPress  (KeyboardContext key)              override;
     bool OnClock     (size_t delta)         override;
     void Render      (RenderTarget* rt)     override;
 };

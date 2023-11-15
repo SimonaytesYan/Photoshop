@@ -134,13 +134,21 @@ int main()
 
 				case sf::Event::KeyPressed:
 				{
-					event_manager.OnKeyPress((Key)event.key.code);
+					KeyboardContext kb_context;
+					kb_context.key = (Key)event.key.code;
+
+            		//TODO Добавить обработку shift, alt, crl 
+					event_manager.OnKeyPress(kb_context);
 					break;
 				}
 
 				case sf::Event::KeyReleased:
 				{
-					event_manager.OnKeyRelease((Key)event.key.code);
+					KeyboardContext kb_context;
+					kb_context.key = (Key)event.key.code;
+
+            		//TODO Добавить обработку shift, alt, crl 
+					event_manager.OnKeyRelease(kb_context);
 					break;
 				}
 			}

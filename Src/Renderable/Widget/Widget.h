@@ -31,12 +31,12 @@ public :
     Widget (Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0), bool available = true);
     virtual ~Widget();
 
-    virtual bool OnKeyPress    (Key key)              override;
-    virtual bool OnKeyRelease  (Key key)              override;
-    virtual bool OnMousePress  (MouseContext mouse) override;
-    virtual bool OnMouseRelease(MouseContext mouse) override;
-    virtual bool OnMouseMove   (MouseContext mouse) override;
-    virtual bool OnClock       (size_t delta)         override;
+    virtual bool OnKeyPress    (KeyboardContext key) override;
+    virtual bool OnKeyRelease  (KeyboardContext key) override;
+    virtual bool OnMousePress  (MouseContext mouse)  override;
+    virtual bool OnMouseRelease(MouseContext mouse)  override;
+    virtual bool OnMouseMove   (MouseContext mouse)  override;
+    virtual bool OnClock       (size_t delta)        override;
 
     virtual void Render                (RenderTarget* render_target) override;
     virtual void Move                  (Vec2 delta);

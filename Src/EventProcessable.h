@@ -2,6 +2,7 @@
 #define SYM_EVENT_PROCESSABLE
 
 #include "Keys.h"
+#include "Standart/EventProcessableI.h"
 
 class EventProcessable
 {
@@ -9,8 +10,8 @@ protected :
     u_int8_t priority;
 
 public :
-    virtual bool OnKeyPress    (Key key)              = 0;
-    virtual bool OnKeyRelease  (Key key)              = 0;
+    virtual bool OnKeyPress    (KeyboardContext key)              = 0;
+    virtual bool OnKeyRelease  (KeyboardContext key)              = 0;
     virtual bool OnMousePress  (MouseContext mouse) = 0;
     virtual bool OnMouseRelease(MouseContext mouse) = 0;
     virtual bool OnMouseMove   (MouseContext mouse) = 0;

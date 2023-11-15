@@ -42,8 +42,10 @@ bool EditBox::OnMousePress(MouseContext mouse)
     return false;
 }
 
-bool EditBox::OnKeyPress(Key key)
+bool EditBox::OnKeyPress(KeyboardContext keyboard)
 {
+    Key key = keyboard.key;
+    
     if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED)
     {
         if (key == Key::Backspace || key == Key::Left || key == Key::Right) // keys, control 

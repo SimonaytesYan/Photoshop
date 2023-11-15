@@ -29,8 +29,8 @@ public:
     void AddObject   (EventProcessable* obj);
     void RemoveObject(EventProcessable* obj);
 
-    bool OnKeyPress    (Key key)              override;
-    bool OnKeyRelease  (Key key)              override;
+    bool OnKeyPress    (KeyboardContext key)              override;
+    bool OnKeyRelease  (KeyboardContext key)              override;
     bool OnMousePress  (MouseContext mouse) override;
     bool OnMouseRelease(MouseContext mouse) override;
     bool OnMouseMove   (MouseContext mouse) override;

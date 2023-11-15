@@ -101,11 +101,15 @@ bool WidgetEventRound(Events event, void*  event_args,
         switch (event)
         {
         case KEY_PRESS:
-            intercepted = objects[index].val->OnKeyPress(*(Key*)event_args);
+        {
+            intercepted = objects[index].val->OnKeyPress(*(KeyboardContext*)event_args);
             break;
+        }
         case KEY_RELEASE:
-            intercepted = objects[index].val->OnKeyRelease(*(Key*)event_args);
+        {
+            intercepted = objects[index].val->OnKeyRelease(*(KeyboardContext*)event_args);
             break;
+        }
         case MOUSE_PRESS:
             intercepted = objects[index].val->OnMousePress(*(MouseContext*)event_args);
             break;
@@ -130,12 +134,12 @@ bool WidgetEventRound(Events event, void*  event_args,
     return intercepted;
 }
 
-bool Widget::OnKeyPress(Key key)
+bool Widget::OnKeyPress(KeyboardContext key)
 {
     return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
 }
 
-bool Widget::OnKeyRelease(Key key)
+bool Widget::OnKeyRelease(KeyboardContext key)
 {
     return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
 }

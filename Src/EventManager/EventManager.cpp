@@ -1,6 +1,6 @@
 #include "EventManager.h"
 
-bool EventManager::OnKeyPress(Key key)
+bool EventManager::OnKeyPress(KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -11,7 +11,7 @@ bool EventManager::OnKeyPress(Key key)
     return true;
 }
 
-bool EventManager::OnKeyRelease(Key key)
+bool EventManager::OnKeyRelease(KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
