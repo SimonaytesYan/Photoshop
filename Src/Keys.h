@@ -82,6 +82,14 @@ enum class Key
     Down,        // Down arrow
 };
 
+struct KeyboardContext {
+    bool alt;
+    bool shift;
+    bool ctrl;
+
+    Key key;
+};
+
 enum class MouseButton
 {
     Left,
