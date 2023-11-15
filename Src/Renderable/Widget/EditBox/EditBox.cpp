@@ -6,9 +6,9 @@
 
 Vec2 kIndent = Vec2(10, 0);
 
-bool EditBox::OnMousePress(MouseContext mouse)
+bool EditBox::onMousePress(MouseContext mouse)
 {
-    bool widget_return = Widget::OnMousePress(mouse);
+    bool widget_return = Widget::onMousePress(mouse);
     if (widget_return)
         return widget_return;
     
@@ -42,10 +42,10 @@ bool EditBox::OnMousePress(MouseContext mouse)
     return false;
 }
 
-bool EditBox::OnKeyPress(KeyboardContext keyboard)
+bool EditBox::onKeyboardPress(KeyboardContext keyboard)
 {
     Key key = keyboard.key;
-    
+
     if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED)
     {
         if (key == Key::Backspace || key == Key::Left || key == Key::Right) // keys, control 
@@ -91,7 +91,7 @@ bool EditBox::OnKeyPress(KeyboardContext keyboard)
     return false;
 }
 
-bool EditBox::OnClock(size_t delta)
+bool EditBox::onClock(size_t delta)
 {
     cursor_visible = !cursor_visible;
     return false;

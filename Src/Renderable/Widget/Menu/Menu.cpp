@@ -87,7 +87,7 @@ void Menu::UpdateOwnDefaultRegionSet()
     }
 }
 
-bool Menu::OnMouseMove(MouseContext mouse)
+bool Menu::onMouseMove(MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {
@@ -95,7 +95,7 @@ bool Menu::OnMouseMove(MouseContext mouse)
             ChangeExpandedStatus();
     }
 
-    return Widget::OnMouseMove(mouse);
+    return Widget::onMouseMove(mouse);
 }
 
 bool Menu::InsideP(Vec2 v)

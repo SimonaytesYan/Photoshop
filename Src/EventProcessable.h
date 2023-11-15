@@ -4,20 +4,14 @@
 #include "Keys.h"
 #include "Standart/EventProcessableI.h"
 
-class EventProcessable
+class EventProcessable : public EventProcessableI
 {
 protected :
     u_int8_t priority;
 
-public :
-    virtual bool OnKeyPress    (KeyboardContext key)              = 0;
-    virtual bool OnKeyRelease  (KeyboardContext key)              = 0;
-    virtual bool OnMousePress  (MouseContext mouse) = 0;
-    virtual bool OnMouseRelease(MouseContext mouse) = 0;
-    virtual bool OnMouseMove   (MouseContext mouse) = 0;
-    virtual bool OnClock       (u_int64_t delta)      = 0;
+public : 
 
-    u_int8_t GetPriority()
+    u_int8_t getPriority() override
     { return priority; }
 
     EventProcessable(int _priority) :

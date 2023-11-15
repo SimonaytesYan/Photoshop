@@ -102,25 +102,25 @@ bool WidgetEventRound(Events event, void*  event_args,
         {
         case KEY_PRESS:
         {
-            intercepted = objects[index].val->OnKeyPress(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val->onKeyboardPress(*(KeyboardContext*)event_args);
             break;
         }
         case KEY_RELEASE:
         {
-            intercepted = objects[index].val->OnKeyRelease(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val->onKeyboardRelease(*(KeyboardContext*)event_args);
             break;
         }
         case MOUSE_PRESS:
-            intercepted = objects[index].val->OnMousePress(*(MouseContext*)event_args);
+            intercepted = objects[index].val->onMousePress(*(MouseContext*)event_args);
             break;
         case MOUSE_RELEASE:
-            intercepted = objects[index].val->OnMouseRelease(*(MouseContext*)event_args);
+            intercepted = objects[index].val->onMouseRelease(*(MouseContext*)event_args);
             break;
         case MOUSE_MOVE:
-            intercepted = objects[index].val->OnMouseMove(*(MouseContext*)event_args);
+            intercepted = objects[index].val->onMouseMove(*(MouseContext*)event_args);
             break;
         case ON_CLOCK:
-            intercepted = objects[index].val->OnClock(*(size_t*)event_args);
+            intercepted = objects[index].val->onClock(*(size_t*)event_args);
             break;
         
         default:
@@ -134,12 +134,12 @@ bool WidgetEventRound(Events event, void*  event_args,
     return intercepted;
 }
 
-bool Widget::OnKeyPress(KeyboardContext key)
+bool Widget::onKeyboardPress(KeyboardContext key)
 {
     return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
 }
 
-bool Widget::OnKeyRelease(KeyboardContext key)
+bool Widget::onKeyboardRelease(KeyboardContext key)
 {
     return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
 }
@@ -167,7 +167,7 @@ void Widget::ToForeground(Widget* son)
     }
 }
 
-bool Widget::OnMousePress(MouseContext mouse)
+bool Widget::onMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -178,17 +178,17 @@ bool Widget::OnMousePress(MouseContext mouse)
     return false;
 }
  
-bool Widget::OnMouseRelease(MouseContext mouse)
+bool Widget::onMouseRelease(MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
 }
 
-bool Widget::OnMouseMove(MouseContext mouse)
+bool Widget::onMouseMove(MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
 
-bool Widget::OnClock(size_t delta)
+bool Widget::onClock(size_t delta)
 {
     return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
 }

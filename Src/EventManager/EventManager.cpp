@@ -1,72 +1,77 @@
 #include "EventManager.h"
 
-bool EventManager::OnKeyPress(KeyboardContext key)
+bool EventManager::onKeyboardPress(KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[KEY_PRESS])
-            objects[i].val->OnKeyPress(key);
+        if (objects[i].val->getPriority() >= min_priority[KEY_PRESS])
+            objects[i].val->onKeyboardPress(key);
     }
 
     return true;
 }
 
-bool EventManager::OnKeyRelease(KeyboardContext key)
+bool EventManager::onKeyboardRelease(KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[KEY_RELEASE])
-            objects[i].val->OnKeyRelease(key);
+        if (objects[i].val->getPriority() >= min_priority[KEY_RELEASE])
+            objects[i].val->onKeyboardRelease(key);
     }
 
     return true;
 }
 
-bool EventManager::OnMousePress(MouseContext mouse)
+bool EventManager::onMousePress(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[MOUSE_PRESS])
-            objects[i].val->OnMousePress(mouse);
+        if (objects[i].val->getPriority() >= min_priority[MOUSE_PRESS])
+            objects[i].val->onMousePress(mouse);
     }
 
     return true;
 }
 
-bool EventManager::OnMouseRelease(MouseContext mouse)
+bool EventManager::onMouseRelease(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[MOUSE_RELEASE])
-            objects[i].val->OnMouseRelease(mouse);
+        if (objects[i].val->getPriority() >= min_priority[MOUSE_RELEASE])
+            objects[i].val->onMouseRelease(mouse);
     }
 
     return true;
 }
 
-bool EventManager::OnMouseMove(MouseContext mouse)
+bool EventManager::onMouseMove(MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[MOUSE_MOVE])
-            objects[i].val->OnMouseMove(mouse);
+        if (objects[i].val->getPriority() >= min_priority[MOUSE_MOVE])
+            objects[i].val->onMouseMove(mouse);
     }
 
     return true;
 }
 
-bool EventManager::OnClock(u_int64_t delta)
+bool EventManager::onClock(u_int64_t delta)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        if (objects[i].val->GetPriority() >= min_priority[ON_CLOCK])
-            objects[i].val->OnClock(delta);
+        if (objects[i].val->getPriority() >= min_priority[ON_CLOCK])
+            objects[i].val->onClock(delta);
     }
 
     return true;
 }
 
-void EventManager::ChangePriority(DynArray<Events> events, int new_min_priority)
+void EventManager::setPriority(EventType event, uint8_t priority)
+{
+    min_priority[(int)event] = priority;
+}
+
+void EventManager::ChangePriorities(DynArray<Events> events, int new_min_priority)
 {
     for (int i = 0; i < events.GetLength(); i++)
         min_priority[events[i]] = new_min_priority;
@@ -77,14 +82,12 @@ void EventManager::ResetPriorities()
     for (int i = 0; i < EVENTS_NUMBER; i++)
         min_priority[i] = kDefaultPriority;
 }
-
-void EventManager::AddObject(EventProcessable* obj)
+void EventManager::registerObject  (EventProcessableI* obj)
 {
     objects.PushBack(obj);
 }
 
-
-void EventManager::RemoveObject(EventProcessable* obj)
+void EventManager::unregisterObject(EventProcessableI* obj)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {

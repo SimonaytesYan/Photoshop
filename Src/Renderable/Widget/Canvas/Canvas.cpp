@@ -25,9 +25,9 @@ void Canvas::DisableTool(MouseContext mouse)
     }
 }
 
-bool Canvas::OnMousePress(MouseContext mouse)
+bool Canvas::onMousePress(MouseContext mouse)
 {
-    if (Widget::OnMousePress(mouse))
+    if (Widget::onMousePress(mouse))
         return true;
 
     if (InsideP(mouse.position))
@@ -48,9 +48,9 @@ bool Canvas::OnMousePress(MouseContext mouse)
     return false;
 }
 
-bool Canvas::OnMouseMove(MouseContext mouse)
+bool Canvas::onMouseMove(MouseContext mouse)
 {
-    if (Widget::OnMouseMove(mouse))
+    if (Widget::onMouseMove(mouse))
         return true;
         
     static int cnt = 0;
@@ -73,9 +73,9 @@ bool Canvas::OnMouseMove(MouseContext mouse)
     return true;
 }
 
-bool Canvas::OnMouseRelease(MouseContext mouse)
+bool Canvas::onMouseRelease(MouseContext mouse)
 {
-    if (Widget::OnMouseRelease(mouse))
+    if (Widget::onMouseRelease(mouse))
     {
         DisableTool(mouse);
         return true;

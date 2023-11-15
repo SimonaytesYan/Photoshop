@@ -108,7 +108,7 @@ Vec2 CalcDelta(MouseContext mouse, Vec2 last_mouse_pos,
     return delta;
 }
 
-bool ScrollBar::OnMouseMove(MouseContext mouse)
+bool ScrollBar::onMouseMove(MouseContext mouse)
 {
     if (pressed)
     {
@@ -130,7 +130,7 @@ bool ScrollBar::OnMouseMove(MouseContext mouse)
     return false;
 }
 
-bool ScrollBar::OnMousePress(MouseContext mouse)
+bool ScrollBar::onMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -155,7 +155,7 @@ bool ScrollBar::OnMousePress(MouseContext mouse)
     return false;
 }
 
-bool ScrollBar::OnMouseRelease(MouseContext mouse)
+bool ScrollBar::onMouseRelease(MouseContext mouse)
 {
     pressed = false;
     return false;

@@ -88,7 +88,7 @@ int main()
 	AddColors(&main_window, &colors, &tm);	
 
 	EventManager event_manager;
-	event_manager.AddObject(&main_window);
+	event_manager.registerObject(&main_window);
 
 	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager);
 
@@ -112,7 +112,7 @@ int main()
 				{
 					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMousePress({position, (MouseButton)event.mouseButton.button});
+					event_manager.onMousePress({position, (MouseButton)event.mouseButton.button});
 					break;
 				}
 				
@@ -120,7 +120,7 @@ int main()
 				{
 					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMouseMove(MouseContext(position, (MouseButton)1));
+					event_manager.onMouseMove(MouseContext(position, (MouseButton)1));
 					break;
 				}
 				
@@ -128,7 +128,7 @@ int main()
 				{
 					Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.OnMouseRelease({position, (MouseButton)event.mouseButton.button});
+					event_manager.onMouseRelease({position, (MouseButton)event.mouseButton.button});
 					break;
 				}
 
@@ -138,7 +138,7 @@ int main()
 					kb_context.key = (Key)event.key.code;
 
             		//TODO Добавить обработку shift, alt, crl 
-					event_manager.OnKeyPress(kb_context);
+					event_manager.onKeyboardPress(kb_context);
 					break;
 				}
 
@@ -148,7 +148,7 @@ int main()
 					kb_context.key = (Key)event.key.code;
 
             		//TODO Добавить обработку shift, alt, crl 
-					event_manager.OnKeyRelease(kb_context);
+					event_manager.onKeyboardRelease(kb_context);
 					break;
 				}
 			}
@@ -159,7 +159,7 @@ int main()
 		if (delta_time > kDeltaTime)
 		{
 			RESTART_TIMER();
-			event_manager.OnClock(delta_time);
+			event_manager.onClock(delta_time);
 		}
 
 		the_root.Render(&rend_targ);

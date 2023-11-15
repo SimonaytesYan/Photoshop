@@ -60,11 +60,11 @@ void Button::Render(RenderTarget* render_target)
     }
 }
 
-bool Button::OnMousePress(MouseContext mouse)
+bool Button::onMousePress(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
-        bool intercepted = Widget::OnMousePress(mouse);
+        bool intercepted = Widget::onMousePress(mouse);
 
         if (!intercepted)
         {
@@ -80,11 +80,11 @@ bool Button::OnMousePress(MouseContext mouse)
     return false;
 }
 
-bool Button::OnMouseRelease(MouseContext mouse)
+bool Button::onMouseRelease(MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
-        bool intercepted = Widget::OnMouseRelease(mouse);
+        bool intercepted = Widget::onMouseRelease(mouse);
 
         if (!intercepted)
         {
@@ -101,7 +101,7 @@ bool Button::OnMouseRelease(MouseContext mouse)
     return false;
 }
 
-bool Button::OnMouseMove(MouseContext mouse)
+bool Button::onMouseMove(MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {

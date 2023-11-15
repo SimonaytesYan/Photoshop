@@ -26,9 +26,9 @@ public :
 
     RenderTarget* GetData() { return &data; }
 
-    bool OnMousePress  (MouseContext mouse)        override;
-    bool OnMouseRelease(MouseContext mouse)        override;
-    bool OnMouseMove   (MouseContext mouse)        override;
+    bool onMousePress  (MouseContext mouse)        override;
+    bool onMouseRelease(MouseContext mouse)        override;
+    bool onMouseMove   (MouseContext mouse)        override;
     void Render        (RenderTarget* render_target) override;
     void Clear();
 };

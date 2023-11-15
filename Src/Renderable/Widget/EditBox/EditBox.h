@@ -46,9 +46,9 @@ public:
         return text.GetArray();
     }
 
-    bool OnMousePress(MouseContext mouse) override;
-    bool OnKeyPress  (KeyboardContext key)              override;
-    bool OnClock     (size_t delta)         override;
+    bool onMousePress(MouseContext mouse) override;
+    bool onKeyboardPress  (KeyboardContext key)              override;
+    bool onClock     (size_t delta)         override;
     void Render      (RenderTarget* rt)     override;
 };
 

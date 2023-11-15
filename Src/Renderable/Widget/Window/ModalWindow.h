@@ -15,7 +15,7 @@ public:
     event_manager (_event_manager)
     {
         priority = 1;
-        event_manager->AddObject(this);
+        event_manager->registerObject(this);
 
         DynArray<Events> events(5);
         events[0] = MOUSE_MOVE;
@@ -24,13 +24,13 @@ public:
         events[3] = KEY_RELEASE;
         events[4] = KEY_PRESS;
 
-        event_manager->ChangePriority(events, 1);
+        event_manager->ChangePriorities(events, 1);
     }
 
     ~ModalWindow()
     {
         event_manager->ResetPriorities();
-        event_manager->RemoveObject(this);
+        event_manager->unregisterObject(this);
     }
 };
 

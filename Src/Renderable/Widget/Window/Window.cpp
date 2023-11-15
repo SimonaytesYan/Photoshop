@@ -69,20 +69,20 @@ Window::~Window()
 {
 }
 
-bool Window::OnMousePress(MouseContext mouse)
+bool Window::onMousePress(MouseContext mouse)
 {
     if (available)
     {
         if (InsideP(mouse.position))
         {
-            Widget::OnMousePress(mouse);
+            Widget::onMousePress(mouse);
             return true;
         }
     }
     return false;
 }
 
-bool Window::OnMouseMove(MouseContext mouse)
+bool Window::onMouseMove(MouseContext mouse)
 {
     if (moving)
     {
@@ -98,12 +98,12 @@ bool Window::OnMouseMove(MouseContext mouse)
         return true;
     }
 
-    return Widget::OnMouseMove(mouse);
+    return Widget::onMouseMove(mouse);
 }
 
-bool Window::OnMouseRelease(MouseContext mouse)
+bool Window::onMouseRelease(MouseContext mouse)
 {
-    if (Widget::OnMouseRelease(mouse))
+    if (Widget::onMouseRelease(mouse))
         return true;
 
     if (moving)

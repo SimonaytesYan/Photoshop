@@ -21,8 +21,8 @@ class Widget : public Renderable, public EventProcessable
 protected:
     bool          available;
     List<Widget*> sub_widgets;
-    Vec2        position;
-    Vec2        size;
+    Vec2          position;
+    Vec2          size;
     RegionSet     reg_set;
     RegionSet     default_reg_set;
     Widget*       parent;
@@ -31,12 +31,12 @@ public :
     Widget (Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0), bool available = true);
     virtual ~Widget();
 
-    virtual bool OnKeyPress    (KeyboardContext key) override;
-    virtual bool OnKeyRelease  (KeyboardContext key) override;
-    virtual bool OnMousePress  (MouseContext mouse)  override;
-    virtual bool OnMouseRelease(MouseContext mouse)  override;
-    virtual bool OnMouseMove   (MouseContext mouse)  override;
-    virtual bool OnClock       (size_t delta)        override;
+    virtual bool onKeyboardPress    (KeyboardContext key) override;
+    virtual bool onKeyboardRelease  (KeyboardContext key) override;
+    virtual bool onMousePress  (MouseContext mouse)  override;
+    virtual bool onMouseRelease(MouseContext mouse)  override;
+    virtual bool onMouseMove   (MouseContext mouse)  override;
+    virtual bool onClock       (size_t delta)        override;
 
     virtual void Render                (RenderTarget* render_target) override;
     virtual void Move                  (Vec2 delta);
