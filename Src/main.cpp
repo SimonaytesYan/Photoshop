@@ -136,8 +136,21 @@ int main()
 				{
 					KeyboardContext kb_context;
 					kb_context.key = (Key)event.key.code;
+					
+					switch (kb_context.key)
+					{
+						case Key::LShift:
+							kb_context.shift = true;
+							break;
+						case Key::LAlt:
+							kb_context.alt = true;
+							break;
+						case Key::LControl:
+							kb_context.ctrl = true;
+							break;
+				
+					}
 
-            		//TODO Добавить обработку shift, alt, crl 
 					event_manager.onKeyboardPress(kb_context);
 					break;
 				}
@@ -147,7 +160,19 @@ int main()
 					KeyboardContext kb_context;
 					kb_context.key = (Key)event.key.code;
 
-            		//TODO Добавить обработку shift, alt, crl 
+					switch (kb_context.key)
+					{
+						case Key::LShift:
+							kb_context.shift = false;
+							break;
+						case Key::LAlt:
+							kb_context.alt = false;
+							break;
+						case Key::LControl:
+							kb_context.ctrl = false;
+							break;				
+					}
+
 					event_manager.onKeyboardRelease(kb_context);
 					break;
 				}
