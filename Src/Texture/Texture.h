@@ -21,7 +21,7 @@ public:
     bool          LoadFromFile(const char* filename);
     sf::Texture*  GetTexture  ();
     bool          LoadFromImage(Image img);
-    plugin::Vec2  GetSize(); 
+    plugin::Vec2  getSize(); 
 };
 
 class Image
@@ -36,7 +36,7 @@ public:
     void         Create      (int width, int height);
     bool         LoadFromFile(const char* filename);
     sf::Image    GetImage    ();
-    plugin::Vec2 GetSize     ();
+    plugin::Vec2 getSize     ();
 
     u_int8_t* GetPixelArray();
     u_int8_t* GetPixelArray(plugin::VectorI& size);

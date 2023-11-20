@@ -113,8 +113,9 @@ struct WidgetPtr
     }
 };
 
-class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
+class Widget : public Renderable, public plugin::WidgetI
 {
+    uint8_t priority;
 
 protected:
     bool            available;
@@ -126,7 +127,9 @@ protected:
     Widget*         parent;
 
 public : 
-    Widget (plugin::Vec2 position = plugin::Vec2(0, 0), plugin::Vec2 size = plugin::Vec2(0,0), bool available = true);
+    Widget (plugin::Vec2 position = plugin::Vec2(0, 0), 
+            plugin::Vec2 size     = plugin::Vec2(0, 0), 
+            bool available = true);
     virtual ~Widget();
 
     virtual bool onKeyboardPress    (KeyboardContext key) override;
@@ -140,28 +143,39 @@ public :
     virtual void move               (plugin::Vec2 delta)                   override;
     virtual void registerSubWidget  (WidgetI* new_widget)                  override;
             void unregisterSubWidget(WidgetI* son)                         override;
+            void recalcRegion       ()                                     override;
 
-    virtual void render             (RenderTarget* render_target);
-    void         ToForeground      (Widget* son);
+    bool         getAvailable() override { return available; }
+    plugin::Vec2 getSize     () override { return size;      }
+    plugin::Vec2 getPos      () override { return position;  }
+    bool         isExtern    () override { return false;     }
+    uint8_t      getPriority () override { return priority;  }
+    WidgetI*     getParent   () override { return parent;    }
+
+    void setAvailable(bool value)             override { available = value;         }
+    void setSize     (plugin::Vec2 value)     override { size      = value;         }
+    void setPos      (plugin::Vec2 value)     override { position  = value;         }
+    void setParent   (plugin::WidgetI* value) override { parent    = (Widget*)value;}
+    
+    virtual void render       (RenderTarget* render_target);
+    void         ToForeground (Widget* son);
 
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
     RegionSet&       GetRegionSet()           { return reg_set; }
     const RegionSet& GetRegionSet()    const  { return reg_set; }
-    void             UpdateRegionSet        (bool debug = false);
-    void             recalcRegion(bool debug = false);
+    void             UpdateRegionSet       ();
     void             UpdateDefaultRegionSet();
     void             UpdateParentDefaultRegionSet();
     virtual void     UpdateOwnDefaultRegionSet();
     
     virtual bool InsideP(plugin::Vec2 v);
 
-    plugin::Vec2&       GetSize()            { return size;      }
-    const plugin::Vec2& GetSize()      const { return size;      }
-    plugin::Vec2        GetPosition()  const { return position;  }
+    const plugin::Vec2& getSize()      const { return size;      }
+    plugin::Vec2        getPosition()  const { return position;  }
+    
     bool          getAvailable() const { return available; }
     Widget*       GetParent()    const { return parent;    }
 
-    void          setAvailable(bool new_available) { available = new_available; }
 };
 
 class RectangleWidget : public Widget

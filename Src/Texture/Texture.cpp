@@ -12,7 +12,7 @@ bool Texture::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-plugin::Vec2 Texture::GetSize()
+plugin::Vec2 Texture::getSize()
 {
     return plugin::Vec2(data.getSize().x, data.getSize().y);
 }
@@ -44,7 +44,7 @@ bool Image::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-plugin::Vec2 Image::GetSize()
+plugin::Vec2 Image::getSize()
 {
     return plugin::Vec2(data.getSize().x, data.getSize().y);
 }

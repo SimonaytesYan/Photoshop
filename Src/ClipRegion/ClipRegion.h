@@ -21,8 +21,8 @@ public:
     ClipRegion(plugin::Vec2 position, plugin::Vec2 size, bool nulled = false);
     ClipRegion(const ClipRegion& a);
 
-    plugin::Vec2 GetSize()     const;
-    plugin::Vec2 GetPosition() const;
+    plugin::Vec2 getSize()     const;
+    plugin::Vec2 getPosition() const;
     plugin::Color  GetColor()    const;
 
     bool InsideP(plugin::Vec2 v) const;

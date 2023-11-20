@@ -60,15 +60,15 @@ void RegionSet::UnitSet()
             if (data[j] == kNullClipReg)
                 continue;
             
-            double i_x0 = data[i].GetPosition().GetX();
-            double i_y0 = data[i].GetPosition().GetY();
-            double i_x1 = (data[i].GetPosition() + data[i].GetSize()).GetX();
-            double i_y1 = (data[i].GetPosition() + data[i].GetSize()).GetY();
+            double i_x0 = data[i].getPosition().GetX();
+            double i_y0 = data[i].getPosition().GetY();
+            double i_x1 = (data[i].getPosition() + data[i].getSize()).GetX();
+            double i_y1 = (data[i].getPosition() + data[i].getSize()).GetY();
 
-            double j_x0 = data[j].GetPosition().GetX();
-            double j_y0 = data[j].GetPosition().GetY();
-            double j_x1 = (data[j].GetPosition() + data[j].GetSize()).GetX();
-            double j_y1 = (data[j].GetPosition() + data[j].GetSize()).GetY();
+            double j_x0 = data[j].getPosition().GetX();
+            double j_y0 = data[j].getPosition().GetY();
+            double j_x1 = (data[j].getPosition() + data[j].getSize()).GetX();
+            double j_y1 = (data[j].getPosition() + data[j].getSize()).GetY();
 
             if (i_x0 == j_x0 && i_x1 == j_x1)
             {

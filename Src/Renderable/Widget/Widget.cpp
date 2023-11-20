@@ -9,7 +9,6 @@ const double kPrecision = 1e-6;
 
 Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size, bool _available) :
 Renderable      (),
-EventProcessable(0),
 available       (_available),
 position        (_position),
 size            (_size),
@@ -31,15 +30,15 @@ void Widget::move(plugin::Vec2 delta)
     position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
     {
-        ClipRegion reg(delta + default_reg_set[i].GetPosition(), 
-                       default_reg_set[i].GetSize());
+        ClipRegion reg(delta + default_reg_set[i].getPosition(), 
+                       default_reg_set[i].getSize());
         default_reg_set.ChangeElem(i, reg);
     }
 
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
-        reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].GetPosition(), 
-                                         reg_set[i].GetSize()));
+        reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].getPosition(), 
+                                         reg_set[i].getSize()));
     }
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
@@ -206,45 +205,25 @@ bool Widget::onClock(size_t delta)
     return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
 }
 
-void Widget::UpdateRegionSet(bool debug)
+void Widget::UpdateRegionSet()
 {
     Widget* root = this;
     while (root->parent != nullptr)
         root = root->parent;
 
-    root->recalcRegion(debug);
+    root->recalcRegion();
 }
 
-void Widget::recalcRegion(bool debug)
+void Widget::recalcRegion()
 {
     if (!available)
         return;
     
     reg_set = default_reg_set;  // Set region set to default region set
 
-    if (debug)
-    {
-        fprintf(stderr, "\nthis = %p\n", this);
-        fprintf(stderr, "[\n");
-        fprintf(stderr, "default:\n");
-        default_reg_set.Dump();
-        fprintf(stderr, "reg:\n");
-        reg_set.Dump();
-        fprintf(stderr, "]\n");
-    }
-
     if (parent != nullptr)                              
     {
         reg_set &= parent->reg_set;                 // Intersect with parent
-
-        if (debug)
-        {
-            fprintf(stderr, "after parent %p\n", parent);
-            fprintf(stderr, "parent = \n");
-            parent->reg_set.Dump();
-            fprintf(stderr, "me = \n");
-            reg_set.Dump();
-        }
 
         // Remove upper brothers from this
 
@@ -263,12 +242,6 @@ void Widget::recalcRegion(bool debug)
         {
             WidgetPtr brother = parent->sub_widgets[index].val;
             reg_set -= brother.GetDefaultRegSet();
-
-            if (debug)
-            {
-                fprintf(stderr, "after brother %p\n", brother);
-                reg_set.Dump();
-            }
         }
     }
 
@@ -284,19 +257,8 @@ void Widget::recalcRegion(bool debug)
     {
         WidgetPtr sub_w = sub_widgets[index].val;
         if (sub_w.getAvailable())
-        {
             reg_set -= sub_w.GetDefaultRegSet();
-
-            if (debug)
-            {
-                fprintf(stderr, "after son %p\n", sub_w);
-                reg_set.Dump();
-            }
-        }
     }
-
-    if (debug)
-        fprintf(stderr, "End region set update\n\n");
 }
 
 void Widget::UpdateParentDefaultRegionSet()

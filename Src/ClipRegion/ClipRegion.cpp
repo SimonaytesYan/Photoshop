@@ -40,19 +40,19 @@ ClipRegion::ClipRegion(const ClipRegion& a)
 }
 
 
-plugin::Vec2 ClipRegion::GetSize() const
+plugin::Vec2 ClipRegion::getSize() const
 {
     return plugin::Vec2(x1 - x0, y1 - y0);
 }
 
-plugin::Vec2 ClipRegion::GetPosition() const
+plugin::Vec2 ClipRegion::getPosition() const
 {
     return plugin::Vec2(x0, y0);
 }
 
 bool operator==(ClipRegion a, ClipRegion b)
 {
-    return a.GetPosition() == b.GetPosition() && a.GetSize() == b.GetSize();
+    return a.getPosition() == b.getPosition() && a.getSize() == b.getSize();
 }
 
 inline ClipRegion operator&&(ClipRegion a, ClipRegion b)
@@ -86,9 +86,9 @@ bool ClipRegion::InsideP(plugin::Vec2 v) const
 void ClipRegion::Dump() const
 {
     fprintf(stderr,  "{ ");
-    GetPosition().Dump();
+    getPosition().Dump();
     fprintf(stderr, " ");
-    (GetSize() + GetPosition()).Dump();
+    (getSize() + getPosition()).Dump();
     fprintf(stderr, "}\n");
 }
 
@@ -138,7 +138,7 @@ RegionSet operator-(ClipRegion a, ClipRegion b)
 RegionSet operator||(ClipRegion a, ClipRegion b)
 {
     RegionSet result = a - b;
-    result.AddRegion(ClipRegion(b.GetPosition(), b.GetSize()));
+    result.AddRegion(ClipRegion(b.getPosition(), b.getSize()));
 
     return result;
 }

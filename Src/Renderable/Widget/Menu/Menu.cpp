@@ -16,7 +16,7 @@ struct CallChangeExpandedStatus : public ButtonFunction
 };
 
 Menu::Menu(Button* button, bool _static_menu) :
-Widget        (button->GetPosition(), button->GetSize()),
+Widget        (button->getPosition(), button->getSize()),
 main_button   (button),
 static_menu   (_static_menu)
 {
@@ -30,7 +30,7 @@ static_menu   (_static_menu)
 }
 
 Menu::Menu(Widget* widget) :
-Widget        (widget->GetPosition(), widget->GetSize()),
+Widget        (widget->getPosition(), widget->getSize()),
 main_button   (widget),
 static_menu   (true)
 {

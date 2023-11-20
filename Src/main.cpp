@@ -57,15 +57,15 @@ int main()
 	Canvas canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
 	canvas_window1.registerSubWidget(&canvas);
 
-	ScrollBar vertical_scroll_bar(canvas.GetPosition(), plugin::Vec2(20, canvas_window1.GetSize().GetY() - 50),
+	ScrollBar vertical_scroll_bar(canvas.getPosition(), plugin::Vec2(20, canvas_window1.getSize().GetY() - 50),
 						 		  plugin::Color(100, 100, 100), 
 						 		  plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
-						 		  &canvas, plugin::Vec2(20, 20), canvas_window1.GetSize());
+						 		  &canvas, plugin::Vec2(20, 20), canvas_window1.getSize());
 	
-	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), plugin::Vec2(canvas_window1.GetSize().GetX(), 20),
+	ScrollBar horizontal_scroll_bar(canvas.getPosition(), plugin::Vec2(canvas_window1.getSize().GetX(), 20),
 						 		    plugin::Color(100, 100, 100), 
 						 		    plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
-						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.GetSize());
+						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.getSize());
 	canvas_window1.registerSubWidget(&vertical_scroll_bar);
 	canvas_window1.registerSubWidget(&horizontal_scroll_bar);
 
@@ -313,7 +313,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	{
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
-		tools->registerSubWidget(new Button(tools->GetPosition() + plugin::Vec2(10 + 50 * i, 50), 
+		tools->registerSubWidget(new Button(tools->getPosition() + plugin::Vec2(10 + 50 * i, 50), 
 								   plugin::Vec2(50, 50), 
 							   	   common_texture, pressed_texture, 
 							   	   tools_func[i]));
@@ -339,7 +339,7 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	{
 		colors_func = new SwitchColor(tm, all_colors[i]);
 
-		plugin::Vec2 position = colors->GetPosition() + plugin::Vec2(10 + 50 * i, 50);
+		plugin::Vec2 position = colors->getPosition() + plugin::Vec2(10 + 50 * i, 50);
 		colors->registerSubWidget(new Button(position, plugin::Vec2(50, 50), all_colors[i], 
 								  	 colors_func));
 	}
