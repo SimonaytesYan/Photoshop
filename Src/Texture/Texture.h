@@ -41,4 +41,16 @@ public:
     u_int8_t* GetPixelArray(VectorI& size);
 };
 
+namespace plugin
+{
+    struct Texture 
+    {
+        uint64_t height;
+        uint64_t width;
+
+        Color *pixels;
+    };
+}
+
+
 #endif //SYM_TEXTURE
