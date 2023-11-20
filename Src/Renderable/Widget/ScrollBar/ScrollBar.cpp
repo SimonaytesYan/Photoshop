@@ -65,7 +65,7 @@ pressed         (false)
 
     // Create interlayer between target->parent and target
     Widget* parent = target->GetParent();
-    parent->RemoveSon(target);
+    parent->unregisterSubWidget(target);
 
     Interlayer* interlayer = new Interlayer(target->GetPosition() + visible_box_offset, 
                                             visible_box_size);
@@ -114,7 +114,7 @@ bool ScrollBar::onMouseMove(MouseContext mouse)
     {
         plugin::Vec2 delta = CalcDelta(mouse, last_mouse_pos, slider, this);
 
-        slider->Move(delta);
+        slider->move(delta);
         UpdateRegionSet();
         if (scroll != nullptr)
         {

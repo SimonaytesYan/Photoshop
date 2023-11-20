@@ -38,7 +38,7 @@ struct MoveTarget : ScrollBarFunction
 
     void operator()()
     {
-        target->Move(-delta);
+        target->move(-delta);
 
         target->UpdateRegionSet();
     }

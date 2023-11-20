@@ -104,6 +104,13 @@ struct WidgetPtr
             return widget_i->recalcRegion();
         return widget->recalcRegion();        
     }
+
+    void move(plugin::Vec2 shift)
+    {
+        if (is_extern)
+            return widget_i->move(shift);
+        return widget->move(shift);
+    }
 };
 
 class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
@@ -129,11 +136,13 @@ public :
     virtual bool onMouseMove        (MouseContext mouse)  override;
     virtual bool onClock            (size_t delta)        override;
 
-    virtual void render                (plugin::RenderTargetI* render_target) override;
-    virtual void render                (RenderTarget* render_target);
-    virtual void Move                  (plugin::Vec2 delta);
-    virtual void registerSubWidget     (WidgetI* new_widget);
-    void         ToForeground          (Widget* son);
+    virtual void render             (plugin::RenderTargetI* render_target) override;
+    virtual void move               (plugin::Vec2 delta)                   override;
+    virtual void registerSubWidget  (WidgetI* new_widget)                  override;
+            void unregisterSubWidget(WidgetI* son)                         override;
+
+    virtual void render             (RenderTarget* render_target);
+    void         ToForeground      (Widget* son);
 
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
     RegionSet&       GetRegionSet()           { return reg_set; }
@@ -143,7 +152,6 @@ public :
     void             UpdateDefaultRegionSet();
     void             UpdateParentDefaultRegionSet();
     virtual void     UpdateOwnDefaultRegionSet();
-    void             RemoveSon              (Widget* son);
     
     virtual bool InsideP(plugin::Vec2 v);
 

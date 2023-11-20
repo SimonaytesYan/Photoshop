@@ -90,7 +90,7 @@ bool Window::onMouseMove(MouseContext mouse)
             old_mouse_pos = mouse.position;
         else
         {
-            Widget::Move(mouse.position - old_mouse_pos);
+            Widget::move(mouse.position - old_mouse_pos);
             UpdateRegionSet();
 
             old_mouse_pos = mouse.position;
@@ -122,7 +122,7 @@ void Window::Close()
     size = plugin::Vec2(0, 0);
     if (parent != nullptr)
     {
-        parent->RemoveSon(this);
+        parent->unregisterSubWidget(this);
         parent->UpdateRegionSet();
     }
     

@@ -26,7 +26,7 @@ Widget::~Widget()
 {
 }
 
-void Widget::Move(plugin::Vec2 delta)
+void Widget::move(plugin::Vec2 delta)
 {
     position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
@@ -43,14 +43,17 @@ void Widget::Move(plugin::Vec2 delta)
     }
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-        sub_widgets[i].val->Move(delta);
+        sub_widgets[i].val.move(delta);
 }
 
-void Widget::RemoveSon(Widget* son)
+void Widget::unregisterSubWidget(WidgetI* son)
 {
     for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
     {
-        if (sub_widgets[index].val == son)
+        if (sub_widgets[index].val.is_extern && 
+            sub_widgets[index].val.widget_i == son ||
+            !sub_widgets[index].val.is_extern && 
+            sub_widgets[index].val.widget   == son)
         {
             sub_widgets.Remove(index);
             break;
@@ -58,14 +61,20 @@ void Widget::RemoveSon(Widget* son)
     }
 }
 
-void Widget::render(RenderTargetI* render_target)
+void Widget::render(plugin::RenderTargetI* render_target)
 {
     if (available)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
-            if (sub_widgets[index].val->getAvailable())
-                sub_widgets[index].val->render(render_target);
+            WidgetPtr sub_widget = sub_widgets[index].val;
+            if (sub_widget.getAvailable())
+            {
+                if (sub_widget.is_extern)
+                    sub_widget.widget_i->render(render_target);
+                else
+                    sub_widget.widget->render(render_target);
+            }
         }
     }
 }
@@ -76,8 +85,14 @@ void Widget::render(RenderTarget* render_target)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
-            if (sub_widgets[index].val.widget_i->getAvailable())
-                sub_widgets[index].val->render(render_target);
+            WidgetPtr sub_widget = sub_widgets[index].val;
+            if (sub_widget.getAvailable())
+            {
+                if (sub_widget.is_extern)
+                    sub_widget.widget_i->render((plugin::RenderTargetI*)render_target);
+                else
+                    sub_widget.widget->render(render_target);
+            }
         }
     }
 }
@@ -270,7 +285,7 @@ void Widget::recalcRegion(bool debug)
         WidgetPtr sub_w = sub_widgets[index].val;
         if (sub_w.getAvailable())
         {
-            reg_set -= sub_w->GetDefaultRegSet();
+            reg_set -= sub_w.GetDefaultRegSet();
 
             if (debug)
             {
