@@ -15,10 +15,10 @@ namespace plugin
             
             /// @warning aka proposal: тогда вызов этих функций без предварительного вызова getRenderTarget UB.
     
-        virtual bool onMouseMove(MouseContext context) = 0;
-        virtual bool onMouseRelease(MouseContext context) = 0;
-        virtual bool onMousePress(MouseContext context) = 0;
-        virtual bool onKeyboardPress(KeyboardContext context) = 0;
+        virtual bool onMouseMove(MouseContext context)          = 0;
+        virtual bool onMouseRelease(MouseContext context)       = 0;
+        virtual bool onMousePress(MouseContext context)         = 0;
+        virtual bool onKeyboardPress(KeyboardContext context)   = 0;
         virtual bool onKeyboardRelease(KeyboardContext context) = 0;
         virtual bool onClock(size_t delta) = 0;
     

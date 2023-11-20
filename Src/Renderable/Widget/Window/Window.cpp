@@ -7,8 +7,8 @@
 
 const size_t kButtonSize      = 50;
 const size_t kBorderThick     = 10;
-const Color  kBorderColor     = Color(175, 200, 175); //Color(0,   255, 255);
-const Color  kBackgroundColor = Color(255, 255, 255);
+const plugin::Color  kBorderColor     = plugin::Color(175, 200, 175); //plugin::Color(0,   255, 255);
+const plugin::Color  kBackgroundColor = plugin::Color(255, 255, 255);
 
 struct ButtonMove : ButtonFunction
 {
@@ -40,9 +40,9 @@ struct ButtonClose : ButtonFunction
     }
 };
 
-Window::Window(Vec2 _position, Vec2 _size, const char* header) :
+Window::Window(plugin::Vec2 _position, plugin::Vec2 _size, const char* header) :
 Widget(_position, _size),
-old_mouse_pos (Vec2(-1, -1)),
+old_mouse_pos (plugin::Vec2(-1, -1)),
 moving(false)
 {
     Font font;
@@ -51,15 +51,15 @@ moving(false)
     close_texture.LoadFromFile(kCloseImgFile);
     close_texture_press.LoadFromFile(kClosePressedImgFile);
     
-    Button* header_button = new Button(position, Vec2(_size.GetX() - kButtonSize, kButtonSize), 
+    Button* header_button = new Button(position, plugin::Vec2(_size.GetX() - kButtonSize, kButtonSize), 
                                        kBorderColor, new ButtonMove(this));         //Button to move window
 
     header_button->AddObject(new Label(position, font, 40, header, kBorderColor));    //Header
     AddObject(header_button);
 
-    Vec2 close_button_pos = Vec2(position.GetX() + size.GetX() - kButtonSize, 
+    plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());
-    AddObject(new Button(close_button_pos, Vec2(kButtonSize, kButtonSize), 
+    AddObject(new Button(close_button_pos, plugin::Vec2(kButtonSize, kButtonSize), 
                          close_texture, close_texture_press,
                          nullptr,
                          new ButtonClose(this)));                       //Close button window
@@ -86,7 +86,7 @@ bool Window::onMouseMove(MouseContext mouse)
 {
     if (moving)
     {
-        if (old_mouse_pos == Vec2(-1, -1))
+        if (old_mouse_pos == plugin::Vec2(-1, -1))
             old_mouse_pos = mouse.position;
         else
         {
@@ -108,7 +108,7 @@ bool Window::onMouseRelease(MouseContext mouse)
 
     if (moving)
     {
-        old_mouse_pos = Vec2(-1, -1);
+        old_mouse_pos = plugin::Vec2(-1, -1);
         moving = false;
 
         return true;
@@ -119,7 +119,7 @@ bool Window::onMouseRelease(MouseContext mouse)
 void Window::Close()
 {
     available = false;
-    size = Vec2(0, 0);
+    size = plugin::Vec2(0, 0);
     if (parent != nullptr)
     {
         parent->RemoveSon(this);
@@ -129,7 +129,7 @@ void Window::Close()
     this->~Window();
 }
 
-bool Window::InsideP(Vec2 v)
+bool Window::InsideP(plugin::Vec2 v)
 {
     return v.GetX() - position.GetX() > 0           &&
            v.GetX() - position.GetX() < size.GetX() &&

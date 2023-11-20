@@ -12,7 +12,7 @@ DynArray<const char*> BrightnessFilter::GetParamNames()
 
 void BrightnessFilter::Apply(RenderTarget& rt)
 {
-    VectorI   size(0, 0);
+    plugin::VectorI   size(0, 0);
     Image     img(rt.GetTexture());
     u_int8_t* pixels = img.GetPixelArray(size);
 
@@ -20,7 +20,7 @@ void BrightnessFilter::Apply(RenderTarget& rt)
     {
         for (int y = 0; y < size.y; y++)
         {
-            Color* cur_color = GetC(pixels, size, VectorI(x, y));
+            plugin::Color* cur_color = GetC(pixels, size, plugin::VectorI(x, y));
 
             cur_color->r = BorderPlus(cur_color->r, brightness, 255);
             cur_color->g = BorderPlus(cur_color->g, brightness, 255);
@@ -30,7 +30,7 @@ void BrightnessFilter::Apply(RenderTarget& rt)
 
     Texture texture;
     texture.LoadFromImage(img);
-    rt.DrawSprite(Vec2(0, 0), texture);
+    rt.DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
 void BrightnessFilter::SetParams(const DynArray<double>& params)

@@ -4,7 +4,7 @@
 #include "../../../ClipRegion/ClipRegion.h"
 #include "../Label/Label.h"
 
-Button::Button(Vec2 _position, Vec2 _size, 
+Button::Button(plugin::Vec2 _position, plugin::Vec2 _size, 
                Texture _texture, Texture  _press_texture,
                ButtonFunction*  _on_press,
                ButtonFunction*  _on_release) :
@@ -13,12 +13,12 @@ on_press         (_on_press),
 on_release       (_on_release),
 press_texture    (_press_texture),
 texture          (_texture),
-background_color (Color(0, 0, 0, 0)),
+background_color (plugin::Color(0, 0, 0, 0)),
 use_texture      (true),
 pressed          (false)
 {}
 
-Button::Button(Vec2 _position, Vec2 _size, Color _background_color,
+Button::Button(plugin::Vec2 _position, plugin::Vec2 _size, plugin::Color _background_color,
                ButtonFunction*  _on_press,
                ButtonFunction*  _on_release) :
 Widget           (_position, _size),
@@ -112,10 +112,10 @@ bool Button::onMouseMove(MouseContext mouse)
 
 //==============================TEXT BUTTON=========================
 
-TextButton::TextButton(Vec2   position, Vec2  size, 
+TextButton::TextButton(plugin::Vec2   position, plugin::Vec2  size, 
                        Texture  texture, Texture  press_texture,
                        Font font, int character_size, const char* text,
-                       Color text_color, Color background_color,
+                       plugin::Color text_color, plugin::Color background_color,
                        ButtonFunction*  _on_press,
                        ButtonFunction*  _on_release) : 
 Button(position, size, texture, press_texture, _on_press, _on_release)
@@ -123,10 +123,10 @@ Button(position, size, texture, press_texture, _on_press, _on_release)
     AddObject(new Label(position, font, character_size, text, background_color, text_color));
 }
     
-TextButton::TextButton(Vec2   position,  Vec2   size, 
-                       Color    background_color,
+TextButton::TextButton(plugin::Vec2   position,  plugin::Vec2   size, 
+                       plugin::Color    background_color,
                        Font font, int character_size, const char* text,
-                       Color text_color,
+                       plugin::Color text_color,
                        ButtonFunction*  _on_press,
                        ButtonFunction*  _on_release) :
 Button(position, size, background_color, _on_press, _on_release)

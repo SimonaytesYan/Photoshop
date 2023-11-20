@@ -5,7 +5,7 @@
 #include "../../../ToolManager/ToolManager.h" 
 #include "../../../FilterManager/FilterManager.h"
 
-const Color kCanvasBackgroundColor = Color(50, 50, 50);
+const plugin::Color kCanvasBackgroundColor = plugin::Color(50, 50, 50);
 
 class Canvas : public Widget
 {
@@ -18,7 +18,7 @@ class Canvas : public Widget
     void DisableTool(MouseContext mouse);
 
 public :
-    Canvas(Vec2 position, Vec2 size, 
+    Canvas(plugin::Vec2 position, plugin::Vec2 size, 
            ToolManager* tm = nullptr, FilterManager* fm = nullptr);
 
     ~Canvas()

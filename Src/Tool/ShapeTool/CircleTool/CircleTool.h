@@ -12,7 +12,7 @@ public :
 
     void CalcAndDrawShape(RenderTarget& target, 
                            MouseContext mouse, 
-                           Color color) override;
+                           plugin::Color color) override;
 };
 
 #endif //SYM_CIRCLE_TOOL

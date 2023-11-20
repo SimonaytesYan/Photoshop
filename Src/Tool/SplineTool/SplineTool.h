@@ -6,26 +6,26 @@
 
 class SplineTool : public Tool
 {
-    List<Vec2> vertexes;
+    List<plugin::Vec2> vertexes;
     double thickness = 10;
 public : 
     SplineTool(double _thickness) :
     Tool     (),
-    vertexes (List<Vec2>(0)),
+    vertexes (List<plugin::Vec2>(0)),
     thickness(_thickness)
     {}
 
     void PaintOnPress    (RenderTarget& data, RenderTarget& tmp, 
-                          MouseContext mouse, Color color) override;
+                          MouseContext mouse, plugin::Color color) override;
     void PaintOnMove     (RenderTarget& data, RenderTarget& tmp, 
-                          MouseContext mouse, Color color)
+                          MouseContext mouse, plugin::Color color)
     {};
 
     void PaintOnRelease  (RenderTarget& data, RenderTarget& tmp, 
-                          MouseContext mouse, Color color)
+                          MouseContext mouse, plugin::Color color)
     {};
     void Disable         (RenderTarget&  data,  RenderTarget& tmp, 
-                          MouseContext mouse, Color         color) override;
+                          MouseContext mouse, plugin::Color         color) override;
 };
 
 #endif //SYM_SPLINE_TOOL

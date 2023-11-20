@@ -3,7 +3,7 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-Canvas::Canvas(Vec2 _position, Vec2 _size, 
+Canvas::Canvas(plugin::Vec2 _position, plugin::Vec2 _size, 
                ToolManager* _tm, FilterManager* _fm) :
 Widget(_position, _size),
 tm   (_tm),
@@ -11,8 +11,8 @@ fm   (_fm),
 data (RenderTarget(_size)),
 tmp  (RenderTarget(_size))
 {
-    data.Clear(kCanvasBackgroundColor);
-    tmp.Clear(Color(0, 0, 0, 0));
+    data.clear(kCanvasBackgroundColor);
+    tmp.clear(plugin::Color(0, 0, 0, 0));
 }
 
 void Canvas::DisableTool(MouseContext mouse)
@@ -97,9 +97,9 @@ void Canvas::Render(RenderTarget* render_target)
 {
     if (available)
     {
-        data.Display();
+        data.display();
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
-        tmp.Display();
+        tmp.display();
         render_target->DrawSprite(position, tmp.GetTexture(), reg_set);
         Widget::Render(render_target);
     }
@@ -107,6 +107,6 @@ void Canvas::Render(RenderTarget* render_target)
 
 void Canvas::Clear()
 {
-    data.Clear(kCanvasBackgroundColor);
-    tmp.Clear(Color(0, 0, 0, 0));
+    data.clear(kCanvasBackgroundColor);
+    tmp.clear(plugin::Color(0, 0, 0, 0));
 }

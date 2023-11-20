@@ -21,14 +21,14 @@ class Widget : public Renderable, public EventProcessable
 protected:
     bool          available;
     List<Widget*> sub_widgets;
-    Vec2          position;
-    Vec2          size;
+    plugin::Vec2          position;
+    plugin::Vec2          size;
     RegionSet     reg_set;
     RegionSet     default_reg_set;
     Widget*       parent;
 
 public : 
-    Widget (Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0), bool available = true);
+    Widget (plugin::Vec2 position = plugin::Vec2(0, 0), plugin::Vec2 size = plugin::Vec2(0,0), bool available = true);
     virtual ~Widget();
 
     virtual bool onKeyboardPress    (KeyboardContext key) override;
@@ -39,7 +39,7 @@ public :
     virtual bool onClock       (size_t delta)        override;
 
     virtual void Render                (RenderTarget* render_target) override;
-    virtual void Move                  (Vec2 delta);
+    virtual void Move                  (plugin::Vec2 delta);
     virtual void AddObject             (Widget* new_widget);
     void         ToForeground          (Widget* son);
 
@@ -53,11 +53,11 @@ public :
     virtual void     UpdateOwnDefaultRegionSet();
     void             RemoveSon              (Widget* son);
     
-    virtual bool InsideP(Vec2 v);
+    virtual bool InsideP(plugin::Vec2 v);
 
-    Vec2&       GetSize()            { return size;      }
-    const Vec2& GetSize()      const { return size;      }
-    Vec2        GetPosition()  const { return position;  }
+    plugin::Vec2&       GetSize()            { return size;      }
+    const plugin::Vec2& GetSize()      const { return size;      }
+    plugin::Vec2        GetPosition()  const { return position;  }
     bool          GetAvailable() const { return available; }
     Widget*       GetParent()    const { return parent;    }
 
@@ -66,11 +66,11 @@ public :
 
 class RectangleWidget : public Widget
 {
-    Color background;
+    plugin::Color background;
 
 public:
-    RectangleWidget(Vec2 position = Vec2(0, 0), Vec2 size = Vec2(0,0),
-                    Color background = Color(255, 255, 255), bool available = true) :
+    RectangleWidget(plugin::Vec2 position = plugin::Vec2(0, 0), plugin::Vec2 size = plugin::Vec2(0,0),
+                    plugin::Color background = plugin::Color(255, 255, 255), bool available = true) :
     Widget     (position, size, available),
     background (background)
     {}

@@ -10,7 +10,7 @@
 
 const uint8_t kDefaultPriority = 0;
 
-class EventManager : EventProcessable, EventManagerI
+class EventManager : EventProcessable, plugin::EventManagerI
 {
     List<EventProcessableI*> objects;
     uint8_t min_priority[EVENTS_NUMBER];
@@ -27,7 +27,7 @@ public:
     void ChangePriorities(DynArray<Events> events, int new_min_priority);
     void ResetPriorities();
 
-    void setPriority(EventType event, uint8_t priority) override;
+    void setPriority(plugin::EventType event, uint8_t priority) override;
 
     void registerObject  (EventProcessableI* obj) override;
     void unregisterObject(EventProcessableI* obj) override;

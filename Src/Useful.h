@@ -28,10 +28,10 @@ static void Swap(T* a, T* b)
     *b = c;
 }
 
-static Color* GetC(const u_int8_t* pixels, VectorI size, VectorI index_v)
+static plugin::Color* GetC(const u_int8_t* pixels, plugin::VectorI size, plugin::VectorI index_v)
 {
-    int index = (index_v.y * size.x + index_v.x) * sizeof(Color);
-    return (Color*)(pixels + index);
+    int index = (index_v.y * size.x + index_v.x) * sizeof(plugin::Color);
+    return (plugin::Color*)(pixels + index);
 }
 
 static double BorderPlus(double a, double b, double border)

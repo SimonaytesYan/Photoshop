@@ -98,7 +98,7 @@ bool Menu::onMouseMove(MouseContext mouse)
     return Widget::onMouseMove(mouse);
 }
 
-bool Menu::InsideP(Vec2 v)
+bool Menu::InsideP(plugin::Vec2 v)
 {
     static int k = 0;
 

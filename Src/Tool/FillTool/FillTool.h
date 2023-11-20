@@ -10,13 +10,13 @@ public :
     {};
 
     void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                        MouseContext mouse, Color color) override;
+                        MouseContext mouse, plugin::Color color) override;
     void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
-                        MouseContext mouse, Color color) override;
+                        MouseContext mouse, plugin::Color color) override;
     void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                        MouseContext mouse, Color color) override;
+                        MouseContext mouse, plugin::Color color) override;
     void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
-                        MouseContext mouse, Color         color) override;
+                        MouseContext mouse, plugin::Color         color) override;
 };
 
 #endif //SYM_FILL_TOOL

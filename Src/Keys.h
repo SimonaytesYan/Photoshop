@@ -126,10 +126,10 @@ enum class MouseButton
 
 struct MouseContext
 {
-    Vec2        position;
+    plugin::Vec2        position;
     MouseButton key;
 
-    MouseContext (Vec2 _position, MouseButton _key) : 
+    MouseContext (plugin::Vec2 _position, MouseButton _key) : 
     position (_position),
     key      (_key)
     {}

@@ -11,7 +11,7 @@ DynArray<const char*> BlackAndWhiteFilter::GetParamNames()
 
 void BlackAndWhiteFilter::Apply(RenderTarget& rt)
 {
-    VectorI   size(0, 0);
+    plugin::VectorI   size(0, 0);
     Image     img(rt.GetTexture());
     u_int8_t* pixels = img.GetPixelArray(size);
 
@@ -19,7 +19,7 @@ void BlackAndWhiteFilter::Apply(RenderTarget& rt)
     {
         for (int y = 0; y < size.y; y++)
         {
-            Color* cur_color = GetC(pixels, size, VectorI(x, y));
+            plugin::Color* cur_color = GetC(pixels, size, plugin::VectorI(x, y));
 
             int pixel_color = (cur_color->r + cur_color->g + cur_color->b) / 3;
             cur_color->r = pixel_color;
@@ -30,7 +30,7 @@ void BlackAndWhiteFilter::Apply(RenderTarget& rt)
 
     Texture texture;
     texture.LoadFromImage(img);
-    rt.DrawSprite(Vec2(0, 0), texture);
+    rt.DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
 void BlackAndWhiteFilter::SetParams(const DynArray<double>& params)

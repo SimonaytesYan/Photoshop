@@ -12,9 +12,9 @@ bool Texture::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-Vec2 Texture::GetSize()
+plugin::Vec2 Texture::GetSize()
 {
-    return Vec2(data.getSize().x, data.getSize().y);
+    return plugin::Vec2(data.getSize().x, data.getSize().y);
 }
 
 bool Texture::LoadFromImage(Image img)
@@ -44,14 +44,19 @@ bool Image::LoadFromFile(const char* filename)
     return data.loadFromFile(filename);
 }
 
-Vec2 Image::GetSize()
+plugin::Vec2 Image::GetSize()
 {
-    return Vec2(data.getSize().x, data.getSize().y);
+    return plugin::Vec2(data.getSize().x, data.getSize().y);
 }
 
-u_int8_t* Image::GetPixelArray(VectorI& size)
+u_int8_t* Image::GetPixelArray(plugin::VectorI& size)
 {
-    size = Vec2(data.getSize().x, data.getSize().y);
+    size = plugin::Vec2(data.getSize().x, data.getSize().y);
+    return GetPixelArray();
+}
+
+u_int8_t* Image::GetPixelArray()
+{
     return (u_int8_t*)data.getPixelsPtr();
 }
 

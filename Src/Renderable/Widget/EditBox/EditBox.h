@@ -20,7 +20,7 @@ class EditBox : public Widget
     bool   cursor_visible;
 
 public: 
-    EditBox(Vec2 position, Vec2 size, 
+    EditBox(plugin::Vec2 position, plugin::Vec2 size, 
             Font _font, double _letter_width, double _letter_height, int _chapter_size) :
     Widget         (position, size),
     font           (_font),

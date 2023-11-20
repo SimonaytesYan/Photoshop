@@ -16,17 +16,17 @@ public :
     {}
 
     virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color) override;
+                                MouseContext mouse, plugin::Color color) override;
     virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color) override;
+                                MouseContext mouse, plugin::Color color) override;
     virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color) override;
+                                MouseContext mouse, plugin::Color color) override;
     virtual void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
-                                MouseContext mouse, Color         color) override;
+                                MouseContext mouse, plugin::Color         color) override;
 
     virtual void CalcAndDrawShape(RenderTarget& target, 
                                   MouseContext mouse, 
-                                  Color color) = 0;
+                                  plugin::Color color) = 0;
 };
 
 #endif //SYM_SHAPE_TOOL

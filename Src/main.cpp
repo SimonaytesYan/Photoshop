@@ -43,47 +43,47 @@ int main()
 	size_t WindowWidth  = window.getSize().x;
 	size_t WindowHeight = window.getSize().y;
 
-	RenderTarget rend_targ(Vec2(WindowWidth, WindowHeight));
+	RenderTarget rend_targ(plugin::Vec2(WindowWidth, WindowHeight));
 
-	RectangleWidget the_root(Vec2(0, 0), Vec2(WindowWidth, WindowHeight));
-	Window main_window(Vec2(0, 0), 
-					   Vec2(WindowWidth, WindowHeight), "Window1");
+	RectangleWidget the_root(plugin::Vec2(0, 0), plugin::Vec2(WindowWidth, WindowHeight));
+	Window main_window(plugin::Vec2(0, 0), 
+					   plugin::Vec2(WindowWidth, WindowHeight), "Window1");
 	the_root.AddObject(&main_window);
 
 	FilterManager fm;
 	ToolManager   tm;
 
-	Window canvas_window1(Vec2(100, 100), Vec2(1200, 850), "Canvas1");
-	Canvas canvas(Vec2(110, 160), Vec2(1500, 1200), &tm, &fm);
+	Window canvas_window1(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
+	Canvas canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
 	canvas_window1.AddObject(&canvas);
 
-	ScrollBar vertical_scroll_bar(canvas.GetPosition(), Vec2(20, canvas_window1.GetSize().GetY() - 50),
-						 		  Color(100, 100, 100), 
-						 		  Color(200, 200, 200), Vec2(1, 0.5),
-						 		  &canvas, Vec2(20, 20), canvas_window1.GetSize());
+	ScrollBar vertical_scroll_bar(canvas.GetPosition(), plugin::Vec2(20, canvas_window1.GetSize().GetY() - 50),
+						 		  plugin::Color(100, 100, 100), 
+						 		  plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
+						 		  &canvas, plugin::Vec2(20, 20), canvas_window1.GetSize());
 	
-	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), Vec2(canvas_window1.GetSize().GetX(), 20),
-						 		    Color(100, 100, 100), 
-						 		    Color(200, 200, 200), Vec2(0.5, 1),
-						 		    &canvas, Vec2(0, 20), canvas_window1.GetSize());
+	ScrollBar horizontal_scroll_bar(canvas.GetPosition(), plugin::Vec2(canvas_window1.GetSize().GetX(), 20),
+						 		    plugin::Color(100, 100, 100), 
+						 		    plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
+						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.GetSize());
 	canvas_window1.AddObject(&vertical_scroll_bar);
 	canvas_window1.AddObject(&horizontal_scroll_bar);
 
 	main_window.AddObject(&canvas_window1);
 
-	Window canvas_window2(Vec2(900, 150), Vec2(500, 550), "Canvas2");
-	Canvas canvas2(Vec2(910, 210), Vec2(480, 480), &tm, &fm);
+	Window canvas_window2(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
+	Canvas canvas2(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
 	canvas_window2.AddObject(&canvas2);
 	main_window.AddObject(&canvas_window2);
 
 	// Adding tools	
-	Window tools(Vec2(1400, 450),
-			  	  Vec2(500, 300), "Tools");
+	Window tools(plugin::Vec2(1400, 450),
+			  	  plugin::Vec2(500, 300), "Tools");
 	AddTools(&main_window, &tools, &tm);
 
 	// Adding colors
-	Window colors(Vec2(1400, 150), 
-			  	  Vec2(500, 300), "Colors");
+	Window colors(plugin::Vec2(1400, 150), 
+			  	  plugin::Vec2(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);	
 
 	EventManager event_manager;
@@ -109,7 +109,7 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
-					Vec2 position(sf::Mouse::getPosition().x,
+					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
 					event_manager.onMousePress({position, (MouseButton)event.mouseButton.button});
 					break;
@@ -117,7 +117,7 @@ int main()
 				
 				case sf::Event::MouseMoved:
 				{
-					Vec2 position(sf::Mouse::getPosition().x,
+					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
 					event_manager.onMouseMove(MouseContext(position, (MouseButton)1));
 					break;
@@ -125,7 +125,7 @@ int main()
 				
 				case sf::Event::MouseButtonReleased:
 				{
-					Vec2 position(sf::Mouse::getPosition().x,
+					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
 					event_manager.onMouseRelease({position, (MouseButton)event.mouseButton.button});
 					break;
@@ -188,7 +188,7 @@ int main()
 
 		the_root.Render(&rend_targ);
 		
-		rend_targ.Display(&window);
+		rend_targ.display(&window);
 		window.display();
 	}
 }
@@ -204,62 +204,62 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	press_texture.LoadFromFile(kBackgroundPressedImgFile);
 
 	// Create file menu
-	TextButton* file_button = new TextButton(Vec2(10, 50), Vec2(100, 50), 
-									 		 Color(199, 181, 173),
+	TextButton* file_button = new TextButton(plugin::Vec2(10, 50), plugin::Vec2(100, 50), 
+									 		 plugin::Color(199, 181, 173),
 									 		 font, 20, "File", 
-									 		 Color(255, 255, 255));
+									 		 plugin::Color(255, 255, 255));
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
 	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
-	file_menu->AddObject(new TextButton(Vec2(0, 0), Vec2(100, 50), 
-									 	Color(199, 181, 173),
+	file_menu->AddObject(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
+									 	plugin::Color(199, 181, 173),
 										font, 20, "Save", 
-										Color(255, 255, 255),
+										plugin::Color(255, 255, 255),
 										saving_func));
 	
 	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
-	file_menu->AddObject(new TextButton(Vec2(0, 0), Vec2(100, 50), 
-									 	Color(199, 181, 173),
+	file_menu->AddObject(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
+									 	plugin::Color(199, 181, 173),
 										font, 20, "Open", 
-										Color(255, 255, 255),
+										plugin::Color(255, 255, 255),
 										opening_func));
 
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
 	
 	// Create filter menu
-	TextButton* filter_button = new TextButton(Vec2(210, 50),  Vec2(200, 50),
-									  		   Color(199, 181, 173),
+	TextButton* filter_button = new TextButton(plugin::Vec2(210, 50),  plugin::Vec2(200, 50),
+									  		   plugin::Color(199, 181, 173),
 									  		   font, 20, "Filters",
-									  		   Color(255, 255, 255));
+									  		   plugin::Color(255, 255, 255));
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
 	SelectFilterArgs* brightness_func = new SelectFilterArgs(fm, new BrightnessFilter(), 
 															 font, em, root);
 
-	TextButton* brightness_filter = new TextButton(Vec2(0, 0), Vec2(200, 50), 
-									  		   	   Color(199, 181, 173),
+	TextButton* brightness_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
+									  		   	   plugin::Color(199, 181, 173),
 									  	   		   font, 20, "Bright",
-									  	   		   Color(255, 255, 255),
+									  	   		   plugin::Color(255, 255, 255),
 									  	   		   brightness_func);
 	filters->AddObject(brightness_filter);
 	
 	SelectFilter* black_white_func = new SelectFilter(fm, new BlackAndWhiteFilter(), 
 													  nullptr, nullptr);
 
-	TextButton* black_white_filter = new TextButton(Vec2(0, 0),  Vec2(200, 50),  
-									  		   	    Color(199, 181, 173),
+	TextButton* black_white_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
+									  		   	    plugin::Color(199, 181, 173),
 									  			    font, 20, "Black-White",
-									  			    Color(255, 255, 255),
+									  			    plugin::Color(255, 255, 255),
 									  			    black_white_func);
 	filters->AddObject(black_white_filter);
 
 	LastFilter* last_filter_func = new LastFilter(fm); 
-	TextButton* last_filter = new TextButton(Vec2(0, 0), Vec2(200, 50), 
-									  		 Color(199, 181, 173),
+	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
+									  		 plugin::Color(199, 181, 173),
 											 font, 20, "Last filter",
-											 Color(255, 255, 255),
+											 plugin::Color(255, 255, 255),
 											 last_filter_func);
 	filters->AddObject(last_filter);
 
@@ -313,8 +313,8 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	{
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
-		tools->AddObject(new Button(tools->GetPosition() + Vec2(10 + 50 * i, 50), 
-								   Vec2(50, 50), 
+		tools->AddObject(new Button(tools->GetPosition() + plugin::Vec2(10 + 50 * i, 50), 
+								   plugin::Vec2(50, 50), 
 							   	   common_texture, pressed_texture, 
 							   	   tools_func[i]));
 	}
@@ -325,22 +325,22 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 {
 	const int colors_num   = 8;
-	Color     all_colors[] = {Color(255, 255, 255),
-						 	  Color(0,     0,   0),
-						 	  Color(255,   0,   0),
-						 	  Color(0,   255,   0),
-						 	  Color(0,     0, 255),
-						 	  Color(255, 255,   0),
-						 	  Color(255,   0, 255),
-						 	  Color(0,   255, 255),};
+	plugin::Color     all_colors[] = {plugin::Color(255, 255, 255),
+						 	  plugin::Color(0,     0,   0),
+						 	  plugin::Color(255,   0,   0),
+						 	  plugin::Color(0,   255,   0),
+						 	  plugin::Color(0,     0, 255),
+						 	  plugin::Color(255, 255,   0),
+						 	  plugin::Color(255,   0, 255),
+						 	  plugin::Color(0,   255, 255),};
 
 	SwitchColor* colors_func = nullptr;
 	for (int i = 0; i < colors_num; i++)
 	{
 		colors_func = new SwitchColor(tm, all_colors[i]);
 
-		Vec2 position = colors->GetPosition() + Vec2(10 + 50 * i, 50);
-		colors->AddObject(new Button(position, Vec2(50, 50), all_colors[i], 
+		plugin::Vec2 position = colors->GetPosition() + plugin::Vec2(10 + 50 * i, 50);
+		colors->AddObject(new Button(position, plugin::Vec2(50, 50), all_colors[i], 
 								  	 colors_func));
 	}
 

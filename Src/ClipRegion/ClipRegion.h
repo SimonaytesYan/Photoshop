@@ -18,14 +18,14 @@ public:
 
     ClipRegion();
     ClipRegion(double x0, double y0, double x1, double y1);
-    ClipRegion(Vec2 position, Vec2 size, bool nulled = false);
+    ClipRegion(plugin::Vec2 position, plugin::Vec2 size, bool nulled = false);
     ClipRegion(const ClipRegion& a);
 
-    Vec2 GetSize()     const;
-    Vec2 GetPosition() const;
-    Color  GetColor()    const;
+    plugin::Vec2 GetSize()     const;
+    plugin::Vec2 GetPosition() const;
+    plugin::Color  GetColor()    const;
 
-    bool InsideP(Vec2 v) const;
+    bool InsideP(plugin::Vec2 v) const;
 
     void Dump() const;
 
@@ -35,8 +35,8 @@ public:
     friend bool       operator==(ClipRegion a, ClipRegion b);
 };
 
-const ClipRegion kNullClipReg = ClipRegion(Vec2(0, 0), 
-                                           Vec2(0, 0), 
+const ClipRegion kNullClipReg = ClipRegion(plugin::Vec2(0, 0), 
+                                           plugin::Vec2(0, 0), 
                                            true);
 
 ClipRegion operator&&(ClipRegion a, ClipRegion b);

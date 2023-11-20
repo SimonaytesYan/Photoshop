@@ -4,7 +4,7 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-Vec2 kIndent = Vec2(10, 0);
+plugin::Vec2 kIndent = plugin::Vec2(10, 0);
 
 bool EditBox::onMousePress(MouseContext mouse)
 {
@@ -102,7 +102,7 @@ void EditBox::Render(RenderTarget* rt)
     if (available)
     {
         // Frame
-        rt->DrawRect(position, size, reg_set, Color(255, 255, 255), 3);
+        rt->DrawRect(position, size, reg_set, plugin::Color(255, 255, 255), 3);
         
         if (text.GetCapacity() > text.GetLength() + 1)
             text[text.GetLength()] = 0;
@@ -111,14 +111,14 @@ void EditBox::Render(RenderTarget* rt)
 
         // Text inside
         rt->DrawText(position + kIndent, font, 
-                     text.GetArray(), chapter_size, Color(0, 0, 0), reg_set);
+                     text.GetArray(), chapter_size, plugin::Color(0, 0, 0), reg_set);
 
         // Cursor
         if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED && 
             cursor_visible)
         {
-            rt->DrawRect(position + Vec2(letter_width * chapter_size * cursor_pos, 0) + kIndent, 
-                         Vec2(4, chapter_size * letter_height), reg_set, Color(0, 0, 0));
+            rt->DrawRect(position + plugin::Vec2(letter_width * chapter_size * cursor_pos, 0) + kIndent, 
+                         plugin::Vec2(4, chapter_size * letter_height), reg_set, plugin::Color(0, 0, 0));
         }
     }
 }

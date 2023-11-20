@@ -6,7 +6,7 @@
 #include "../../CutMullRom/CutMullRom.h"
 
 void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
-                         MouseContext mouse, Color         color)
+                         MouseContext mouse, plugin::Color         color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);
     vertexes.Clear();
@@ -14,7 +14,7 @@ void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp,
 }
 
 void SplineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color)
+                                MouseContext mouse, plugin::Color color)
 {
     if (mouse.key == MouseButton::Left)
     {

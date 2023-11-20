@@ -33,7 +33,7 @@ public:
 
     virtual void AddObject  (Widget* new_widget)   override;
             bool onMouseMove(MouseContext mouse) override;
-            bool InsideP    (Vec2 v)             override;
+            bool InsideP    (plugin::Vec2 v)             override;
             void UpdateOwnDefaultRegionSet()       override;
 };
 

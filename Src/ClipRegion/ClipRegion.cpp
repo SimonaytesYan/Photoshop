@@ -11,7 +11,7 @@ nulled (false)
     y1 = 0;
 }
 
-ClipRegion::ClipRegion(Vec2 _position, Vec2 _size, bool _nulled) :
+ClipRegion::ClipRegion(plugin::Vec2 _position, plugin::Vec2 _size, bool _nulled) :
 nulled    (_nulled)
 {
     x0 = _position.GetX();
@@ -40,14 +40,14 @@ ClipRegion::ClipRegion(const ClipRegion& a)
 }
 
 
-Vec2 ClipRegion::GetSize() const
+plugin::Vec2 ClipRegion::GetSize() const
 {
-    return Vec2(x1 - x0, y1 - y0);
+    return plugin::Vec2(x1 - x0, y1 - y0);
 }
 
-Vec2 ClipRegion::GetPosition() const
+plugin::Vec2 ClipRegion::GetPosition() const
 {
-    return Vec2(x0, y0);
+    return plugin::Vec2(x0, y0);
 }
 
 bool operator==(ClipRegion a, ClipRegion b)
@@ -78,7 +78,7 @@ inline bool YInsideRegion(ClipRegion a, double y)
            a.y1 > y;
 }
 
-bool ClipRegion::InsideP(Vec2 v) const
+bool ClipRegion::InsideP(plugin::Vec2 v) const
 {
     return XInsideRegion(*this, v.GetX()) && YInsideRegion(*this, v.GetY());
 }

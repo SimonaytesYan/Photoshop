@@ -28,5 +28,6 @@ const char   kWindowHeader[] = "Photoshop";
 const int    kMaxTextLength  = 50;
 const double kLetterWidth    = 0.57;
 const double kLetterHeight   = 1.5;
+const double kPrecision      = 1e-7;
 
 #endif //SYM_RESOURCES

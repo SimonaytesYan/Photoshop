@@ -6,7 +6,7 @@
 class Interlayer : public Widget
 {
 public :
-    Interlayer(Vec2 position, Vec2 size) :
+    Interlayer(plugin::Vec2 position, plugin::Vec2 size) :
     Widget(position, size)
     {
     }
@@ -22,7 +22,7 @@ public :
 
 struct ScrollBarFunction 
 {
-    Vec2 delta;
+    plugin::Vec2 delta;
     virtual void operator()() = 0;
 
     virtual ~ScrollBarFunction() {};
@@ -47,25 +47,25 @@ struct MoveTarget : ScrollBarFunction
 class ScrollBar : public Widget
 {
     bool             pressed;
-    Vec2           sensitivity;
-    Color            background_color;
+    plugin::Vec2           sensitivity;
+    plugin::Color            background_color;
     RectangleWidget* slider;
-    Vec2           last_mouse_pos;
+    plugin::Vec2           last_mouse_pos;
 
     ScrollBarFunction* scroll;
 
 public:
     // slider_size specified as a fraction of the scrollbar size
-    ScrollBar(Vec2 _position,  Vec2 _size, 
-              Color _background, Color _slider_color,
-              Vec2 _slider_size,
+    ScrollBar(plugin::Vec2 _position,  plugin::Vec2 _size, 
+              plugin::Color _background, plugin::Color _slider_color,
+              plugin::Vec2 _slider_size,
               ScrollBarFunction* _scroll = nullptr);
 
-    ScrollBar(Vec2 _position,  Vec2 _size, 
-              Color _background, Color _slider_color,
-              Vec2 _slider_size,
+    ScrollBar(plugin::Vec2 _position,  plugin::Vec2 _size, 
+              plugin::Color _background, plugin::Color _slider_color,
+              plugin::Vec2 _slider_size,
               Widget* target, 
-              Vec2 visible_box_offset, Vec2 visible_box_size);
+              plugin::Vec2 visible_box_offset, plugin::Vec2 visible_box_size);
 
     bool onMouseRelease(MouseContext mouse) override;
     bool onMousePress  (MouseContext mouse) override;

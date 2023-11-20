@@ -22,18 +22,18 @@ protected :
     Texture         texture;                //use only if texture_button == true
     Texture         press_texture;          //use only if texture_button == true
 
-    Color           background_color;       //use only if texture_button == false
+    plugin::Color           background_color;       //use only if texture_button == false
 
 public :
-    Button(Vec2          _position, 
-           Vec2          _size, 
+    Button(plugin::Vec2          _position, 
+           plugin::Vec2          _size, 
            Texture         _texture,
            Texture         _press_texture,
            ButtonFunction*  _on_press   = nullptr,
            ButtonFunction*  _on_release = nullptr);
-    Button(Vec2   _position, 
-           Vec2   _size, 
-           Color    _background_color,
+    Button(plugin::Vec2   _position, 
+           plugin::Vec2   _size, 
+           plugin::Color    _background_color,
            ButtonFunction* _on_press   = nullptr,
            ButtonFunction* _on_release = nullptr);
     ~Button();
@@ -52,18 +52,18 @@ public :
 class TextButton : public Button
 {
     public : 
-    TextButton(Vec2   _position, Vec2   _size, 
+    TextButton(plugin::Vec2   _position, plugin::Vec2   _size, 
                Texture  _texture,  Texture  _press_texture,
                Font font, int character_size, const char* text = "Button",
-               Color text_color = Color(0, 0, 0), 
-               Color background_color = Color(255, 255, 255),
+               plugin::Color text_color = plugin::Color(0, 0, 0), 
+               plugin::Color background_color = plugin::Color(255, 255, 255),
                ButtonFunction*  _on_press   = nullptr,
                ButtonFunction*  _on_release = nullptr);
     
-    TextButton(Vec2   _position, Vec2   _size, 
-               Color    _background_color,
+    TextButton(plugin::Vec2   _position, plugin::Vec2   _size, 
+               plugin::Color    _background_color,
                Font font, int character_size, const char* text = "Button",
-               Color text_color = Color(0, 0, 0), 
+               plugin::Color text_color = plugin::Color(0, 0, 0), 
                ButtonFunction*  _on_press   = nullptr,
                ButtonFunction*  _on_release = nullptr);
 };

@@ -4,9 +4,9 @@
 
 #include <string.h>
 
-Label::Label(Vec2 _position, Font _font, int _character_size, 
-             const char* _text, Color _background, Color _text_color) :
-Widget(_position, Vec2(strlen(_text) * (_character_size - 5), (_character_size + 10))),
+Label::Label(plugin::Vec2 _position, Font _font, int _character_size, 
+             const char* _text, plugin::Color _background, plugin::Color _text_color) :
+Widget(_position, plugin::Vec2(strlen(_text) * (_character_size - 5), (_character_size + 10))),
 font           (_font),
 character_size (_character_size),
 background     (_background),

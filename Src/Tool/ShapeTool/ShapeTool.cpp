@@ -4,46 +4,46 @@
 #include "../../ClipRegion/ClipRegion.h"
 
 void ShapeTool::PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color)
+                                MouseContext mouse, plugin::Color color)
 {
-    tmp.Clear(Color(0, 0, 0, 0));
+    tmp.clear(plugin::Color(0, 0, 0, 0));
     start_pos = mouse.position;
     CalcAndDrawShape(tmp, mouse, color);
     drawing = true;
 }
 
 void ShapeTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
-                             MouseContext mouse, Color color)
+                             MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
-        tmp.Clear(Color(0, 0, 0, 0));
+        tmp.clear(plugin::Color(0, 0, 0, 0));
         CalcAndDrawShape(tmp, mouse, color);
         last_pos = mouse.position;
     }
 }
 
 void ShapeTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
-                                MouseContext mouse, Color color)
+                                MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
-        tmp.Clear(Color(0, 0, 0, 0));
+        tmp.clear(plugin::Color(0, 0, 0, 0));
         CalcAndDrawShape(data, mouse, color);
-        start_pos = Vec2(-1, -1);
+        start_pos = plugin::Vec2(-1, -1);
         drawing   = false;
     }
 }
 
 void ShapeTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
-                        MouseContext mouse, Color         color)
+                        MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
     {
-        tmp.Clear(Color(0, 0, 0, 0));
+        tmp.clear(plugin::Color(0, 0, 0, 0));
         CalcAndDrawShape(data, mouse, color);
         
-        start_pos = Vec2(-1, -1);
+        start_pos = plugin::Vec2(-1, -1);
         drawing   = false;
     }
 }

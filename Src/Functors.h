@@ -38,14 +38,14 @@ struct SwitchTool : ButtonFunction
 struct SwitchColor : ButtonFunction
 {
 	ToolManager* tool_manager;
-	Color		 color;
+	plugin::Color		 color;
 
 	SwitchColor() :
 	tool_manager (nullptr),
-	color 		 (Color(0, 0, 0))
+	color 		 (plugin::Color(0, 0, 0))
 	{}
 
-	SwitchColor(ToolManager* _tool_manager, Color _color) :
+	SwitchColor(ToolManager* _tool_manager, plugin::Color _color) :
 	color 		 (_color),
 	tool_manager (_tool_manager)
 	{}
@@ -257,22 +257,22 @@ void SelectFilterArgs::operator()()
 	int filter_args_n = filter_args.GetLength();
 	if (filter_args_n > 0)
 	{
-		Vec2 position = root->GetPosition() + root->GetSize() / 2;
-		Vec2 size(400, 2 * 50 + (filter_args_n + 1) * 100);
+		plugin::Vec2 position = root->GetPosition() + root->GetSize() / 2;
+		plugin::Vec2 size(400, 2 * 50 + (filter_args_n + 1) * 100);
 		ModalWindow* dialog_box = new ModalWindow(position, size, 
 													  "Enter filter params", event_manager);
 
-		position = position + Vec2(0, 100);
+		position = position + plugin::Vec2(0, 100);
 		DynArray<EditBox*>* edit_boxes = new DynArray<EditBox*>(0);
 
 		for (int i = 0; i < filter_args_n; i++)
 		{
-			EditBox* edit_box = new EditBox(position + Vec2(200, i * 100), Vec2(100, 50), 
+			EditBox* edit_box = new EditBox(position + plugin::Vec2(200, i * 100), plugin::Vec2(100, 50), 
 											font, kLetterWidth, kLetterHeight, 20);
 			edit_boxes->PushBack(edit_box);
 
 			dialog_box->AddObject(edit_box);
-			dialog_box->AddObject(new Label(position + Vec2(25, i * 100), 
+			dialog_box->AddObject(new Label(position + plugin::Vec2(25, i * 100), 
 											font, 20, filter_args[i]));
 		}
 
@@ -280,9 +280,9 @@ void SelectFilterArgs::operator()()
 															filter, 
 															edit_boxes, 
 															dialog_box);
-		TextButton* ok_button = new TextButton(position + Vec2(200, filter_args_n * 100), 
-									   		   Vec2(50, 50), Color(255, 255, 255), 
-											   font, 20, "Ok", Color(0, 0, 0),
+		TextButton* ok_button = new TextButton(position + plugin::Vec2(200, filter_args_n * 100), 
+									   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
+											   font, 20, "Ok", plugin::Color(0, 0, 0),
 									   		   select_filter_func);
 		dialog_box->AddObject(ok_button);		
 
@@ -297,24 +297,24 @@ void LastFilter::operator()()
 
 void SavingParams::operator()()
 {
-	Vec2 position = main_window->GetPosition() + main_window->GetSize() / 2;
-	Vec2 size(400, 300);
+	plugin::Vec2 position = main_window->GetPosition() + main_window->GetSize() / 2;
+	plugin::Vec2 size(400, 300);
 	ModalWindow* dialog_box = new ModalWindow(position, size, 
 											  "Enter file name params", 
 											  event_manager);
 
-	position = position + Vec2(50, 100);
+	position = position + plugin::Vec2(50, 100);
 	dialog_box->AddObject(new Label(position, 
 									font, 20, "Filename"));
-	EditBox* edit_box = new EditBox(position + Vec2(200, 0), Vec2(100, 50), 
+	EditBox* edit_box = new EditBox(position + plugin::Vec2(200, 0), plugin::Vec2(100, 50), 
 									font, kLetterWidth, kLetterHeight, 20);
 	dialog_box->AddObject(edit_box);
 
 	SaveInFile* save_canvas_func = new SaveInFile(canvas, edit_box, dialog_box);
 		
-	TextButton* ok_button = new TextButton(position + Vec2(200, 100), 
-								   		   Vec2(50, 50), Color(255, 255, 255), 
-										   font, 20, "Ok", Color(0, 0, 0),
+	TextButton* ok_button = new TextButton(position + plugin::Vec2(200, 100), 
+								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
+										   font, 20, "Ok", plugin::Color(0, 0, 0),
 								   		   save_canvas_func);
 	dialog_box->AddObject(ok_button);		
 
@@ -333,24 +333,24 @@ void SaveInFile::operator()()
 
 void OpeningParams::operator()()
 {
-	Vec2 position = main_window->GetPosition() + main_window->GetSize() / 2;
-	Vec2 size(400, 300);
+	plugin::Vec2 position = main_window->GetPosition() + main_window->GetSize() / 2;
+	plugin::Vec2 size(400, 300);
 	ModalWindow* dialog_box = new ModalWindow(position, size, 
 											  "Enter file name", 
 											  event_manager);
 
-	position = position + Vec2(50, 100);
+	position = position + plugin::Vec2(50, 100);
 	dialog_box->AddObject(new Label(position, 
 									font, 20, "File"));
-	EditBox* edit_box = new EditBox(position + Vec2(200, 0), Vec2(100, 50), 
+	EditBox* edit_box = new EditBox(position + plugin::Vec2(200, 0), plugin::Vec2(100, 50), 
 									font, kLetterWidth, kLetterHeight, 20);
 	dialog_box->AddObject(edit_box);
 
 	OpenFile* save_canvas_func = new OpenFile(main_window, edit_box, dialog_box, 
 											  tool_manager, filter_manager);
-	TextButton* ok_button = new TextButton(position + Vec2(200, 100), 
-								   		   Vec2(50, 50), Color(255, 255, 255), 
-										   font, 20, "Ok", Color(0, 0, 0),
+	TextButton* ok_button = new TextButton(position + plugin::Vec2(200, 100), 
+								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
+										   font, 20, "Ok", plugin::Color(0, 0, 0),
 								   		   save_canvas_func);
 	dialog_box->AddObject(ok_button);		
 
@@ -364,9 +364,9 @@ void OpenFile::operator()()
 	Texture texture;
 	texture.LoadFromFile(file_name);
 
-	Vec2 position = main_window->GetPosition() + main_window->GetSize() / 10;
-	Window* canvas_window = new Window(position          - Vec2(10, 50), 
-									   texture.GetSize() + Vec2(20, 0), file_name);
+	plugin::Vec2 position = main_window->GetPosition() + main_window->GetSize() / 10;
+	Window* canvas_window = new Window(position          - plugin::Vec2(10, 50), 
+									   texture.GetSize() + plugin::Vec2(20, 0), file_name);
 
 	Canvas* new_canvas = new Canvas(position, texture.GetSize(), tool_manager, filter_manager);
 	new_canvas->GetData()->DrawSprite(position, texture);	

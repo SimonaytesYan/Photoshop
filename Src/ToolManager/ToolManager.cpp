@@ -36,7 +36,7 @@ void ToolManager::ChangeTool(Tool* new_tool)
     tool = new_tool;
 }
 
-void ToolManager::ChangeColor(Color new_color)
+void ToolManager::ChangeColor(plugin::Color new_color)
 {
     color = new_color;
 }

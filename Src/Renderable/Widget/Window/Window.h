@@ -5,15 +5,15 @@
 
 class Window : public Widget
 {
-    Vec2 old_mouse_pos;
+    plugin::Vec2 old_mouse_pos;
     bool   moving;
 
 public:
-    Window(Vec2 position, Vec2 size, const char* header);
+    Window(plugin::Vec2 position, plugin::Vec2 size, const char* header);
     ~Window();
 
     void Render(RenderTarget* render_target)  override;
-    bool InsideP(Vec2 v);
+    bool InsideP(plugin::Vec2 v);
     bool onMousePress(MouseContext mouse)   override;
     bool onMouseMove (MouseContext mouse)   override;
     bool onMouseRelease(MouseContext mouse) override;

@@ -66,7 +66,7 @@ bool EventManager::onClock(u_int64_t delta)
     return true;
 }
 
-void EventManager::setPriority(EventType event, uint8_t priority)
+void EventManager::setPriority(plugin::EventType event, uint8_t priority)
 {
     min_priority[(int)event] = priority;
 }

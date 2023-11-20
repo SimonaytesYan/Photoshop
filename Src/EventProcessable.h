@@ -4,14 +4,14 @@
 #include "Keys.h"
 #include "Standart/EventProcessableI.h"
 
-class EventProcessable : public EventProcessableI
+class EventProcessable : public plugin::EventProcessableI
 {
 protected :
-    u_int8_t priority;
+    uint8_t priority;
 
 public : 
 
-    u_int8_t getPriority() override
+    uint8_t getPriority() override
     { return priority; }
 
     EventProcessable(int _priority) :

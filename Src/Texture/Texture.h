@@ -1,9 +1,11 @@
 #ifndef SYM_TEXTURE
 #define SYM_TEXTURE
 
-#include <SFML/Graphics.hpp>
+#include <cstdint>
 
+#include <SFML/Graphics.hpp>
 #include "../Vec2/Vec2.h"
+#include "../Color.h"
 
 class Image;
 
@@ -19,7 +21,7 @@ public:
     bool          LoadFromFile(const char* filename);
     sf::Texture*  GetTexture  ();
     bool          LoadFromImage(Image img);
-    Vec2          GetSize(); 
+    plugin::Vec2  GetSize(); 
 };
 
 class Image
@@ -31,14 +33,13 @@ public:
     Image()                   { data = sf::Image(); }
     Image(sf::Image new_data) { data = new_data;      }
 
-    void      Create      (int width, int height);
-    bool      LoadFromFile(const char* filename);
-    sf::Image GetImage    ();
-    Vec2    GetSize     ();
+    void         Create      (int width, int height);
+    bool         LoadFromFile(const char* filename);
+    sf::Image    GetImage    ();
+    plugin::Vec2 GetSize     ();
 
-    // Calloc buffer to pixels 
-    // You should free it after using
-    u_int8_t* GetPixelArray(VectorI& size);
+    u_int8_t* GetPixelArray();
+    u_int8_t* GetPixelArray(plugin::VectorI& size);
 };
 
 namespace plugin

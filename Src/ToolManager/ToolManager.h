@@ -10,13 +10,13 @@ class RenderTarget;
 class ToolManager
 {
     Tool* tool;
-    Color color;
+    plugin::Color color;
 
 public :
     ToolManager()
     {
         tool  = nullptr;
-        color = Color(255, 255, 255);
+        color = plugin::Color(255, 255, 255);
     }
     
     void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
@@ -25,7 +25,7 @@ public :
     void DisableTool   (RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
 
     void ChangeTool    (Tool* new_tool);
-    void ChangeColor   (Color new_color);
+    void ChangeColor   (plugin::Color new_color);
 };
 
 #endif //SYM_TOOL_MANAGER

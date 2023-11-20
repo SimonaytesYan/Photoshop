@@ -9,13 +9,13 @@ class Label : public Widget
     Font  font;
     int   character_size;
     char* text;
-    Color text_color;
-    Color background;
+    plugin::Color text_color;
+    plugin::Color background;
 
 public:
-    Label(Vec2 _position, Font font, int character_size, 
-          const char* text = "Label", Color background = Color(0, 0, 0), 
-          Color text_color = Color(255, 255, 255));
+    Label(plugin::Vec2 _position, Font font, int character_size, 
+          const char* text = "Label", plugin::Color background = plugin::Color(0, 0, 0), 
+          plugin::Color text_color = plugin::Color(255, 255, 255));
     ~Label();
 
     void SetText(const char* new_text);

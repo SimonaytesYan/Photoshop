@@ -7,7 +7,7 @@
 
 const double kPrecision = 1e-6;
 
-Widget::Widget (Vec2 _position, Vec2 _size, bool _available) :
+Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size, bool _available) :
 Renderable      (),
 EventProcessable(0),
 available       (_available),
@@ -26,7 +26,7 @@ Widget::~Widget()
 {
 }
 
-void Widget::Move(Vec2 delta)
+void Widget::Move(plugin::Vec2 delta)
 {
     position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
@@ -310,7 +310,7 @@ void Widget::UpdateDefaultRegionSet()
     UpdateParentDefaultRegionSet();
 }
 
-bool Widget::InsideP(Vec2 v)
+bool Widget::InsideP(plugin::Vec2 v)
 {
     return v.GetX() - position.GetX() >= -kPrecision &&
            v.GetX() - position.GetX() <= size.GetX() + kPrecision &&

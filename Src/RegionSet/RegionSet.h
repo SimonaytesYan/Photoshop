@@ -24,7 +24,7 @@ public:
     void AddRegion (ClipRegion region);
     void ChangeElem(size_t index, ClipRegion region);
     void Clear     ();
-    bool InsideP   (Vec2 v) const;
+    bool InsideP   (plugin::Vec2 v) const;
 
     RegionSet&  operator= (const RegionSet& b);
     RegionSet&  operator-=(const RegionSet& b);
