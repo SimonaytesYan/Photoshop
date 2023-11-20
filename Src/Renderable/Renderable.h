@@ -10,7 +10,7 @@ class Renderable
 public:
     Renderable() {};
     
-    virtual void Render(RenderTarget* render_target) = 0;
+    virtual void render(RenderTarget* render_target) = 0;
 };
 
 #endif //SYM_RENDERABLE

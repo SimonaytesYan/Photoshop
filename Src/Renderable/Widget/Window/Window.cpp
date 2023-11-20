@@ -137,13 +137,13 @@ bool Window::InsideP(plugin::Vec2 v)
            v.GetY() - position.GetY() < size.GetY();
 }
 
-void Window::Render(RenderTarget* render_target)
+void Window::render(RenderTarget* render_target)
 {
     if (available)
     {
         render_target->DrawRect(position, size, reg_set, 
                                 kBackgroundColor, kBorderThick, kBorderColor);  //border + background
 
-        Widget::Render(render_target);
+        Widget::render(render_target);
     }
 }

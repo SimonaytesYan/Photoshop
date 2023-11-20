@@ -70,7 +70,7 @@ public:
     bool onMouseRelease(MouseContext mouse) override;
     bool onMousePress  (MouseContext mouse) override;
     bool onMouseMove   (MouseContext mouse) override;
-    void Render        (RenderTarget* tr)     override;
+    void render        (RenderTarget* tr)     override;
 
     ~ScrollBar();
 };

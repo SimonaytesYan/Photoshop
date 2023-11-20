@@ -165,9 +165,9 @@ ScrollBar::~ScrollBar()
     delete scroll;
 }
 
-void ScrollBar::Render(RenderTarget* rt)
+void ScrollBar::render(RenderTarget* rt)
 {
     rt->DrawRect(position, size, reg_set, background_color);
 
-    Widget::Render(rt);
+    Widget::render(rt);
 }

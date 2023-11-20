@@ -13,7 +13,7 @@ EventProcessable(0),
 available       (_available),
 position        (_position),
 size            (_size),
-sub_widgets     (List<Widget*>(0)),
+sub_widgets     (List<WidgetPtr>(0)),
 reg_set         (RegionSet()),
 default_reg_set (RegionSet()),
 parent          (nullptr)
@@ -58,25 +58,27 @@ void Widget::RemoveSon(Widget* son)
     }
 }
 
-void Widget::Render(RenderTarget* render_target)
+void Widget::render(RenderTargetI* render_target)
 {
     if (available)
     {
-        #ifdef DEBUG
-            fprintf(stderr, "render = %p\n",           this);
-            fprintf(stderr, "sub_widgets.size = %d\n", sub_widgets.size);
-            fprintf(stderr, "{\n");
-        #endif
-
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
-            if (sub_widgets[index].val->GetAvailable())
-                sub_widgets[index].val->Render(render_target);
+            if (sub_widgets[index].val->getAvailable())
+                sub_widgets[index].val->render(render_target);
         }
+    }
+}
 
-        #ifdef DEBUG
-            fprintf(stderr, "}\n");
-        #endif
+void Widget::render(RenderTarget* render_target)
+{
+    if (available)
+    {
+        for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
+        {
+            if (sub_widgets[index].val.widget_i->getAvailable())
+                sub_widgets[index].val->render(render_target);
+        }
     }
 }
 
@@ -89,7 +91,7 @@ void Widget::registerSubWidget(WidgetI* new_widget)
 }
 
 bool WidgetEventRound(Events event, void*  event_args, 
-                      List<Widget*> &objects, bool available)
+                      List<WidgetPtr> &objects, bool available)
 {
     if (!available)
         return false;
@@ -101,26 +103,22 @@ bool WidgetEventRound(Events event, void*  event_args,
         switch (event)
         {
         case KEY_PRESS:
-        {
-            intercepted = objects[index].val->onKeyboardPress(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val.onKeyboardPress(*(KeyboardContext*)event_args);
             break;
-        }
         case KEY_RELEASE:
-        {
-            intercepted = objects[index].val->onKeyboardRelease(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val.onKeyboardRelease(*(KeyboardContext*)event_args);
             break;
-        }
         case MOUSE_PRESS:
-            intercepted = objects[index].val->onMousePress(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMousePress(*(MouseContext*)event_args);
             break;
         case MOUSE_RELEASE:
-            intercepted = objects[index].val->onMouseRelease(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMouseRelease(*(MouseContext*)event_args);
             break;
         case MOUSE_MOVE:
-            intercepted = objects[index].val->onMouseMove(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMouseMove(*(MouseContext*)event_args);
             break;
         case ON_CLOCK:
-            intercepted = objects[index].val->onClock(*(size_t*)event_args);
+            intercepted = objects[index].val.onClock(*(size_t*)event_args);
             break;
         
         default:
@@ -149,7 +147,7 @@ void Widget::ToForeground(Widget* son)
     int index = 0;
     for (index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
     {
-        if (son == sub_widgets[index].val)
+        if (!sub_widgets[index].val.is_extern && son == sub_widgets[index].val.widget)
             break;
     }
 
@@ -239,7 +237,7 @@ void Widget::recalcRegion(bool debug)
         int index = 0;
         for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
         {
-            if (parent->sub_widgets[index].val.widget == this)
+            if (parent->sub_widgets[index].val.widget_i == this)
                 break;
         }
         
@@ -263,16 +261,14 @@ void Widget::recalcRegion(bool debug)
     {
         WidgetPtr sub_w = sub_widgets[index].val;
         
-        if (sub_w->available)
-        {
-            sub_w->recalcRegion(debug);
-        }
+        if (sub_w.getAvailable())
+            sub_w.recalcRegion();
     }
 
     for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) // Remove children from this
     {
-        Widget* sub_w = sub_widgets[index].val;
-        if (sub_w->available)
+        WidgetPtr sub_w = sub_widgets[index].val;
+        if (sub_w.getAvailable())
         {
             reg_set -= sub_w->GetDefaultRegSet();
 

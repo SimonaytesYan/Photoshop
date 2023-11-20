@@ -43,7 +43,7 @@ public :
         on_press = new_on_press;
     }
        
-    virtual void Render        (RenderTarget* render_target) override;
+    virtual void render        (RenderTarget* render_target) override;
             bool onMousePress  (MouseContext mouse)        override;
             bool onMouseRelease(MouseContext mouse)        override;
             bool onMouseMove   (MouseContext mouse)        override;

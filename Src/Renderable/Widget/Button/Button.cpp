@@ -37,7 +37,7 @@ Button::~Button()
     delete on_release;
 }
 
-void Button::Render(RenderTarget* render_target)
+void Button::render(RenderTarget* render_target)
 {
     if (available)
     {
@@ -56,7 +56,7 @@ void Button::Render(RenderTarget* render_target)
                 render_target->DrawRect(position, size, reg_set, background_color);
         }
     
-        Widget::Render(render_target);
+        Widget::render(render_target);
     }
 }
 

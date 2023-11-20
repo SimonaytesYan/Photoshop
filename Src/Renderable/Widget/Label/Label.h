@@ -20,7 +20,7 @@ public:
 
     void SetText(const char* new_text);
 
-    void Render(RenderTarget* render_target) override;
+    void render(RenderTarget* render_target) override;
 };
 
 #endif //SYM_LABEL

@@ -48,6 +48,62 @@ struct WidgetPtr
         
         return GetDefaultRegSet();
     }
+
+    bool onKeyboardPress(KeyboardContext key)
+    {
+        if (is_extern)
+            return widget_i->onKeyboardPress(key);
+        return widget->onKeyboardPress(key);
+    }
+
+    bool onKeyboardRelease(KeyboardContext key)
+    {
+        if (is_extern)
+            return widget_i->onKeyboardRelease(key);
+        return widget->onKeyboardRelease(key);
+    }
+
+    bool onMousePress(MouseContext mouse) 
+    {
+        if (is_extern)
+            return widget_i->onMousePress(mouse);
+        return widget->onMousePress(mouse);
+    }
+
+    bool onMouseRelease(MouseContext mouse) 
+    {
+        if (is_extern)
+            return widget_i->onMouseRelease(mouse);
+        return widget->onMouseRelease(mouse);
+    }
+
+    bool onMouseMove(MouseContext mouse) 
+    {
+        if (is_extern)
+            return widget_i->onMouseMove(mouse);
+        return widget->onMouseMove(mouse);
+    }
+
+    bool onClock(size_t delta)       
+    {
+        if (is_extern)
+            return widget_i->onClock(delta);
+        return widget->onClock(delta);
+    }
+
+    bool getAvailable()
+    {
+        if (is_extern)
+            return widget_i->getAvailable();
+        return widget->getAvailable();
+    }
+
+    void recalcRegion()
+    {
+        if (is_extern)
+            return widget_i->recalcRegion();
+        return widget->recalcRegion();        
+    }
 };
 
 class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
@@ -68,12 +124,13 @@ public :
 
     virtual bool onKeyboardPress    (KeyboardContext key) override;
     virtual bool onKeyboardRelease  (KeyboardContext key) override;
-    virtual bool onMousePress  (MouseContext mouse)  override;
-    virtual bool onMouseRelease(MouseContext mouse)  override;
-    virtual bool onMouseMove   (MouseContext mouse)  override;
-    virtual bool onClock       (size_t delta)        override;
+    virtual bool onMousePress       (MouseContext mouse)  override;
+    virtual bool onMouseRelease     (MouseContext mouse)  override;
+    virtual bool onMouseMove        (MouseContext mouse)  override;
+    virtual bool onClock            (size_t delta)        override;
 
-    virtual void Render                (RenderTarget* render_target) override;
+    virtual void render                (plugin::RenderTargetI* render_target) override;
+    virtual void render                (RenderTarget* render_target);
     virtual void Move                  (plugin::Vec2 delta);
     virtual void registerSubWidget     (WidgetI* new_widget);
     void         ToForeground          (Widget* son);
@@ -93,10 +150,10 @@ public :
     plugin::Vec2&       GetSize()            { return size;      }
     const plugin::Vec2& GetSize()      const { return size;      }
     plugin::Vec2        GetPosition()  const { return position;  }
-    bool          GetAvailable() const { return available; }
+    bool          getAvailable() const { return available; }
     Widget*       GetParent()    const { return parent;    }
 
-    void          SetAvailable(bool new_available) { available = new_available; }
+    void          setAvailable(bool new_available) { available = new_available; }
 };
 
 class RectangleWidget : public Widget
@@ -110,10 +167,10 @@ public:
     background (background)
     {}
 
-    void Render(RenderTarget* render_target)
+    void render(RenderTarget* render_target)
     {
         render_target->DrawRect(position, size, reg_set, background);
-        Widget::Render(render_target);
+        Widget::render(render_target);
     }
 };
 

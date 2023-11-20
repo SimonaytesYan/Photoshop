@@ -28,13 +28,13 @@ void Label::SetText(const char* new_text)
     strcpy(text, new_text);
 }
 
-void Label::Render(RenderTarget* render_target)
+void Label::render(RenderTarget* render_target)
 {
     if (available)
     {
         render_target->DrawRect(position, size, reg_set, background);
         render_target->DrawText(position, font, text, character_size, text_color, reg_set);
 
-        Widget::Render(render_target);
+        Widget::render(render_target);
     }
 }

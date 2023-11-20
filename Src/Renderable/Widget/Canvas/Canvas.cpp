@@ -93,7 +93,7 @@ bool Canvas::onMouseRelease(MouseContext mouse)
     return false;
 }
 
-void Canvas::Render(RenderTarget* render_target)
+void Canvas::render(RenderTarget* render_target)
 {
     if (available)
     {
@@ -101,7 +101,7 @@ void Canvas::Render(RenderTarget* render_target)
         render_target->DrawSprite(position, data.GetTexture(), reg_set);
         tmp.display();
         render_target->DrawSprite(position, tmp.GetTexture(), reg_set);
-        Widget::Render(render_target);
+        Widget::render(render_target);
     }
 }
 

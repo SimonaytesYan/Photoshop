@@ -12,7 +12,7 @@ public:
     Window(plugin::Vec2 position, plugin::Vec2 size, const char* header);
     ~Window();
 
-    void Render(RenderTarget* render_target)  override;
+    void render(RenderTarget* render_target)  override;
     bool InsideP(plugin::Vec2 v);
     bool onMousePress(MouseContext mouse)   override;
     bool onMouseMove (MouseContext mouse)   override;

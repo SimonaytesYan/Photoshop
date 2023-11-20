@@ -49,7 +49,7 @@ public:
     bool onMousePress(MouseContext mouse) override;
     bool onKeyboardPress  (KeyboardContext key)              override;
     bool onClock     (size_t delta)         override;
-    void Render      (RenderTarget* rt)     override;
+    void render      (RenderTarget* rt)     override;
 };
 
 #endif //SYM_EDIT_BOX

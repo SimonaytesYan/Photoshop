@@ -97,7 +97,7 @@ bool EditBox::onClock(size_t delta)
     return false;
 }
 
-void EditBox::Render(RenderTarget* rt)
+void EditBox::render(RenderTarget* rt)
 {
     if (available)
     {

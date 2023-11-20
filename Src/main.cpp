@@ -186,7 +186,7 @@ int main()
 			event_manager.onClock(delta_time);
 		}
 
-		the_root.Render(&rend_targ);
+		the_root.render(&rend_targ);
 		
 		rend_targ.display(&window);
 		window.display();
