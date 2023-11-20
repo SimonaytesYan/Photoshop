@@ -16,7 +16,7 @@ public:
     Menu(button, static_menu)
     {}
 
-    void AddObject(Widget* new_widget) override;
+    void registerSubWidget(Widget* new_widget) override;
 };
 
 #endif //SYM_HORIZONTAL_MENU

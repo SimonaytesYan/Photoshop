@@ -26,7 +26,7 @@ static_menu   (_static_menu)
         button->SetAvailable(true);
         expanded = false;
     }
-    Widget::AddObject(button);
+    Widget::registerSubWidget(button);
 }
 
 Menu::Menu(Widget* widget) :
@@ -34,7 +34,7 @@ Widget        (widget->GetPosition(), widget->GetSize()),
 main_button   (widget),
 static_menu   (true)
 {
-    Widget::AddObject(widget);
+    Widget::registerSubWidget(widget);
     expanded = true;
 }
 
@@ -60,16 +60,16 @@ void Menu::ChangeExpandedStatus()
     }
 }
 
-void Menu::AddObject(Widget* new_widget)
+void Menu::registerSubWidget(Widget* new_widget)
 {
     if (static_menu)
     {
-        Widget::AddObject(new_widget);
+        Widget::registerSubWidget(new_widget);
         UpdateOwnDefaultRegionSet();
     }
     else
     {
-        Widget::AddObject(new_widget);
+        Widget::registerSubWidget(new_widget);
         new_widget->SetAvailable(false);
     }
 

@@ -48,14 +48,14 @@ int main()
 	RectangleWidget the_root(plugin::Vec2(0, 0), plugin::Vec2(WindowWidth, WindowHeight));
 	Window main_window(plugin::Vec2(0, 0), 
 					   plugin::Vec2(WindowWidth, WindowHeight), "Window1");
-	the_root.AddObject(&main_window);
+	the_root.registerSubWidget(&main_window);
 
 	FilterManager fm;
 	ToolManager   tm;
 
 	Window canvas_window1(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
 	Canvas canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
-	canvas_window1.AddObject(&canvas);
+	canvas_window1.registerSubWidget(&canvas);
 
 	ScrollBar vertical_scroll_bar(canvas.GetPosition(), plugin::Vec2(20, canvas_window1.GetSize().GetY() - 50),
 						 		  plugin::Color(100, 100, 100), 
@@ -66,15 +66,15 @@ int main()
 						 		    plugin::Color(100, 100, 100), 
 						 		    plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
 						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.GetSize());
-	canvas_window1.AddObject(&vertical_scroll_bar);
-	canvas_window1.AddObject(&horizontal_scroll_bar);
+	canvas_window1.registerSubWidget(&vertical_scroll_bar);
+	canvas_window1.registerSubWidget(&horizontal_scroll_bar);
 
-	main_window.AddObject(&canvas_window1);
+	main_window.registerSubWidget(&canvas_window1);
 
 	Window canvas_window2(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
 	Canvas canvas2(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
-	canvas_window2.AddObject(&canvas2);
-	main_window.AddObject(&canvas_window2);
+	canvas_window2.registerSubWidget(&canvas2);
+	main_window.registerSubWidget(&canvas_window2);
 
 	// Adding tools	
 	Window tools(plugin::Vec2(1400, 450),
@@ -211,14 +211,14 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
 	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
-	file_menu->AddObject(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
+	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
 									 	plugin::Color(199, 181, 173),
 										font, 20, "Save", 
 										plugin::Color(255, 255, 255),
 										saving_func));
 	
 	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
-	file_menu->AddObject(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
+	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
 									 	plugin::Color(199, 181, 173),
 										font, 20, "Open", 
 										plugin::Color(255, 255, 255),
@@ -243,7 +243,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  	   		   font, 20, "Bright",
 									  	   		   plugin::Color(255, 255, 255),
 									  	   		   brightness_func);
-	filters->AddObject(brightness_filter);
+	filters->registerSubWidget(brightness_filter);
 	
 	SelectFilter* black_white_func = new SelectFilter(fm, new BlackAndWhiteFilter(), 
 													  nullptr, nullptr);
@@ -253,7 +253,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  			    font, 20, "Black-White",
 									  			    plugin::Color(255, 255, 255),
 									  			    black_white_func);
-	filters->AddObject(black_white_filter);
+	filters->registerSubWidget(black_white_filter);
 
 	LastFilter* last_filter_func = new LastFilter(fm); 
 	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
@@ -261,11 +261,11 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 											 font, 20, "Last filter",
 											 plugin::Color(255, 255, 255),
 											 last_filter_func);
-	filters->AddObject(last_filter);
+	filters->registerSubWidget(last_filter);
 
-	main_menu->AddObject(filters);
+	main_menu->registerSubWidget(filters);
 	
-	window->AddObject(main_menu);
+	window->registerSubWidget(main_menu);
 }
 
 void ClearCanvas(void* args)
@@ -313,13 +313,13 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 	{
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
-		tools->AddObject(new Button(tools->GetPosition() + plugin::Vec2(10 + 50 * i, 50), 
+		tools->registerSubWidget(new Button(tools->GetPosition() + plugin::Vec2(10 + 50 * i, 50), 
 								   plugin::Vec2(50, 50), 
 							   	   common_texture, pressed_texture, 
 							   	   tools_func[i]));
 	}
 
-	main_window->AddObject(tools);
+	main_window->registerSubWidget(tools);
 }
 
 void AddColors(Window* main_window, Window* colors, ToolManager* tm)
@@ -340,9 +340,9 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 		colors_func = new SwitchColor(tm, all_colors[i]);
 
 		plugin::Vec2 position = colors->GetPosition() + plugin::Vec2(10 + 50 * i, 50);
-		colors->AddObject(new Button(position, plugin::Vec2(50, 50), all_colors[i], 
+		colors->registerSubWidget(new Button(position, plugin::Vec2(50, 50), all_colors[i], 
 								  	 colors_func));
 	}
 
-	main_window->AddObject(colors);
+	main_window->registerSubWidget(colors);
 }

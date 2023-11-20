@@ -271,8 +271,8 @@ void SelectFilterArgs::operator()()
 											font, kLetterWidth, kLetterHeight, 20);
 			edit_boxes->PushBack(edit_box);
 
-			dialog_box->AddObject(edit_box);
-			dialog_box->AddObject(new Label(position + plugin::Vec2(25, i * 100), 
+			dialog_box->registerSubWidget(edit_box);
+			dialog_box->registerSubWidget(new Label(position + plugin::Vec2(25, i * 100), 
 											font, 20, filter_args[i]));
 		}
 
@@ -284,9 +284,9 @@ void SelectFilterArgs::operator()()
 									   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
 											   font, 20, "Ok", plugin::Color(0, 0, 0),
 									   		   select_filter_func);
-		dialog_box->AddObject(ok_button);		
+		dialog_box->registerSubWidget(ok_button);		
 
-		root->AddObject(dialog_box);
+		root->registerSubWidget(dialog_box);
     }
 }
 
@@ -304,11 +304,11 @@ void SavingParams::operator()()
 											  event_manager);
 
 	position = position + plugin::Vec2(50, 100);
-	dialog_box->AddObject(new Label(position, 
+	dialog_box->registerSubWidget(new Label(position, 
 									font, 20, "Filename"));
 	EditBox* edit_box = new EditBox(position + plugin::Vec2(200, 0), plugin::Vec2(100, 50), 
 									font, kLetterWidth, kLetterHeight, 20);
-	dialog_box->AddObject(edit_box);
+	dialog_box->registerSubWidget(edit_box);
 
 	SaveInFile* save_canvas_func = new SaveInFile(canvas, edit_box, dialog_box);
 		
@@ -316,9 +316,9 @@ void SavingParams::operator()()
 								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
 										   font, 20, "Ok", plugin::Color(0, 0, 0),
 								   		   save_canvas_func);
-	dialog_box->AddObject(ok_button);		
+	dialog_box->registerSubWidget(ok_button);		
 
-	main_window->AddObject(dialog_box);
+	main_window->registerSubWidget(dialog_box);
 }
 
 void SaveInFile::operator()()
@@ -340,11 +340,11 @@ void OpeningParams::operator()()
 											  event_manager);
 
 	position = position + plugin::Vec2(50, 100);
-	dialog_box->AddObject(new Label(position, 
+	dialog_box->registerSubWidget(new Label(position, 
 									font, 20, "File"));
 	EditBox* edit_box = new EditBox(position + plugin::Vec2(200, 0), plugin::Vec2(100, 50), 
 									font, kLetterWidth, kLetterHeight, 20);
-	dialog_box->AddObject(edit_box);
+	dialog_box->registerSubWidget(edit_box);
 
 	OpenFile* save_canvas_func = new OpenFile(main_window, edit_box, dialog_box, 
 											  tool_manager, filter_manager);
@@ -352,9 +352,9 @@ void OpeningParams::operator()()
 								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
 										   font, 20, "Ok", plugin::Color(0, 0, 0),
 								   		   save_canvas_func);
-	dialog_box->AddObject(ok_button);		
+	dialog_box->registerSubWidget(ok_button);		
 
-	main_window->AddObject(dialog_box);
+	main_window->registerSubWidget(dialog_box);
 }
 
 void OpenFile::operator()()
@@ -370,9 +370,9 @@ void OpenFile::operator()()
 
 	Canvas* new_canvas = new Canvas(position, texture.GetSize(), tool_manager, filter_manager);
 	new_canvas->GetData()->DrawSprite(position, texture);	
-	canvas_window->AddObject(new_canvas);
+	canvas_window->registerSubWidget(new_canvas);
 
-	main_window->AddObject(canvas_window);
+	main_window->registerSubWidget(canvas_window);
 
 	dialog_box->Close();
 }

@@ -75,7 +75,7 @@ public :
 
     virtual void Render                (RenderTarget* render_target) override;
     virtual void Move                  (plugin::Vec2 delta);
-    virtual void AddObject             (WidgetI* new_widget);
+    virtual void registerSubWidget     (WidgetI* new_widget);
     void         ToForeground          (Widget* son);
 
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }

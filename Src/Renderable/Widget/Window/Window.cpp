@@ -54,12 +54,12 @@ moving(false)
     Button* header_button = new Button(position, plugin::Vec2(_size.GetX() - kButtonSize, kButtonSize), 
                                        kBorderColor, new ButtonMove(this));         //Button to move window
 
-    header_button->AddObject(new Label(position, font, 40, header, kBorderColor));    //Header
-    AddObject(header_button);
+    header_button->registerSubWidget(new Label(position, font, 40, header, kBorderColor));    //Header
+    registerSubWidget(header_button);
 
     plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kButtonSize, 
                                     position.GetY());
-    AddObject(new Button(close_button_pos, plugin::Vec2(kButtonSize, kButtonSize), 
+    registerSubWidget(new Button(close_button_pos, plugin::Vec2(kButtonSize, kButtonSize), 
                          close_texture, close_texture_press,
                          nullptr,
                          new ButtonClose(this)));                       //Close button window

@@ -120,7 +120,7 @@ TextButton::TextButton(plugin::Vec2   position, plugin::Vec2  size,
                        ButtonFunction*  _on_release) : 
 Button(position, size, texture, press_texture, _on_press, _on_release)
 {
-    AddObject(new Label(position, font, character_size, text, background_color, text_color));
+    registerSubWidget(new Label(position, font, character_size, text, background_color, text_color));
 }
     
 TextButton::TextButton(plugin::Vec2   position,  plugin::Vec2   size, 
@@ -131,5 +131,5 @@ TextButton::TextButton(plugin::Vec2   position,  plugin::Vec2   size,
                        ButtonFunction*  _on_release) :
 Button(position, size, background_color, _on_press, _on_release)
 {
-    AddObject(new Label(position, font, character_size, text, background_color, text_color));
+    registerSubWidget(new Label(position, font, character_size, text, background_color, text_color));
 }

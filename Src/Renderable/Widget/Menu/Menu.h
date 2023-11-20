@@ -31,7 +31,7 @@ public:
 
     void ChangeExpandedStatus();
 
-    virtual void AddObject  (Widget* new_widget)   override;
+    virtual void registerSubWidget  (Widget* new_widget)   override;
             bool onMouseMove(MouseContext mouse) override;
             bool InsideP    (plugin::Vec2 v)             override;
             void UpdateOwnDefaultRegionSet()       override;

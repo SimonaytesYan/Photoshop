@@ -80,10 +80,10 @@ void Widget::Render(RenderTarget* render_target)
     }
 }
 
-void Widget::AddObject(Widget* new_widget)
+void Widget::registerSubWidget(WidgetI* new_widget)
 {
-    new_widget->parent = this;
-    sub_widgets.PushBack(new_widget);
+    new_widget->setParent(this);
+    sub_widgets.PushBack(WidgetPtr(new_widget));
 
     UpdateRegionSet();
 }

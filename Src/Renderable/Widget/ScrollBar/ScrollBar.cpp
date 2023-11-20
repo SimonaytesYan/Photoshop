@@ -17,7 +17,7 @@ pressed         (false)
                                  plugin::Vec2(size.GetX() * _slider_size.GetX(), 
                                         size.GetY() * _slider_size.GetY()), 
                                  _slider_color);
-    AddObject(slider);
+    registerSubWidget(slider);
 
     // Calculate sens     
     double x_sens = 0;
@@ -46,7 +46,7 @@ pressed         (false)
                                  plugin::Vec2(size.GetX() * _slider_size.GetX(), 
                                         size.GetY() * _slider_size.GetY()), 
                                  _slider_color);
-    AddObject(slider);
+    registerSubWidget(slider);
         
     // Calculate sens 
     double x_sens = 0;
@@ -69,8 +69,8 @@ pressed         (false)
 
     Interlayer* interlayer = new Interlayer(target->GetPosition() + visible_box_offset, 
                                             visible_box_size);
-    interlayer->AddObject(target);
-    parent->AddObject(interlayer);
+    interlayer->registerSubWidget(target);
+    parent->registerSubWidget(interlayer);
 }
 
 // Change delta if delta move child from parent
