@@ -13,7 +13,7 @@
 #include "RegionSet/RegionSet.h"
 #include "ClipRegion/ClipRegion.h"
 #include "Filter/Filter.h"
-#include "Image/Image.h"
+#include "Texture/Texture.h"
 
 struct SwitchTool : ButtonFunction
 {

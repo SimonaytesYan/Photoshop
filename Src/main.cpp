@@ -5,7 +5,6 @@
 #include "Stopwatch.h"
 #include "Functors.h"
 #include "Constants.h"
-#include "Image/Image.h"
 #include "EventManager/EventManager.h"
 #include "Renderable/Widget/Widget.h"
 #include "Renderable/Widget/Button/Button.h"

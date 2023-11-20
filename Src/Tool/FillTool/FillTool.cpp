@@ -1,5 +1,5 @@
 #include "FillTool.h"
-#include "../../Image/Image.h"
+#include "../../Texture/Texture.h"
 #include "../../RenderTarget/RenderTarget.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"

@@ -38,7 +38,6 @@ struct MoveTarget : ScrollBarFunction
 
     void operator()()
     {
-        fprintf(stderr, "Want to move\n");
         target->Move(-delta);
 
         target->UpdateRegionSet();

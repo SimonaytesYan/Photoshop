@@ -1,7 +1,6 @@
 #include <string.h>
 
 #include "Texture.h"
-#include "../Image/Image.h"
 
 bool Texture::Create(int width, int height)
 {
@@ -26,4 +25,37 @@ bool Texture::LoadFromImage(Image img)
 sf::Texture* Texture::GetTexture()
 {
     return &data;
+}
+
+//--------------------------------IMAGE-----------------------------------------
+
+Image::Image(Texture text)
+{
+    data = text.GetTexture()->copyToImage();
+}
+
+void Image::Create(int width, int height)
+{
+    data.create(width, height);
+}
+
+bool Image::LoadFromFile(const char* filename)
+{
+    return data.loadFromFile(filename);
+}
+
+Vec2 Image::GetSize()
+{
+    return Vec2(data.getSize().x, data.getSize().y);
+}
+
+u_int8_t* Image::GetPixelArray(VectorI& size)
+{
+    size = Vec2(data.getSize().x, data.getSize().y);
+    return (u_int8_t*)data.getPixelsPtr();
+}
+
+sf::Image Image::GetImage()
+{
+    return data;
 }

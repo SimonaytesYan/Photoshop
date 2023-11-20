@@ -118,7 +118,6 @@ bool ScrollBar::onMouseMove(MouseContext mouse)
         UpdateRegionSet();
         if (scroll != nullptr)
         {
-            fprintf(stderr, "Want to move\n");
             scroll->delta = Vec2(delta.GetX() * sensitivity.GetX(), 
                                    delta.GetY() * sensitivity.GetY());
             (*scroll)();

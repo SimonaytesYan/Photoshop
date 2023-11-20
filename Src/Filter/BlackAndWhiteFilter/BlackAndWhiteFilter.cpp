@@ -1,6 +1,6 @@
 #include "BlackAndWhiteFilter.h"
 #include "../../Useful.h"
-#include "../../Image/Image.h"
+#include "../../Texture/Texture.h"
 
 DynArray<const char*> BlackAndWhiteFilter::GetParamNames()
 {
