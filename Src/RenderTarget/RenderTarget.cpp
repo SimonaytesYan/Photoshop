@@ -6,6 +6,7 @@
 #include "../Constants.h"
 
 //#define DEBUG_REGIONS
+Font RenderTarget::standard_font;
 
 sf::Color ConvertColor(plugin::Color color)
 {
@@ -346,4 +347,59 @@ void RenderTarget::DrawSprite(plugin::Vec2 position, Texture texture)
     sprite.setPosition(position.GetX(), position.GetY());
 
     data.draw(sprite);
+}
+
+void RenderTarget::DrawText(plugin::Vec2 position, Font font, const char* text, 
+                            int character_size, plugin::Color color)
+{
+    sf::Text label;
+
+    label.setFillColor(ConvertColor(color));
+    label.setFont(*font.GetFont());
+    label.setCharacterSize(character_size);
+    label.setPosition(position.GetX(), position.GetY());
+    label.setString(text); 
+
+    data.draw(label);
+}
+
+void RenderTarget::setPixel(plugin::Vec2 pos, plugin::Color color)
+{ 
+    SetPixel(pos, color); 
+}
+
+void RenderTarget::drawLine(plugin::Vec2 point1, plugin::Vec2 point2, plugin::Color color)
+{ 
+    DrawLine(point1, point2, color); 
+}
+
+void RenderTarget::drawRect(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color)
+{ 
+    DrawRect(pos, size, color); 
+}
+
+void RenderTarget::drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color)
+{ 
+    DrawCircle(pos, size.x, color, plugin::Vec2(1, size.y / size.x));  
+}
+
+void RenderTarget::drawText(plugin::Vec2 pos, const char *content, 
+                 uint16_t char_size, plugin::Color color)
+{ 
+    DrawText(pos, standard_font, content, char_size, color); 
+}
+
+void RenderTarget::drawTexture(plugin::Vec2 pos, plugin::Vec2 size, 
+                               const plugin::Texture *texture)
+{
+    Image img;
+    img.Create(size.x, size.y);
+    memcpy(img.GetPixelArray(), 
+           texture->pixels, 
+           size.x * size.y * sizeof(plugin::Color));
+    
+    Texture my_texture;
+    my_texture.LoadFromImage(img);
+
+    DrawSprite(pos, my_texture);
 }

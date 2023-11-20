@@ -56,36 +56,23 @@ public :
     void             clear()      override;
     plugin::Texture* getTexture() override;
 
-    void setPixel   (plugin::Vec2 pos, plugin::Color color)              override
-    { SetPixel(pos, color); }
 
-    void drawLine   (plugin::Vec2 point1, plugin::Vec2 point2, plugin::Color color) override
-    { DrawLine(point1, point2, color); }
+    void setPixel   (plugin::Vec2 pos, plugin::Color color)   override;
 
-    void drawRect   (plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color)   override
-    { DrawRect(pos, size, color); }
+    void drawLine   (plugin::Vec2 point1, plugin::Vec2 point2, 
+                     plugin::Color color)                     override;
 
-    void drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color)   override
-    { DrawCircle(pos, size.x, color, plugin::Vec2(1, size.y / size.x));  }
-        
+    void drawRect   (plugin::Vec2 pos, plugin::Vec2 size, 
+                     plugin::Color color)                     override;
+
+    void drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, 
+                     plugin::Color color)                     override;     
+
     void drawTexture(plugin::Vec2 pos, plugin::Vec2 size, 
-                     const plugin::Texture *texture)     override
-    {
-        Image img;
-        img.Create(size.x, size.y);
-        memcpy(img.GetPixelArray(), 
-               texture->pixels, 
-               size.x * size.y * sizeof(plugin::Color));
-        
-        Texture my_texture;
-        my_texture.LoadFromImage(img);
-
-        DrawSprite(pos, my_texture);
-    }
-
+                     const plugin::Texture *texture)          override;
+                     
     void drawText   (plugin::Vec2 pos, const char *content, 
-                     uint16_t char_size, plugin::Color color)    override
-    { DrawText(pos, standard_font, content, char_size, color); }
+                     uint16_t char_size, plugin::Color color) override;
 };
 
 #endif //SYM_RENDER_TARGET
