@@ -3,29 +3,64 @@
 
 #include <cmath>
 
-#include "../Renderable.h"
-#include "../../Vec2/Vec2.h"
-#include "../../List.h"
-#include "../../Keys.h"
-#include "../../RegionSet/RegionSet.h"
 #include "../../Event.h"
 #include "../../EventProcessable.h"
+#include "../../Keys.h"
+#include "../../List.h"
+#include "../Renderable.h"
+#include "../../RegionSet/RegionSet.h"
+#include "../../Standart/WidgetI.h"
+#include "../../Vec2/Vec2.h"
 
 class Widget;
-using transform_f =  Widget*(*)(Widget *, void *);
-using check_f     =  bool   (*)(Widget *, void *);
 
-class Widget : public Renderable, public EventProcessable
+struct WidgetPtr
+{
+    union 
+    {
+        Widget*          widget;
+        plugin::WidgetI* widget_i;
+    };
+    bool is_extern;
+
+    WidgetPtr(plugin::WidgetI* object)
+    {
+        if (widget->isExtern())
+        {
+            is_extern = true;
+            widget_i  = object;
+        }
+        else
+        {
+            is_extern = true;
+            widget    = (Widget*)object;
+        }
+    }
+
+    RegionSet GetDefaultRegSet()
+    {
+        if (is_extern)
+        {
+            RegionSet reg_set;
+            reg_set.AddRegion(ClipRegion(widget_i->getPos(), widget_i->getSize()));
+            return reg_set;   
+        }
+        
+        return GetDefaultRegSet();
+    }
+};
+
+class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
 {
 
 protected:
-    bool          available;
-    List<Widget*> sub_widgets;
-    plugin::Vec2          position;
-    plugin::Vec2          size;
-    RegionSet     reg_set;
-    RegionSet     default_reg_set;
-    Widget*       parent;
+    bool            available;
+    List<WidgetPtr> sub_widgets;
+    plugin::Vec2    position;
+    plugin::Vec2    size;
+    RegionSet       reg_set;
+    RegionSet       default_reg_set;
+    Widget*         parent;
 
 public : 
     Widget (plugin::Vec2 position = plugin::Vec2(0, 0), plugin::Vec2 size = plugin::Vec2(0,0), bool available = true);
@@ -40,14 +75,14 @@ public :
 
     virtual void Render                (RenderTarget* render_target) override;
     virtual void Move                  (plugin::Vec2 delta);
-    virtual void AddObject             (Widget* new_widget);
+    virtual void AddObject             (WidgetI* new_widget);
     void         ToForeground          (Widget* son);
 
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
     RegionSet&       GetRegionSet()           { return reg_set; }
     const RegionSet& GetRegionSet()    const  { return reg_set; }
     void             UpdateRegionSet        (bool debug = false);
-    void             UpdateRegionSetFromRoot(bool debug = false);
+    void             recalcRegion(bool debug = false);
     void             UpdateDefaultRegionSet();
     void             UpdateParentDefaultRegionSet();
     virtual void     UpdateOwnDefaultRegionSet();

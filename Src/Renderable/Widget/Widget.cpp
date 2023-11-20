@@ -199,10 +199,10 @@ void Widget::UpdateRegionSet(bool debug)
     while (root->parent != nullptr)
         root = root->parent;
 
-    root->UpdateRegionSetFromRoot(debug);
+    root->recalcRegion(debug);
 }
 
-void Widget::UpdateRegionSetFromRoot(bool debug)
+void Widget::recalcRegion(bool debug)
 {
     if (!available)
         return;
@@ -239,7 +239,7 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         int index = 0;
         for (index = parent->sub_widgets.Begin(); index != -1; index = parent->sub_widgets.Iterate(index))
         {
-            if (parent->sub_widgets[index].val == this)
+            if (parent->sub_widgets[index].val.widget == this)
                 break;
         }
         
@@ -248,8 +248,8 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
         // Intersect with brothers
         for (index; index != -1; index = parent->sub_widgets.Iterate(index))
         {
-            Widget* brother = parent->sub_widgets[index].val;
-            reg_set -= brother->GetDefaultRegSet();
+            WidgetPtr brother = parent->sub_widgets[index].val;
+            reg_set -= brother.GetDefaultRegSet();
 
             if (debug)
             {
@@ -261,11 +261,11 @@ void Widget::UpdateRegionSetFromRoot(bool debug)
 
     for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))  // Update children
     {
-        Widget* sub_w = sub_widgets[index].val;
+        WidgetPtr sub_w = sub_widgets[index].val;
         
         if (sub_w->available)
         {
-            sub_w->UpdateRegionSetFromRoot(debug);
+            sub_w->recalcRegion(debug);
         }
     }
 

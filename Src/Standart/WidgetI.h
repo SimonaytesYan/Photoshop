@@ -7,7 +7,8 @@
 
 namespace plugin
 {
-    struct WidgetI: public EventProcessableI {
+    struct WidgetI: public EventProcessableI 
+    {
         virtual void registerSubWidget(WidgetI* object) = 0;
         virtual void unregisterSubWidget(WidgetI* object) = 0;
 
