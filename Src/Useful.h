@@ -1,6 +1,8 @@
 #ifndef SYM_USEFUL
 #define SYM_USEFUL
 
+#include <cstdint>
+
 #include "Color.h"
 
 namespace plugin
