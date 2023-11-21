@@ -15,7 +15,7 @@ public:
     Menu(button, static_menu)
     {}
 
-    void registerSubWidget(Widget* new_widget) override;
+    void registerSubWidget(plugin::WidgetI* new_widget) override;
 };
 
 #endif //SYM_VERTICAL_MENU

@@ -25,25 +25,26 @@ struct WidgetPtr
 
     WidgetPtr(plugin::WidgetI* object);
 
-    RegionSet GetDefaultRegSet ();
-    bool      onKeyboardPress  (KeyboardContext key);
-    bool      onKeyboardRelease(KeyboardContext key);
-    bool      onMousePress     (MouseContext mouse);
-    bool      onMouseRelease   (MouseContext mouse);
-    bool      onMouseMove      (MouseContext mouse);
-    bool      onClock          (size_t delta);
-    void      move             (plugin::Vec2 shift);
-    bool      InsideP          (plugin::Vec2 v);
-    void      setAvailable     (bool value);
-    bool      getAvailable     ();
-    void      recalcRegion     ();
+    RegionSet    GetDefaultRegSet ();
+    plugin::Vec2 getSize();
+    plugin::Vec2 getPos();
+    bool         onKeyboardPress  (KeyboardContext key);
+    bool         onKeyboardRelease(KeyboardContext key);
+    bool         onMousePress     (MouseContext mouse);
+    bool         onMouseRelease   (MouseContext mouse);
+    bool         onMouseMove      (MouseContext mouse);
+    bool         onClock          (size_t delta);
+    void         move             (plugin::Vec2 shift);
+    bool         InsideP          (plugin::Vec2 v);
+    void         setAvailable     (bool value);
+    bool         getAvailable     ();
+    void         recalcRegion     ();
 };
 
 class Widget : public Renderable, public plugin::WidgetI
 {
-    uint8_t priority;
-
 protected:
+    uint8_t priority;
     bool            available;
     List<WidgetPtr> sub_widgets;
     plugin::Vec2    position;
@@ -101,7 +102,6 @@ public :
     
     bool          getAvailable() const { return available; }
     Widget*       getParent()    const { return parent;    }
-
 };
 
 class RectangleWidget : public Widget

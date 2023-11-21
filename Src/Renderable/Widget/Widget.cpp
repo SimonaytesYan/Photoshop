@@ -296,14 +296,14 @@ bool Widget::InsideP(plugin::Vec2 v)
 
 WidgetPtr::WidgetPtr(plugin::WidgetI* object)
 {
-    if (widget->isExtern())
+    if (object->isExtern())
     {
         is_extern = true;
         widget_i  = object;
     }
     else
     {
-        is_extern = true;
+        is_extern = false;
         widget    = (Widget*)object;
     }
 }
@@ -317,7 +317,7 @@ RegionSet WidgetPtr::GetDefaultRegSet()
         return reg_set;   
     }
     
-    return GetDefaultRegSet();
+    return widget->GetDefaultRegSet();
 }
 
 bool WidgetPtr::onKeyboardPress(KeyboardContext key)
@@ -402,4 +402,18 @@ void WidgetPtr::setAvailable(bool value)
         widget_i->setAvailable(value);
     else
         widget->setAvailable(value);
+}
+
+plugin::Vec2 WidgetPtr::getSize()
+{
+    if (is_extern)
+        return widget_i->getSize();
+    return widget->getSize();
+}
+
+plugin::Vec2 WidgetPtr::getPos()
+{
+    if (is_extern)
+        return widget_i->getPos();
+    return widget->getPos();
 }

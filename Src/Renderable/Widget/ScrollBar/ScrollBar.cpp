@@ -64,7 +64,7 @@ pressed         (false)
     sensitivity = plugin::Vec2(x_sens, y_sens);
 
     // Create interlayer between target->parent and target
-    Widget* parent = target->getParent();
+    plugin::WidgetI* parent = target->getParent();
     parent->unregisterSubWidget(target);
 
     Interlayer* interlayer = new Interlayer(target->getPosition() + visible_box_offset, 
