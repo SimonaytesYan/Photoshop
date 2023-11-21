@@ -3,6 +3,16 @@
 
 #include "Color.h"
 
+namespace plugin
+{
+    template<class T>
+    struct Array 
+    {
+        uint64_t size;
+        T* data;
+    };
+}
+
 template <class T1, class T2>
 struct Pair 
 {
