@@ -1,5 +1,7 @@
 #include "../Src/Standart/PluginStandart.h"
 
+extern "C" plugin::Plugin* getInstance(plugin::App *app);
+
 class WhiteAndBlackFilter;
 
 class WhiteAndBlackPlugin : public plugin::Plugin
@@ -27,5 +29,8 @@ public:
     void                       setParams    (plugin::Array<double> params) override;
     plugin::Array<const char*> getParamNames()                             override;
     plugin::Array<double>      getParams    ()                             override;
+
+    ~WhiteAndBlackFilter()
+    {}
 };
 

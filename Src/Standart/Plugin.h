@@ -13,7 +13,7 @@ namespace plugin
         InterfaceType  type;
 
         virtual Interface *getInterface() = 0;
-        virtual ~Plugin() = 0;
+        virtual ~Plugin() = default;
     };
 
 }

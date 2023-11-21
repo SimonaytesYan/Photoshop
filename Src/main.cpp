@@ -43,19 +43,16 @@ typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
 
 void LoadPlugins()
 {
-	void* dll_plugin = dlopen("Plugins/PluginLol.so", RTLD_NOW || RTLD_LOCAL || RTLD_NOLOAD);
+	void* dll_hand = dlopen("/home/yan/Desktop/Projects/Photoshop/Plugins/Lol.so", RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
 
-	fprintf(stderr, "dll loaded\n");
+	fprintf(stderr, "dll = %p\n", dll_hand);
+	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 
-	GetInstanceType function = (GetInstanceType)dlsym(dll_plugin, "getInstance");
+	fprintf(stderr, "get = %p\n", get_plugin);
 
-	fprintf(stderr, "function got\n");
-	plugin::Plugin* new_plugin = function(nullptr);
+	get_plugin(nullptr);
 
-	fprintf(stderr, "function performed\n");
-
-	dlclose(dll_plugin);
-	fprintf(stderr, "dll closed\n");
+	dlclose(dll_hand);
 }
 
 int main()

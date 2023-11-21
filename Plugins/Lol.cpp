@@ -1,5 +1,11 @@
 #include "Lol.h"
 
+extern "C" plugin::Plugin* getInstance(plugin::App *app)
+{
+    fprintf(stderr, "Hello world\n");
+    return new WhiteAndBlackPlugin(app);
+}
+
 WhiteAndBlackPlugin::WhiteAndBlackPlugin(plugin::App* app) :
 app (app)
 { 
@@ -7,11 +13,6 @@ app (app)
 
     name = "Lol";
     type = plugin::InterfaceType::Filter;
-}
-
-plugin::Plugin* getInstance(plugin::App *app)
-{
-    return new WhiteAndBlackPlugin(app);
 }
 
 plugin::Array<const char*> WhiteAndBlackFilter::getParamNames()
@@ -23,6 +24,9 @@ plugin::Array<double> WhiteAndBlackFilter::getParams()
 { 
     return plugin::Array<double>(0, nullptr); 
 }
+
+void WhiteAndBlackFilter::setParams(plugin::Array<double> params)
+{ }
 
 void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
 {

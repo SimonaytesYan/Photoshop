@@ -5,6 +5,7 @@
 #include "EventManagerI.h"
 #include "FilterI.h"
 #include "GuiI.h"
+#include "Plugin.h"
 #include "Interface.h"
 #include "RenderTargetI.h"
 #include "ToolI.h"
