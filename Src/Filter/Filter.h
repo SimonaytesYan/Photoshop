@@ -7,6 +7,8 @@
 
 class Filter : public plugin::FilterI
 {
+public :
+
     virtual plugin::Array<const char*> getParamNames() override 
     { return plugin::Array<const char*>(0, nullptr); }
     virtual plugin::Array<double>      getParams()     override 

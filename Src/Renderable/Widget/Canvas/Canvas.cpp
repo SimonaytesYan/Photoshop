@@ -37,8 +37,8 @@ bool Canvas::onMousePress(MouseContext mouse)
         
         if (fm != nullptr && fm->GetActive())
         {
-            fm->SetRenderTarget(&data);
-            fm->ApplyLastFilter();
+            fm->setRenderTarget(&data);
+            fm->applyFilter();
         }
         else if (tm != nullptr)
             tm->paintOnPress(data, tmp, mouse);

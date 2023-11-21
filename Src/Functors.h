@@ -247,7 +247,7 @@ void SelectFilter::operator()()
 		filter->setParams(filter_params);
 		dialog_box->Close();
 	}
-	filter_manager->SetFilter(filter);
+	filter_manager->setFilter(filter);
 }
 
 void SelectFilterArgs::operator()()
@@ -292,7 +292,7 @@ void SelectFilterArgs::operator()()
 
 void LastFilter::operator()()
 {
-	filter_manager->ApplyLastFilter();
+	filter_manager->applyFilter();
 }
 
 void SavingParams::operator()()

@@ -20,11 +20,11 @@ public:
         active      = false;
     }
 
+    void    setFilter      (plugin::FilterI* filter)   override;
+    void    setRenderTarget(plugin::RenderTargetI* rt) override;
+    void    applyFilter    ()                          override;
     Filter* GetFilter      ();
-    void    SetFilter      (Filter* filter);
-    void    SetRenderTarget(RenderTarget* rt);
-    void    ApplyLastFilter();
-    bool    GetActive();
+    bool    GetActive      ();
 };
 
 #endif //SYM_FILTER_MANAGER

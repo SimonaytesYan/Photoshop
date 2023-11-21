@@ -11,18 +11,18 @@ bool FilterManager::GetActive()
     return active;
 }
 
-void FilterManager::SetFilter(Filter* filter)
+void FilterManager::setFilter(Filter* filter)
 {
     last_filter = filter;
     active      = true;
 }
 
-void FilterManager::SetRenderTarget(RenderTarget* _rt)
+void FilterManager::setRenderTarget(RenderTarget* _rt)
 {
     rt = _rt;
 }
 
-void FilterManager::ApplyLastFilter()
+void FilterManager::applyFilter()
 {
     if (active && last_filter != nullptr)
     {
