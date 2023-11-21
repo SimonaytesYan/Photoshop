@@ -7,13 +7,13 @@
 
 class FilterManager : public plugin::FilterManagerI
 {
-    Filter       *last_filter;
-    RenderTarget *rt;
-    bool          active;
+    plugin::FilterI       *last_filter;
+    plugin::RenderTargetI *rt;
+    bool                   active;
 
 public:
-    FilterManager(RenderTarget* _rt          = nullptr, 
-                  Filter*       _last_filter = nullptr)
+    FilterManager(plugin::RenderTargetI* _rt          = nullptr, 
+                  plugin::FilterI*       _last_filter = nullptr)
     {
         last_filter = _last_filter;
         rt          = _rt;
@@ -23,8 +23,9 @@ public:
     void    setFilter      (plugin::FilterI* filter)   override;
     void    setRenderTarget(plugin::RenderTargetI* rt) override;
     void    applyFilter    ()                          override;
-    Filter* GetFilter      ();
-    bool    GetActive      ();
+    
+    plugin::FilterI* GetFilter();
+    bool             GetActive();
 };
 
 #endif //SYM_FILTER_MANAGER

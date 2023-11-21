@@ -38,7 +38,7 @@ void Brush::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* t
     vertexes.Clear();
 }
 
-void Brush::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+void Brush::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                     MouseContext mouse, plugin::Color         color)
 {
     if (drawing)

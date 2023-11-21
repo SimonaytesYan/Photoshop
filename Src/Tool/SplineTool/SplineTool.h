@@ -24,7 +24,7 @@ public :
     void paintOnRelease  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color)
     {};
-    void disable         (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+    void disable         (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color         color) override;
 };
 

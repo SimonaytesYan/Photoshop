@@ -2,6 +2,7 @@
 #define SYM_TEXTURE
 
 #include <cstdint>
+#include <string.h>
 
 #include <SFML/Graphics.hpp>
 #include "../Vec2/Vec2.h"

@@ -13,8 +13,8 @@ public :
     vertexes(DynArray<plugin::Vec2>(0))
     {}
     
-    void CalcAndDrawPolyline(RenderTarget& target, 
-                          MouseContext mouse, plugin::Color color);
+    void CalcAndDrawPolyline(plugin::RenderTargetI* target, 
+                             MouseContext mouse, plugin::Color color);
     void paintOnPress    (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color) override;
     void paintOnMove     (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
@@ -22,7 +22,7 @@ public :
     void paintOnRelease  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color) override
     {}
-    void disable         (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+    void disable         (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color         color) override;
 };
 

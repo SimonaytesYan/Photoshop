@@ -9,7 +9,7 @@ DynArray<const char*> BlackAndWhiteFilter::GetParamNames()
     return param_names;
 }
 
-void BlackAndWhiteFilter::apply(RenderTarget& rt)
+void BlackAndWhiteFilter::apply(plugin::RenderTargetI* rt)
 {
     plugin::VectorI   size(0, 0);
     Image     img(rt.GetTexture());

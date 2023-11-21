@@ -5,7 +5,7 @@
 #include "../../Useful.h"
 #include "../../CutMullRom/CutMullRom.h"
 
-void SplineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+void SplineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                          MouseContext mouse, plugin::Color         color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);

@@ -1,7 +1,7 @@
 #include "FilterManager.h"
 
 
-Filter* FilterManager::GetFilter()
+plugin::FilterI* FilterManager::GetFilter()
 {
     return last_filter;
 }
@@ -11,13 +11,13 @@ bool FilterManager::GetActive()
     return active;
 }
 
-void FilterManager::setFilter(Filter* filter)
+void FilterManager::setFilter(plugin::FilterI* filter)
 {
     last_filter = filter;
     active      = true;
 }
 
-void FilterManager::setRenderTarget(RenderTarget* _rt)
+void FilterManager::setRenderTarget(plugin::RenderTargetI* _rt)
 {
     rt = _rt;
 }
@@ -26,7 +26,7 @@ void FilterManager::applyFilter()
 {
     if (active && last_filter != nullptr)
     {
-        last_filter->apply(*rt);
+        last_filter->apply(rt);
         active = false;
     }
 }

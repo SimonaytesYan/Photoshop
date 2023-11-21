@@ -11,7 +11,7 @@ public:
     {}
 
     plugin::Array<const char*> getParamNames()                               override;
-    void                  apply        (RenderTarget& rt)               override;
+    void                  apply        (plugin::RenderTargetI* rt)               override;
     void                  setParams    (plugin::Array<double> params) override;
 };
 

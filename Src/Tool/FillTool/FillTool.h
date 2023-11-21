@@ -15,7 +15,7 @@ public :
                         MouseContext mouse, plugin::Color color) override;
     void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color) override;
-    void disable       (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+    void disable       (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color         color) override;
 };
 

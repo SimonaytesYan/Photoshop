@@ -35,7 +35,7 @@ void ShapeTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTarget
     }
 }
 
-void ShapeTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+void ShapeTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color         color)
 {
     if (drawing)

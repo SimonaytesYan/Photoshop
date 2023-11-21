@@ -2,16 +2,17 @@
 #include "../../RenderTarget/RenderTarget.h"
 #include "../../Useful.h"
 
-void PolylineTool::CalcAndDrawPolyline(RenderTarget& target, MouseContext mouse, plugin::Color color)
+void PolylineTool::CalcAndDrawPolyline(plugin::RenderTargetI* target, 
+                                       MouseContext mouse, plugin::Color color)
 {
     for (int i = vertexes.GetLength() - 1; i >= 1; i--)
-        target.DrawLine(vertexes[i], vertexes[i - 1], color);
+        target->drawLine(vertexes[i], vertexes[i - 1], color);
 }
 
-void PolylineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+void PolylineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                            MouseContext mouse, plugin::Color         color)
 {
-    tmp.clear(plugin::Color(0, 0, 0, 0));
+    ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
     CalcAndDrawPolyline(data, mouse, color);
         
     vertexes.Clear();
@@ -26,7 +27,7 @@ void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTarge
     {
         if (drawing)
         {
-            tmp.clear(plugin::Color(0, 0, 0, 0));
+            ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
             CalcAndDrawPolyline(data, mouse, color);
             
             vertexes.Clear();
@@ -36,7 +37,7 @@ void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTarge
     else
     {
         vertexes.PushBack(mouse.position);
-        tmp.clear(plugin::Color(0, 0, 0, 0));
+        ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
         CalcAndDrawPolyline(data, mouse, color);
         
         drawing = true;
@@ -48,7 +49,7 @@ void PolylineTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTarget
 {
     if (drawing)
     {
-        tmp.clear(plugin::Color(0, 0, 0, 0));
+        ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
 
         vertexes.PushBack(mouse.position);
         CalcAndDrawPolyline(tmp, mouse, color);

@@ -13,9 +13,10 @@ public:
         brightness = _brightness;
     }
 
-    plugin::Array<const char*> getParamNames()                               override;
-    void                  apply        (RenderTarget& rt)               override;
-    void                  setParams    (plugin::Array<double> params) override;
+    plugin::Array<const char*> getParamNames() override;
+
+    void apply    (plugin::RenderTargetI* rt)    override;
+    void setParams(plugin::Array<double> params) override;
 };
 
 #endif //SYM_BRIGHTNESS_FILTER

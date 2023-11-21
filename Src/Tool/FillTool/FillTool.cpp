@@ -93,7 +93,7 @@ void FillTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* t
 {
 }
 
-void FillTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
+void FillTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                        MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
