@@ -5,14 +5,14 @@
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../CutMullRom/CutMullRom.h"
 
-void Brush::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
+void Brush::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                          MouseContext mouse, plugin::Color color)
 {
     drawing = true;
     start_pos = mouse.position;
 }
 
-void Brush::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
+void Brush::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color)
 {
     if (drawing)
@@ -28,7 +28,7 @@ void Brush::PaintOnMove(RenderTarget& data, RenderTarget& tmp,
     }
 }
 
-void Brush::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
+void Brush::paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);
@@ -38,7 +38,7 @@ void Brush::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
     vertexes.Clear();
 }
 
-void Brush::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+void Brush::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                     MouseContext mouse, plugin::Color         color)
 {
     if (drawing)

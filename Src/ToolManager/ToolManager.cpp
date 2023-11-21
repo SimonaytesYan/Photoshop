@@ -1,34 +1,34 @@
 #include "ToolManager.h"
 #include "../RenderTarget/RenderTarget.h"
 
-void ToolManager::PaintOnPress(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
+void ToolManager::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, MouseContext mouse)
 {
     if (tool != nullptr)
     {
-        tool->PaintOnPress(data, tmp, mouse, color);
+        tool->paintOnPress(data, tmp, mouse, color);
     }
 }
 
-void ToolManager::PaintOnMove(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
+void ToolManager::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, MouseContext mouse)
 {   
     if (tool != nullptr)
     {
-        tool->PaintOnMove(data, tmp, mouse, color);
+        tool->paintOnMove(data, tmp, mouse, color);
     }
 }
 
-void ToolManager::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
+void ToolManager::paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, MouseContext mouse)
 {
     if (tool != nullptr)
     {
-        tool->PaintOnRelease(data, tmp, mouse, color);
+        tool->paintOnRelease(data, tmp, mouse, color);
     }
 }
 
-void ToolManager::DisableTool(RenderTarget& data, RenderTarget& tmp, MouseContext mouse)
+void ToolManager::disableTool(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, MouseContext mouse)
 {
     if (tool != nullptr)
-        tool->Disable(data, tmp, mouse, color);
+        tool->disable(data, tmp, mouse, color);
 }
 
 void ToolManager::ChangeTool(Tool* new_tool)

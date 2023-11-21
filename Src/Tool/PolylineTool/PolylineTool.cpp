@@ -8,7 +8,7 @@ void PolylineTool::CalcAndDrawPolyline(RenderTarget& target, MouseContext mouse,
         target.DrawLine(vertexes[i], vertexes[i - 1], color);
 }
 
-void PolylineTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+void PolylineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                            MouseContext mouse, plugin::Color         color)
 {
     tmp.clear(plugin::Color(0, 0, 0, 0));
@@ -19,7 +19,7 @@ void PolylineTool::Disable(RenderTarget&  data,  RenderTarget& tmp,
     drawing   = false;
 }
 
-void PolylineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
+void PolylineTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     if (mouse.key == MouseButton::Right)
@@ -43,7 +43,7 @@ void PolylineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp,
     }
 }
 
-void PolylineTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
+void PolylineTool::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                MouseContext mouse, plugin::Color color)
 {
     if (drawing)

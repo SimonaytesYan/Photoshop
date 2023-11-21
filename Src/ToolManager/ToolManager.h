@@ -20,10 +20,14 @@ public :
         color = plugin::Color(255, 255, 255);
     }
     
-    void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
-    void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
-    void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
-    void DisableTool   (RenderTarget& data, RenderTarget& tmp, MouseContext mouse);
+    void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
+                        MouseContext mouse) override;
+    void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
+                        MouseContext mouse) override;
+    void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
+                        MouseContext mouse) override;
+    void disableTool   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
+                        MouseContext mouse) override;
 
     void ChangeTool    (Tool* new_tool);
     void ChangeColor   (plugin::Color new_color);

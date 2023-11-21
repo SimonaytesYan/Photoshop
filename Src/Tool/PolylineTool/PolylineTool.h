@@ -15,14 +15,14 @@ public :
     
     void CalcAndDrawPolyline(RenderTarget& target, 
                           MouseContext mouse, plugin::Color color);
-    void PaintOnPress    (RenderTarget& data, RenderTarget& tmp, 
+    void paintOnPress    (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color) override;
-    void PaintOnMove     (RenderTarget& data, RenderTarget& tmp, 
+    void paintOnMove     (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color) override;
-    void PaintOnRelease  (RenderTarget& data, RenderTarget& tmp, 
+    void paintOnRelease  (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color color) override
     {}
-    void Disable         (RenderTarget&  data,  RenderTarget& tmp, 
+    void disable         (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                           MouseContext mouse, plugin::Color         color) override;
 };
 

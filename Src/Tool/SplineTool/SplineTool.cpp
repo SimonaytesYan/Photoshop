@@ -5,7 +5,7 @@
 #include "../../Useful.h"
 #include "../../CutMullRom/CutMullRom.h"
 
-void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+void SplineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                          MouseContext mouse, plugin::Color         color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);
@@ -13,7 +13,7 @@ void SplineTool::Disable(RenderTarget&  data,  RenderTarget& tmp,
     drawing = false;
 }
 
-void SplineTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
+void SplineTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     if (mouse.key == MouseButton::Left)

@@ -15,7 +15,7 @@ class Canvas : public Widget
     RenderTarget   data;
     RenderTarget   tmp;
     
-    void DisableTool(MouseContext mouse);
+    void disableTool(MouseContext mouse);
 
 public :
     Canvas(plugin::Vec2 position, plugin::Vec2 size, 

@@ -15,13 +15,13 @@ public :
     thickness (_thickness)
     {}
 
-    virtual void PaintOnPress  (RenderTarget& data, RenderTarget& tmp, 
+    virtual void paintOnPress  (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color) override;
-    virtual void PaintOnMove   (RenderTarget& data, RenderTarget& tmp, 
+    virtual void paintOnMove   (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color) override;
-    virtual void PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
+    virtual void paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color) override;
-    virtual void Disable       (RenderTarget&  data,  RenderTarget& tmp, 
+    virtual void disable       (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color         color) override;
 
     virtual void CalcAndDrawShape(RenderTarget& target, 

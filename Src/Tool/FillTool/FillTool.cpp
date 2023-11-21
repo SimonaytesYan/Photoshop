@@ -32,7 +32,7 @@ void AddTransitions(DynArray<plugin::VectorI> &stack, plugin::VectorI cur,
     }
 }
 
-void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp, 
+void FillTool::paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                               MouseContext mouse, plugin::Color color)
 {
     if (drawing)
@@ -81,19 +81,19 @@ void FillTool::PaintOnRelease(RenderTarget& data, RenderTarget& tmp,
 }
 
 
-void FillTool::PaintOnPress(RenderTarget& data, RenderTarget& tmp, 
+void FillTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                             MouseContext mouse, plugin::Color color)
 {
     start_pos = mouse.position;
     drawing   = true;
 }
 
-void FillTool::PaintOnMove(RenderTarget& data, RenderTarget& tmp, 
+void FillTool::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
                            MouseContext mouse, plugin::Color color)
 {
 }
 
-void FillTool::Disable(RenderTarget&  data,  RenderTarget& tmp, 
+void FillTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                        MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
