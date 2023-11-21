@@ -3,8 +3,9 @@
 
 #include "../RenderTarget/RenderTarget.h"
 #include "../DynArray.h"
+#include "../Standart/FilterI.h"
 
-class Filter
+class Filter : public plugin::FilterI
 {
 
 public:

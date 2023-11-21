@@ -4,10 +4,11 @@
 #include "../Vec2/Vec2.h"
 #include "../Color.h"
 #include "../Keys.h"
+#include "../Standart/ToolI.h"
 
 class RenderTarget;
 
-class Tool
+class Tool : public plugin::ToolI
 {
     
 protected :

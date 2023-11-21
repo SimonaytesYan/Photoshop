@@ -4,10 +4,11 @@
 #include "../Tool/Tool.h"
 #include "../Color.h"
 #include "../Keys.h"
+#include "../Standart/ToolI.h"
 
 class RenderTarget;
 
-class ToolManager
+class ToolManager : plugin::ToolManagerI
 {
     Tool* tool;
     plugin::Color color;

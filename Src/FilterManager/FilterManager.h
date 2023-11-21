@@ -3,8 +3,9 @@
 
 #include "../Filter/Filter.h"
 #include "../RenderTarget/RenderTarget.h"
+#include "../Standart/FilterI.h"
 
-class FilterManager
+class FilterManager : public plugin::FilterManagerI
 {
     Filter       *last_filter;
     RenderTarget *rt;
