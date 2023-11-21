@@ -239,10 +239,11 @@ void SelectFilter::operator()()
 {
 	if (edit_boxes != nullptr)
 	{
-		DynArray<double> filter_params(edit_boxes->GetLength());
+		plugin::Array<double> filter_params(edit_boxes->GetLength());
+		filter_params.data = new double[edit_boxes->GetLength()];
 
 		for (int i = 0; i < edit_boxes->GetLength(); i++)
-    		filter_params[i] = atof((*edit_boxes)[i]->GetText());
+    		filter_params.data[i] = atof((*edit_boxes)[i]->GetText());
 
 		filter->setParams(filter_params);
 		dialog_box->Close();
@@ -254,7 +255,7 @@ void SelectFilterArgs::operator()()
 {
 	plugin::Array<const char*> filter_args = filter->getParamNames();
 
-	int filter_args_n = filter_args.GetLength();
+	int filter_args_n = filter_args.size;
 	if (filter_args_n > 0)
 	{
 		plugin::Vec2 position = root->getPosition() + root->getSize() / 2;
@@ -273,7 +274,7 @@ void SelectFilterArgs::operator()()
 
 			dialog_box->registerSubWidget(edit_box);
 			dialog_box->registerSubWidget(new Label(position + plugin::Vec2(25, i * 100), 
-											font, 20, filter_args[i]));
+											font, 20, filter_args.data[i]));
 		}
 
 		SelectFilter* select_filter_func = new SelectFilter(filter_manager, 
