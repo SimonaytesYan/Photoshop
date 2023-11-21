@@ -19,4 +19,9 @@ void CircleTool::CalcAndDrawShape(RenderTarget* target, MouseContext mouse, plug
                           thickness + x_len/2, 
                           color,
                           plugin::Vec2(1, y_len/x_len));
+    else if (x_len == y_len)
+        target->DrawCircle(position, 
+                           thickness + x_len/2, 
+                           color,
+                           plugin::Vec2(1, 1));
 }
