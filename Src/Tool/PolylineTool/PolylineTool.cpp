@@ -19,7 +19,7 @@ void PolylineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp,
     drawing   = false;
 }
 
-void PolylineTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     if (mouse.key == MouseButton::Right)
@@ -43,7 +43,7 @@ void PolylineTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTarg
     }
 }
 
-void PolylineTool::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void PolylineTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                MouseContext mouse, plugin::Color color)
 {
     if (drawing)

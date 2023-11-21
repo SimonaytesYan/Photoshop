@@ -227,12 +227,12 @@ struct OpenFile : ButtonFunction
 
 void SwitchTool::operator()()
 {
-	tool_manager->ChangeTool(tool);
+	tool_manager->setTool(tool);
 }
 
 void SwitchColor::operator()()
 {
-	tool_manager->ChangeColor(color);
+	tool_manager->setColor(color);
 }
 
 void SelectFilter::operator()()

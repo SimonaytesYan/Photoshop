@@ -10,7 +10,7 @@ class RenderTarget;
 
 class ToolManager : plugin::ToolManagerI
 {
-    Tool* tool;
+    plugin::ToolI* tool;
     plugin::Color color;
 
 public :
@@ -29,8 +29,13 @@ public :
     void disableTool   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse) override;
 
-    void ChangeTool    (Tool* new_tool);
-    void ChangeColor   (plugin::Color new_color);
+    void setTool (plugin::ToolI* new_tool) override;
+    void setColor(plugin::Color new_color) override;
+
+    plugin::ToolI* getTool () override
+    { return tool; }
+    plugin::Color  getColor() override
+    { return color; }
 };
 
 #endif //SYM_TOOL_MANAGER

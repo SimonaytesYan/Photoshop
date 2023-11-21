@@ -17,15 +17,15 @@ public :
     vertexes (List<plugin::Vec2>(0))
     {}
 
-    void paintOnPress  (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+    void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color) override;
-    void paintOnMove   (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+    void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color) override;
-    void paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+    void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color) override;
     void disable       (RenderTarget&  data,  plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color         color) override;
-    void Interpolation(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color);
+    void Interpolation(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color);
 };
 
 #endif //SYM_BRUSH

@@ -5,14 +5,14 @@
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../CutMullRom/CutMullRom.h"
 
-void Brush::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void Brush::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                          MouseContext mouse, plugin::Color color)
 {
     drawing = true;
     start_pos = mouse.position;
 }
 
-void Brush::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void Brush::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color)
 {
     if (drawing)
@@ -28,7 +28,7 @@ void Brush::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp
     }
 }
 
-void Brush::paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void Brush::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                         MouseContext mouse, plugin::Color color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);

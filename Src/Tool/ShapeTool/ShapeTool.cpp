@@ -3,7 +3,7 @@
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
 
-void ShapeTool::paintOnPress  (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void ShapeTool::paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     tmp.clear(plugin::Color(0, 0, 0, 0));
@@ -12,7 +12,7 @@ void ShapeTool::paintOnPress  (plugin::RendertTargetI* data, plugin::RenderTarge
     drawing = true;
 }
 
-void ShapeTool::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void ShapeTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                              MouseContext mouse, plugin::Color color)
 {
     if (drawing)
@@ -23,7 +23,7 @@ void ShapeTool::paintOnMove(plugin::RendertTargetI* data, plugin::RenderTargetI*
     }
 }
 
-void ShapeTool::paintOnRelease(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void ShapeTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     if (drawing)

@@ -8,7 +8,7 @@ static void   CutMullRom3Vert(RenderTarget& target, plugin::Color color, double 
                               plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2);
 static void   CutMullRom2Vert(RenderTarget& target, plugin::Color color, double thickness,
                               plugin::Vec2 p0, plugin::Vec2 p1);
-static void   CutMullRom     (plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+static void   CutMullRom     (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
                               plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3);
 
 double CalcNextT(plugin::Vec2 p1, plugin::Vec2 p2, double t)
@@ -55,7 +55,7 @@ void CutMullRom2Vert(RenderTarget& target, plugin::Color color, double thickness
     }
 }
 
-void CutMullRom(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+void CutMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
                    plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3)
 {
     double t0 = 0;
@@ -81,7 +81,7 @@ void CutMullRom(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin
     CutMullRom3Vert(tmp, color, thickness, p1, p2, p3);
 }
 
-void DrawUsingCatMullRom(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color,
+void DrawUsingCatMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color,
                          double thickness, List<plugin::Vec2> &vertexes)
 {
     int index = vertexes.Begin();
@@ -115,7 +115,7 @@ void DrawUsingCatMullRom(plugin::RendertTargetI* data, plugin::RenderTargetI* tm
     CutMullRom(data, tmp, color, thickness, p0, p1, p2, p3);
 }
 
-void DrawTmpToData(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+void DrawTmpToData(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
                    List<plugin::Vec2> &vertexes)
 {
     tmp.clear(plugin::Color(0, 0, 0, 0));

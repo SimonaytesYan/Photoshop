@@ -31,8 +31,8 @@ namespace plugin
         virtual void setColor(plugin::Color color) = 0;
         virtual void setTool (ToolI *tool)         = 0;
 
-        virtual ToolI*         getTool () = 0;
-        virtual plugin::Color  getColor() = 0;
+        virtual ToolI* getTool () = 0;
+        virtual Color  getColor() = 0;
 
         virtual void paintOnMove   (RenderTargetI *data, RenderTargetI *tmp, 
                                     MouseContext context) = 0;

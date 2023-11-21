@@ -33,10 +33,6 @@ public :
     icon      (plugin::Texture(icon))
     {};
 
-    
-    void setColor(plugin::Color color) = 0;
-    void setTool (ToolI *tool)         = 0;
-
     virtual void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color) override
                                 {}

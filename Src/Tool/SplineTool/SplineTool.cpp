@@ -13,7 +13,7 @@ void SplineTool::disable(RenderTarget&  data,  plugin::RenderTargetI* tmp,
     drawing = false;
 }
 
-void SplineTool::paintOnPress(plugin::RendertTargetI* data, plugin::RenderTargetI* tmp, 
+void SplineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color)
 {
     if (mouse.key == MouseButton::Left)
