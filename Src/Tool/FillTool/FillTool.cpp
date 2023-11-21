@@ -39,7 +39,7 @@ void FillTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI
     {
         DynArray<plugin::VectorI> stack(0);
 
-        Image img(data.GetTexture());
+        Image img(((RenderTarget*)data)->GetTexture());
 
         plugin::VectorI         size(0, 0);
         const u_int8_t* pixels  = img.GetPixelArray(size);
@@ -74,7 +74,7 @@ void FillTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI
 
         Texture res_texture;
         res_texture.LoadFromImage(img);
-        data.DrawSprite(plugin::Vec2(0, 0), res_texture);
+        ((RenderTarget*)data)->DrawSprite(plugin::Vec2(0, 0), res_texture);
 
         drawing = false;
     }
