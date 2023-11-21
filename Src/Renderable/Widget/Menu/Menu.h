@@ -31,10 +31,10 @@ public:
 
     void ChangeExpandedStatus();
 
-    virtual void registerSubWidget  (Widget* new_widget)   override;
-            bool onMouseMove(MouseContext mouse) override;
-            bool InsideP    (plugin::Vec2 v)             override;
-            void UpdateOwnDefaultRegionSet()       override;
+    virtual void registerSubWidget       (plugin::WidgetI* new_widget) override;
+            bool onMouseMove             (MouseContext mouse)          override;
+            bool InsideP                 (plugin::Vec2 v)              override;
+            void UpdateOwnDefaultRegionSet()                           override;
 };
 
 #endif //SYM_BUTTON_MANAGER

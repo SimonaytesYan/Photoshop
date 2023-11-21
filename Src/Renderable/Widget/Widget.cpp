@@ -382,3 +382,24 @@ void WidgetPtr::move(plugin::Vec2 shift)
         return widget_i->move(shift);
     return widget->move(shift);
 }
+
+bool WidgetPtr::InsideP(plugin::Vec2 v)
+{
+    if (is_extern)
+    {
+        return v.GetX() - widget_i->getPos().GetX() >= 0 &&
+               v.GetX() - widget_i->getPos().GetX() <= widget_i->getSize().GetX() &&
+               v.GetY() - widget_i->getPos().GetY() >= 0 && 
+               v.GetY() - widget_i->getPos().GetY() <= widget_i->getSize().GetY() ;
+    }
+
+    return widget->InsideP(v);
+}
+
+void WidgetPtr::setAvailable(bool value)
+{
+    if (is_extern)
+        widget_i->setAvailable(value);
+    else
+        widget->setAvailable(value);
+}

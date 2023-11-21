@@ -47,12 +47,12 @@ void Menu::ChangeExpandedStatus()
         if (expanded)
         {
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val->setAvailable(true);
+                sub_widgets[i].val.setAvailable(true);
         }
         else
         {
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val->setAvailable(false);            
+                sub_widgets[i].val.setAvailable(false);            
             main_button->setAvailable(true);
         }
         UpdateDefaultRegionSet();
@@ -60,7 +60,7 @@ void Menu::ChangeExpandedStatus()
     }
 }
 
-void Menu::registerSubWidget(Widget* new_widget)
+void Menu::registerSubWidget(plugin::WidgetI* new_widget)
 {
     if (static_menu)
     {
@@ -82,8 +82,8 @@ void Menu::UpdateOwnDefaultRegionSet()
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val->getAvailable())
-            default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
+        if (sub_widgets[i].val.getAvailable())
+            default_reg_set += sub_widgets[i].val.GetDefaultRegSet();
     }
 }
 
@@ -104,7 +104,7 @@ bool Menu::InsideP(plugin::Vec2 v)
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val->getAvailable() && sub_widgets[i].val->InsideP(v))
+        if (sub_widgets[i].val.getAvailable() && sub_widgets[i].val.InsideP(v))
         {
             return true;
         }

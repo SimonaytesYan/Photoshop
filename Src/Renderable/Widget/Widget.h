@@ -33,6 +33,8 @@ struct WidgetPtr
     bool      onMouseMove      (MouseContext mouse);
     bool      onClock          (size_t delta);
     void      move             (plugin::Vec2 shift);
+    bool      InsideP          (plugin::Vec2 v);
+    void      setAvailable     (bool value);
     bool      getAvailable     ();
     void      recalcRegion     ();
 };
