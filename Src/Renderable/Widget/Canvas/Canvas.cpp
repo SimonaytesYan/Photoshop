@@ -20,7 +20,9 @@ void Canvas::disableTool(MouseContext mouse)
     if (tm != nullptr && drawing)
     {
         mouse.position = mouse.position - position;
-        tm->disableTool(data, tmp, mouse);
+        tm->disableTool((plugin::RenderTargetI*)&data, 
+                        (plugin::RenderTargetI*)&tmp, 
+                        mouse);
         drawing = false;
     }
 }
@@ -37,11 +39,13 @@ bool Canvas::onMousePress(MouseContext mouse)
         
         if (fm != nullptr && fm->GetActive())
         {
-            fm->setRenderTarget(&data);
+            fm->setRenderTarget((plugin::RenderTargetI*)&data);
             fm->applyFilter();
         }
         else if (tm != nullptr)
-            tm->paintOnPress(data, tmp, mouse);
+            tm->paintOnPress((plugin::RenderTargetI*)&data, 
+                             (plugin::RenderTargetI*)&tmp, 
+                             mouse);
         return true;
     }
     
@@ -69,7 +73,9 @@ bool Canvas::onMouseMove(MouseContext mouse)
     }
 
     mouse.position = mouse.position - position;
-    tm->paintOnMove(data, tmp, mouse);
+    tm->paintOnMove((plugin::RenderTargetI*)&data, 
+                    (plugin::RenderTargetI*)&tmp, 
+                    mouse);
     return true;
 }
 
@@ -86,7 +92,9 @@ bool Canvas::onMouseRelease(MouseContext mouse)
         if (tm != nullptr)
         {
             mouse.position = mouse.position - position;
-            tm->paintOnRelease(data, tmp, mouse);    
+            tm->paintOnRelease((plugin::RenderTargetI*)&data, 
+                               (plugin::RenderTargetI*)&tmp, 
+                               mouse);    
         }
     }
 

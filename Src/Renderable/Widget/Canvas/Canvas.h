@@ -4,6 +4,7 @@
 #include "../Widget.h"
 #include "../../../ToolManager/ToolManager.h" 
 #include "../../../FilterManager/FilterManager.h"
+#include "../../../Standart/EventProcessableI.h"
 
 const plugin::Color kCanvasBackgroundColor = plugin::Color(50, 50, 50);
 
