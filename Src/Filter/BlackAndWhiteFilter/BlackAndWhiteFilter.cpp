@@ -2,17 +2,15 @@
 #include "../../Useful.h"
 #include "../../Texture/Texture.h"
 
-DynArray<const char*> BlackAndWhiteFilter::GetParamNames()
+plugin::Array<const char*> BlackAndWhiteFilter::getParamNames()
 {
-    DynArray<const char*> param_names(0);
-
     return param_names;
 }
 
 void BlackAndWhiteFilter::apply(plugin::RenderTargetI* rt)
 {
     plugin::VectorI   size(0, 0);
-    Image     img(rt.GetTexture());
+    Image     img(((RenderTarget*)rt)->GetTexture());
     u_int8_t* pixels = img.GetPixelArray(size);
 
     for (int x = 0; x < size.x; x++)
@@ -30,7 +28,7 @@ void BlackAndWhiteFilter::apply(plugin::RenderTargetI* rt)
 
     Texture texture;
     texture.LoadFromImage(img);
-    rt.DrawSprite(plugin::Vec2(0, 0), texture);
+    ((RenderTarget*)rt)->DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
 void BlackAndWhiteFilter::setParams(plugin::Array<double> params)

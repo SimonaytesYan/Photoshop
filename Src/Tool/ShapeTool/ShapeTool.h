@@ -24,7 +24,7 @@ public :
     virtual void disable       (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color         color) override;
 
-    virtual void CalcAndDrawShape(RenderTarget& target, 
+    virtual void CalcAndDrawShape(RenderTarget* target, 
                                   MouseContext mouse, 
                                   plugin::Color color) = 0;
 };

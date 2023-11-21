@@ -13,22 +13,18 @@ namespace plugin
         virtual const Texture *getIcon() = 0;
 
         virtual void paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, 
-                                    plugin::Color color) = 0;
+                                    MouseContext context, Color color) = 0;
         virtual void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, 
-                                    plugin::Color color) = 0;
+                                    MouseContext context, Color color) = 0;
         virtual void paintOnMove   (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, 
-                                    plugin::Color color) = 0;
+                                    MouseContext context, Color color) = 0;
         virtual void disable       (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, 
-                                    plugin::Color color) = 0;
+                                    MouseContext context, Color color) = 0;
     };
 
     struct ToolManagerI 
     {
-        virtual void setColor(plugin::Color color) = 0;
+        virtual void setColor(Color color) = 0;
         virtual void setTool (ToolI *tool)         = 0;
 
         virtual ToolI* getTool () = 0;

@@ -10,9 +10,9 @@ public :
     ShapeTool(_thickness)
     {}
     
-    void CalcAndDrawShape(RenderTarget& target, 
-                           MouseContext mouse, 
-                           plugin::Color color) override;
+    void CalcAndDrawShape(RenderTarget* target, 
+                          MouseContext mouse, 
+                          plugin::Color color) override;
 };
 
 #endif //SYM_RECT_TOOL

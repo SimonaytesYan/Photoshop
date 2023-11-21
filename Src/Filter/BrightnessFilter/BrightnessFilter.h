@@ -10,6 +10,10 @@ class BrightnessFilter : public Filter
 public:
     BrightnessFilter(double _brightness = 10)
     {
+        param_names.data    = new const char*[1];
+        param_names.data[0] = "brightness";
+        param_names.size    = 1;
+
         brightness = _brightness;
     }
 

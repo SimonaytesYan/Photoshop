@@ -7,7 +7,13 @@
 
 class Filter : public plugin::FilterI
 {
+
+protected:
+    plugin::Array<const char*> param_names;
+
 public :
+    Filter()
+    {}
 
     virtual plugin::Array<const char*> getParamNames() override 
     { return plugin::Array<const char*>(0, nullptr); }

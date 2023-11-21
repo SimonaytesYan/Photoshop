@@ -13,7 +13,7 @@ namespace plugin
         uint64_t size;
         T* data;
 
-        Array(uint64_t size, T* data) :
+        Array(uint64_t size = 0, T* data = nullptr) :
         size (size),
         data (data)
         {}

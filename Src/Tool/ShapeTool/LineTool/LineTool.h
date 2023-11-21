@@ -10,7 +10,7 @@ public :
     ShapeTool(0)
     {}
     
-    void CalcAndDrawShape(RenderTarget& target, 
+    void CalcAndDrawShape(RenderTarget* target, 
                           MouseContext mouse, 
                           plugin::Color color) override;
 };

@@ -252,7 +252,7 @@ void SelectFilter::operator()()
 
 void SelectFilterArgs::operator()()
 {
-	DynArray<const char*> filter_args = filter->GetParamNames();
+	plugin::Array<const char*> filter_args = filter->getParamNames();
 
 	int filter_args_n = filter_args.GetLength();
 	if (filter_args_n > 0)

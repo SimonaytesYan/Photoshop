@@ -2,18 +2,15 @@
 #include "../../Useful.h"
 #include "../../Texture/Texture.h"
 
-DynArray<const char*> BrightnessFilter::GetParamNames()
+plugin::Array<const char*> BrightnessFilter::getParamNames()
 {
-    DynArray<const char*> param_names(0);
-    param_names.PushBack("brightness");
-
     return param_names;
 }
 
 void BrightnessFilter::apply(plugin::RenderTargetI* rt)
 {
     plugin::VectorI   size(0, 0);
-    Image     img(rt.GetTexture());
+    Image     img(((RenderTarget*)rt)->GetTexture());
     u_int8_t* pixels = img.GetPixelArray(size);
 
     for (int x = 0; x < size.x; x++)
@@ -30,11 +27,11 @@ void BrightnessFilter::apply(plugin::RenderTargetI* rt)
 
     Texture texture;
     texture.LoadFromImage(img);
-    rt.DrawSprite(plugin::Vec2(0, 0), texture);
+    ((RenderTarget*)rt)->DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
 void BrightnessFilter::setParams(plugin::Array<double> params)
 {
-    if (params.GetLength() == 1)
-        brightness = params[0];
+    if (params.size == 1)
+        brightness = params.data[0];
 }
