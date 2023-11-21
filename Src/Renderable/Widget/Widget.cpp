@@ -290,3 +290,95 @@ bool Widget::InsideP(plugin::Vec2 v)
            v.GetY() - position.GetY() >= -kPrecision && 
            v.GetY() - position.GetY() <= size.GetY() + kPrecision;
 }
+
+
+//------------------------------------WIDGET_PTR--------------------------------
+
+WidgetPtr::WidgetPtr(plugin::WidgetI* object)
+{
+    if (widget->isExtern())
+    {
+        is_extern = true;
+        widget_i  = object;
+    }
+    else
+    {
+        is_extern = true;
+        widget    = (Widget*)object;
+    }
+}
+
+RegionSet WidgetPtr::GetDefaultRegSet()
+{
+    if (is_extern)
+    {
+        RegionSet reg_set;
+        reg_set.AddRegion(ClipRegion(widget_i->getPos(), widget_i->getSize()));
+        return reg_set;   
+    }
+    
+    return GetDefaultRegSet();
+}
+
+bool WidgetPtr::onKeyboardPress(KeyboardContext key)
+{
+    if (is_extern)
+        return widget_i->onKeyboardPress(key);
+    return widget->onKeyboardPress(key);
+}
+
+bool WidgetPtr::onKeyboardRelease(KeyboardContext key)
+{
+    if (is_extern)
+        return widget_i->onKeyboardRelease(key);
+    return widget->onKeyboardRelease(key);
+}
+
+bool WidgetPtr::onMousePress(MouseContext mouse) 
+{
+    if (is_extern)
+        return widget_i->onMousePress(mouse);
+    return widget->onMousePress(mouse);
+}
+
+bool WidgetPtr::onMouseRelease(MouseContext mouse) 
+{
+    if (is_extern)
+        return widget_i->onMouseRelease(mouse);
+    return widget->onMouseRelease(mouse);
+}
+
+bool WidgetPtr::onMouseMove(MouseContext mouse) 
+{
+    if (is_extern)
+        return widget_i->onMouseMove(mouse);
+    return widget->onMouseMove(mouse);
+}
+
+bool WidgetPtr::onClock(size_t delta)       
+{
+    if (is_extern)
+        return widget_i->onClock(delta);
+    return widget->onClock(delta);
+}
+
+bool WidgetPtr::getAvailable()
+{
+    if (is_extern)
+        return widget_i->getAvailable();
+    return widget->getAvailable();
+}
+
+void WidgetPtr::recalcRegion()
+{
+    if (is_extern)
+        return widget_i->recalcRegion();
+    return widget->recalcRegion();        
+}
+
+void WidgetPtr::move(plugin::Vec2 shift)
+{
+    if (is_extern)
+        return widget_i->move(shift);
+    return widget->move(shift);
+}

@@ -23,94 +23,18 @@ struct WidgetPtr
     };
     bool is_extern;
 
-    WidgetPtr(plugin::WidgetI* object)
-    {
-        if (widget->isExtern())
-        {
-            is_extern = true;
-            widget_i  = object;
-        }
-        else
-        {
-            is_extern = true;
-            widget    = (Widget*)object;
-        }
-    }
+    WidgetPtr(plugin::WidgetI* object);
 
-    RegionSet GetDefaultRegSet()
-    {
-        if (is_extern)
-        {
-            RegionSet reg_set;
-            reg_set.AddRegion(ClipRegion(widget_i->getPos(), widget_i->getSize()));
-            return reg_set;   
-        }
-        
-        return GetDefaultRegSet();
-    }
-
-    bool onKeyboardPress(KeyboardContext key)
-    {
-        if (is_extern)
-            return widget_i->onKeyboardPress(key);
-        return widget->onKeyboardPress(key);
-    }
-
-    bool onKeyboardRelease(KeyboardContext key)
-    {
-        if (is_extern)
-            return widget_i->onKeyboardRelease(key);
-        return widget->onKeyboardRelease(key);
-    }
-
-    bool onMousePress(MouseContext mouse) 
-    {
-        if (is_extern)
-            return widget_i->onMousePress(mouse);
-        return widget->onMousePress(mouse);
-    }
-
-    bool onMouseRelease(MouseContext mouse) 
-    {
-        if (is_extern)
-            return widget_i->onMouseRelease(mouse);
-        return widget->onMouseRelease(mouse);
-    }
-
-    bool onMouseMove(MouseContext mouse) 
-    {
-        if (is_extern)
-            return widget_i->onMouseMove(mouse);
-        return widget->onMouseMove(mouse);
-    }
-
-    bool onClock(size_t delta)       
-    {
-        if (is_extern)
-            return widget_i->onClock(delta);
-        return widget->onClock(delta);
-    }
-
-    bool getAvailable()
-    {
-        if (is_extern)
-            return widget_i->getAvailable();
-        return widget->getAvailable();
-    }
-
-    void recalcRegion()
-    {
-        if (is_extern)
-            return widget_i->recalcRegion();
-        return widget->recalcRegion();        
-    }
-
-    void move(plugin::Vec2 shift)
-    {
-        if (is_extern)
-            return widget_i->move(shift);
-        return widget->move(shift);
-    }
+    RegionSet GetDefaultRegSet ();
+    bool      onKeyboardPress  (KeyboardContext key);
+    bool      onKeyboardRelease(KeyboardContext key);
+    bool      onMousePress     (MouseContext mouse);
+    bool      onMouseRelease   (MouseContext mouse);
+    bool      onMouseMove      (MouseContext mouse);
+    bool      onClock          (size_t delta);
+    void      move             (plugin::Vec2 shift);
+    bool      getAvailable     ();
+    void      recalcRegion     ();
 };
 
 class Widget : public Renderable, public plugin::WidgetI
@@ -174,7 +98,7 @@ public :
     plugin::Vec2        getPosition()  const { return position;  }
     
     bool          getAvailable() const { return available; }
-    Widget*       GetParent()    const { return parent;    }
+    Widget*       getParent()    const { return parent;    }
 
 };
 
