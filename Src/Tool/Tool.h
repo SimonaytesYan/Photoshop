@@ -45,6 +45,12 @@ public :
     virtual void disable       (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 MouseContext mouse, plugin::Color color) override
                                 {}
+    
+    const plugin::Texture*           getIcon()       override { return &icon; }
+          plugin::Array<const char*> getParamNames() override { return plugin::Array<const char*>(0, nullptr); }
+          plugin::Array<double>      getParams()     override { return plugin::Array<double>(0, nullptr); }
+    
+    void setParams(plugin::Array<double> params) override {}
 };
 
 #endif //SYM_TOOL

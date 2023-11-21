@@ -12,6 +12,11 @@ namespace plugin
     {
         uint64_t size;
         T* data;
+
+        Array(uint64_t size, T* data) :
+        size (size),
+        data (data)
+        {}
     };
 }
 
