@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <assert.h>
+#include <dlfcn.h>
 
+#include "Standart/PluginStandart.h"
 #include "List.h"
 #include "Stopwatch.h"
 #include "Functors.h"
@@ -37,8 +39,29 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas,
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
+typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
+
+void LoadPlugins()
+{
+	void* dll_plugin = dlopen("Plugins/PluginLol.so", RTLD_NOW || RTLD_LOCAL || RTLD_NOLOAD);
+
+	fprintf(stderr, "dll loaded\n");
+
+	GetInstanceType function = (GetInstanceType)dlsym(dll_plugin, "getInstance");
+
+	fprintf(stderr, "function got\n");
+	plugin::Plugin* new_plugin = function(nullptr);
+
+	fprintf(stderr, "function performed\n");
+
+	dlclose(dll_plugin);
+	fprintf(stderr, "dll closed\n");
+}
+
 int main()
 {
+	LoadPlugins();
+
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
 	size_t WindowWidth  = window.getSize().x;

@@ -14,7 +14,8 @@ namespace plugin
 
         virtual Interface *getInterface() = 0;
         virtual ~Plugin() = 0;
-    };    
+    };
+
 }
 
 #endif //SYM_PLUGIN

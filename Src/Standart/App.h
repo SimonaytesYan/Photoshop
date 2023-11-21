@@ -8,7 +8,7 @@
 
 namespace plugin
 {
-    struct App 
+    struct App
     {
         GuiI *root;
         EventManagerI *event_manager; 
