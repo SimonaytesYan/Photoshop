@@ -104,22 +104,4 @@ public :
     Widget*       getParent()    const { return parent;    }
 };
 
-class RectangleWidget : public Widget
-{
-    plugin::Color background;
-
-public:
-    RectangleWidget(plugin::Vec2 position = plugin::Vec2(0, 0), plugin::Vec2 size = plugin::Vec2(0,0),
-                    plugin::Color background = plugin::Color(255, 255, 255), bool available = true) :
-    Widget     (position, size, available),
-    background (background)
-    {}
-
-    void render(RenderTarget* render_target)
-    {
-        render_target->DrawRect(position, size, reg_set, background);
-        Widget::render(render_target);
-    }
-};
-
 #endif  //SYM_SUB_WINDOW

@@ -2,6 +2,7 @@
 #define SYM_SCROLL_BAR
 
 #include "../Widget.h"
+#include "../RectangleWidget/RectangleWidget.h"
 
 class Interlayer : public Widget
 {

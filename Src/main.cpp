@@ -29,6 +29,7 @@
 #include "Filter/Filter.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
+#include "Renderable/Widget/RectangleWidget/RectangleWidget.h"
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
@@ -114,7 +115,7 @@ int main()
 					event_manager.onMousePress({position, (MouseButton)event.mouseButton.button});
 					break;
 				}
-				
+
 				case sf::Event::MouseMoved:
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
@@ -122,7 +123,7 @@ int main()
 					event_manager.onMouseMove(MouseContext(position, (MouseButton)1));
 					break;
 				}
-				
+
 				case sf::Event::MouseButtonReleased:
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
@@ -187,7 +188,7 @@ int main()
 		}
 
 		the_root.render(&rend_targ);
-		
+
 		rend_targ.display(&window);
 		window.display();
 	}
@@ -216,7 +217,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 										font, 20, "Save", 
 										plugin::Color(255, 255, 255),
 										saving_func));
-	
+
 	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
 									 	plugin::Color(199, 181, 173),
@@ -226,7 +227,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);
-	
+
 	// Create filter menu
 	TextButton* filter_button = new TextButton(plugin::Vec2(210, 50),  plugin::Vec2(200, 50),
 									  		   plugin::Color(199, 181, 173),
@@ -244,7 +245,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  	   		   plugin::Color(255, 255, 255),
 									  	   		   brightness_func);
 	filters->registerSubWidget(brightness_filter);
-	
+
 	SelectFilter* black_white_func = new SelectFilter(fm, new BlackAndWhiteFilter(), 
 													  nullptr, nullptr);
 
@@ -264,7 +265,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	filters->registerSubWidget(last_filter);
 
 	main_menu->registerSubWidget(filters);
-	
+
 	window->registerSubWidget(main_menu);
 }
 
