@@ -10,7 +10,7 @@ DynArray<const char*> BrightnessFilter::GetParamNames()
     return param_names;
 }
 
-void BrightnessFilter::Apply(RenderTarget& rt)
+void BrightnessFilter::apply(RenderTarget& rt)
 {
     plugin::VectorI   size(0, 0);
     Image     img(rt.GetTexture());
@@ -33,7 +33,7 @@ void BrightnessFilter::Apply(RenderTarget& rt)
     rt.DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
-void BrightnessFilter::SetParams(const DynArray<double>& params)
+void BrightnessFilter::setParams(plugin::Array<double> params)
 {
     if (params.GetLength() == 1)
         brightness = params[0];

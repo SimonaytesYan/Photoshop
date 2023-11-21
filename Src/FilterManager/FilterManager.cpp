@@ -26,7 +26,7 @@ void FilterManager::ApplyLastFilter()
 {
     if (active && last_filter != nullptr)
     {
-        last_filter->Apply(*rt);
+        last_filter->apply(*rt);
         active = false;
     }
 }

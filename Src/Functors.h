@@ -244,7 +244,7 @@ void SelectFilter::operator()()
 		for (int i = 0; i < edit_boxes->GetLength(); i++)
     		filter_params[i] = atof((*edit_boxes)[i]->GetText());
 
-		filter->SetParams(filter_params);
+		filter->setParams(filter_params);
 		dialog_box->Close();
 	}
 	filter_manager->SetFilter(filter);

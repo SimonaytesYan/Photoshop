@@ -7,12 +7,13 @@
 
 class Filter : public plugin::FilterI
 {
-
-public:
-    virtual DynArray<const char*> GetParamNames()   = 0;
+    virtual plugin::Array<const char*> getParamNames() override 
+    { return plugin::Array<const char*>(0, nullptr); }
+    virtual plugin::Array<double>      getParams()     override 
+    { return plugin::Array<double>(0, nullptr); }
     
-    virtual void Apply    (RenderTarget& rt)               = 0;
-    virtual void SetParams(const DynArray<double>& params) = 0;
+    virtual void apply    (plugin::RenderTargetI *data)  override {}
+    virtual void setParams(plugin::Array<double> params) override {}
 };
 
 #endif //SYM_FILTER

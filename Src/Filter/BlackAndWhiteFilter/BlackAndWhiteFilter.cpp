@@ -9,7 +9,7 @@ DynArray<const char*> BlackAndWhiteFilter::GetParamNames()
     return param_names;
 }
 
-void BlackAndWhiteFilter::Apply(RenderTarget& rt)
+void BlackAndWhiteFilter::apply(RenderTarget& rt)
 {
     plugin::VectorI   size(0, 0);
     Image     img(rt.GetTexture());
@@ -33,5 +33,5 @@ void BlackAndWhiteFilter::Apply(RenderTarget& rt)
     rt.DrawSprite(plugin::Vec2(0, 0), texture);
 }
 
-void BlackAndWhiteFilter::SetParams(const DynArray<double>& params)
+void BlackAndWhiteFilter::setParams(plugin::Array<double> params)
 {}
