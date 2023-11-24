@@ -41,24 +41,10 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
 
-void LoadPlugins()
-{
-	void* dll_hand = dlopen("/home/yan/Desktop/Projects/Photoshop/Plugins/Lol.so", RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
-
-	fprintf(stderr, "dll = %p\n", dll_hand);
-	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
-
-	fprintf(stderr, "get = %p\n", get_plugin);
-
-	get_plugin(nullptr);
-
-	dlclose(dll_hand);
-}
+plugin::Plugin* LoadFilter(const char* path);
 
 int main()
 {
-	LoadPlugins();
-
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
 	size_t WindowWidth  = window.getSize().x;
@@ -276,6 +262,30 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  			    black_white_func);
 	filters->registerSubWidget(black_white_filter);
 
+	plugin::Plugin* vova_plugin = LoadFilter("Plugins/Vova.so");
+
+	SelectFilter* vova_plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)vova_plugin->getInterface(),
+												   			 nullptr, nullptr);
+
+	TextButton* vova_plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
+									  		   plugin::Color(199, 181, 173),
+									  		   font, 20, vova_plugin->name,
+									  		   plugin::Color(255, 255, 255),
+									  		   vova_plugin_filter_func);
+	filters->registerSubWidget(vova_plugin_filter);
+
+	plugin::Plugin* my_plugin = LoadFilter("Plugins/Lol.so");
+
+	SelectFilter* plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)my_plugin->getInterface(),
+												   nullptr, nullptr);
+		
+	TextButton* plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
+									  		   plugin::Color(199, 181, 173),
+									  		   font, 20, my_plugin->name,
+									  		   plugin::Color(255, 255, 255),
+									  		   plugin_filter_func);
+	filters->registerSubWidget(plugin_filter);
+
 	LastFilter* last_filter_func = new LastFilter(fm); 
 	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
 									  		 plugin::Color(199, 181, 173),
@@ -287,6 +297,18 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	main_menu->registerSubWidget(filters);
 
 	window->registerSubWidget(main_menu);
+}
+
+plugin::Plugin* LoadFilter(const char* path)
+{
+	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
+	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
+	
+	plugin::Plugin* my_plugin = get_plugin(nullptr);
+
+	dlclose(dll_hand);
+
+	return my_plugin;
 }
 
 void ClearCanvas(void* args)

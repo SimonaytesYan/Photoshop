@@ -56,14 +56,14 @@ struct SwitchColor : ButtonFunction
 struct SelectFilter : ButtonFunction
 {
 	FilterManager*      filter_manager;
-	Filter* 	        filter;
+	plugin::FilterI* 	        filter;
 	DynArray<EditBox*>* edit_boxes;
 	ModalWindow*		dialog_box;	
 	
 	SelectFilter()
 	{}
 
-	SelectFilter(FilterManager* filter_manager, Filter* filter, 
+	SelectFilter(FilterManager* filter_manager, plugin::FilterI* filter, 
 			     DynArray<EditBox*>* edit_boxes, ModalWindow* dialog_box) :
 	filter_manager (filter_manager),
 	filter         (filter),

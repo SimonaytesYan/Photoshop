@@ -2,7 +2,6 @@
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app)
 {
-    fprintf(stderr, "Hello world\n");
     return new WhiteAndBlackPlugin(app);
 }
 
@@ -17,21 +16,26 @@ app (app)
 
 plugin::Array<const char*> WhiteAndBlackFilter::getParamNames()
 { 
-    return plugin::Array<const char*>(0, nullptr); 
+    return {0, nullptr}; 
 }
 
 plugin::Array<double> WhiteAndBlackFilter::getParams()
 { 
-    return plugin::Array<double>(0, nullptr); 
+    return {0, nullptr}; 
 }
 
 void WhiteAndBlackFilter::setParams(plugin::Array<double> params)
 { }
 
+void fuck()
+{}
+
 void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
 {
     plugin::Texture* texture = rt->getTexture(); 
     plugin::Color*   pixels  = texture->pixels;
+
+    fprintf(stderr, "inside plugin size = (%d, %d)\n", texture->width, texture->height);
 
     for (int y = 0; y < texture->height; y++)
     {
@@ -48,7 +52,16 @@ void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
         }
     }
 
-    rt->drawTexture(plugin::Vec2(0, 0), 
-                    plugin::Vec2(texture->width, texture->height), 
-                    texture);
+
+    plugin::Vec2 pos  = {100, 100};
+    plugin::Vec2 size = {texture->width, texture->height};
+    fprintf(stderr, "pos  = (%lg, %lg)\n", pos.x, pos.y);
+    fprintf(stderr, "size = (%lg, %lg)\n", size.x, size.y);
+    fprintf(stderr, "text = (%p, %lg, %lg)\n", texture->pixels, texture->height, texture->width);
+
+    fuck();
+
+    rt->drawTexture(24, pos, size, texture, 42);
+    delete[] texture->pixels;
+    delete texture;
 }

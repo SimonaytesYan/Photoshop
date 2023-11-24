@@ -13,9 +13,17 @@ namespace plugin
         double y;
 
     public : 
-        Vec2();
-        Vec2(double _x, double _y);
-        ~Vec2();
+        Vec2()
+        {
+            x = y = 0;
+        }
+        Vec2(double _x, double _y)
+        {
+            x = _x;
+            y = _y;
+        }
+        ~Vec2()
+        {}
 
         double    GetX    () {return x;};
         double    GetY    () {return y;};

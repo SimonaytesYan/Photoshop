@@ -100,12 +100,14 @@ Texture RenderTarget::GetTexture()
 plugin::Texture* RenderTarget::getTexture()
 {
     sf::Image img = data.getTexture().copyToImage();
+    fprintf(stderr, "Img got\n");
 
     plugin::Texture* texture = new plugin::Texture();
     texture->width  = img.getSize().x;
     texture->height = img.getSize().y;
 
     size_t number_pixels = img.getSize().x * img.getSize().y;
+    fprintf(stderr, "number_pixels = %d\n", number_pixels);
     texture->pixels = new plugin::Color[number_pixels];
     memcpy(texture->pixels, img.getPixelsPtr(), sizeof(plugin::Color) * number_pixels);
 
@@ -397,9 +399,12 @@ void RenderTarget::drawTexture(plugin::Vec2 pos, plugin::Vec2 size,
     memcpy(img.GetPixelArray(), 
            texture->pixels, 
            size.x * size.y * sizeof(plugin::Color));
-    
+
+    fprintf(stderr, "size.x = %lf, size.y = %lf\n", size.x, size.y);   
+    fprintf(stderr, "pos.x  = %lf,  pos.y = %lf\n", pos.x, pos.y);   
     Texture my_texture;
     my_texture.LoadFromImage(img);
+    fprintf(stderr, "Loaded\n");
 
     DrawSprite(pos, my_texture);
 }
