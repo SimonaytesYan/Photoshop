@@ -1,6 +1,6 @@
 #include "EventManager.h"
 
-bool EventManager::onKeyboardPress(KeyboardContext key)
+bool EventManager::onKeyboardPress(plugin::KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -11,7 +11,7 @@ bool EventManager::onKeyboardPress(KeyboardContext key)
     return true;
 }
 
-bool EventManager::onKeyboardRelease(KeyboardContext key)
+bool EventManager::onKeyboardRelease(plugin::KeyboardContext key)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -22,7 +22,7 @@ bool EventManager::onKeyboardRelease(KeyboardContext key)
     return true;
 }
 
-bool EventManager::onMousePress(MouseContext mouse)
+bool EventManager::onMousePress(plugin::MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -33,7 +33,7 @@ bool EventManager::onMousePress(MouseContext mouse)
     return true;
 }
 
-bool EventManager::onMouseRelease(MouseContext mouse)
+bool EventManager::onMouseRelease(plugin::MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
@@ -44,7 +44,7 @@ bool EventManager::onMouseRelease(MouseContext mouse)
     return true;
 }
 
-bool EventManager::onMouseMove(MouseContext mouse)
+bool EventManager::onMouseMove(plugin::MouseContext mouse)
 {
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {

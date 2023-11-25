@@ -32,11 +32,11 @@ public:
     void registerObject  (EventProcessableI* obj) override;
     void unregisterObject(EventProcessableI* obj) override;
 
-    bool onKeyboardPress  (KeyboardContext key) override;
-    bool onKeyboardRelease(KeyboardContext key) override;
-    bool onMousePress     (MouseContext mouse)  override;
-    bool onMouseRelease   (MouseContext mouse)  override;
-    bool onMouseMove      (MouseContext mouse)  override;
+    bool onKeyboardPress  (plugin::KeyboardContext key) override;
+    bool onKeyboardRelease(plugin::KeyboardContext key) override;
+    bool onMousePress     (plugin::MouseContext mouse)  override;
+    bool onMouseRelease   (plugin::MouseContext mouse)  override;
+    bool onMouseMove      (plugin::MouseContext mouse)  override;
     bool onClock          (u_int64_t delta)     override;
 };
 

@@ -9,7 +9,7 @@ plugin::Array<const char*> BrightnessFilter::getParamNames()
 
 void BrightnessFilter::apply(plugin::RenderTargetI* rt)
 {
-    plugin::VectorI   size(0, 0);
+    VectorI   size(0, 0);
     Image     img(((RenderTarget*)rt)->GetTexture());
     u_int8_t* pixels = img.GetPixelArray(size);
 
@@ -17,7 +17,7 @@ void BrightnessFilter::apply(plugin::RenderTargetI* rt)
     {
         for (int y = 0; y < size.y; y++)
         {
-            plugin::Color* cur_color = GetC(pixels, size, plugin::VectorI(x, y));
+            plugin::Color* cur_color = GetC(pixels, size, VectorI(x, y));
 
             cur_color->r = BorderPlus(cur_color->r, brightness, 255);
             cur_color->g = BorderPlus(cur_color->g, brightness, 255);

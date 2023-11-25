@@ -40,7 +40,7 @@ public:
     plugin::Vec2 getSize     ();
 
     u_int8_t* GetPixelArray();
-    u_int8_t* GetPixelArray(plugin::VectorI& size);
+    u_int8_t* GetPixelArray(VectorI& size);
 };
 
 namespace plugin

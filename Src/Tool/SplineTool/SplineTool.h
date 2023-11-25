@@ -16,16 +16,16 @@ public :
     {}
 
     void paintOnPress    (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color) override;
+                          plugin::MouseContext mouse, plugin::Color color) override;
     void paintOnMove     (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color)
+                          plugin::MouseContext mouse, plugin::Color color)
     {};
 
     void paintOnRelease  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color)
+                          plugin::MouseContext mouse, plugin::Color color)
     {};
     void disable         (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color         color) override;
+                          plugin::MouseContext mouse, plugin::Color         color) override;
 };
 
 #endif //SYM_SPLINE_TOOL

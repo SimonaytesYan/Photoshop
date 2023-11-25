@@ -3,14 +3,14 @@
 #include "../../Useful.h"
 
 void PolylineTool::CalcAndDrawPolyline(plugin::RenderTargetI* target, 
-                                       MouseContext mouse, plugin::Color color)
+                                       plugin::MouseContext mouse, plugin::Color color)
 {
     for (int i = vertexes.GetLength() - 1; i >= 1; i--)
         target->drawLine(vertexes[i], vertexes[i - 1], color);
 }
 
 void PolylineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                           MouseContext mouse, plugin::Color         color)
+                           plugin::MouseContext mouse, plugin::Color         color)
 {
     ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
     CalcAndDrawPolyline(data, mouse, color);
@@ -21,9 +21,9 @@ void PolylineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* 
 }
 
 void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color)
+                                plugin::MouseContext mouse, plugin::Color color)
 {
-    if (mouse.key == MouseButton::Right)
+    if (mouse.key == plugin::MouseButton::Right)
     {
         if (drawing)
         {
@@ -45,7 +45,7 @@ void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTarge
 }
 
 void PolylineTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                               MouseContext mouse, plugin::Color color)
+                               plugin::MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {

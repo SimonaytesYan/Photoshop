@@ -6,7 +6,7 @@
 
 plugin::Vec2 kIndent = plugin::Vec2(10, 0);
 
-bool EditBox::onMousePress(MouseContext mouse)
+bool EditBox::onMousePress(plugin::MouseContext mouse)
 {
     bool widget_return = Widget::onMousePress(mouse);
     if (widget_return)
@@ -42,25 +42,25 @@ bool EditBox::onMousePress(MouseContext mouse)
     return false;
 }
 
-bool EditBox::onKeyboardPress(KeyboardContext keyboard)
+bool EditBox::onKeyboardPress(plugin::KeyboardContext keyboard)
 {
-    Key key = keyboard.key;
+    plugin::Key key = keyboard.key;
 
     if (cursor_pos != EDIT_BOX_UNABLE && cursor_pos != EDIT_BOX_UNUSED)
     {
-        if (key == Key::Backspace || key == Key::Left || key == Key::Right) // keys, control 
+        if (key == plugin::Key::Backspace || key == plugin::Key::Left || key == plugin::Key::Right) // keys, control 
         {
-            if (key == Key::Left)
+            if (key == plugin::Key::Left)
             {
                 if (cursor_pos > 0)
                     cursor_pos--;
             }
-            else if (key == Key::Right)
+            else if (key == plugin::Key::Right)
             {
                 if (cursor_pos < text.GetLength())
                     cursor_pos++;
             }
-            else if (key == Key::Backspace)
+            else if (key == plugin::Key::Backspace)
             {
                 if (cursor_pos > 0)
                 {
@@ -72,13 +72,13 @@ bool EditBox::onKeyboardPress(KeyboardContext keyboard)
         else
         {
             int int_key = (int)key;
-            if (key <= Key::Z)
+            if (key <= plugin::Key::Z)
                 text.Insert((int)key + 'a', cursor_pos);
-            else if (key <= Key::Num9)
-                text.Insert((int)key - (int)Key::Num0 + '0', cursor_pos);
-            else if (key == Key::Comma)
+            else if (key <= plugin::Key::Num9)
+                text.Insert((int)key - (int)plugin::Key::Num0 + '0', cursor_pos);
+            else if (key == plugin::Key::Comma)
                 text.Insert(',', cursor_pos);
-            else if (key == Key::Period)
+            else if (key == plugin::Key::Period)
                 text.Insert('.', cursor_pos);
             else 
                 return true;

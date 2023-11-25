@@ -14,16 +14,16 @@ public :
     {}
     
     void CalcAndDrawPolyline(plugin::RenderTargetI* target, 
-                             MouseContext mouse, plugin::Color color);
+                             plugin::MouseContext mouse, plugin::Color color);
     void paintOnPress    (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color) override;
+                          plugin::MouseContext mouse, plugin::Color color) override;
     void paintOnMove     (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color) override;
+                          plugin::MouseContext mouse, plugin::Color color) override;
     void paintOnRelease  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color color) override
+                          plugin::MouseContext mouse, plugin::Color color) override
     {}
     void disable         (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                          MouseContext mouse, plugin::Color         color) override;
+                          plugin::MouseContext mouse, plugin::Color         color) override;
 };
 
 #endif //SYM_POLYLINE_TOOL

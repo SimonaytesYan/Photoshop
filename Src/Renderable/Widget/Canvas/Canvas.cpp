@@ -15,7 +15,7 @@ tmp  (RenderTarget(_size))
     tmp.clear(plugin::Color(0, 0, 0, 0));
 }
 
-void Canvas::disableTool(MouseContext mouse)
+void Canvas::disableTool(plugin::MouseContext mouse)
 {
     if (tm != nullptr && drawing)
     {
@@ -27,7 +27,7 @@ void Canvas::disableTool(MouseContext mouse)
     }
 }
 
-bool Canvas::onMousePress(MouseContext mouse)
+bool Canvas::onMousePress(plugin::MouseContext mouse)
 {
     if (Widget::onMousePress(mouse))
         return true;
@@ -52,7 +52,7 @@ bool Canvas::onMousePress(MouseContext mouse)
     return false;
 }
 
-bool Canvas::onMouseMove(MouseContext mouse)
+bool Canvas::onMouseMove(plugin::MouseContext mouse)
 {
     if (Widget::onMouseMove(mouse))
         return true;
@@ -79,7 +79,7 @@ bool Canvas::onMouseMove(MouseContext mouse)
     return true;
 }
 
-bool Canvas::onMouseRelease(MouseContext mouse)
+bool Canvas::onMouseRelease(plugin::MouseContext mouse)
 {
     if (Widget::onMouseRelease(mouse))
     {

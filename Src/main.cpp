@@ -118,7 +118,7 @@ int main()
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.onMousePress({position, (MouseButton)event.mouseButton.button});
+					event_manager.onMousePress({position, (plugin::MouseButton)event.mouseButton.button});
 					break;
 				}
 
@@ -126,7 +126,7 @@ int main()
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.onMouseMove(MouseContext(position, (MouseButton)1));
+					event_manager.onMouseMove(plugin::MouseContext(position, (plugin::MouseButton)1));
 					break;
 				}
 
@@ -134,24 +134,24 @@ int main()
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
 									sf::Mouse::getPosition().y);
-					event_manager.onMouseRelease({position, (MouseButton)event.mouseButton.button});
+					event_manager.onMouseRelease({position, (plugin::MouseButton)event.mouseButton.button});
 					break;
 				}
 
 				case sf::Event::KeyPressed:
 				{
-					KeyboardContext kb_context;
-					kb_context.key = (Key)event.key.code;
+					plugin::KeyboardContext kb_context;
+					kb_context.key = (plugin::Key)event.key.code;
 					
 					switch (kb_context.key)
 					{
-						case Key::LShift:
+						case plugin::Key::LShift:
 							kb_context.shift = true;
 							break;
-						case Key::LAlt:
+						case plugin::Key::LAlt:
 							kb_context.alt = true;
 							break;
-						case Key::LControl:
+						case plugin::Key::LControl:
 							kb_context.ctrl = true;
 							break;
 				
@@ -163,18 +163,18 @@ int main()
 
 				case sf::Event::KeyReleased:
 				{
-					KeyboardContext kb_context;
-					kb_context.key = (Key)event.key.code;
+					plugin::KeyboardContext kb_context;
+					kb_context.key = (plugin::Key)event.key.code;
 
 					switch (kb_context.key)
 					{
-						case Key::LShift:
+						case plugin::Key::LShift:
 							kb_context.shift = false;
 							break;
-						case Key::LAlt:
+						case plugin::Key::LAlt:
 							kb_context.alt = false;
 							break;
-						case Key::LControl:
+						case plugin::Key::LControl:
 							kb_context.ctrl = false;
 							break;				
 					}
@@ -262,7 +262,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  			    black_white_func);
 	filters->registerSubWidget(black_white_filter);
 
-	plugin::Plugin* vova_plugin = LoadFilter("Plugins/Vova.so");
+	plugin::Plugin* vova_plugin = LoadFilter("Plugins/monochrome.so");
 
 	SelectFilter* vova_plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)vova_plugin->getInterface(),
 												   			 nullptr, nullptr);

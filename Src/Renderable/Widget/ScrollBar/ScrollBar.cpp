@@ -98,7 +98,7 @@ plugin::Vec2 FixDelta(const Widget& parent, const Widget& slider, plugin::Vec2 d
     return delta;
 }
 
-plugin::Vec2 CalcDelta(MouseContext mouse, plugin::Vec2 last_mouse_pos, 
+plugin::Vec2 CalcDelta(plugin::MouseContext mouse, plugin::Vec2 last_mouse_pos, 
                  Widget* slider, Widget* scroll_bar)
 {
     plugin::Vec2 delta((mouse.position - last_mouse_pos).GetX(),
@@ -108,7 +108,7 @@ plugin::Vec2 CalcDelta(MouseContext mouse, plugin::Vec2 last_mouse_pos,
     return delta;
 }
 
-bool ScrollBar::onMouseMove(MouseContext mouse)
+bool ScrollBar::onMouseMove(plugin::MouseContext mouse)
 {
     if (pressed)
     {
@@ -129,7 +129,7 @@ bool ScrollBar::onMouseMove(MouseContext mouse)
     return false;
 }
 
-bool ScrollBar::onMousePress(MouseContext mouse)
+bool ScrollBar::onMousePress(plugin::MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -154,7 +154,7 @@ bool ScrollBar::onMousePress(MouseContext mouse)
     return false;
 }
 
-bool ScrollBar::onMouseRelease(MouseContext mouse)
+bool ScrollBar::onMouseRelease(plugin::MouseContext mouse)
 {
     pressed = false;
     return false;

@@ -6,13 +6,13 @@
 #include "../../Useful.h"
 
 const size_t  kTransNumb               = 4;
-const plugin::VectorI kTransitions[kTransNumb] = {plugin::VectorI(1,  0), 
-                                          plugin::VectorI(0,  1), 
-                                          plugin::VectorI(-1, 0), 
-                                          plugin::VectorI(0,  -1)};
+const VectorI kTransitions[kTransNumb] = {VectorI(1,  0), 
+                                          VectorI(0,  1), 
+                                          VectorI(-1, 0), 
+                                          VectorI(0,  -1)};
 
-bool GoToPixelP(plugin::VectorI cur, plugin::VectorI next, 
-                plugin::VectorI size, const u_int8_t* pixels, bool** visited)
+bool GoToPixelP(VectorI cur, VectorI next, 
+                VectorI size, const u_int8_t* pixels, bool** visited)
 {
     return 0 <= next.x && next.x < size.x &&
            0 <= next.y && next.y < size.y &&
@@ -20,12 +20,12 @@ bool GoToPixelP(plugin::VectorI cur, plugin::VectorI next,
            !visited[next.y][next.x];
 }
 
-void AddTransitions(DynArray<plugin::VectorI> &stack, plugin::VectorI cur,
-                    const u_int8_t* pixels, plugin::VectorI size, bool** visited)
+void AddTransitions(DynArray<VectorI> &stack, VectorI cur,
+                    const u_int8_t* pixels, VectorI size, bool** visited)
 {
     for (int i = 0; i < kTransNumb; i++)
     {
-        plugin::VectorI next = cur + kTransitions[i];
+        VectorI next = cur + kTransitions[i];
 
         if (GoToPixelP(cur, next, size, pixels, visited))
             stack.PushBack(next);
@@ -33,15 +33,15 @@ void AddTransitions(DynArray<plugin::VectorI> &stack, plugin::VectorI cur,
 }
 
 void FillTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                              MouseContext mouse, plugin::Color color)
+                              plugin::MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
-        DynArray<plugin::VectorI> stack(0);
+        DynArray<VectorI> stack(0);
 
         Image img(((RenderTarget*)data)->GetTexture());
 
-        plugin::VectorI         size(0, 0);
+        VectorI         size(0, 0);
         const u_int8_t* pixels  = img.GetPixelArray(size);
 
         if (*GetC(pixels, size, start_pos) == color)
@@ -58,7 +58,7 @@ void FillTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI
 
         while (stack.GetLength() != 0)
         {
-            plugin::VectorI cur = stack[stack.GetLength() - 1];
+            VectorI cur = stack[stack.GetLength() - 1];
 
             plugin::Color* clr = GetC(pixels, size, cur);
             visited[cur.y][cur.x] = true;
@@ -82,19 +82,19 @@ void FillTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI
 
 
 void FillTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                            MouseContext mouse, plugin::Color color)
+                            plugin::MouseContext mouse, plugin::Color color)
 {
     start_pos = mouse.position;
     drawing   = true;
 }
 
 void FillTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                           MouseContext mouse, plugin::Color color)
+                           plugin::MouseContext mouse, plugin::Color color)
 {
 }
 
 void FillTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                       MouseContext mouse, plugin::Color         color)
+                       plugin::MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
     {

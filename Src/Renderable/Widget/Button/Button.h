@@ -44,9 +44,9 @@ public :
     }
        
     virtual void render        (RenderTarget* render_target) override;
-            bool onMousePress  (MouseContext mouse)        override;
-            bool onMouseRelease(MouseContext mouse)        override;
-            bool onMouseMove   (MouseContext mouse)        override;
+            bool onMousePress  (plugin::MouseContext mouse)        override;
+            bool onMouseRelease(plugin::MouseContext mouse)        override;
+            bool onMouseMove   (plugin::MouseContext mouse)        override;
 };
 
 class TextButton : public Button

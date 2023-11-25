@@ -12,13 +12,13 @@ namespace plugin
 {
     struct GuiI 
     {
-        virtual plugin::Vec2 getSize() = 0; // размер доступной для рисования площади (которую можно запросить)
+        virtual Vec2 getSize() = 0; // размер доступной для рисования площади (которую можно запросить)
 
         /// @brief запросить RT.
         /// Хост создает новое окно / отдает какое-то, абсолютно пустое, с единственным RT на все окно.
         /// @param size -- размер запрашиваемой области
         /// @param pos  -- (относительное [относительно предоставленной области]) смещение запрашиваемой области
-        virtual RenderTargetI* getRenderTarget(plugin::Vec2 size, plugin::Vec2 pos, Plugin *self) = 0;
+        virtual RenderTargetI* getRenderTarget(Vec2 size, Vec2 pos, Plugin *self) = 0;
 
         /// @brief Создает окно с параметрами, каким-то образом узнает у пользователя 
         ///     значения параметров и потом возвращает их интерфейсу через Interface::set_params

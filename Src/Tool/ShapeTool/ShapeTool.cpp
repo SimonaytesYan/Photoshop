@@ -4,7 +4,7 @@
 #include "../../ClipRegion/ClipRegion.h"
 
 void ShapeTool::paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color)
+                                plugin::MouseContext mouse, plugin::Color color)
 {
     ((RenderTarget*)tmp)->clear(plugin::Color(0, 0, 0, 0));
     start_pos = mouse.position;
@@ -13,7 +13,7 @@ void ShapeTool::paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTarget
 }
 
 void ShapeTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                             MouseContext mouse, plugin::Color color)
+                             plugin::MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
@@ -24,7 +24,7 @@ void ShapeTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* 
 }
 
 void ShapeTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color)
+                                plugin::MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
@@ -36,7 +36,7 @@ void ShapeTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTarget
 }
 
 void ShapeTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color         color)
+                        plugin::MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
     {

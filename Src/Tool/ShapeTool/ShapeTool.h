@@ -16,16 +16,16 @@ public :
     {}
 
     virtual void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color) override;
+                                plugin::MouseContext mouse, plugin::Color color) override;
     virtual void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color) override;
+                                plugin::MouseContext mouse, plugin::Color color) override;
     virtual void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color color) override;
+                                plugin::MouseContext mouse, plugin::Color color) override;
     virtual void disable       (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                                MouseContext mouse, plugin::Color         color) override;
+                                plugin::MouseContext mouse, plugin::Color         color) override;
 
     virtual void CalcAndDrawShape(RenderTarget* target, 
-                                  MouseContext mouse, 
+                                  plugin::MouseContext mouse, 
                                   plugin::Color color) = 0;
 };
 

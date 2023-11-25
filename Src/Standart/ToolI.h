@@ -13,13 +13,15 @@ namespace plugin
         virtual const Texture *getIcon() = 0;
 
         virtual void paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, Color color) = 0;
+                                    plugin::MouseContext context, Color color) = 0;
         virtual void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, Color color) = 0;
+                                    plugin::MouseContext context, Color color) = 0;
         virtual void paintOnMove   (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, Color color) = 0;
+                                    plugin::MouseContext context, Color color) = 0;
         virtual void disable       (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context, Color color) = 0;
+                                    plugin::MouseContext context, Color color) = 0;
+
+        virtual ~ToolI() = default;
     };
 
     struct ToolManagerI 
@@ -31,13 +33,13 @@ namespace plugin
         virtual Color  getColor() = 0;
 
         virtual void paintOnMove   (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context) = 0;
+                                    plugin::MouseContext context) = 0;
         virtual void paintOnPress  (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context) = 0;
+                                    plugin::MouseContext context) = 0;
         virtual void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context) = 0;
+                                    plugin::MouseContext context) = 0;
         virtual void disableTool   (RenderTargetI *data, RenderTargetI *tmp, 
-                                    MouseContext context) = 0;
+                                    plugin::MouseContext context) = 0;
     };
 }
 

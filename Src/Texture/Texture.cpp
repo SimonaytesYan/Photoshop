@@ -49,7 +49,7 @@ plugin::Vec2 Image::getSize()
     return plugin::Vec2(data.getSize().x, data.getSize().y);
 }
 
-u_int8_t* Image::GetPixelArray(plugin::VectorI& size)
+u_int8_t* Image::GetPixelArray(VectorI& size)
 {
     size = plugin::Vec2(data.getSize().x, data.getSize().y);
     return GetPixelArray();

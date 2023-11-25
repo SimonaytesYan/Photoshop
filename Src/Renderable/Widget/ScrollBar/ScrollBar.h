@@ -12,7 +12,7 @@ public :
     {
     }
 
-    bool onMousePress(MouseContext mouse)   override
+    bool onMousePress(plugin::MouseContext mouse)   override
     {
         if (InsideP(mouse.position))
             return Widget::onMousePress(mouse);
@@ -68,9 +68,9 @@ public:
               Widget* target, 
               plugin::Vec2 visible_box_offset, plugin::Vec2 visible_box_size);
 
-    bool onMouseRelease(MouseContext mouse) override;
-    bool onMousePress  (MouseContext mouse) override;
-    bool onMouseMove   (MouseContext mouse) override;
+    bool onMouseRelease(plugin::MouseContext mouse) override;
+    bool onMousePress  (plugin::MouseContext mouse) override;
+    bool onMouseMove   (plugin::MouseContext mouse) override;
     void render        (RenderTarget* tr)     override;
 
     ~ScrollBar();

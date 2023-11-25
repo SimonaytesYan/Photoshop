@@ -87,7 +87,7 @@ void Menu::UpdateOwnDefaultRegionSet()
     }
 }
 
-bool Menu::onMouseMove(MouseContext mouse)
+bool Menu::onMouseMove(plugin::MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {

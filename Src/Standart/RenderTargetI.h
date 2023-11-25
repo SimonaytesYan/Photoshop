@@ -17,7 +17,7 @@ namespace plugin
          * */
 
         virtual void setPixel(plugin::Vec2 pos, plugin::Color color) = 0;
-        virtual void drawLine(plugin::Vec2 pos, plugin::Vec2 point1, plugin::Color color) = 0;
+        virtual void drawLine(plugin::Vec2 point1, plugin::Vec2 point2, plugin::Color color) = 0;
         virtual void drawRect(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color) = 0;
         virtual void drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color) = 0;
         virtual void drawTexture(plugin::Vec2 pos, plugin::Vec2 size, const plugin::Texture *texture) = 0;

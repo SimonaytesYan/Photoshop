@@ -46,8 +46,8 @@ public:
         return text.GetArray();
     }
 
-    bool onMousePress(MouseContext mouse) override;
-    bool onKeyboardPress  (KeyboardContext key)              override;
+    bool onMousePress(plugin::MouseContext mouse) override;
+    bool onKeyboardPress  (plugin::KeyboardContext key)              override;
     bool onClock     (size_t delta)         override;
     void render      (RenderTarget* rt)     override;
 };

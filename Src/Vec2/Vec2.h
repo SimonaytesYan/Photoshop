@@ -12,7 +12,6 @@ namespace plugin
         double x;
         double y;
 
-    public : 
         Vec2()
         {
             x = y = 0;
@@ -47,39 +46,6 @@ namespace plugin
         friend bool   operator==(const Vec2& a, const Vec2& b);
     };
 
-    struct VectorI
-    {
-        int x;
-        int y;
-
-        VectorI()
-        {
-            x = 0;
-            y = 0;
-        }
-
-        VectorI(int _x, int _y) : 
-        x(_x), 
-        y(_y)
-        {}
-
-        VectorI(Vec2 v)
-        {
-            x = v.GetX();
-            y = v.GetY();
-        }
-
-        VectorI operator=(Vec2 v)
-        {
-            x = v.GetX();
-            y = v.GetY();
-
-            return *this;
-        }
-
-        friend VectorI operator+(const VectorI& a, const VectorI& b);
-    };
-
     Vec2 operator+(const Vec2& a, const Vec2& b);
     Vec2 operator-(const Vec2& a);
     Vec2 operator-(const Vec2& a, const Vec2& b);
@@ -91,6 +57,39 @@ namespace plugin
     Vec2 operator+(const Vec2& a);						//return normal to vector
     Vec2 operator^(const Vec2& a, double b);            //rotate a by b degrees clockwise
 }
+
+struct VectorI
+{
+    int x;
+    int y;
+
+    VectorI()
+    {
+        x = 0;
+        y = 0;
+    }
+
+    VectorI(int _x, int _y) : 
+    x(_x), 
+    y(_y)
+    {}
+
+    VectorI(plugin::Vec2 v)
+    {
+        x = v.GetX();
+        y = v.GetY();
+    }
+
+    VectorI operator=(plugin::Vec2 v)
+    {
+        x = v.GetX();
+        y = v.GetY();
+
+        return *this;
+    }
+
+    friend VectorI operator+(const VectorI& a, const VectorI& b);
+};
 
 
 #endif //SYM_GEOM_VECTOR

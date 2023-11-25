@@ -2,7 +2,7 @@
 #include "../../../RenderTarget/RenderTarget.h"
 #include "../../../Useful.h"
 
-void CircleTool::CalcAndDrawShape(RenderTarget* target, MouseContext mouse, plugin::Color color)
+void CircleTool::CalcAndDrawShape(RenderTarget* target, plugin::MouseContext mouse, plugin::Color color)
 {
     plugin::Vec2 position(min(start_pos.GetX(), mouse.position.GetX()),
                     min(start_pos.GetY(), mouse.position.GetY()));

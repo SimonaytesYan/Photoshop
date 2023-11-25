@@ -6,14 +6,14 @@
 #include "../../CutMullRom/CutMullRom.h"
 
 void Brush::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                         MouseContext mouse, plugin::Color color)
+                         plugin::MouseContext mouse, plugin::Color color)
 {
     drawing = true;
     start_pos = mouse.position;
 }
 
 void Brush::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color color)
+                        plugin::MouseContext mouse, plugin::Color color)
 {
     if (drawing)
     {
@@ -29,7 +29,7 @@ void Brush::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp,
 }
 
 void Brush::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color color)
+                        plugin::MouseContext mouse, plugin::Color color)
 {
     DrawTmpToData(data, tmp, color, thickness, vertexes);
 
@@ -39,7 +39,7 @@ void Brush::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* t
 }
 
 void Brush::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                    MouseContext mouse, plugin::Color         color)
+                    plugin::MouseContext mouse, plugin::Color         color)
 {
     if (drawing)
     {

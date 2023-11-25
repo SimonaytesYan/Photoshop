@@ -69,7 +69,7 @@ Window::~Window()
 {
 }
 
-bool Window::onMousePress(MouseContext mouse)
+bool Window::onMousePress(plugin::MouseContext mouse)
 {
     if (available)
     {
@@ -82,7 +82,7 @@ bool Window::onMousePress(MouseContext mouse)
     return false;
 }
 
-bool Window::onMouseMove(MouseContext mouse)
+bool Window::onMouseMove(plugin::MouseContext mouse)
 {
     if (moving)
     {
@@ -101,7 +101,7 @@ bool Window::onMouseMove(MouseContext mouse)
     return Widget::onMouseMove(mouse);
 }
 
-bool Window::onMouseRelease(MouseContext mouse)
+bool Window::onMouseRelease(plugin::MouseContext mouse)
 {
     if (Widget::onMouseRelease(mouse))
         return true;

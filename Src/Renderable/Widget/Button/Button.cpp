@@ -60,7 +60,7 @@ void Button::render(RenderTarget* render_target)
     }
 }
 
-bool Button::onMousePress(MouseContext mouse)
+bool Button::onMousePress(plugin::MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -80,7 +80,7 @@ bool Button::onMousePress(MouseContext mouse)
     return false;
 }
 
-bool Button::onMouseRelease(MouseContext mouse)
+bool Button::onMouseRelease(plugin::MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -101,7 +101,7 @@ bool Button::onMouseRelease(MouseContext mouse)
     return false;
 }
 
-bool Button::onMouseMove(MouseContext mouse)
+bool Button::onMouseMove(plugin::MouseContext mouse)
 {
     if (!InsideP(mouse.position))
     {

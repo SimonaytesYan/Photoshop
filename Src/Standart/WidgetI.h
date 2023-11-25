@@ -12,11 +12,11 @@ namespace plugin
         virtual void registerSubWidget(WidgetI* object) = 0;
         virtual void unregisterSubWidget(WidgetI* object) = 0;
 
-        virtual plugin::Vec2 getSize() = 0;
-        virtual void setSize(plugin::Vec2) = 0;
+        virtual Vec2 getSize() = 0;
+        virtual void setSize(Vec2) = 0;
 
-        virtual plugin::Vec2 getPos() = 0;
-        virtual void setPos(plugin::Vec2) = 0;
+        virtual Vec2 getPos() = 0;
+        virtual void setPos(Vec2) = 0;
 
         /// Нужно для обновления регинов.
         /// верно тогда и только тогда, когда виджет принадлежит плагину.

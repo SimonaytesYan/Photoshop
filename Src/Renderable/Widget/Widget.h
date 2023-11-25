@@ -28,11 +28,11 @@ struct WidgetPtr
     RegionSet    GetDefaultRegSet ();
     plugin::Vec2 getSize();
     plugin::Vec2 getPos();
-    bool         onKeyboardPress  (KeyboardContext key);
-    bool         onKeyboardRelease(KeyboardContext key);
-    bool         onMousePress     (MouseContext mouse);
-    bool         onMouseRelease   (MouseContext mouse);
-    bool         onMouseMove      (MouseContext mouse);
+    bool         onKeyboardPress  (plugin::KeyboardContext key);
+    bool         onKeyboardRelease(plugin::KeyboardContext key);
+    bool         onMousePress     (plugin::MouseContext mouse);
+    bool         onMouseRelease   (plugin::MouseContext mouse);
+    bool         onMouseMove      (plugin::MouseContext mouse);
     bool         onClock          (size_t delta);
     void         move             (plugin::Vec2 shift);
     bool         InsideP          (plugin::Vec2 v);
@@ -59,11 +59,11 @@ public :
             bool available = true);
     virtual ~Widget();
 
-    virtual bool onKeyboardPress    (KeyboardContext key) override;
-    virtual bool onKeyboardRelease  (KeyboardContext key) override;
-    virtual bool onMousePress       (MouseContext mouse)  override;
-    virtual bool onMouseRelease     (MouseContext mouse)  override;
-    virtual bool onMouseMove        (MouseContext mouse)  override;
+    virtual bool onKeyboardPress    (plugin::KeyboardContext key) override;
+    virtual bool onKeyboardRelease  (plugin::KeyboardContext key) override;
+    virtual bool onMousePress       (plugin::MouseContext mouse)  override;
+    virtual bool onMouseRelease     (plugin::MouseContext mouse)  override;
+    virtual bool onMouseMove        (plugin::MouseContext mouse)  override;
     virtual bool onClock            (size_t delta)        override;
 
     virtual void render             (plugin::RenderTargetI* render_target) override;

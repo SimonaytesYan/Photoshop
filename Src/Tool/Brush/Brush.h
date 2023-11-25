@@ -18,13 +18,13 @@ public :
     {}
 
     void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color color) override;
+                        plugin::MouseContext mouse, plugin::Color color) override;
     void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color color) override;
+                        plugin::MouseContext mouse, plugin::Color color) override;
     void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color color) override;
+                        plugin::MouseContext mouse, plugin::Color color) override;
     void disable       (plugin::RenderTargetI* data,  plugin::RenderTargetI* tmp, 
-                        MouseContext mouse, plugin::Color         color) override;
+                        plugin::MouseContext mouse, plugin::Color         color) override;
     void Interpolation(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color);
 };
 

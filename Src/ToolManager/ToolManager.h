@@ -21,13 +21,13 @@ public :
     }
     
     void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse) override;
+                        plugin::MouseContext mouse) override;
     void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse) override;
+                        plugin::MouseContext mouse) override;
     void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse) override;
+                        plugin::MouseContext mouse) override;
     void disableTool   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        MouseContext mouse) override;
+                        plugin::MouseContext mouse) override;
 
     void setTool (plugin::ToolI* new_tool) override;
     void setColor(plugin::Color new_color) override;

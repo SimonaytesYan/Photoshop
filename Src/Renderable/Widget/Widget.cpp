@@ -117,19 +117,19 @@ bool WidgetEventRound(Events event, void*  event_args,
         switch (event)
         {
         case KEY_PRESS:
-            intercepted = objects[index].val.onKeyboardPress(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val.onKeyboardPress(*(plugin::KeyboardContext*)event_args);
             break;
         case KEY_RELEASE:
-            intercepted = objects[index].val.onKeyboardRelease(*(KeyboardContext*)event_args);
+            intercepted = objects[index].val.onKeyboardRelease(*(plugin::KeyboardContext*)event_args);
             break;
         case MOUSE_PRESS:
-            intercepted = objects[index].val.onMousePress(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMousePress(*(plugin::MouseContext*)event_args);
             break;
         case MOUSE_RELEASE:
-            intercepted = objects[index].val.onMouseRelease(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMouseRelease(*(plugin::MouseContext*)event_args);
             break;
         case MOUSE_MOVE:
-            intercepted = objects[index].val.onMouseMove(*(MouseContext*)event_args);
+            intercepted = objects[index].val.onMouseMove(*(plugin::MouseContext*)event_args);
             break;
         case ON_CLOCK:
             intercepted = objects[index].val.onClock(*(size_t*)event_args);
@@ -146,12 +146,12 @@ bool WidgetEventRound(Events event, void*  event_args,
     return intercepted;
 }
 
-bool Widget::onKeyboardPress(KeyboardContext key)
+bool Widget::onKeyboardPress(plugin::KeyboardContext key)
 {
     return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
 }
 
-bool Widget::onKeyboardRelease(KeyboardContext key)
+bool Widget::onKeyboardRelease(plugin::KeyboardContext key)
 {
     return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
 }
@@ -179,7 +179,7 @@ void Widget::ToForeground(Widget* son)
     }
 }
 
-bool Widget::onMousePress(MouseContext mouse)
+bool Widget::onMousePress(plugin::MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
@@ -190,12 +190,12 @@ bool Widget::onMousePress(MouseContext mouse)
     return false;
 }
  
-bool Widget::onMouseRelease(MouseContext mouse)
+bool Widget::onMouseRelease(plugin::MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
 }
 
-bool Widget::onMouseMove(MouseContext mouse)
+bool Widget::onMouseMove(plugin::MouseContext mouse)
 {
     return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
 }
@@ -320,35 +320,35 @@ RegionSet WidgetPtr::GetDefaultRegSet()
     return widget->GetDefaultRegSet();
 }
 
-bool WidgetPtr::onKeyboardPress(KeyboardContext key)
+bool WidgetPtr::onKeyboardPress(plugin::KeyboardContext key)
 {
     if (is_extern)
         return widget_i->onKeyboardPress(key);
     return widget->onKeyboardPress(key);
 }
 
-bool WidgetPtr::onKeyboardRelease(KeyboardContext key)
+bool WidgetPtr::onKeyboardRelease(plugin::KeyboardContext key)
 {
     if (is_extern)
         return widget_i->onKeyboardRelease(key);
     return widget->onKeyboardRelease(key);
 }
 
-bool WidgetPtr::onMousePress(MouseContext mouse) 
+bool WidgetPtr::onMousePress(plugin::MouseContext mouse) 
 {
     if (is_extern)
         return widget_i->onMousePress(mouse);
     return widget->onMousePress(mouse);
 }
 
-bool WidgetPtr::onMouseRelease(MouseContext mouse) 
+bool WidgetPtr::onMouseRelease(plugin::MouseContext mouse) 
 {
     if (is_extern)
         return widget_i->onMouseRelease(mouse);
     return widget->onMouseRelease(mouse);
 }
 
-bool WidgetPtr::onMouseMove(MouseContext mouse) 
+bool WidgetPtr::onMouseMove(plugin::MouseContext mouse) 
 {
     if (is_extern)
         return widget_i->onMouseMove(mouse);
