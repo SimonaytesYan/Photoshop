@@ -1,7 +1,7 @@
 #ifndef SYM_PLUGIN
 #define SYM_PLUGIN
 
-#include "Interface.h"
+#include "Standart.h"
 
 namespace plugin
 {

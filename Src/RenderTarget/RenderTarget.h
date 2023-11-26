@@ -7,7 +7,7 @@
 #include "../Standart/Standart.h"
 #include "../Texture/Texture.h"
 #include "../Font/Font.h"
-#include "../Standart/RenderTargetI.h"
+#include "../Standart/Standart.h"
 
 class RegionSet;
 

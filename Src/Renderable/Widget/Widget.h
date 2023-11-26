@@ -9,7 +9,7 @@
 #include "../../List.h"
 #include "../Renderable.h"
 #include "../../RegionSet/RegionSet.h"
-#include "../../Standart/WidgetI.h"
+#include "../../Standart/Standart.h"
 #include "../../Standart/Standart.h"
 
 class Widget;

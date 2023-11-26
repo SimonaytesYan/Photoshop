@@ -1,9 +1,9 @@
 #ifndef SYM_APP
 #define SYM_APP
 
-#include "GuiI.h"
 #include "Standart.h"
-#include "ToolI.h"
+#include "Standart.h"
+#include "Standart.h"
 #include "Standart.h"
 
 namespace plugin

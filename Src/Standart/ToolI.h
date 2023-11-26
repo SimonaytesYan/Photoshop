@@ -1,8 +1,8 @@
 #ifndef SYM_TOOL_I
 #define SYM_TOOL_I
 
-#include "Interface.h"
-#include "RenderTargetI.h"
+#include "Standart.h"
+#include "Standart.h"
 #include "../Color.h"
 #include "../Keys.h"
 

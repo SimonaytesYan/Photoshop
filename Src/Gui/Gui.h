@@ -1,7 +1,7 @@
 #ifndef SYM_GUI
 #define SYM_GUI
 
-#include "../Standart/GuiI.h"
+#include "../Standart/Standart.h"
 #include "../Renderable/Widget/Widget.h"
 #include "../Renderable/Widget/RectangleWidget/RectangleWidget.h"
 

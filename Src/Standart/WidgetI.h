@@ -3,7 +3,7 @@
 
 #include "EventProcessableI.h"
 #include "../Standart/Standart.h"
-#include "RenderTargetI.h"
+#include "Standart.h"
 
 namespace plugin
 {

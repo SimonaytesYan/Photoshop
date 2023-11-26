@@ -4,7 +4,7 @@
 #include "../Tool/Tool.h"
 #include "../Color.h"
 #include "../Keys.h"
-#include "../Standart/ToolI.h"
+#include "../Standart/Standart.h"
 
 class RenderTarget;
 

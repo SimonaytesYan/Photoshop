@@ -2,11 +2,11 @@
 #define SYM_GUI_I
 
 #include "../Standart/Standart.h"
-#include "RenderTargetI.h"
-#include "WidgetI.h"
+#include "Standart.h"
+#include "Standart.h"
 #include "../Useful.h"
-#include "Plugin.h"
-#include "Interface.h" 
+#include "Standart.h"
+#include "Standart.h" 
 
 namespace plugin
 {

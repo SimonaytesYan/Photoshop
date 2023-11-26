@@ -1,8 +1,8 @@
 #ifndef SYM_FILTER_I
 #define SYM_FILTER_I
 
-#include "Interface.h"
-#include "RenderTargetI.h"
+#include "Standart.h"
+#include "Standart.h"
 
 namespace plugin
 {
