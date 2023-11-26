@@ -3,7 +3,7 @@
 
 #include "../RenderTarget/RenderTarget.h"
 #include "../DynArray.h"
-#include "../Standart/FilterI.h"
+#include "../Standart/Standart.h"
 
 class Filter : public plugin::FilterI
 {

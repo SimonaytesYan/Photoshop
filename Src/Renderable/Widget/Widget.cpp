@@ -1,6 +1,6 @@
 #include "Widget.h"
 #include "../Renderable.h"
-#include "../../Vec2/Vec2.h"
+#include "../../Standart/Standart.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../Useful.h"

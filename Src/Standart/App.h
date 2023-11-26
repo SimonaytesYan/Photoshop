@@ -2,9 +2,9 @@
 #define SYM_APP
 
 #include "GuiI.h"
-#include "EventManagerI.h"
+#include "Standart.h"
 #include "ToolI.h"
-#include "FilterI.h"
+#include "Standart.h"
 
 namespace plugin
 {

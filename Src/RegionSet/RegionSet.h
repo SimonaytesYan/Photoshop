@@ -1,7 +1,7 @@
 #ifndef SYM_REGION_SET
 #define SYM_REGION_SET
 
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 #include "../DynArray.h"
 class ClipRegion;
 

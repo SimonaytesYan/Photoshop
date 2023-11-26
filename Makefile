@@ -4,10 +4,10 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 
 EXE_FILE = Exe/run
 
-debug: compile_plugin vector_debug widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug canvas_debug brush_debug tool_manager_debug circle_tool_debug shape_tool_debug rect_tool_debug line_tool_debug polyline_tool_debug fill_tool_debug  spline_tool_debug cut_mull_rom_debug event_manager_debug filter_manager_debug brightness_filter_debug vertical_menu_debug horizontal_menu_debug edit_box_debug black_white_filter_debug scrollbar_debug gui_debug rect_widget_debug
-	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/BlackAndWhiteFilter.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
-release: compile_plugin vector_release widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release brush_release tool_manager_release circle_tool_release shape_tool_release rect_tool_release line_tool_release polyline_tool_release fill_tool_release  spline_tool_release cut_mull_rom_release event_manager_release filter_manager_release brightness_filter_release vertical_menu_release horizontal_menu_release edit_box_release black_white_filter_release scrollbar_release gui_release rect_widget_release
-	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Vector.o Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/BlackAndWhiteFilter.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
+debug: compile_plugin widget_debug button_debug menu_debug render_target_debug texture_debug font_debug label_debug window_debug clip_region_debug region_set_debug canvas_debug brush_debug tool_manager_debug circle_tool_debug shape_tool_debug rect_tool_debug line_tool_debug polyline_tool_debug fill_tool_debug  spline_tool_debug cut_mull_rom_debug event_manager_debug filter_manager_debug brightness_filter_debug vertical_menu_debug horizontal_menu_debug edit_box_debug black_white_filter_debug scrollbar_debug gui_debug rect_widget_debug
+	g++ $(SFML_FLAGS) $(DEBUG_FLAGS) Src/main.cpp Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/BlackAndWhiteFilter.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
+release: compile_plugin widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release brush_release tool_manager_release circle_tool_release shape_tool_release rect_tool_release line_tool_release polyline_tool_release fill_tool_release  spline_tool_release cut_mull_rom_release event_manager_release filter_manager_release brightness_filter_release vertical_menu_release horizontal_menu_release edit_box_release black_white_filter_release scrollbar_release gui_release rect_widget_release
+	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/BlackAndWhiteFilter.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
 
 compile_plugin:
 	g++  -Wall -c -fPIC -o Plugins/Lol.o Plugins/Lol.cpp 
@@ -67,11 +67,6 @@ edit_box_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/EditBox/EditBox.cpp -o Obj/EditBox.o
 edit_box_release:
 	g++ -c $(RELEASE_FLAGS) Src/Renderable/Widget/EditBox/EditBox.cpp -o Obj/EditBox.o
-
-vector_debug:
-	g++ -c $(DEBUG_FLAGS) Src/Vec2/Vec2.cpp -o Obj/Vector.o
-vector_release:
-	g++ -c $(RELEASE_FLAGS) Src/Vec2/Vec2.cpp -o Obj/Vector.o
 
 render_target_debug:
 	g++ -c $(DEBUG_FLAGS) Src/RenderTarget/RenderTarget.cpp -o Obj/RenderTarget.o

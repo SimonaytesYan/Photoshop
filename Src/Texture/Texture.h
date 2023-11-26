@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include <SFML/Graphics.hpp>
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 #include "../Color.h"
 
 class Image;

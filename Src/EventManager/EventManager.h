@@ -1,8 +1,8 @@
 #ifndef SYM_EVENT_MANAGER
 #define SYM_EVENT_MANAGER
 
-#include "../EventProcessable.h"
-#include "../Standart/EventManagerI.h"
+#include "../Standart.h"
+#include "../Standart/Standart.h"
 #include "../Event.h"
 #include "../DynArray.h"
 #include "../Useful.h"

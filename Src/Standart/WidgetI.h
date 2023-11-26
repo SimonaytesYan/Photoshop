@@ -2,7 +2,7 @@
 #define SYM_WIDGET_I
 
 #include "EventProcessableI.h"
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 #include "RenderTargetI.h"
 
 namespace plugin

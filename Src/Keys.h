@@ -1,7 +1,7 @@
 #ifndef SYM_KEYS
 #define SYM_KEYS
 
-#include "Vec2/Vec2.h"
+#include "Standart/Standart.h"
 
 namespace plugin
 {

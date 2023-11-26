@@ -4,13 +4,13 @@
 #include <cmath>
 
 #include "../../Event.h"
-#include "../../EventProcessable.h"
+#include "../../Standart.h"
 #include "../../Keys.h"
 #include "../../List.h"
 #include "../Renderable.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../Standart/WidgetI.h"
-#include "../../Vec2/Vec2.h"
+#include "../../Standart/Standart.h"
 
 class Widget;
 

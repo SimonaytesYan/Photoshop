@@ -2,7 +2,7 @@
 #define SYM_CLIP_REGION
 
 class RegionSet;
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 #include "../Color.h"
 
 

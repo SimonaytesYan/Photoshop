@@ -1,7 +1,7 @@
 #ifndef SYM_GUI_I
 #define SYM_GUI_I
 
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 #include "RenderTargetI.h"
 #include "WidgetI.h"
 #include "../Useful.h"

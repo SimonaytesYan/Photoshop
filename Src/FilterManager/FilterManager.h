@@ -3,7 +3,7 @@
 
 #include "../Filter/Filter.h"
 #include "../RenderTarget/RenderTarget.h"
-#include "../Standart/FilterI.h"
+#include "../Standart/Standart.h"
 
 class FilterManager : public plugin::FilterManagerI
 {

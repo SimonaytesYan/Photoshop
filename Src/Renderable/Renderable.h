@@ -2,7 +2,7 @@
 #define SYM_RENDERABLE
 
 #include "../RenderTarget/RenderTarget.h"
-#include "../Vec2/Vec2.h"
+#include "../Standart/Standart.h"
 
 class Renderable
 {
