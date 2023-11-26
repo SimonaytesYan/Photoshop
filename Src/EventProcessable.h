@@ -1,8 +1,7 @@
 #ifndef SYM_EVENT_PROCESSABLE
 #define SYM_EVENT_PROCESSABLE
 
-#include "Keys.h"
-#include "Standart/EventProcessableI.h"
+#include "Standart/Standart.h"
 
 class EventProcessable : public plugin::EventProcessableI
 {

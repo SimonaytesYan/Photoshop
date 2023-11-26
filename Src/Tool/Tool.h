@@ -2,9 +2,6 @@
 #define SYM_TOOL
 
 #include "../Standart/Standart.h"
-#include "../Color.h"
-#include "../Keys.h"
-#include "../Standart/Standart.h"
 
 class RenderTarget;
 

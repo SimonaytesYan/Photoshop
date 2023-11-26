@@ -3,8 +3,6 @@
 
 class RegionSet;
 #include "../Standart/Standart.h"
-#include "../Color.h"
-
 
 class ClipRegion
 {    

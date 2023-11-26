@@ -2,8 +2,6 @@
 #define SYM_TOOL_MANAGER
 
 #include "../Tool/Tool.h"
-#include "../Color.h"
-#include "../Keys.h"
 #include "../Standart/Standart.h"
 
 class RenderTarget;

@@ -1,7 +1,7 @@
 #ifndef SYM_WIDGET_I
 #define SYM_WIDGET_I
 
-#include "EventProcessableI.h"
+#include "Standart.h"
 #include "../Standart/Standart.h"
 #include "Standart.h"
 

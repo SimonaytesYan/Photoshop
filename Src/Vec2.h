@@ -38,7 +38,7 @@ struct VectorI
     
 };
 
-static VectorI operator+(const VectorI& a, const VectorI& b)
+VectorI operator+(const VectorI& a, const VectorI& b)
 {
     return VectorI(a.x + b.x, a.y + b.y);
 }

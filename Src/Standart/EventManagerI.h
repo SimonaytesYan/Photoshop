@@ -1,7 +1,7 @@
 #ifndef SYM_EVENT_MANAGER_I
 #define SYM_EVENT_MANAGER_I
 
-#include "EventProcessableI.h"
+#include "Standart.h"
 
 namespace plugin
 {

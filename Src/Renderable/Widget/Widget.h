@@ -4,8 +4,7 @@
 #include <cmath>
 
 #include "../../Event.h"
-#include "../../Standart.h"
-#include "../../Keys.h"
+#include "../../Standart/Standart.h"
 #include "../../List.h"
 #include "../Renderable.h"
 #include "../../RegionSet/RegionSet.h"

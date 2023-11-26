@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-#include "../Color.h"
+#include "../Standart/Standart.h"
 #include "../Standart/Standart.h"
 #include "../Texture/Texture.h"
 #include "../Font/Font.h"

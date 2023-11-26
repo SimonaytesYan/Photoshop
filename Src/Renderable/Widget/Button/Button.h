@@ -1,7 +1,6 @@
 #ifndef SYM_BUTTON
 #define SYM_BUTTON
 
-#include "../../../Color.h"
 #include "../Widget.h"
 
 struct ButtonFunction

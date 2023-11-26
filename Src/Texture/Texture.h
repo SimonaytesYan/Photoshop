@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../Standart/Standart.h"
-#include "../Color.h"
+#include "../Vec2.h"
 
 class Image;
 
@@ -42,33 +42,6 @@ public:
     u_int8_t* GetPixelArray();
     u_int8_t* GetPixelArray(VectorI& size);
 };
-
-namespace plugin
-{
-    struct Texture 
-    {
-        uint64_t height;
-        uint64_t width;
-
-        Color *pixels;
-
-        Texture()
-        {
-            width  = 0;
-            height = 0;
-            pixels = nullptr;
-        }
-
-        Texture(const Texture& texture)
-        {
-            height = texture.height;
-            width  = texture.width;
-
-            pixels = new Color[height * width];
-            memcpy(pixels, texture.pixels, sizeof(Color) * height * width);
-        }
-    };
-}
 
 
 #endif //SYM_TEXTURE

@@ -2,7 +2,6 @@
 #define SYM_EVENT_PROCESSABLE_I
 
 #include <cstdint>
-#include "../Keys.h"
 
 namespace plugin
 {
