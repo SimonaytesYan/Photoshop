@@ -32,13 +32,10 @@ struct VectorI
         y = v.GetY();
 
         return *this;
-    }
-
-    friend VectorI operator+(const VectorI& a, const VectorI& b);
-    
+    }    
 };
 
-VectorI operator+(const VectorI& a, const VectorI& b)
+static VectorI operator+(const VectorI& a, const VectorI& b)
 {
     return VectorI(a.x + b.x, a.y + b.y);
 }
