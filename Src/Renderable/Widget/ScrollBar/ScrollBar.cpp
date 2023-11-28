@@ -99,10 +99,10 @@ plugin::Vec2 FixDelta(const Widget& parent, const Widget& slider, plugin::Vec2 d
 }
 
 plugin::Vec2 CalcDelta(plugin::MouseContext mouse, plugin::Vec2 last_mouse_pos, 
-                 Widget* slider, Widget* scroll_bar)
+                       Widget* slider, Widget* scroll_bar)
 {
     plugin::Vec2 delta((mouse.position - last_mouse_pos).GetX(),
-                 (mouse.position - last_mouse_pos).GetY());
+                       (mouse.position - last_mouse_pos).GetY());
     delta = FixDelta(*scroll_bar, *slider, delta);
 
     return delta;

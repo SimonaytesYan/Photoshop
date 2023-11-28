@@ -76,16 +76,16 @@ struct SelectFilter : ButtonFunction
 
 struct SelectFilterArgs : ButtonFunction
 {
-	FilterManager* filter_manager;
-	Filter*        filter;
-	Font           font;
-	EventManager*  event_manager;
-	Widget*		   root;
+	FilterManager*   filter_manager;
+	plugin::FilterI* filter;
+	Font           	 font;
+	EventManager*  	 event_manager;
+	Widget*		   	 root;
 	
 	SelectFilterArgs()
 	{}
 
-	SelectFilterArgs(FilterManager* filter_manager, Filter* filter, 
+	SelectFilterArgs(FilterManager* filter_manager, plugin::FilterI* filter, 
 				     Font font, EventManager* event_manager, 
 				     Widget* root) :
 	filter_manager (filter_manager),
@@ -256,7 +256,7 @@ void SelectFilterArgs::operator()()
 	plugin::Array<const char*> filter_args = filter->getParamNames();
 
 	int filter_args_n = filter_args.size;
-	if (filter_args_n > 0)
+	if (filter_args_n != 0)
 	{
 		plugin::Vec2 position = root->getPosition() + root->getSize() / 2;
 		plugin::Vec2 size(400, 2 * 50 + (filter_args_n + 1) * 100);
@@ -289,6 +289,8 @@ void SelectFilterArgs::operator()()
 
 		root->registerSubWidget(dialog_box);
     }
+	else
+		filter_manager->setFilter(filter);
 }
 
 void LastFilter::operator()()

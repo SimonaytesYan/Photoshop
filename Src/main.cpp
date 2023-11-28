@@ -274,29 +274,24 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 									  			    black_white_func);
 	filters->registerSubWidget(black_white_filter);
 
-	plugin::Plugin* vova_plugin = LoadFilter("Plugins/Vova.so");
-
-	SelectFilter* vova_plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)vova_plugin->getInterface(),
-												   			 nullptr, nullptr);
-
-	TextButton* vova_plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
-									  		   plugin::Color(199, 181, 173),
-									  		   font, 20, vova_plugin->name,
-									  		   plugin::Color(255, 255, 255),
-									  		   vova_plugin_filter_func);
-	filters->registerSubWidget(vova_plugin_filter);
-
-	plugin::Plugin* my_plugin = LoadFilter("Plugins/Lol.so");
-
-	SelectFilter* plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)my_plugin->getInterface(),
-												   nullptr, nullptr);
-		
-	TextButton* plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
-									  		   plugin::Color(199, 181, 173),
-									  		   font, 20, my_plugin->name,
-									  		   plugin::Color(255, 255, 255),
-									  		   plugin_filter_func);
-	filters->registerSubWidget(plugin_filter);
+	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
+	{
+		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i]);
+		if (new_plugin->type == plugin::InterfaceType::Filter)
+		{
+			SelectFilterArgs* plugin_filter_func = new SelectFilterArgs(fm, 
+																		(plugin::FilterI*)new_plugin->getInterface(), 
+																		font, em, root);
+			if (new_plugin->name == nullptr)
+				new_plugin->name = "(null)";
+			TextButton* plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
+									  		   		   plugin::Color(199, 181, 173),
+									  		   		   font, 20, new_plugin->name,
+									  		   		   plugin::Color(255, 255, 255),
+									  		   		   plugin_filter_func);
+			filters->registerSubWidget(plugin_filter);
+		}
+	}
 
 	LastFilter* last_filter_func = new LastFilter(fm); 
 	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
