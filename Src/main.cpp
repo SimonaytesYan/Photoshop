@@ -35,7 +35,9 @@
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
-			FilterManager* fm, ToolManager* tm, EventManager* em);
+			 FilterManager* fm, ToolManager* tm, EventManager* em);
+void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
+				ToolManager* tm, EventManager* em, VerticalMenu* filters);
 void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
@@ -242,6 +244,16 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
+	AddFilters(root, canvas, fm, font, tm, em, filters);
+
+	main_menu->registerSubWidget(filters);
+
+	window->registerSubWidget(main_menu);
+}
+
+void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
+				ToolManager* tm, EventManager* em, VerticalMenu* filters)
+{
 	SelectFilterArgs* brightness_func = new SelectFilterArgs(fm, new BrightnessFilter(), 
 															 font, em, root);
 
@@ -293,10 +305,6 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 											 plugin::Color(255, 255, 255),
 											 last_filter_func);
 	filters->registerSubWidget(last_filter);
-
-	main_menu->registerSubWidget(filters);
-
-	window->registerSubWidget(main_menu);
 }
 
 plugin::Plugin* LoadFilter(const char* path)

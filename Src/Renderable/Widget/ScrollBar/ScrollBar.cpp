@@ -133,7 +133,6 @@ bool ScrollBar::onMousePress(plugin::MouseContext mouse)
 {
     if (InsideP(mouse.position))
     {
-        fprintf(stderr, "Click inside scrollbar\n");
         pressed        = true;
         last_mouse_pos = mouse.position;
         if (!slider->InsideP(mouse.position))

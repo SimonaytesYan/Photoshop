@@ -367,10 +367,10 @@ void OpenFile::operator()()
 
 	plugin::Vec2 position = main_window->getPosition() + main_window->getSize() / 10;
 	Window* canvas_window = new Window(position          - plugin::Vec2(10, 50), 
-									   texture.getSize() + plugin::Vec2(20, 0), file_name);
+									   texture.getSize() + plugin::Vec2(20, 60), file_name);
 
 	Canvas* new_canvas = new Canvas(position, texture.getSize(), tool_manager, filter_manager);
-	new_canvas->GetData()->DrawSprite(position, texture);	
+	new_canvas->GetData()->DrawSprite(plugin::Vec2(0, 0), texture);	
 	canvas_window->registerSubWidget(new_canvas);
 
 	main_window->registerSubWidget(canvas_window);

@@ -100,14 +100,12 @@ Texture RenderTarget::GetTexture()
 plugin::Texture* RenderTarget::getTexture()
 {
     sf::Image img = data.getTexture().copyToImage();
-    fprintf(stderr, "Img got\n");
 
     plugin::Texture* texture = new plugin::Texture();
     texture->width  = img.getSize().x;
     texture->height = img.getSize().y;
 
     size_t number_pixels = img.getSize().x * img.getSize().y;
-    fprintf(stderr, "number_pixels = %d\n", number_pixels);
     texture->pixels = new plugin::Color[number_pixels];
     memcpy(texture->pixels, img.getPixelsPtr(), sizeof(plugin::Color) * number_pixels);
 

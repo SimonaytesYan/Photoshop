@@ -174,4 +174,3 @@ run:
 preparation:
 	mkdir Obj
 	mkdir Exe
-
