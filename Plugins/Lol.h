@@ -1,4 +1,6 @@
-#include "../Src/Standart/PluginStandart.h"
+#include "../Src/Standart/Standart.h"
+
+//#include "Plugin.h"
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app);
 

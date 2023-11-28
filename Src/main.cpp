@@ -262,7 +262,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 									  			    black_white_func);
 	filters->registerSubWidget(black_white_filter);
 
-	plugin::Plugin* vova_plugin = LoadFilter("Plugins/monochrome.so");
+	plugin::Plugin* vova_plugin = LoadFilter("Plugins/Vova.so");
 
 	SelectFilter* vova_plugin_filter_func = new SelectFilter(fm, (plugin::FilterI*)vova_plugin->getInterface(),
 												   			 nullptr, nullptr);

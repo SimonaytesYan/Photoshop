@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Lol.h"
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app)
@@ -27,15 +28,10 @@ plugin::Array<double> WhiteAndBlackFilter::getParams()
 void WhiteAndBlackFilter::setParams(plugin::Array<double> params)
 { }
 
-void fuck()
-{}
-
 void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
 {
     plugin::Texture* texture = rt->getTexture(); 
     plugin::Color*   pixels  = texture->pixels;
-
-    fprintf(stderr, "inside plugin size = (%d, %d)\n", texture->width, texture->height);
 
     for (int y = 0; y < texture->height; y++)
     {
@@ -55,13 +51,8 @@ void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
 
     plugin::Vec2 pos  = {100, 100};
     plugin::Vec2 size = {texture->width, texture->height};
-    fprintf(stderr, "pos  = (%lg, %lg)\n", pos.x, pos.y);
-    fprintf(stderr, "size = (%lg, %lg)\n", size.x, size.y);
-    fprintf(stderr, "text = (%p, %lg, %lg)\n", texture->pixels, texture->height, texture->width);
-
-    fuck();
-
     rt->drawTexture(pos, size, texture);
+
     delete[] texture->pixels;
     delete texture;
 }

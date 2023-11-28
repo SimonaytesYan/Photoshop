@@ -28,7 +28,7 @@ struct VectorI
 
     VectorI operator=(plugin::Vec2 v)
     {
-        x = v.GetX();
+        x = v.GetX(); 
         y = v.GetY();
 
         return *this;

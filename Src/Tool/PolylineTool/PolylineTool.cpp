@@ -23,7 +23,7 @@ void PolylineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* 
 void PolylineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 plugin::MouseContext mouse, plugin::Color color)
 {
-    if (mouse.key == plugin::MouseButton::Right)
+    if (mouse.button == plugin::MouseButton::Right)
     {
         if (drawing)
         {

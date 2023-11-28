@@ -16,7 +16,7 @@ void SplineTool::disable(plugin::RenderTargetI* data,  plugin::RenderTargetI* tm
 void SplineTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 plugin::MouseContext mouse, plugin::Color color)
 {
-    if (mouse.key == plugin::MouseButton::Left)
+    if (mouse.button == plugin::MouseButton::Left)
     {
         if (vertexes.size != 0 && vertexes[vertexes.End()].val == mouse.position)
             return;
