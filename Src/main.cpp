@@ -39,7 +39,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas,
 			 FilterManager* fm, ToolManager* tm, EventManager* em);
 void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 				ToolManager* tm, EventManager* em, VerticalMenu* filters);
-void AddTools(Window* main_window, Window* tool,   ToolManager* tm);
+void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* app);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
@@ -86,17 +86,25 @@ int main()
 	canvas_window2.registerSubWidget(&canvas2);
 	main_window.registerSubWidget(&canvas_window2);
 
+	EventManager event_manager;
+
 	// Adding tools	
 	Window tools(plugin::Vec2(1400, 450),
 			  	  plugin::Vec2(500, 300), "Tools");
-	AddTools(&main_window, &tools, &tm);
+
+	plugin::App app;
+	app.event_manager  = (plugin::EventManagerI*)&event_manager;
+	app.tool_manager   = (plugin::ToolManagerI*)&tm;
+	app.root 		   = new Gui(&the_root);
+	app.filter_manager = &fm;
+
+	AddTools(&main_window, &tools, &tm, &app);
 
 	// Adding colors
 	Window colors(plugin::Vec2(1400, 150), 
 			  	  plugin::Vec2(500, 300), "Colors");
 	AddColors(&main_window, &colors, &tm);	
 
-	EventManager event_manager;
 	event_manager.registerObject(&main_window);
 
 	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager);
@@ -288,6 +296,11 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
 		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
+		if (new_plugin == nullptr)
+		{
+			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+			continue;
+		}
 		if (new_plugin->type == plugin::InterfaceType::Filter)
 		{
 			SelectFilterArgs* plugin_filter_func = new SelectFilterArgs(fm, 
@@ -320,6 +333,10 @@ plugin::Plugin* LoadFilter(const char* path, plugin::App* app)
 	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 	
+	fprintf(stderr, "get_plugin = %p\n", get_plugin);
+	if (dlerror() != nullptr)
+		fprintf(stderr, "dlerr = <%s>\n", dlerror());
+
 	plugin::Plugin* my_plugin = get_plugin(app);
 
 	dlclose(dll_hand);
@@ -332,7 +349,7 @@ void ClearCanvas(void* args)
 	((Canvas*)args)->Clear();
 }
 
-void AddTools(Window* main_window, Window* tools, ToolManager* tm)
+void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* app)
 {
 	const int ToolsNumber = 7;
 	SwitchTool** tools_func = new SwitchTool*[ToolsNumber];
@@ -377,6 +394,64 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm)
 							   	   common_texture, pressed_texture, 
 							   	   tools_func[i]));
 	}
+
+	Font font;
+	font.LoadFont(kFontFile);
+
+	//==============================ADD PLUGIN TOOLS==========================
+	
+	int tool_i = ToolsNumber;
+
+	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
+	{
+		fprintf(stderr, "plugin [%d] = %s\n", i, kPluginNames[i]);
+		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
+		if (new_plugin == nullptr)
+		{
+			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+			continue;
+		}
+		
+		if (new_plugin->type == plugin::InterfaceType::Tool)
+		{
+			plugin::ToolI* new_tool = (plugin::ToolI*)new_plugin->getInterface();
+			if (new_tool == nullptr)
+			{
+				fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+				continue;
+			}
+
+			if (new_tool->getIcon() != nullptr)
+			{
+				common_texture  = Texture(*(new_tool->getIcon()));
+				pressed_texture = common_texture;
+			}
+			else
+			{
+				common_texture = Texture();
+				common_texture.Create(50, 50);
+
+				Image img, img_pressed;
+				plugin::Color img_color = plugin::Color(rand() % 255, rand() % 255, rand() % 255);
+				img.Create(50, 50, img_color);
+				img_pressed.Create(50, 50, img_color.Inverse());
+
+				common_texture.LoadFromImage(img);
+				pressed_texture.LoadFromImage(img_pressed);
+			}
+
+			plugin::Vec2 position = tools->getPosition() + 
+									plugin::Vec2(10 + 50 * tool_i, 50);
+			tools->registerSubWidget(new Button(position, 
+								   				plugin::Vec2(50, 50), 
+							   	   				common_texture, pressed_texture, 
+							   	   				new SwitchTool(tm, new_tool)));
+			tool_i++;
+		}
+	}
+
+	//==========================================================================
+
 
 	main_window->registerSubWidget(tools);
 }

@@ -2,6 +2,12 @@
 
 #include "Texture.h"
 
+Texture::Texture(plugin::Texture text) 
+{
+    Image img(text);
+    LoadFromImage(img);
+}
+
 bool Texture::Create(int width, int height)
 {
     return data.create(width, height);
@@ -29,14 +35,22 @@ sf::Texture* Texture::GetTexture()
 
 //--------------------------------IMAGE-----------------------------------------
 
+Image::Image(plugin::Texture text) 
+{ 
+    data.create(text.width, text.height);
+    memcpy((void*)data.getPixelsPtr(),
+           text.pixels,
+           text.width * text.height * sizeof(plugin::Color));
+}
+
 Image::Image(Texture text)
 {
     data = text.GetTexture()->copyToImage();
 }
 
-void Image::Create(int width, int height)
+void Image::Create(int width, int height, plugin::Color color)
 {
-    data.create(width, height);
+    data.create(width, height, sf::Color(color.r, color.g, color.b, color.a));
 }
 
 bool Image::LoadFromFile(const char* filename)

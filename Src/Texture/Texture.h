@@ -17,6 +17,7 @@ class Texture
 public:
     Texture()                     { data = sf::Texture(); }
     Texture(sf::Texture new_data) { data = new_data;      }
+    Texture(plugin::Texture text);
 
     bool          Create      (int width, int height);
     bool          LoadFromFile(const char* filename);
@@ -33,8 +34,10 @@ public:
     Image(Texture text);
     Image()                   { data = sf::Image(); }
     Image(sf::Image new_data) { data = new_data;      }
+    Image(plugin::Texture text);
 
-    void         Create      (int width, int height);
+    void         Create      (int width, int height, 
+                              plugin::Color color = plugin::Color(0, 0, 0));
     bool         LoadFromFile(const char* filename);
     sf::Image    GetImage    ();
     plugin::Vec2 getSize     ();

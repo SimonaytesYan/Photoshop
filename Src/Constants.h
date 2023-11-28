@@ -23,9 +23,11 @@ static const char*  kSplinePressedImgFile     = "Resources/SplinePressed.png";
 static const char*  kFillImgFile              = "Resources/Fill.png";
 static const char*  kFillPressedImgFile       = "Resources/FillPressed.png";
 static const char*  kPluginNames[]            = {"Plugins/Lol.so", 
-                                                 "Plugins/Vova.so",
+                                                 "Plugins/Ars.so",
                                                  "Plugins/VovaParam.so",
-                                                 "Plugins/Ilia.so"};
+                                                 "Plugins/Ilia.so",
+                                                 "Plugins/Ilia_tool.so",
+                                                 "Plugins/Vova_tool.so"};
 
 const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";

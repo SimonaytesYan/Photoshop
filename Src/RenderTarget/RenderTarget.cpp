@@ -398,11 +398,8 @@ void RenderTarget::drawTexture(plugin::Vec2 pos, plugin::Vec2 size,
            texture->pixels, 
            size.x * size.y * sizeof(plugin::Color));
 
-    fprintf(stderr, "size.x = %lf, size.y = %lf\n", size.x, size.y);   
-    fprintf(stderr, "pos.x  = %lf,  pos.y = %lf\n", pos.x, pos.y);   
     Texture my_texture;
     my_texture.LoadFromImage(img);
-    fprintf(stderr, "Loaded\n");
 
     DrawSprite(pos, my_texture);
 }

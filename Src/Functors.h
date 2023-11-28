@@ -17,15 +17,15 @@
 
 struct SwitchTool : ButtonFunction
 {
-	ToolManager* tool_manager;
-	Tool*		 tool;
+	ToolManager*   tool_manager;
+	plugin::ToolI* tool;
 
 	SwitchTool() :
 	tool_manager (nullptr),
 	tool 		 (nullptr)
 	{}
 
-	SwitchTool(ToolManager* _tool_manager, Tool* _tool) :
+	SwitchTool(ToolManager* _tool_manager, plugin::ToolI* _tool) :
 	tool 		 (_tool),
 	tool_manager (_tool_manager)
 	{}
