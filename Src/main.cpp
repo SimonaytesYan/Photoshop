@@ -32,6 +32,7 @@
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
 #include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 #include "Renderable/Widget/RectangleWidget/RectangleWidget.h"
+#include "Gui/Gui.h"
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
@@ -43,7 +44,7 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
 
-plugin::Plugin* LoadFilter(const char* path);
+plugin::Plugin* LoadFilter(const char* path, plugin::App* app);
 
 int main()
 {
@@ -274,9 +275,19 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 									  			    black_white_func);
 	filters->registerSubWidget(black_white_filter);
 
+	plugin::App* app = new plugin::App();
+	Gui* 		 gui = new Gui(root);
+
+	app->event_manager  = (plugin::EventManagerI*)em;
+	app->tool_manager	= (plugin::ToolManagerI*)tm;
+	app->filter_manager = fm;
+	app->root 			= gui;
+
+	//==============================ADD PLUGIN FILTERS==========================
+	
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
-		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i]);
+		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
 		if (new_plugin->type == plugin::InterfaceType::Filter)
 		{
 			SelectFilterArgs* plugin_filter_func = new SelectFilterArgs(fm, 
@@ -293,6 +304,8 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 		}
 	}
 
+	//==========================================================================
+
 	LastFilter* last_filter_func = new LastFilter(fm); 
 	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
 									  		 plugin::Color(199, 181, 173),
@@ -302,12 +315,12 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 	filters->registerSubWidget(last_filter);
 }
 
-plugin::Plugin* LoadFilter(const char* path)
+plugin::Plugin* LoadFilter(const char* path, plugin::App* app)
 {
 	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 	
-	plugin::Plugin* my_plugin = get_plugin(nullptr);
+	plugin::Plugin* my_plugin = get_plugin(app);
 
 	dlclose(dll_hand);
 
