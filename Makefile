@@ -10,12 +10,12 @@ release: compile_plugin widget_release button_release menu_release render_target
 	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/BlackAndWhiteFilter.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
 
 compile_plugin:
-	g++ -Wall -c -fPIC -o Plugins/WhiteBlack.o Plugins/WhiteBlack.cpp 
-	gcc -shared -o Plugins/WhiteBlack.so Plugins/WhiteBlack.o 
+	g++ -Wall -c -fPIC -o Obj/WhiteBlack.o Plugins/WhiteBlack.cpp 
+	gcc -shared -o Plugins/WhiteBlack.so Obj/WhiteBlack.o 
 
-	g++ -Wall -c -fPIC -o Plugins/CutMulRom.o Plugins/CutMullRom/CutMullRom.cpp
-	g++ -Wall -c -fPIC -o Plugins/Brush.o Plugins/Brush.cpp
-	gcc -shared -o Plugins/Brush.so Plugins/Brush.o Plugins/CutMulRom.o
+	g++ -Wall -c -fPIC -o Obj/CutMulRomPlug.o Plugins/CutMullRom/CutMullRom.cpp
+	g++ -Wall -c -fPIC -o Obj/BrushPlug.o Plugins/Brush.cpp
+	gcc -shared -o Plugins/Brush.so Obj/BrushPlug.o Obj/CutMulRomPlug.o
 
 widget_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Widget.cpp -o Obj/Widget.o

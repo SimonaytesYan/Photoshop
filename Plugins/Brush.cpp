@@ -9,7 +9,7 @@ extern "C" plugin::Plugin* getInstance(plugin::App *app)
 BrushPlugin::BrushPlugin(plugin::App* app) :
 app (app)
 { 
-    tool = new BrushTool(10);
+    tool = new BrushTool(15);
 
     name = "Super brush";
     type = plugin::InterfaceType::Tool;

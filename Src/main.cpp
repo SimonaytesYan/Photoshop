@@ -44,7 +44,7 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
 
-plugin::Plugin* LoadFilter(const char* path, plugin::App* app);
+plugin::Plugin* LoadPlugin(const char* path, plugin::App* app);
 
 int main()
 {
@@ -295,7 +295,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 	
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
-		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
+		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{
 			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
@@ -328,7 +328,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 	filters->registerSubWidget(last_filter);
 }
 
-plugin::Plugin* LoadFilter(const char* path, plugin::App* app)
+plugin::Plugin* LoadPlugin(const char* path, plugin::App* app)
 {
 	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
@@ -403,7 +403,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
-		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
+		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{
 			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);

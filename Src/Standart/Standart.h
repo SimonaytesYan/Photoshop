@@ -445,7 +445,8 @@ namespace plugin {
         virtual WidgetI* getRoot() = 0;
     };
 
-    struct App {
+    struct App 
+    {
         GuiI *root;
         EventManagerI *event_manager; 
         ToolManagerI *tool_manager;

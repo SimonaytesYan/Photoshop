@@ -13,7 +13,6 @@ class BrushPlugin : public plugin::Plugin
     plugin::App* app;
     BrushTool*   tool;
 
-
 public:
     BrushPlugin(plugin::App* app);
 
