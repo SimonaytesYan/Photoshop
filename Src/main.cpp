@@ -333,7 +333,6 @@ plugin::Plugin* LoadFilter(const char* path, plugin::App* app)
 	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 	
-	fprintf(stderr, "get_plugin = %p\n", get_plugin);
 	if (dlerror() != nullptr)
 		fprintf(stderr, "dlerr = <%s>\n", dlerror());
 
@@ -390,9 +389,9 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 		common_texture.LoadFromFile(textures[i]);
 		pressed_texture.LoadFromFile(press_textures[i]);
 		tools->registerSubWidget(new Button(tools->getPosition() + plugin::Vec2(10 + 50 * i, 50), 
-								   plugin::Vec2(50, 50), 
-							   	   common_texture, pressed_texture, 
-							   	   tools_func[i]));
+								            plugin::Vec2(50, 50), 
+							   	            common_texture, pressed_texture, 
+							   	            tools_func[i]));
 	}
 
 	Font font;
@@ -404,7 +403,6 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
-		fprintf(stderr, "plugin [%d] = %s\n", i, kPluginNames[i]);
 		plugin::Plugin* new_plugin = LoadFilter(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{

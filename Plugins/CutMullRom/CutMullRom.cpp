@@ -1,7 +1,7 @@
 #include "CutMullRom.h"
 
 const double kCatMullRomConst = 0.5;
-const double kCatMullRomStep  = 0.005;
+const double kCatMullRomStep  = 0.1;
 
 static double CalcNextT      (plugin::Vec2 p1, plugin::Vec2 p2, double t);
 static void   CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
@@ -21,6 +21,23 @@ double LinearInterpol(double a, double b, double t)
     return a + t * (b - a);
 }
 
+void DrawPoint(plugin::RenderTargetI* target, plugin::Color color, 
+               double thickness, plugin::Vec2 point)
+{
+    plugin::Color color_i = color;
+
+    plugin::Vec2 gen_size(thickness, thickness);
+
+    color_i.a = 10;
+    target->drawEllipse(point, gen_size, color_i);
+    color_i.a = 25;
+    target->drawEllipse(point + gen_size * 2/8, gen_size * 3/4, color_i);
+    color_i.a = 50;
+    target->drawEllipse(point + gen_size * 1/2, gen_size * 1/2, color_i);
+    color_i.a = 75;
+    target->drawEllipse(point + gen_size * 6/8, gen_size * 1/4, color_i);
+}
+
 void CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
                      plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2)
 {
@@ -37,7 +54,7 @@ void CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double 
 
         plugin::Vec2 b = (t2 - t) / (t2 - t0) * a1 + (t - t0)/ (t2 - t0) * a2;
 
-        target->drawEllipse(b, plugin::Vec2(thickness/2, thickness/2), color);
+        DrawPoint(target, color, thickness, b);
     }
 }
 
@@ -51,7 +68,7 @@ void CutMullRom2Vert(plugin::RenderTargetI* target, plugin::Color color, double 
     {
         double t = LinearInterpol(t0, t1, it);
         plugin::Vec2 a = (t1 - t) / (t1 - t0) * p0 + (t - t0) / (t1 - t0) * p1;
-        target->drawEllipse(a, plugin::Vec2(thickness/2, thickness/2), color);
+        DrawPoint(target, color, thickness, a);
     }
 }
 
@@ -77,19 +94,19 @@ void CutMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin:
 
         plugin::Vec2 c  = (t2 - t) / (t2 - t1) * b1 + (t - t1) / (t2 - t1) * b2;
 
-        data->drawEllipse(c, plugin::Vec2(thickness/2, thickness/2), color);
+        DrawPoint(data, color, thickness, c);
     }
     CutMullRom3Vert(tmp, color, thickness, p1, p2, p3);
 }
 
-void DrawUsingCatMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color,
+void DrawUsingCatMullRom_plugin(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color,
                          double thickness, List<plugin::Vec2> &vertexes)
 {
     int index = vertexes.Begin();
     plugin::Vec2 p0 = vertexes[index].val; 
     if (vertexes.size == 1)
     {
-        data->drawEllipse(p0, plugin::Vec2(thickness/2, thickness/2), color);
+        DrawPoint(data, color, thickness, p0);
         return;
     }
 
@@ -116,7 +133,7 @@ void DrawUsingCatMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp
     CutMullRom(data, tmp, color, thickness, p0, p1, p2, p3);
 }
 
-void DrawTmpToData(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+void DrawTmpToData_plugin(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
                    List<plugin::Vec2> &vertexes)
 {
     tmp->clear();

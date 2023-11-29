@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Lol.h"
+#include "WhiteBlack.h"
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app)
 {

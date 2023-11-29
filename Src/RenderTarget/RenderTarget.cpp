@@ -287,7 +287,7 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, plugin::Color color, 
 
 void RenderTarget::clear()
 {
-    data.clear();
+    data.clear(sf::Color(0, 0, 0, 0));
 }
 
 void RenderTarget::clear(plugin::Color color)
@@ -308,7 +308,7 @@ void RenderTarget::DrawCircle(plugin::Vec2 position, double r, plugin::Color col
 {
     sf::CircleShape circle(r);
     circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
-    circle.setFillColor(sf::Color(color.r, color.g, color.b));
+    circle.setFillColor(ConvertColor(color));
     circle.setScale(ConvertVecF(scale));
 
     data.draw(circle);
