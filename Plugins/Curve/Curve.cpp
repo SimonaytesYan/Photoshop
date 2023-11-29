@@ -14,17 +14,39 @@ namespace sym_plugin
     { 
         filter = new CurveFilter(this);
 
-        name = "Lol";
+        name = "SymCurve";
         type = plugin::InterfaceType::Filter;
     }
 
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
     {
-
-        plugin::Vec2 start_pos = plugin::Vec2(100, 100);
-        RenderWindow* window = new RenderWindow();
         // Create window
+        plugin::Vec2 start_pos = plugin::Vec2(100, 100);
+        plugin::Vec2 size      = plugin::Vec2(800, 800);
+        CurveWindow* window    = new CurveWindow(start_pos, size);
+        
+        // Make it modal
+        window->setPriority(255);
+        app->event_manager->registerObject(window);
+        app->event_manager->setPriority(plugin::EventType::MouseMove, 
+                                        window->getPriority());
+        app->event_manager->setPriority(plugin::EventType::MousePress, 
+                                        window->getPriority());
+        app->event_manager->setPriority(plugin::EventType::MouseRelease, 
+                                        window->getPriority());
+        
+        // Add OK button
 
+        ApplyFilterFunctor* functor = new ApplyFilterFunctor();
+        functor->rt = rt;
+        functor->r  = plugin::Array<uint8_t>(255);
+        functor->g  = plugin::Array<uint8_t>(255);
+        functor->b  = plugin::Array<uint8_t>(255);
+
+        window->registerSubWidget(new Button(start_pos + plugin::Vec2(300, 650), 
+                                             plugin::Vec2(100, 50), 
+                                             plugin::Color(128, 128, 128), 
+                                             functor));
         
     }
 
@@ -47,9 +69,9 @@ namespace sym_plugin
     }
 
     void CurveFilter::apply(plugin::RenderTargetI* rt, 
-                            plugin::Array<int> r, 
-                            plugin::Array<int> g, 
-                            plugin::Array<int> b)
+                            plugin::Array<uint8_t> r, 
+                            plugin::Array<uint8_t> g, 
+                            plugin::Array<uint8_t> b)
     {
         plugin::Texture* texture = rt->getTexture(); 
         plugin::Color*   pixels  = texture->pixels;
@@ -232,9 +254,11 @@ namespace sym_plugin
 
     //===============================RENDER WINDOW==============================
 
-    void RenderWindow::render(plugin::RenderTargetI* target)
+    void CurveWindow::render(plugin::RenderTargetI* target)
     {
         rt->display();
         target->drawTexture(position, size, rt->getTexture());
+
+        Widget(target);
     }
 }

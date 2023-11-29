@@ -3,6 +3,7 @@
 
 #include "../../Src/Standart/Standart.h"
 #include "../../Src/List.h"
+#include "../../Src/Font/Font.h"
 
 class CurveFilter;
 
@@ -42,9 +43,9 @@ namespace sym_plugin
         plugin::Array<double>      getParams    ()                             override;
 
         void apply(plugin::RenderTargetI* rt,
-                   plugin::Array<int>     r, 
-                   plugin::Array<int>     g, 
-                   plugin::Array<int> b);
+                   plugin::Array<uint8_t> r, 
+                   plugin::Array<uint8_t> g, 
+                   plugin::Array<uint8_t> b);
 
         ~CurveFilter()
         {}
@@ -130,20 +131,85 @@ namespace sym_plugin
         void setSize     (plugin::Vec2 value)     override { size      = value;         }
         void setPos      (plugin::Vec2 value)     override { position  = value;         }
         void setParent   (plugin::WidgetI* value) override { parent    = (Widget*)value;}    
+        
+        void setPriority(uint8_t value) { priority = value;  }
 
         virtual bool InsideP(plugin::Vec2 v);
     };
 
 
-    class RenderWindow : public Widget
+    class CurveWindow : public Widget
     {
-        plugin::RenderTargetI* rt;
-
     public :
+        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size) :
+        Widget(pos, size)
+        {}
+
+        plugin::RenderTargetI* rt;
 
         void render(plugin::RenderTargetI* target) override;
     };
 
+    //===============================BUTTON=====================================
+    
+    struct ButtonFunction
+    {
+        virtual void operator()() = 0;
+        virtual ~ButtonFunction()
+        {}
+    };
+
+    class Button : public Widget
+    {
+    protected :
+        ButtonFunction* on_press;
+        ButtonFunction* on_release;
+        bool            pressed;
+        plugin::Color   background_color;       //use only if texture_button == false
+
+    public :
+        Button(plugin::Vec2   _position, 
+               plugin::Vec2   _size, 
+               plugin::Color    _background_color,
+               ButtonFunction* _on_press   = nullptr,
+               ButtonFunction* _on_release = nullptr);
+        ~Button();
+
+        void ChangePressFunction(ButtonFunction* new_on_press)
+        {
+            on_press = new_on_press;
+        }
+
+        virtual void render        (plugin::RenderTargetI* render_target) override;
+                bool onMousePress  (plugin::MouseContext   mouse)         override;
+                bool onMouseRelease(plugin::MouseContext   mouse)         override;
+                bool onMouseMove   (plugin::MouseContext   mouse)         override;
+    };
+
+    class TextButton : public Button
+    {
+        public :
+        TextButton(plugin::Vec2   _position, plugin::Vec2   _size, 
+                   plugin::Color    _background_color,
+                   Font font, int character_size, const char* text = "Button",
+                   plugin::Color text_color = plugin::Color(0, 0, 0),
+                   ButtonFunction*  _on_press   = nullptr,
+                   ButtonFunction*  _on_release = nullptr);
+    };
+
+    struct ApplyFilterFunctor : public ButtonFunction
+    {
+        CurveFilter* filter;
+        plugin::RenderTargetI* rt;
+        plugin::Array<uint8_t> r;
+        plugin::Array<uint8_t> g;
+        plugin::Array<uint8_t> b;
+
+        void operator()() override
+        {
+            filter->apply(rt, r, g, b);
+        }
+    };
 }
 
 #endif //SYM_CURVE_PLUGIN
