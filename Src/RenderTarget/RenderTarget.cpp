@@ -307,7 +307,7 @@ void RenderTarget::SetPixel(plugin::Vec2 position, plugin::Color color)
 void RenderTarget::DrawCircle(plugin::Vec2 position, double r, plugin::Color color, plugin::Vec2 scale)
 {
     sf::CircleShape circle(r);
-    circle.setPosition(sf::Vector2f(position.GetX(), position.GetY()));
+    circle.setPosition(ConvertVecF(position));
     circle.setFillColor(ConvertColor(color));
     circle.setScale(ConvertVecF(scale));
 
@@ -380,13 +380,13 @@ void RenderTarget::drawRect(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color c
 
 void RenderTarget::drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, plugin::Color color)
 { 
-    DrawCircle(pos, size.x, color, plugin::Vec2(1, size.y / size.x));  
+    DrawCircle(pos, size.x / 2, color, plugin::Vec2(1, size.y / size.x)); 
 }
 
 void RenderTarget::drawText(plugin::Vec2 pos, const char *content, 
                  uint16_t char_size, plugin::Color color)
 { 
-    DrawText(pos, standard_font, content, char_size, color); 
+    DrawText(pos, standard_font, content, char_size, color);
 }
 
 void RenderTarget::drawTexture(plugin::Vec2 pos, plugin::Vec2 size, 

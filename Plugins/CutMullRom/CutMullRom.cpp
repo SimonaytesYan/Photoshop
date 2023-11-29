@@ -31,11 +31,11 @@ void DrawPoint(plugin::RenderTargetI* target, plugin::Color color,
     color_i.a = 10;
     target->drawEllipse(point, gen_size, color_i);
     color_i.a = 25;
-    target->drawEllipse(point + gen_size * 2/8, gen_size * 3/4, color_i);
+    target->drawEllipse(point + gen_size * 1/8, gen_size * 3/4, color_i);
     color_i.a = 50;
-    target->drawEllipse(point + gen_size * 1/2, gen_size * 1/2, color_i);
+    target->drawEllipse(point + gen_size * 1/4, gen_size * 1/2, color_i);
     color_i.a = 75;
-    target->drawEllipse(point + gen_size * 6/8, gen_size * 1/4, color_i);
+    target->drawEllipse(point + gen_size * 3/8, gen_size * 1/4, color_i);
 }
 
 void CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
