@@ -24,7 +24,7 @@ namespace sym_plugin
         // Create window
         plugin::Vec2 start_pos = plugin::Vec2(100, 100);
         plugin::Vec2 size      = plugin::Vec2(800, 800);
-        CurveWindow* window    = new CurveWindow(start_pos, size);
+        /*CurveWindow* window    = new CurveWindow(start_pos, size);
         
         // Make it modal
         window->setPriority(255);
@@ -47,7 +47,7 @@ namespace sym_plugin
         window->registerSubWidget(new Button(start_pos + plugin::Vec2(300, 650), 
                                              plugin::Vec2(100, 50), 
                                              plugin::Color(128, 128, 128), 
-                                             functor));
+                                             functor));*/
         
     }
 
@@ -98,6 +98,7 @@ namespace sym_plugin
         delete texture;
     }
 
+    /*
     //================================WIDGET====================================
     
     const double kPrecision = 1e-6;
@@ -261,5 +262,5 @@ namespace sym_plugin
         target->drawTexture(position, size, rt->getTexture());
 
         Widget::render(target);
-    }
+    }*/
 }

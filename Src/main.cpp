@@ -290,6 +290,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 			fprintf(stderr, "Error during loading plugin [%d] <%s> like filter \n", i, kPluginNames[i]);
 			continue;
 		}
+		
 		if (new_plugin->type == plugin::InterfaceType::Filter)
 		{
 			SelectFilterArgs* plugin_filter_func = new SelectFilterArgs(fm, 

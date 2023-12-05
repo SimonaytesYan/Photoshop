@@ -52,7 +52,7 @@ namespace sym_plugin
         {}
     };
 
-    //======================================WIDGET==============================
+    /*//======================================WIDGET==============================
 
     class Widget;
 
@@ -210,7 +210,7 @@ namespace sym_plugin
         {
             filter->apply(rt, r, g, b);
         }
-    };
+    };*/
 }
 
 #endif //SYM_CURVE_PLUGIN
