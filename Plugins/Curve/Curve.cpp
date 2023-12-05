@@ -12,7 +12,11 @@ namespace sym_plugin
 
     CurvePlugin::CurvePlugin(plugin::App* app) :
     app (app)
-    { 
+    {
+        #ifdef DEBUG
+            fprintf(stderr, "root in plugin = %p\n", app->root->getRoot());
+            fprintf(stderr, "plugin in create = %p\n", this);
+        #endif 
         filter = new CurveFilter(this);
 
         name = "SymCurve";
@@ -21,10 +25,11 @@ namespace sym_plugin
 
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
     {
+        fprintf(stderr, "CreateCurveWindow\n");
         // Create window
         plugin::Vec2 start_pos = plugin::Vec2(100, 100);
         plugin::Vec2 size      = plugin::Vec2(800, 800);
-        /*CurveWindow* window    = new CurveWindow(start_pos, size);
+        CurveWindow* window    = new CurveWindow(start_pos, size);
         
         // Make it modal
         window->setPriority(255);
@@ -35,7 +40,10 @@ namespace sym_plugin
                                         window->getPriority());
         app->event_manager->setPriority(plugin::EventType::MouseRelease, 
                                         window->getPriority());
-        
+
+        #ifdef DEBUG
+            fprintf(stderr, "root in CreateCurveWindow = %p\n", app->root->getRoot());
+        #endif
         // Add OK button
 
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
@@ -44,11 +52,22 @@ namespace sym_plugin
         functor->g  = plugin::Array<uint8_t>(255);
         functor->b  = plugin::Array<uint8_t>(255);
 
-        window->registerSubWidget(new Button(start_pos + plugin::Vec2(300, 650), 
-                                             plugin::Vec2(100, 50), 
-                                             plugin::Color(128, 128, 128), 
-                                             functor));*/
-        
+        Button* ok_button = new Button(start_pos + plugin::Vec2(300, 650), 
+                                       plugin::Vec2(100, 50), 
+                                       plugin::Color(128, 128, 128), 
+                                       functor);
+        Label* ok_label = new Label(ok_button->getSize(), 10, "OK", 
+                                               plugin::Color(255, 255, 255));
+
+        #ifdef DEBUG
+            fprintf(stderr, "label  = %p\n"
+                            "button = %p\n", ok_button, ok_label);
+        #endif
+
+        ok_button->registerSubWidget(ok_label);
+        window->registerSubWidget(ok_button);
+
+        app->root->getRoot()->registerSubWidget(window);
     }
 
     plugin::Array<const char*> CurveFilter::getParamNames()
@@ -66,6 +85,11 @@ namespace sym_plugin
 
     void CurveFilter::apply(plugin::RenderTargetI* rt)
     {
+        #ifndef DEBUG
+            fprintf(stderr, "apply curve\n");
+            fprintf(stderr, "parent  = %p\n", parent);
+        #endif
+
         parent->CreateCurveWindow(rt);
     }
 
@@ -152,7 +176,8 @@ namespace sym_plugin
         new_widget->setParent(this);
         sub_widgets.PushBack(new_widget);
 
-        parent->recalcRegion();
+        if (parent != nullptr)
+            parent->recalcRegion();
     }
 
     bool WidgetEventRound(Events event, void*  event_args, 
@@ -231,11 +256,6 @@ namespace sym_plugin
 
     void Widget::recalcRegion()
     {
-        if (!available)
-            return;
-        
-        if (parent != nullptr)
-            parent->recalcRegion();
     }
 
     bool Widget::InsideP(plugin::Vec2 v)
@@ -250,12 +270,13 @@ namespace sym_plugin
 
     void CurveWindow::render(plugin::RenderTargetI* target)
     {
-        rt->display();
-        target->drawTexture(position, size, rt->getTexture());
+        target->drawRect(position, size, plugin::Color(255, 255, 255));
 
+        int p0 = points.Begin();
+        for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
+            target->drawLine(points[p0].val, points[p1].val, plugin::Color(0, 0, 0));
         Widget::render(target);
     }
-
 
     //===============================BUTTON=====================================
 
@@ -267,7 +288,7 @@ namespace sym_plugin
                     render_target->drawRect(position, size, background_color.Inverse());
                 else
                     render_target->drawRect(position, size, background_color);
-        
+
             Widget::render(render_target);
         }
     }
@@ -323,19 +344,7 @@ namespace sym_plugin
     }
 
 
-    //================================TEXT BUTTON===============================
-        
-    TextButton::TextButton(plugin::Vec2   position,  plugin::Vec2   size, 
-                           plugin::Color    background_color,
-                           int character_size, const char* text,
-                           plugin::Color text_color,
-                           ButtonFunction*  _on_press,
-                           ButtonFunction*  _on_release) :
-    Button(position, size, background_color, _on_press, _on_release)
-    {
-        registerSubWidget(new Label(position, character_size, text, background_color, text_color));
-    }
-
+    //====================================LABEL=================================
 
     Label::Label(plugin::Vec2 _position, int _character_size, 
                 const char* _text, plugin::Color _background, plugin::Color _text_color) :

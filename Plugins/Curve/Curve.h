@@ -3,8 +3,6 @@
 
 #include "../../Src/Standart/Standart.h"
 #include "../../Src/List.h"
-#include "../../Src/Font/Font.h"
-
 
 namespace sym_plugin
 {
@@ -75,7 +73,7 @@ namespace sym_plugin
         List<plugin::WidgetI*>  sub_widgets;
         plugin::WidgetI* parent;
 
-    public : 
+    public: 
         Widget (plugin::Vec2 position = plugin::Vec2(0, 0), 
                 plugin::Vec2 size     = plugin::Vec2(0, 0), 
                 bool available = true);
@@ -97,7 +95,7 @@ namespace sym_plugin
         bool         getAvailable() override { return available; }
         plugin::Vec2 getSize     () override { return size;      }
         plugin::Vec2 getPos      () override { return position;  }
-        bool         isExtern    () override { return false;     }
+        bool         isExtern    () override { return true;     }
         uint8_t      getPriority () override { return priority;  }
         WidgetI*     getParent   () override { return parent;    }
 
@@ -107,6 +105,7 @@ namespace sym_plugin
         void setParent   (plugin::WidgetI* value) override { parent    = (Widget*)value;}    
         
         void setPriority(uint8_t value) { priority = value;  }
+        void setParent  (Widget* value) { parent   = value;  };
 
         virtual bool InsideP(plugin::Vec2 v);
     };
@@ -114,12 +113,17 @@ namespace sym_plugin
 
     class CurveWindow : public Widget
     {
-    public :
-        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size) :
-        Widget(pos, size)
-        {}
+        List<plugin::Vec2> points;
 
-        plugin::RenderTargetI* rt;
+    public :
+
+        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size) :
+        Widget(pos, size),
+        points(List<plugin::Vec2>(0))
+        {
+            points.PushBack(plugin::Vec2(pos.GetX(), pos.GetY() + size.GetY()));
+        }
+
 
         void render(plugin::RenderTargetI* target) override;
     };
@@ -146,8 +150,16 @@ namespace sym_plugin
                plugin::Vec2   _size, 
                plugin::Color    _background_color,
                ButtonFunction* _on_press   = nullptr,
-               ButtonFunction* _on_release = nullptr);
-        ~Button();
+               ButtonFunction* _on_release = nullptr) :
+        Widget           (_position, _size),
+        on_press         (_on_press),
+        on_release       (_on_release),
+        background_color (_background_color),
+        pressed          (false)
+        {}
+
+        ~Button()
+        {}
 
         void ChangePressFunction(ButtonFunction* new_on_press)
         {
@@ -160,17 +172,6 @@ namespace sym_plugin
                 bool onMouseMove   (plugin::MouseContext   mouse)         override;
     };
 
-    class TextButton : public Button
-    {
-        public :
-        TextButton(plugin::Vec2   _position, plugin::Vec2   _size, 
-                   plugin::Color    _background_color,
-                   int character_size, const char* text = "Button",
-                   plugin::Color text_color = plugin::Color(0, 0, 0),
-                   ButtonFunction*  _on_press   = nullptr,
-                   ButtonFunction*  _on_release = nullptr);
-    };
-
     struct ApplyFilterFunctor : public ButtonFunction
     {
         CurveFilter* filter;
@@ -178,6 +179,14 @@ namespace sym_plugin
         plugin::Array<uint8_t> r;
         plugin::Array<uint8_t> g;
         plugin::Array<uint8_t> b;
+
+        ApplyFilterFunctor() :
+        filter (nullptr),
+        rt     (nullptr),
+        r      (plugin::Array<uint8_t>()),
+        g      (plugin::Array<uint8_t>()),
+        b      (plugin::Array<uint8_t>())
+        {}
 
         void operator()() override
         {
@@ -189,7 +198,6 @@ namespace sym_plugin
 
     class Label : public Widget
     {
-        Font  font;
         int   character_size;
         char* text;
         plugin::Color text_color;
@@ -205,6 +213,6 @@ namespace sym_plugin
 
         void render(plugin::RenderTargetI* render_target) override;
     };
-}
+};
 
 #endif //SYM_CURVE_PLUGIN

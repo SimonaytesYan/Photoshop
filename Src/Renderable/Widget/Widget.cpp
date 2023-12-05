@@ -70,7 +70,10 @@ void Widget::render(plugin::RenderTargetI* render_target)
             if (sub_widget.getAvailable())
             {
                 if (sub_widget.is_extern)
+                {
+                    fprintf(stderr, "Go into render widget_i\n");
                     sub_widget.widget_i->render(render_target);
+                }
                 else
                     sub_widget.widget->render(render_target);
             }
@@ -298,6 +301,7 @@ WidgetPtr::WidgetPtr(plugin::WidgetI* object)
 {
     if (object->isExtern())
     {
+        fprintf(stderr, "extern WidgetPtr = %p\n", object);
         is_extern = true;
         widget_i  = object;
     }
