@@ -5,10 +5,11 @@
 #include "../../Src/List.h"
 #include "../../Src/Font/Font.h"
 
-class CurveFilter;
 
 namespace sym_plugin
 {
+    class CurveFilter;
+    
     class CurvePlugin : public plugin::Plugin
     {
         CurveFilter* filter;

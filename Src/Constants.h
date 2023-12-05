@@ -22,14 +22,14 @@ static const char*  kSplineImgFile            = "Resources/Spline.png";
 static const char*  kSplinePressedImgFile     = "Resources/SplinePressed.png";
 static const char*  kFillImgFile              = "Resources/Fill.png";
 static const char*  kFillPressedImgFile       = "Resources/FillPressed.png";
-static const char*  kPluginNames[]            = {"Plugins/WhiteBlack.so", 
+static const char*  kPluginNames[]            = {"Plugins/SymCurve.so",
+                                                 "Plugins/WhiteBlack.so",
                                                  "Plugins/Ars.so",
                                                  "Plugins/VovaParam.so",
                                                  "Plugins/Ilia.so",
                                                  "Plugins/Ilia_tool.so",
                                                  "Plugins/Vova_tool.so",
-                                                 "Plugins/Brush.so",
-                                                 "Plugin/SymCurve.so"};
+                                                 "Plugins/Brush.so"};
 
 const double kDeltaTime      = 0.25;
 const char   kWindowHeader[] = "Photoshop";

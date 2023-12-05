@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "../Standart.h"
+#include "Standart.h"
 #include "../Standart/Standart.h"
 #include "../Texture/Texture.h"
 

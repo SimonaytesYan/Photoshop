@@ -287,7 +287,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{
-			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+			fprintf(stderr, "Error during loading plugin [%d] <%s> like filter \n", i, kPluginNames[i]);
 			continue;
 		}
 		if (new_plugin->type == plugin::InterfaceType::Filter)
@@ -319,18 +319,25 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 
 plugin::Plugin* LoadPlugin(const char* path, plugin::App* app)
 {
-	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
+	void* dll_hand = dlopen(path, RTLD_NOW | RTLD_LOCAL);
+
+	if (dlerror() != nullptr)
+	{
+		fprintf(stderr, "dlerr    = <%s>\n", dlerror());
+		fprintf(stderr, "dll_hand = %d\n",   dll_hand);
+		return nullptr;
+	}
+
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 	
 	if (dlerror() != nullptr)
 	{
-		fprintf(stderr, "dlerr = <%s>\n", dlerror());
+		fprintf(stderr, "dlerr 		 = <%s>\n", dlerror());
+		fprintf(stderr, "GetInstance = %p\n",   get_plugin);
 		return nullptr;
 	}
 
 	plugin::Plugin* my_plugin = get_plugin(app);
-
-	dlclose(dll_hand);
 
 	return my_plugin;
 }
@@ -393,13 +400,14 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 	
 	int tool_i = ToolsNumber;
 
+	fprintf(stderr, "kPluginNames_N = %d\n", sizeof(kPluginNames) / sizeof(char*));
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
 		fprintf(stderr, "plugin [%d] = <%s>\n", i, kPluginNames[i]);
 		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{
-			fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+			fprintf(stderr, "Error during loading plugin[%d] <%s> like tools\n", i, kPluginNames[i]);
 			continue;
 		}
 		
@@ -408,7 +416,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 			plugin::ToolI* new_tool = (plugin::ToolI*)new_plugin->getInterface();
 			if (new_tool == nullptr)
 			{
-				fprintf(stderr, "Error during loading plugin <%s>\n", kPluginNames[i]);
+				fprintf(stderr, "Error during loading tool from plugin [%d] <%s>\n", i, kPluginNames[i]);
 				continue;
 			}
 

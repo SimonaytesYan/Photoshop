@@ -1,13 +1,14 @@
 #include "Curve.h"
 
+extern "C" plugin::Plugin* getInstance(plugin::App *app)
+{
+    return new sym_plugin::CurvePlugin(app);
+}
+
 namespace sym_plugin
 {
     const plugin::Color kBackgroundColor(150, 100, 100);
 
-    extern "C" plugin::Plugin* getInstance(plugin::App *app)
-    {
-        return new CurvePlugin(app);
-    }
 
     CurvePlugin::CurvePlugin(plugin::App* app) :
     app (app)
