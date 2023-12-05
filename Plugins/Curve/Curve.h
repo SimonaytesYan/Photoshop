@@ -52,9 +52,7 @@ namespace sym_plugin
         {}
     };
 
-    /*//======================================WIDGET==============================
-
-    class Widget;
+    //======================================WIDGET==============================
 
     enum Events
     {
@@ -67,31 +65,6 @@ namespace sym_plugin
         EVENTS_NUMBER
     };
 
-    struct WidgetPtr
-    {
-        union 
-        {
-            Widget*          widget;
-            plugin::WidgetI* widget_i;
-        };
-        bool is_extern;
-
-        WidgetPtr(plugin::WidgetI* object);
-
-        plugin::Vec2 getSize();
-        plugin::Vec2 getPos();
-        bool         onKeyboardPress  (plugin::KeyboardContext key);
-        bool         onKeyboardRelease(plugin::KeyboardContext key);
-        bool         onMousePress     (plugin::MouseContext mouse);
-        bool         onMouseRelease   (plugin::MouseContext mouse);
-        bool         onMouseMove      (plugin::MouseContext mouse);
-        bool         onClock          (size_t delta);
-        void         move             (plugin::Vec2 shift);
-        bool         InsideP          (plugin::Vec2 v);
-        void         setAvailable     (bool value);
-        bool         getAvailable     ();
-    };
-
     class Widget : public plugin::WidgetI
     {
     protected:
@@ -99,7 +72,7 @@ namespace sym_plugin
         bool             available;
         plugin::Vec2     position;
         plugin::Vec2     size;
-        List<WidgetPtr>  sub_widgets;
+        List<plugin::WidgetI*>  sub_widgets;
         plugin::WidgetI* parent;
 
     public : 
@@ -192,7 +165,7 @@ namespace sym_plugin
         public :
         TextButton(plugin::Vec2   _position, plugin::Vec2   _size, 
                    plugin::Color    _background_color,
-                   Font font, int character_size, const char* text = "Button",
+                   int character_size, const char* text = "Button",
                    plugin::Color text_color = plugin::Color(0, 0, 0),
                    ButtonFunction*  _on_press   = nullptr,
                    ButtonFunction*  _on_release = nullptr);
@@ -210,7 +183,28 @@ namespace sym_plugin
         {
             filter->apply(rt, r, g, b);
         }
-    };*/
+    };
+
+    //===============================LABEL======================================
+
+    class Label : public Widget
+    {
+        Font  font;
+        int   character_size;
+        char* text;
+        plugin::Color text_color;
+        plugin::Color background;
+
+    public:
+        Label(plugin::Vec2 _position, int character_size, 
+            const char* text = "Label", plugin::Color background = plugin::Color(0, 0, 0), 
+            plugin::Color text_color = plugin::Color(255, 255, 255));
+        ~Label();
+
+        void SetText(const char* new_text);
+
+        void render(plugin::RenderTargetI* render_target) override;
+    };
 }
 
 #endif //SYM_CURVE_PLUGIN

@@ -98,7 +98,7 @@ namespace sym_plugin
         delete texture;
     }
 
-    /*
+    
     //================================WIDGET====================================
     
     const double kPrecision = 1e-6;
@@ -107,7 +107,7 @@ namespace sym_plugin
     available       (_available),
     position        (_position),
     size            (_size),
-    sub_widgets     (List<WidgetPtr>(0)),
+    sub_widgets     (List<plugin::WidgetI*>(0)),
     parent          (nullptr)
     {
     }
@@ -119,17 +119,14 @@ namespace sym_plugin
     void Widget::move(plugin::Vec2 delta)
     {
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-            sub_widgets[i].val.move(delta);
+            sub_widgets[i].val->move(delta);
     }
 
     void Widget::unregisterSubWidget(WidgetI* son)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
-            if (sub_widgets[index].val.is_extern && 
-                sub_widgets[index].val.widget_i == son ||
-                !sub_widgets[index].val.is_extern && 
-                sub_widgets[index].val.widget   == son)
+            if (sub_widgets[index].val == son)
             {
                 sub_widgets.Remove(index);
                 break;
@@ -143,14 +140,9 @@ namespace sym_plugin
         {
             for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
             {
-                WidgetPtr sub_widget = sub_widgets[index].val;
-                if (sub_widget.getAvailable())
-                {
-                    if (sub_widget.is_extern)
-                        sub_widget.widget_i->render(render_target);
-                    else
-                        sub_widget.widget->render(render_target);
-                }
+                plugin::WidgetI* sub_widget = sub_widgets[index].val;
+                if (sub_widget->getAvailable())
+                        sub_widget->render(render_target);
             }
         }
     }
@@ -158,13 +150,13 @@ namespace sym_plugin
     void Widget::registerSubWidget(WidgetI* new_widget)
     {
         new_widget->setParent(this);
-        sub_widgets.PushBack(WidgetPtr(new_widget));
+        sub_widgets.PushBack(new_widget);
 
         parent->recalcRegion();
     }
 
     bool WidgetEventRound(Events event, void*  event_args, 
-                        List<WidgetPtr> &objects, bool available)
+                          List<plugin::WidgetI*> &objects, bool available)
     {
         if (!available)
             return false;
@@ -176,22 +168,22 @@ namespace sym_plugin
             switch (event)
             {
             case KEY_PRESS:
-                intercepted = objects[index].val.onKeyboardPress(*(plugin::KeyboardContext*)event_args);
+                intercepted = objects[index].val->onKeyboardPress(*(plugin::KeyboardContext*)event_args);
                 break;
             case KEY_RELEASE:
-                intercepted = objects[index].val.onKeyboardRelease(*(plugin::KeyboardContext*)event_args);
+                intercepted = objects[index].val->onKeyboardRelease(*(plugin::KeyboardContext*)event_args);
                 break;
             case MOUSE_PRESS:
-                intercepted = objects[index].val.onMousePress(*(plugin::MouseContext*)event_args);
+                intercepted = objects[index].val->onMousePress(*(plugin::MouseContext*)event_args);
                 break;
             case MOUSE_RELEASE:
-                intercepted = objects[index].val.onMouseRelease(*(plugin::MouseContext*)event_args);
+                intercepted = objects[index].val->onMouseRelease(*(plugin::MouseContext*)event_args);
                 break;
             case MOUSE_MOVE:
-                intercepted = objects[index].val.onMouseMove(*(plugin::MouseContext*)event_args);
+                intercepted = objects[index].val->onMouseMove(*(plugin::MouseContext*)event_args);
                 break;
             case ON_CLOCK:
-                intercepted = objects[index].val.onClock(*(size_t*)event_args);
+                intercepted = objects[index].val->onClock(*(size_t*)event_args);
                 break;
             
             default:
@@ -262,5 +254,120 @@ namespace sym_plugin
         target->drawTexture(position, size, rt->getTexture());
 
         Widget::render(target);
-    }*/
+    }
+
+
+    //===============================BUTTON=====================================
+
+    void Button::render(plugin::RenderTargetI* render_target)
+    {
+        if (available)
+        {
+                if (pressed)
+                    render_target->drawRect(position, size, background_color.Inverse());
+                else
+                    render_target->drawRect(position, size, background_color);
+        
+            Widget::render(render_target);
+        }
+    }
+
+    bool Button::onMousePress(plugin::MouseContext mouse)
+    {
+        if (InsideP(mouse.position))
+        {
+            bool intercepted = Widget::onMousePress(mouse);
+            if (intercepted)
+                return true;
+
+            pressed = true;
+            if (on_press == nullptr)
+                return false;
+            (*on_press)();      // call button function
+
+            return true;
+        }
+        
+        return false;
+    }
+
+
+    bool Button::onMouseRelease(plugin::MouseContext mouse)
+    {
+        if (InsideP(mouse.position))
+        {
+            bool intercepted = Widget::onMouseRelease(mouse);
+
+            if (!intercepted)
+            {
+                pressed = false;
+                if (on_release == nullptr)
+                    return false;
+
+                (*on_release)();
+            }
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    bool Button::onMouseMove(plugin::MouseContext mouse)
+    {
+        if (!InsideP(mouse.position))
+        {
+            pressed = false;
+        }
+        return false;
+    }
+
+
+    //================================TEXT BUTTON===============================
+        
+    TextButton::TextButton(plugin::Vec2   position,  plugin::Vec2   size, 
+                           plugin::Color    background_color,
+                           int character_size, const char* text,
+                           plugin::Color text_color,
+                           ButtonFunction*  _on_press,
+                           ButtonFunction*  _on_release) :
+    Button(position, size, background_color, _on_press, _on_release)
+    {
+        registerSubWidget(new Label(position, character_size, text, background_color, text_color));
+    }
+
+
+    Label::Label(plugin::Vec2 _position, int _character_size, 
+                const char* _text, plugin::Color _background, plugin::Color _text_color) :
+    Widget(_position, plugin::Vec2(strlen(_text) * (_character_size - 5), (_character_size + 10))),
+    character_size (_character_size),
+    background     (_background),
+    text_color     (_text_color)
+    {
+        text = (char*)calloc(sizeof(char), strlen(_text) + 1);
+        strcpy(text, _text);
+    }
+
+    Label::~Label()
+    {
+        free(text);
+    }
+
+    void Label::SetText(const char* new_text)
+    {
+        free(text);
+        text = (char*)calloc(sizeof(char), strlen(new_text) + 1);
+        strcpy(text, new_text);
+    }
+
+    void Label::render(plugin::RenderTargetI* render_target)
+    {
+        if (available)
+        {
+            render_target->drawRect(position, size, background);
+            render_target->drawText(position, text, character_size, text_color);
+
+            Widget::render(render_target);
+        }
+    }
 }
