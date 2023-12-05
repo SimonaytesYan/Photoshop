@@ -30,7 +30,6 @@
 #include "Renderable/Widget/Menu/VerticalMenu/VerticalMenu.h"
 #include "Filter/Filter.h"
 #include "Filter/BrightnessFilter/BrightnessFilter.h"
-#include "Filter/BlackAndWhiteFilter/BlackAndWhiteFilter.h"
 #include "Renderable/Widget/RectangleWidget/RectangleWidget.h"
 #include "Gui/Gui.h"
 
@@ -273,16 +272,6 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 									  	   		   brightness_func);
 	filters->registerSubWidget(brightness_filter);
 
-	SelectFilter* black_white_func = new SelectFilter(fm, new BlackAndWhiteFilter(), 
-													  nullptr, nullptr);
-
-	TextButton* black_white_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
-									  		   	    plugin::Color(199, 181, 173),
-									  			    font, 20, "Black-White",
-									  			    plugin::Color(255, 255, 255),
-									  			    black_white_func);
-	filters->registerSubWidget(black_white_filter);
-
 	plugin::App* app = new plugin::App();
 	Gui* 		 gui = new Gui(root);
 
@@ -334,7 +323,10 @@ plugin::Plugin* LoadPlugin(const char* path, plugin::App* app)
 	GetInstanceType get_plugin = (GetInstanceType)dlsym(dll_hand, "getInstance");
 	
 	if (dlerror() != nullptr)
+	{
 		fprintf(stderr, "dlerr = <%s>\n", dlerror());
+		return nullptr;
+	}
 
 	plugin::Plugin* my_plugin = get_plugin(app);
 
@@ -403,6 +395,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 
 	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
 	{
+		fprintf(stderr, "plugin [%d] = <%s>\n", i, kPluginNames[i]);
 		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
 		if (new_plugin == nullptr)
 		{

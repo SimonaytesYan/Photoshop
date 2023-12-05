@@ -3,10 +3,10 @@
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app)
 {
-    return new WhiteAndBlackPlugin(app);
+    return new SymWhiteAndBlackPlugin(app);
 }
 
-WhiteAndBlackPlugin::WhiteAndBlackPlugin(plugin::App* app) :
+SymWhiteAndBlackPlugin::SymWhiteAndBlackPlugin(plugin::App* app) :
 app (app)
 { 
     filter = new WhiteAndBlackFilter();

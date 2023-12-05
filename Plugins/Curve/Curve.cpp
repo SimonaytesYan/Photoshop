@@ -259,6 +259,6 @@ namespace sym_plugin
         rt->display();
         target->drawTexture(position, size, rt->getTexture());
 
-        Widget(target);
+        Widget::render(target);
     }
 }

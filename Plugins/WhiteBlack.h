@@ -6,19 +6,19 @@ extern "C" plugin::Plugin* getInstance(plugin::App *app);
 
 class WhiteAndBlackFilter;
 
-class WhiteAndBlackPlugin : public plugin::Plugin
+class SymWhiteAndBlackPlugin : public plugin::Plugin
 {
     plugin::App*         app;
     WhiteAndBlackFilter* filter;
 
 
 public:
-    WhiteAndBlackPlugin(plugin::App* app);
+    SymWhiteAndBlackPlugin(plugin::App* app);
 
     plugin::Interface *getInterface() override
     { return (plugin::Interface*) filter; }
     
-    ~WhiteAndBlackPlugin()
+    ~SymWhiteAndBlackPlugin()
     {}
 };
 
