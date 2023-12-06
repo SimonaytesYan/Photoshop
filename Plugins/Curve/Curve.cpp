@@ -13,10 +13,6 @@ namespace sym_plugin
     CurvePlugin::CurvePlugin(plugin::App* app) :
     app (app)
     {
-        #ifdef DEBUG
-            fprintf(stderr, "root in plugin = %p\n", app->root->getRoot());
-            fprintf(stderr, "plugin in create = %p\n", this);
-        #endif 
         filter = new CurveFilter(this);
 
         name = "SymCurve";
@@ -54,6 +50,7 @@ namespace sym_plugin
         // Create window
 
         CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
+
         window->registerSubWidget(ok_button);
         functor->window = window;
         
@@ -81,11 +78,6 @@ namespace sym_plugin
 
     void CurveFilter::apply(plugin::RenderTargetI* rt)
     {
-        #ifndef DEBUG
-            fprintf(stderr, "apply curve\n");
-            fprintf(stderr, "parent  = %p\n", parent);
-        #endif
-
         parent->CreateCurveWindow(rt);
     }
 
@@ -102,10 +94,6 @@ namespace sym_plugin
             for (int x = 0; x < texture->width; x++)
             {
                 plugin::Color* pixel_i = &pixels[y * texture->width + x];
-                //fprintf(stderr, "x, y = (%d, %d)\n", x, y);
-                //fprintf(stderr, "pixel_i->r = %d\n",pixel_i->r);
-                //fprintf(stderr, "pixel_i->g = %d\n",pixel_i->g);
-                //fprintf(stderr, "pixel_i->b = %d\n",pixel_i->b);
 
                 pixel_i->r = r.data[pixel_i->r];
                 pixel_i->g = g.data[pixel_i->g];
@@ -317,13 +305,13 @@ namespace sym_plugin
 
     void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
     {
-        fprintf(stderr, "CurveWindow::onMouseRelease mouse.pos = (%lg, %lg)\n", position.x, position.y);
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
         {
             if (points[p0].val.x < position.x && position.x < points[p1].val.x)
             {
                 points.Insert(position, p0);
+                moving_point_index = points[p0].next;
                 break;
             }
             p0 = p1;
@@ -432,10 +420,10 @@ namespace sym_plugin
 
     CurveWindow::~CurveWindow()
     {
+        app->event_manager->unregisterObject(this);
         app->event_manager->setPriority(plugin::EventType::MouseMove, 0);
         app->event_manager->setPriority(plugin::EventType::MousePress, 0);
         app->event_manager->setPriority(plugin::EventType::MouseRelease, 0);
-        app->event_manager->unregisterObject(this);
     }
 
     void CurveWindow::DrawCurve(plugin::RenderTargetI* target, 
@@ -497,16 +485,15 @@ namespace sym_plugin
 
     bool Button::onMousePress(plugin::MouseContext mouse)
     {
-        fprintf(stderr, "Press on button\n");
         if (InsideP(mouse.position))
         {
-            fprintf(stderr, "Press inside button\n");
             if (Widget::onMousePress(mouse))
                 return true;
 
             pressed = true;
             if (on_press == nullptr)
                 return false;
+
             (*on_press)();      // call button function
 
             return true;
@@ -546,7 +533,6 @@ namespace sym_plugin
         return false;
     }
 
-
     //====================================LABEL=================================
 
     Label::Label(plugin::Vec2 _position, int _character_size, 
@@ -581,5 +567,13 @@ namespace sym_plugin
 
             Widget::render(render_target);
         }
+    }
+
+    //==================================FUNCTORS================================
+
+    void ApplyFilterFunctor::operator()()
+    {
+        delete window;
+        filter->apply(rt, r, g, b);
     }
 }

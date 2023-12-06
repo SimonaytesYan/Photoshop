@@ -182,11 +182,7 @@ namespace sym_plugin
         b      (plugin::Array<uint8_t>())
         {}
 
-        void operator()() override
-        {
-            delete window;
-            filter->apply(rt, r, g, b);
-        }
+        void operator()() override;
     };
 
     //=============================CURVE WINDOW=================================

@@ -301,7 +301,6 @@ WidgetPtr::WidgetPtr(plugin::WidgetI* object)
 {
     if (object->isExtern())
     {
-        fprintf(stderr, "extern WidgetPtr = %p\n", object);
         is_extern = true;
         widget_i  = object;
     }
