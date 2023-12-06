@@ -273,12 +273,13 @@ namespace sym_plugin
     //===============================CURVE WINDOW==============================
 
     CurveWindow::CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
-    Widget   (pos, size),
-    points_r (List<plugin::Vec2>(0)),
-    points_g (List<plugin::Vec2>(0)),
-    points_b (List<plugin::Vec2>(0)),
-    functor  (functor),
-    app      (app)
+    Widget             (pos, size),
+    points_r           (List<plugin::Vec2>(0)),
+    points_g           (List<plugin::Vec2>(0)),
+    points_b           (List<plugin::Vec2>(0)),
+    functor            (functor),
+    app                (app),
+    moving_point_index (-1)
     {
         priority = 255;
 
@@ -316,7 +317,6 @@ namespace sym_plugin
 
     void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
     {
-
         fprintf(stderr, "CurveWindow::onMouseRelease mouse.pos = (%lg, %lg)\n", position.x, position.y);
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
@@ -328,6 +328,20 @@ namespace sym_plugin
             }
             p0 = p1;
         }
+    }
+
+    void CurveWindow::ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
+    {
+        for (int p0 = points.Begin(); p0 != -1; p0 = points.Iterate(p0))
+        {
+            if ((points[p0].val - position).Length() < kCurvePointSize)
+            {
+                moving_point_index = p0;
+                return;
+            }
+        }
+
+        AddPoint(points, position);
     }
 
     bool CurveWindow::onMousePress(plugin::MouseContext mouse)
@@ -355,6 +369,63 @@ namespace sym_plugin
             }
             return true;
         }
+
+        return false;
+    }
+
+    void CurveWindow::MovePoint(plugin::Vec2 mouse_pos)
+    {
+        if (moving_point_index == -1)
+        {
+            List<plugin::Vec2>* points;
+
+            switch (status)
+            {
+                case CurveWindowStatus::Red:
+                    points = &points_r;
+                    break;
+                case CurveWindowStatus::Green:
+                    points = &points_g;
+                    break;
+                case CurveWindowStatus::Blue:
+                    points = &points_b;
+                    break;
+                
+                default:
+                    break;
+            }
+
+            // Check going abroad
+            if (mouse_pos.x < position.x)
+                mouse_pos.x = position.x;
+            if (mouse_pos.y < position.y)
+                mouse_pos.y = position.y;
+            
+            if (mouse_pos.x > position.x + size.x)
+                mouse_pos.x = position.x + size.x;
+            if (mouse_pos.y > position.y + size.y)
+                mouse_pos.y = position.y + size.y;
+
+            (*points)[moving_point_index].val = mouse_pos;
+        }
+    }
+
+    bool CurveWindow::onMouseMove(plugin::MouseContext mouse)
+    {
+        if (Widget::onMouseMove(mouse))
+            return true;
+
+        MovePoint(mouse.position);
+
+        return false;
+    }
+
+    bool CurveWindow::onMouseRelease(plugin::MouseContext mouse)
+    {
+        if (Widget::onMouseRelease(mouse))
+            return true;
+
+        moving_point_index = -1;
 
         return false;
     }

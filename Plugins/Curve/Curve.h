@@ -212,6 +212,10 @@ namespace sym_plugin
 
         CurveWindowStatus status;
 
+        int moving_point_index;
+
+        void ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position);
+        void MovePoint(plugin::Vec2 mouse_pos);
         void AddPoint (List<plugin::Vec2> &points, plugin::Vec2 pos);
         void DrawCurve(plugin::RenderTargetI* target,
                        List<plugin::Vec2> &points, 
@@ -223,9 +227,9 @@ namespace sym_plugin
         Button* green_button;
         Button* blue_button;
 
-        ~CurveWindow();
-
         CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app);
+        
+        ~CurveWindow();
         
         void SetStatus(CurveWindowStatus new_status) 
         { 
@@ -251,8 +255,10 @@ namespace sym_plugin
             }
         } 
 
-        void render(plugin::RenderTargetI* target)    override;
-        bool onMousePress(plugin::MouseContext mouse) override;
+        void render        (plugin::RenderTargetI* target) override;
+        bool onMousePress  (plugin::MouseContext mouse)    override;
+        bool onMouseMove   (plugin::MouseContext mouse)    override;
+        bool onMouseRelease(plugin::MouseContext mouse)    override;
     };
 
 

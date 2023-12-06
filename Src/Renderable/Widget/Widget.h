@@ -15,6 +15,7 @@ class Widget;
 
 struct WidgetPtr
 {
+
     union 
     {
         Widget*          widget;
@@ -22,6 +23,7 @@ struct WidgetPtr
     };
     bool is_extern;
 
+    WidgetPtr() { is_extern = false; widget = nullptr; };
     WidgetPtr(plugin::WidgetI* object);
 
     RegionSet    GetDefaultRegSet ();
