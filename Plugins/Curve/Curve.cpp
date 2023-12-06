@@ -28,6 +28,9 @@ namespace sym_plugin
         plugin::Vec2 start_pos = plugin::Vec2(100, 100);
         plugin::Vec2 size      = plugin::Vec2(800, 800);
 
+        plugin::Vec2  button_size  = plugin::Vec2(100, 50);
+        plugin::Color button_color = plugin::Color(128, 128, 128);
+
         // Create OK button
 
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
@@ -269,20 +272,86 @@ namespace sym_plugin
 
     //===============================CURVE WINDOW==============================
 
-    bool CurveWindow::onMouseRelease(plugin::MouseContext mouse)
+    CurveWindow::CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
+    Widget   (pos, size),
+    points_r (List<plugin::Vec2>(0)),
+    points_g (List<plugin::Vec2>(0)),
+    points_b (List<plugin::Vec2>(0)),
+    functor  (functor),
+    app      (app)
     {
-        Widget::onMouseRelease(mouse);
+        priority = 255;
+
+        points_r.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
+        points_r.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
+            
+        points_g.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
+        points_g.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
+
+        points_b.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
+        points_b.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
+
+
+         // Add button to switch color
+
+        ChangeStatusFunctor* red_button_functor   = new ChangeStatusFunctor(CurveWindowStatus::Red,   this);
+        ChangeStatusFunctor* green_button_functor = new ChangeStatusFunctor(CurveWindowStatus::Green, this);
+        ChangeStatusFunctor* blue_button_functor  = new ChangeStatusFunctor(CurveWindowStatus::Blue,  this);
+
+        plugin::Vec2 button_size(100, 50); 
+
+        red_button   = new Button(getPos() + plugin::Vec2(100, 50), 
+                                  button_size, kUnSelected, red_button_functor);
+        green_button = new Button(getPos() + plugin::Vec2(300, 50), 
+                                  button_size, kUnSelected, green_button_functor);
+        blue_button  = new Button(getPos() + plugin::Vec2(500, 50), 
+                                  button_size, kUnSelected, blue_button_functor);
+
+        registerSubWidget(red_button);
+        registerSubWidget(green_button);
+        registerSubWidget(blue_button);
+
+        SetStatus(CurveWindowStatus::Red);
+    }
+
+    void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
+    {
+
+        fprintf(stderr, "CurveWindow::onMouseRelease mouse.pos = (%lg, %lg)\n", position.x, position.y);
+        int p0 = points.Begin();
+        for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
+        {
+            if (points[p0].val.x < position.x && position.x < points[p1].val.x)
+            {
+                points.Insert(position, p0);
+                break;
+            }
+            p0 = p1;
+        }
+    }
+
+    bool CurveWindow::onMousePress(plugin::MouseContext mouse)
+    {
+        if (Widget::onMousePress(mouse))
+            return true;
+        
         if (available && InsideP(mouse.position))
         {
-            fprintf(stderr, "CurveWindow::onMouseRelease mouse.pos = (%lg, %lg)\n", mouse.position.x, mouse.position.y);
-            int p0 = points.Begin();
-            for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
+            switch (status)
             {
-                if (points[p0].val.x < mouse.position.x && mouse.position.x < points[p1].val.x)
-                {
-                    points.Insert(mouse.position, p0);
+                case CurveWindowStatus::Red:
+                    AddPoint(points_r, mouse.position);
                     break;
-                }
+                case CurveWindowStatus::Green:
+                    AddPoint(points_g, mouse.position);
+                    break;
+                case CurveWindowStatus::Blue:
+                    AddPoint(points_b, mouse.position);
+                    break;
+                
+                default:
+                    fprintf(stderr, "CurveWindow::onMousePress status = %d\n", status);
+                    break;
             }
             return true;
         }
@@ -298,12 +367,44 @@ namespace sym_plugin
         app->event_manager->unregisterObject(this);
     }
 
-    void CurveWindow::render(plugin::RenderTargetI* target)
+    void CurveWindow::DrawCurve(plugin::RenderTargetI* target, 
+                                List<plugin::Vec2> &points, 
+                                plugin::Color color)
     {
+        plugin::Vec2 point_size = plugin::Vec2(kCurvePointSize, kCurvePointSize);
+
         target->drawRect(position, size, plugin::Color(100, 100, 100));
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
-            target->drawLine(points[p0].val, points[p1].val, plugin::Color(0, 0, 0));
+        {
+            target->drawLine(points[p0].val, points[p1].val, color);
+
+            target->drawEllipse(points[p0].val - point_size / 2, 
+                                point_size, color);
+            p0 = p1;
+        }
+        target->drawEllipse(points[p0].val - point_size / 2, 
+                            point_size, color);
+    }
+
+    void CurveWindow::render(plugin::RenderTargetI* target)
+    {
+        switch (status)
+        {
+            case CurveWindowStatus::Red:
+                DrawCurve(target, points_r, kCurveColorR);
+                break;
+            case CurveWindowStatus::Green:
+                DrawCurve(target, points_g, kCurveColorG);
+                break;
+            case CurveWindowStatus::Blue:
+                DrawCurve(target, points_b, kCurveColorB);
+                break;
+        
+            default:
+                fprintf(stderr, "CurveWindow::render status = %d\n", status);
+                break;
+        }
         
         Widget::render(target);
     }
@@ -325,10 +426,11 @@ namespace sym_plugin
 
     bool Button::onMousePress(plugin::MouseContext mouse)
     {
+        fprintf(stderr, "Press on button\n");
         if (InsideP(mouse.position))
         {
-            bool intercepted = Widget::onMousePress(mouse);
-            if (intercepted)
+            fprintf(stderr, "Press inside button\n");
+            if (Widget::onMousePress(mouse))
                 return true;
 
             pressed = true;

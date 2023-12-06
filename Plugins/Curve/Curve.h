@@ -6,6 +6,12 @@
 
 namespace sym_plugin
 {
+
+    const int           kCurvePointSize = 15;
+    const plugin::Color kCurveColorR(255,   0,   0);
+    const plugin::Color kCurveColorG(  0, 255,   0);
+    const plugin::Color kCurveColorB(  0,   0, 255);
+
     class CurveFilter;
     
     class CurvePlugin : public plugin::Plugin
@@ -54,11 +60,11 @@ namespace sym_plugin
 
     enum Events
     {
-        KEY_RELEASE,
-        KEY_PRESS,
-        MOUSE_MOVE,
         MOUSE_PRESS,
         MOUSE_RELEASE,
+        MOUSE_MOVE,
+        KEY_PRESS,
+        KEY_RELEASE,
         ON_CLOCK,
         EVENTS_NUMBER
     };
@@ -110,33 +116,6 @@ namespace sym_plugin
         virtual bool InsideP(plugin::Vec2 v);
     };
 
-    struct ApplyFilterFunctor;
-
-    class CurveWindow : public Widget
-    {
-        plugin::App*        app;
-        ApplyFilterFunctor* functor;
-        List<plugin::Vec2> points;
-
-    public :
-        ~CurveWindow();
-
-        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
-        Widget (pos, size),
-        points (List<plugin::Vec2>(0)),
-        functor(functor),
-        app    (app)
-        {
-            priority = 255;
-            points.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
-            points.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
-        }
-
-        void render(plugin::RenderTargetI* target) override;
-
-        bool onMouseRelease(plugin::MouseContext mouse) override;
-    };
-
     //===============================BUTTON=====================================
     
     struct ButtonFunction
@@ -175,11 +154,15 @@ namespace sym_plugin
             on_press = new_on_press;
         }
 
+        void SetColor(plugin::Color color) { background_color = color; }
+
         virtual void render        (plugin::RenderTargetI* render_target) override;
                 bool onMousePress  (plugin::MouseContext   mouse)         override;
                 bool onMouseRelease(plugin::MouseContext   mouse)         override;
                 bool onMouseMove   (plugin::MouseContext   mouse)         override;
     };
+
+    class CurveWindow;
 
     struct ApplyFilterFunctor : public ButtonFunction
     {
@@ -203,6 +186,91 @@ namespace sym_plugin
         {
             delete window;
             filter->apply(rt, r, g, b);
+        }
+    };
+
+    //=============================CURVE WINDOW=================================
+
+    const plugin::Color kSelected  (128, 128, 128);
+    const plugin::Color kUnSelected(50,  50,  50);
+
+    enum class CurveWindowStatus
+    {
+        Red,
+        Green,
+        Blue
+    };
+
+    class CurveWindow : public Widget
+    {
+        plugin::App*        app;
+        ApplyFilterFunctor* functor;
+
+        List<plugin::Vec2>  points_r;
+        List<plugin::Vec2>  points_g;
+        List<plugin::Vec2>  points_b;
+
+        CurveWindowStatus status;
+
+        void AddPoint (List<plugin::Vec2> &points, plugin::Vec2 pos);
+        void DrawCurve(plugin::RenderTargetI* target,
+                       List<plugin::Vec2> &points, 
+                       plugin::Color color);
+
+    public :
+
+        Button* red_button;
+        Button* green_button;
+        Button* blue_button;
+
+        ~CurveWindow();
+
+        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app);
+        
+        void SetStatus(CurveWindowStatus new_status) 
+        { 
+            status = new_status;
+
+            red_button  ->SetColor(kUnSelected);
+            green_button->SetColor(kUnSelected);
+            blue_button ->SetColor(kUnSelected);
+            
+            switch (new_status)
+            {
+                case CurveWindowStatus::Red:
+                    red_button->SetColor(kSelected);
+                    break;
+                case CurveWindowStatus::Green:
+                    green_button->SetColor(kSelected);
+                    break;
+                case CurveWindowStatus::Blue:
+                    blue_button->SetColor(kSelected);
+                    break;
+                default:
+                    break;
+            }
+        } 
+
+        void render(plugin::RenderTargetI* target)    override;
+        bool onMousePress(plugin::MouseContext mouse) override;
+    };
+
+
+    struct ChangeStatusFunctor : ButtonFunction
+    {
+        CurveWindowStatus status_to_set;
+        CurveWindow*      window;
+
+        ChangeStatusFunctor(CurveWindowStatus status, 
+                                       CurveWindow*      window) :
+        status_to_set (status),
+        window        (window)
+        { }
+
+        void operator()() override
+        {
+            fprintf(stderr, "Change status to %d\n", status_to_set);
+            window->SetStatus(status_to_set);
         }
     };
 

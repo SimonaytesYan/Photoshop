@@ -24,10 +24,8 @@ bool EventManager::onKeyboardRelease(plugin::KeyboardContext key)
 
 bool EventManager::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "press min_prior = %d\n", min_priority[MOUSE_PRESS]);
     for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
     {
-        fprintf(stderr, "object[%d] priority = %d\n", i, objects[i].val->getPriority());
         if (objects[i].val->getPriority() >= min_priority[MOUSE_PRESS])
             objects[i].val->onMousePress(mouse);
     }
