@@ -286,7 +286,6 @@ namespace sym_plugin
         points_b.PushBack(p0);
         points_b.PushBack(p1);
 
-
          // Add button to switch color
 
         ChangeStatusFunctor* red_button_functor   = new ChangeStatusFunctor(CurveWindowStatus::Red,   this);
@@ -390,15 +389,15 @@ namespace sym_plugin
             }
 
             // Check going abroad
-            if (mouse_pos.x < position.x)
-                mouse_pos.x = position.x;
-            if (mouse_pos.y < position.y)
-                mouse_pos.y = position.y;
+            if (mouse_pos.x < graph_pos.x)
+                mouse_pos.x = graph_pos.x;
+            if (mouse_pos.y < graph_pos.y)
+                mouse_pos.y = graph_pos.y;
             
-            if (mouse_pos.x > position.x + size.x)
-                mouse_pos.x = position.x + size.x;
-            if (mouse_pos.y > position.y + size.y)
-                mouse_pos.y = position.y + size.y;
+            if (mouse_pos.x > graph_pos.x + graph_size.x)
+                mouse_pos.x = graph_pos.x + graph_size.x;
+            if (mouse_pos.y > graph_pos.y + graph_size.y)
+                mouse_pos.y = graph_pos.y + graph_size.y;
 
             (*points)[moving_point_index].val = mouse_pos;
         }
