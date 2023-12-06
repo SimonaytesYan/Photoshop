@@ -24,12 +24,35 @@ namespace sym_plugin
     }
 
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
-    {
-        fprintf(stderr, "CreateCurveWindow\n");
-        // Create window
+    {        
         plugin::Vec2 start_pos = plugin::Vec2(100, 100);
         plugin::Vec2 size      = plugin::Vec2(800, 800);
-        CurveWindow* window    = new CurveWindow(start_pos, size);
+
+        // Create OK button
+
+        ApplyFilterFunctor* functor = new ApplyFilterFunctor();
+        functor->rt = rt;
+        functor->r  = plugin::Array<uint8_t>(255);
+        functor->r.data = new uint8_t[255];
+        functor->g  = plugin::Array<uint8_t>(255);
+        functor->g.data = new uint8_t[255];
+        functor->b  = plugin::Array<uint8_t>(255);
+        functor->b.data = new uint8_t[255];
+
+        Button* ok_button = new Button(start_pos + plugin::Vec2(300, 650), 
+                                       plugin::Vec2(100, 50), 
+                                       plugin::Color(128, 128, 128), 
+                                       functor);
+        Label* ok_label = new Label(ok_button->getSize(), 10, "OK", 
+                                               plugin::Color(0, 255, 255));
+
+        ok_button->registerSubWidget(ok_label);
+        
+        // Create window
+
+        CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
+        window->registerSubWidget(ok_button);
+        functor->window = window;
         
         // Make it modal
         window->setPriority(255);
@@ -40,32 +63,6 @@ namespace sym_plugin
                                         window->getPriority());
         app->event_manager->setPriority(plugin::EventType::MouseRelease, 
                                         window->getPriority());
-
-        #ifdef DEBUG
-            fprintf(stderr, "root in CreateCurveWindow = %p\n", app->root->getRoot());
-        #endif
-        // Add OK button
-
-        ApplyFilterFunctor* functor = new ApplyFilterFunctor();
-        functor->rt = rt;
-        functor->r  = plugin::Array<uint8_t>(255);
-        functor->g  = plugin::Array<uint8_t>(255);
-        functor->b  = plugin::Array<uint8_t>(255);
-
-        Button* ok_button = new Button(start_pos + plugin::Vec2(300, 650), 
-                                       plugin::Vec2(100, 50), 
-                                       plugin::Color(128, 128, 128), 
-                                       functor);
-        Label* ok_label = new Label(ok_button->getSize(), 10, "OK", 
-                                               plugin::Color(255, 255, 255));
-
-        #ifdef DEBUG
-            fprintf(stderr, "label  = %p\n"
-                            "button = %p\n", ok_button, ok_label);
-        #endif
-
-        ok_button->registerSubWidget(ok_label);
-        window->registerSubWidget(ok_button);
 
         app->root->getRoot()->registerSubWidget(window);
     }
@@ -106,6 +103,10 @@ namespace sym_plugin
             for (int x = 0; x < texture->width; x++)
             {
                 plugin::Color* pixel_i = &pixels[y * texture->width + x];
+                //fprintf(stderr, "x, y = (%d, %d)\n", x, y);
+                //fprintf(stderr, "pixel_i->r = %d\n",pixel_i->r);
+                //fprintf(stderr, "pixel_i->g = %d\n",pixel_i->g);
+                //fprintf(stderr, "pixel_i->b = %d\n",pixel_i->b);
 
                 pixel_i->r = r.data[pixel_i->r];
                 pixel_i->g = g.data[pixel_i->g];
@@ -122,7 +123,6 @@ namespace sym_plugin
         delete texture;
     }
 
-    
     //================================WIDGET====================================
     
     const double kPrecision = 1e-6;
@@ -138,6 +138,11 @@ namespace sym_plugin
 
     Widget::~Widget()
     {
+        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+            delete sub_widgets[i].val;
+        
+        if (parent != nullptr)
+            parent->unregisterSubWidget(this);
     }
 
     void Widget::move(plugin::Vec2 delta)
@@ -266,15 +271,44 @@ namespace sym_plugin
                v.GetY() - position.GetY() <= size.GetY() + kPrecision;
     }
 
-    //===============================RENDER WINDOW==============================
+    //===============================CURVE WINDOW==============================
+
+    bool CurveWindow::onMouseRelease(plugin::MouseContext mouse)
+    {
+        Widget::onMouseRelease(mouse);
+        if (available && InsideP(mouse.position))
+        {
+            fprintf(stderr, "CurveWindow::onMouseRelease mouse.pos = (%lg, %lg)\n", mouse.position.x, mouse.position.y);
+            int p0 = points.Begin();
+            for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
+            {
+                if (points[p0].val.x < mouse.position.x && mouse.position.x < points[p1].val.x)
+                {
+                    points.Insert(mouse.position, p0);
+                    break;
+                }
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    CurveWindow::~CurveWindow()
+    {
+        app->event_manager->setPriority(plugin::EventType::MouseMove, 0);
+        app->event_manager->setPriority(plugin::EventType::MousePress, 0);
+        app->event_manager->setPriority(plugin::EventType::MouseRelease, 0);
+        app->event_manager->unregisterObject(this);
+    }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
     {
-        target->drawRect(position, size, plugin::Color(255, 255, 255));
-
+        target->drawRect(position, size, plugin::Color(100, 100, 100));
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
             target->drawLine(points[p0].val, points[p1].val, plugin::Color(0, 0, 0));
+        
         Widget::render(target);
     }
 
@@ -373,7 +407,8 @@ namespace sym_plugin
     {
         if (available)
         {
-            render_target->drawRect(position, size, background);
+            fprintf(stderr, "Render label\n");
+            //render_target->drawRect(position, size, background);
             render_target->drawText(position, text, character_size, text_color);
 
             Widget::render(render_target);

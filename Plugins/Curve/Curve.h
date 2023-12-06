@@ -110,22 +110,30 @@ namespace sym_plugin
         virtual bool InsideP(plugin::Vec2 v);
     };
 
+    struct ApplyFilterFunctor;
 
     class CurveWindow : public Widget
     {
+        plugin::App*        app;
+        ApplyFilterFunctor* functor;
         List<plugin::Vec2> points;
 
     public :
+        ~CurveWindow();
 
-        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size) :
-        Widget(pos, size),
-        points(List<plugin::Vec2>(0))
+        CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
+        Widget (pos, size),
+        points (List<plugin::Vec2>(0)),
+        functor(functor),
+        app    (app)
         {
-            points.PushBack(plugin::Vec2(pos.GetX(), pos.GetY() + size.GetY()));
+            points.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
+            points.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
         }
 
-
         void render(plugin::RenderTargetI* target) override;
+
+        bool onMouseRelease(plugin::MouseContext mouse) override;
     };
 
     //===============================BUTTON=====================================
@@ -174,6 +182,7 @@ namespace sym_plugin
 
     struct ApplyFilterFunctor : public ButtonFunction
     {
+        CurveWindow* window;
         CurveFilter* filter;
         plugin::RenderTargetI* rt;
         plugin::Array<uint8_t> r;
@@ -183,6 +192,7 @@ namespace sym_plugin
         ApplyFilterFunctor() :
         filter (nullptr),
         rt     (nullptr),
+        window (nullptr),
         r      (plugin::Array<uint8_t>()),
         g      (plugin::Array<uint8_t>()),
         b      (plugin::Array<uint8_t>())
@@ -190,6 +200,7 @@ namespace sym_plugin
 
         void operator()() override
         {
+            delete window;
             filter->apply(rt, r, g, b);
         }
     };
