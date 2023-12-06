@@ -31,12 +31,19 @@ namespace sym_plugin
 
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
         functor->rt = rt;
-        functor->r  = plugin::Array<uint8_t>(255);
-        functor->r.data = new uint8_t[255];
-        functor->g  = plugin::Array<uint8_t>(255);
-        functor->g.data = new uint8_t[255];
-        functor->b  = plugin::Array<uint8_t>(255);
-        functor->b.data = new uint8_t[255];
+        functor->r  = plugin::Array<uint8_t>(256);
+        functor->r.data = new uint8_t[256];
+        functor->g  = plugin::Array<uint8_t>(256);
+        functor->g.data = new uint8_t[256];
+        functor->b  = plugin::Array<uint8_t>(256);
+        functor->b.data = new uint8_t[256];
+
+        for (int i = 0; i < 256; i++)
+        {
+            functor->r.data[i] = i;
+            functor->g.data[i] = i;
+            functor->b.data[i] = i;
+        }
 
         Button* ok_button = new Button(start_pos + plugin::Vec2(300, 650), 
                                        plugin::Vec2(100, 50), 
@@ -431,6 +438,56 @@ namespace sym_plugin
         app->event_manager->setPriority(plugin::EventType::MouseRelease, 0);
     }
 
+    plugin::Color GetPixel(plugin::Texture* texture, plugin::Vec2 current_point)
+    {
+        return texture->pixels[(int)current_point.y * texture->width + (int)current_point.x];
+    }
+
+    void CurveWindow::UpdateFilter(plugin::Texture* texture, List<plugin::Vec2> &points)
+    {
+
+        plugin::Color          status_color;
+        plugin::Array<uint8_t> status_array;
+        switch (status)
+        {
+            case CurveWindowStatus::Red:
+                status_color = kCurveColorR;
+                status_array = functor->r;
+                break;
+            case CurveWindowStatus::Green:
+                status_color = kCurveColorG;
+                status_array = functor->g;
+                break;
+            case CurveWindowStatus::Blue:
+                status_color = kCurveColorB;
+                status_array = functor->b;
+                break;
+
+            default:
+                break;
+        }
+
+        plugin::Vec2 point(points[points.Begin()].val); 
+        for (int i = 0; i < 256; i++)
+        {
+            plugin::Vec2  current_point = point;
+            while (current_point.y > graph_pos.y &&
+                   ((GetPixel(texture, current_point).r != status_color.r) || 
+                    (GetPixel(texture, current_point).g != status_color.g) || 
+                    (GetPixel(texture, current_point).b != status_color.b)))
+            {
+                current_point.y--;
+            }
+
+            if (current_point.y <= points[points.End()].val.y)
+            {
+                status_array.data[i] = current_point.y;
+            }
+
+            point.x++;
+        }
+    }
+
     void CurveWindow::DrawCurve(plugin::RenderTargetI* target, 
                                 List<plugin::Vec2> &points, 
                                 plugin::Color color)
@@ -449,6 +506,8 @@ namespace sym_plugin
         }
         target->drawEllipse(points[p0].val - point_size / 2, 
                             point_size, color);
+        
+        UpdateFilter(target->getTexture(), points);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
@@ -480,7 +539,12 @@ namespace sym_plugin
         if (available)
         {
                 if (pressed)
-                    render_target->drawRect(position, size, background_color.Inverse());
+                {
+                    plugin::Color inverse_color(255 - background_color.r,
+                                                255 - background_color.g,
+                                                255 - background_color.b); 
+                    render_target->drawRect(position, size, inverse_color);
+                }
                 else
                     render_target->drawRect(position, size, background_color);
 

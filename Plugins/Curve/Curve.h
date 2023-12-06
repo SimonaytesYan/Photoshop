@@ -3,6 +3,7 @@
 
 #include "../../Src/Standart/Standart.h"
 #include "../../Src/List.h"
+#include "../CutMullRom/CutMullRom.h"
 
 namespace sym_plugin
 {
@@ -212,12 +213,13 @@ namespace sym_plugin
         plugin::Vec2 graph_size;
         plugin::Vec2 graph_pos;
 
+        void UpdateFilter(plugin::Texture* texture, List<plugin::Vec2> &points);
         void ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position);
-        void MovePoint(plugin::Vec2 mouse_pos);
-        void AddPoint (List<plugin::Vec2> &points, plugin::Vec2 pos);
-        void DrawCurve(plugin::RenderTargetI* target,
-                       List<plugin::Vec2> &points, 
-                       plugin::Color color);
+        void MovePoint   (plugin::Vec2 mouse_pos);
+        void AddPoint    (List<plugin::Vec2> &points, plugin::Vec2 pos);
+        void DrawCurve   (plugin::RenderTargetI* target,
+                          List<plugin::Vec2> &points, 
+                          plugin::Color color);
 
     public :
         Button* red_button;
@@ -272,7 +274,6 @@ namespace sym_plugin
 
         void operator()() override
         {
-            fprintf(stderr, "Change status to %d\n", status_to_set);
             window->SetStatus(status_to_set);
         }
     };
