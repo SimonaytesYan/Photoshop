@@ -271,14 +271,20 @@ namespace sym_plugin
     {
         priority = 255;
 
-        points_r.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
-        points_r.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
-            
-        points_g.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
-        points_g.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
+        graph_size = plugin::Vec2(255, 255);
+        graph_pos  = plugin::Vec2(pos + (size - graph_size) / 2);
 
-        points_b.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
-        points_b.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
+        plugin::Vec2 p0(graph_pos.GetX(), graph_pos.GetY() + graph_size.GetY());
+        plugin::Vec2 p1(graph_pos.GetX() + graph_size.GetX(), graph_pos.GetY());
+
+        points_r.PushBack(p0);
+        points_r.PushBack(p1);
+            
+        points_g.PushBack(p0);
+        points_g.PushBack(p1);
+
+        points_b.PushBack(p0);
+        points_b.PushBack(p1);
 
 
          // Add button to switch color

@@ -207,8 +207,10 @@ namespace sym_plugin
         List<plugin::Vec2>  points_b;
 
         CurveWindowStatus status;
-
         int moving_point_index;
+
+        plugin::Vec2 graph_size;
+        plugin::Vec2 graph_pos;
 
         void ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position);
         void MovePoint(plugin::Vec2 mouse_pos);
@@ -218,7 +220,6 @@ namespace sym_plugin
                        plugin::Color color);
 
     public :
-
         Button* red_button;
         Button* green_button;
         Button* blue_button;
