@@ -354,13 +354,13 @@ namespace sym_plugin
             switch (status)
             {
                 case CurveWindowStatus::Red:
-                    AddPoint(points_r, mouse.position);
+                    ProcessPoint(points_r, mouse.position);
                     break;
                 case CurveWindowStatus::Green:
-                    AddPoint(points_g, mouse.position);
+                    ProcessPoint(points_g, mouse.position);
                     break;
                 case CurveWindowStatus::Blue:
-                    AddPoint(points_b, mouse.position);
+                    ProcessPoint(points_b, mouse.position);
                     break;
                 
                 default:
@@ -375,7 +375,7 @@ namespace sym_plugin
 
     void CurveWindow::MovePoint(plugin::Vec2 mouse_pos)
     {
-        if (moving_point_index == -1)
+        if (moving_point_index != -1)
         {
             List<plugin::Vec2>* points;
 
