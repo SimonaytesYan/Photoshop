@@ -55,6 +55,7 @@ int main()
 	RenderTarget rend_targ(plugin::Vec2(WindowWidth, WindowHeight));
 
 	RectangleWidget the_root(plugin::Vec2(0, 0), plugin::Vec2(WindowWidth, WindowHeight));
+	the_root.GetRT()->clear(plugin::Color(255, 255, 255));
 	Window main_window(plugin::Vec2(0, 0), 
 					   plugin::Vec2(WindowWidth, WindowHeight), "Window1");
 	the_root.registerSubWidget(&main_window);
@@ -338,7 +339,6 @@ plugin::Plugin* LoadPlugin(const char* path, plugin::App* app)
 		return nullptr;
 	}
 
-	fprintf(stderr, "plugin app->root = %p\n", app->root->getRoot());
 	plugin::Plugin* my_plugin = get_plugin(app);
 
 	return my_plugin;

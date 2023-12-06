@@ -127,6 +127,7 @@ namespace sym_plugin
         functor(functor),
         app    (app)
         {
+            priority = 255;
             points.PushBack(plugin::Vec2(pos.GetX(),               pos.GetY() + size.GetY()));
             points.PushBack(plugin::Vec2(pos.GetX() + size.GetX(), pos.GetY()));
         }

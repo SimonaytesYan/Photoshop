@@ -386,8 +386,6 @@ void RenderTarget::drawEllipse(plugin::Vec2 pos, plugin::Vec2 size, plugin::Colo
 void RenderTarget::drawText(plugin::Vec2 pos, const char *content, 
                             uint16_t char_size, plugin::Color color)
 {
-    static long long cnt = 0;
-    fprintf(stderr, "[%d]Draw text = <%s>\n", cnt++, content);
     DrawText(pos, standard_font, content, char_size, color);
 }
 

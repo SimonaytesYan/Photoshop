@@ -57,12 +57,8 @@ namespace sym_plugin
         // Make it modal
         window->setPriority(255);
         app->event_manager->registerObject(window);
-        app->event_manager->setPriority(plugin::EventType::MouseMove, 
-                                        window->getPriority());
         app->event_manager->setPriority(plugin::EventType::MousePress, 
-                                        window->getPriority());
-        app->event_manager->setPriority(plugin::EventType::MouseRelease, 
-                                        window->getPriority());
+                                        255);
 
         app->root->getRoot()->registerSubWidget(window);
     }
@@ -407,7 +403,6 @@ namespace sym_plugin
     {
         if (available)
         {
-            fprintf(stderr, "Render label\n");
             //render_target->drawRect(position, size, background);
             render_target->drawText(position, text, character_size, text_color);
 
