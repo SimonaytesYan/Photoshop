@@ -9,7 +9,6 @@ namespace sym_plugin
 {
     const plugin::Color kBackgroundColor(150, 100, 100);
 
-
     CurvePlugin::CurvePlugin(plugin::App* app) :
     app (app)
     {
@@ -264,7 +263,7 @@ namespace sym_plugin
                v.GetY() - position.GetY() <= size.GetY() + kPrecision;
     }
 
-    //===============================CURVE WINDOW==============================
+    //===============================CURVE WINDOW===============================
 
     CurveWindow::CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
     Widget             (pos, size),
@@ -521,7 +520,7 @@ namespace sym_plugin
        
         plugin::Vec2 point_size = plugin::Vec2(kCurvePointSize, kCurvePointSize);
 
-        int p0 = points.Begin();
+        /*int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
         {
             target->drawLine(points[p0].val, points[p1].val, color);
@@ -530,9 +529,17 @@ namespace sym_plugin
                                 point_size, color);
             p0 = p1;
         }
-        target->drawEllipse(points[p0].val - point_size / 2, 
+        target->drawEllipse(points[p0].val - point_size / 2,
                             point_size, color);
-        
+        */ 
+
+        for (int index = points.Begin(); index != -1; index = points.Iterate(index))
+        {
+            target->drawEllipse(points[index].val - point_size / 2, 
+                                point_size, color);            
+        }
+
+        sym_cut_mul_rom::DrawUsingCatMullRom_plugin(target, target, color, 1, points);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
@@ -598,7 +605,6 @@ namespace sym_plugin
         
         return false;
     }
-
 
     bool Button::onMouseRelease(plugin::MouseContext mouse)
     {
