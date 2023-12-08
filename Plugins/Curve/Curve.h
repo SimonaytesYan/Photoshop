@@ -213,7 +213,7 @@ namespace sym_plugin
         plugin::Vec2 graph_size;
         plugin::Vec2 graph_pos;
 
-        void UpdateFilter(plugin::Texture* texture, List<plugin::Vec2> &points);
+        void UpdateFilter(plugin::Texture* texture);
         void ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position);
         void MovePoint   (plugin::Vec2 mouse_pos);
         void AddPoint    (List<plugin::Vec2> &points, plugin::Vec2 pos);

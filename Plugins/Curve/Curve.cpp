@@ -113,7 +113,6 @@ namespace sym_plugin
         plugin::Vec2 size = {texture->width, texture->height};
         rt->drawTexture(pos, size, texture);
 
-        delete[] texture->pixels;
         delete texture;
     }
 
@@ -317,6 +316,12 @@ namespace sym_plugin
 
     void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
     {
+        if (position.x < graph_pos.x                ||
+            position.x > graph_pos.x + graph_size.x ||
+            position.y < graph_pos.y                ||
+            position.y > graph_pos.y + graph_size.y)
+        return;
+
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
         {
@@ -405,6 +410,12 @@ namespace sym_plugin
                 mouse_pos.x = graph_pos.x + graph_size.x;
             if (mouse_pos.y > graph_pos.y + graph_size.y)
                 mouse_pos.y = graph_pos.y + graph_size.y;
+            
+
+            // First and last points dont move horizontal
+            if (moving_point_index == points->Begin() || 
+                moving_point_index == points->End  ())
+                mouse_pos.x = (*points)[moving_point_index].val.x;
 
             (*points)[moving_point_index].val = mouse_pos;
         }
@@ -443,58 +454,73 @@ namespace sym_plugin
         return texture->pixels[(int)current_point.y * texture->width + (int)current_point.x];
     }
 
-    void CurveWindow::UpdateFilter(plugin::Texture* texture, List<plugin::Vec2> &points)
+    void CurveWindow::UpdateFilter(plugin::Texture* texture)
     {
+        plugin::Color           status_color;
+        plugin::Array<uint8_t> *status_array;
+        List<plugin::Vec2>     *points;
 
-        plugin::Color          status_color;
-        plugin::Array<uint8_t> status_array;
         switch (status)
         {
             case CurveWindowStatus::Red:
                 status_color = kCurveColorR;
-                status_array = functor->r;
+                status_array = &functor->r;
+                points       = &points_r;
                 break;
             case CurveWindowStatus::Green:
                 status_color = kCurveColorG;
-                status_array = functor->g;
+                status_array = &functor->g;
+                points       = &points_g;
                 break;
             case CurveWindowStatus::Blue:
                 status_color = kCurveColorB;
-                status_array = functor->b;
+                status_array = &functor->b;
+                points       = &points_b;
                 break;
 
             default:
                 break;
         }
 
-        plugin::Vec2 point(points[points.Begin()].val); 
+        plugin::Vec2 point(graph_pos); 
         for (int i = 0; i < 256; i++)
         {
-            plugin::Vec2  current_point = point;
-            while (current_point.y > graph_pos.y &&
+            plugin::Vec2 current_point = point;
+            while (current_point.y <= graph_pos.y + graph_size.y &&
                    ((GetPixel(texture, current_point).r != status_color.r) || 
                     (GetPixel(texture, current_point).g != status_color.g) || 
                     (GetPixel(texture, current_point).b != status_color.b)))
             {
-                current_point.y--;
+                current_point.y++;
             }
 
-            if (current_point.y <= points[points.End()].val.y)
+            if (current_point.y <= graph_pos.y + graph_size.y)
             {
-                status_array.data[i] = current_point.y;
+                status_array->data[i] = 255 - (current_point.y - graph_pos.y);
             }
-
             point.x++;
         }
+
+        delete texture;
     }
 
     void CurveWindow::DrawCurve(plugin::RenderTargetI* target, 
                                 List<plugin::Vec2> &points, 
                                 plugin::Color color)
     {
+        plugin::Vec2 left_up    = graph_pos;
+        plugin::Vec2 right_down = graph_pos + graph_size;
+        plugin::Vec2 left_down  = graph_pos + plugin::Vec2(0, graph_size.y);
+        plugin::Vec2 right_up   = graph_pos + plugin::Vec2(graph_size.x, 0);
+
+
+        target->drawLine(left_up,    left_down, plugin::Color(0, 0, 0));
+        target->drawLine(left_up,    right_up,  plugin::Color(0, 0, 0));
+        target->drawLine(right_down, left_down, plugin::Color(0, 0, 0));
+        target->drawLine(right_down, right_up,  plugin::Color(0, 0, 0));
+       
         plugin::Vec2 point_size = plugin::Vec2(kCurvePointSize, kCurvePointSize);
 
-        target->drawRect(position, size, plugin::Color(100, 100, 100));
         int p0 = points.Begin();
         for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
         {
@@ -507,11 +533,11 @@ namespace sym_plugin
         target->drawEllipse(points[p0].val - point_size / 2, 
                             point_size, color);
         
-        UpdateFilter(target->getTexture(), points);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
     {
+        target->drawRect(position, size, plugin::Color(64, 64, 64));
         switch (status)
         {
             case CurveWindowStatus::Red:
@@ -528,6 +554,8 @@ namespace sym_plugin
                 fprintf(stderr, "CurveWindow::render status = %d\n", status);
                 break;
         }
+
+        UpdateFilter(target->getTexture());
         
         Widget::render(target);
     }

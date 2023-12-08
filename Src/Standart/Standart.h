@@ -81,6 +81,14 @@ namespace plugin {
             pixels = new Color[height * width];
             memcpy(pixels, texture.pixels, sizeof(Color) * height * width);
         }
+
+        ~Texture()
+        {
+            height = 0;
+            width  = 0;
+
+            delete[] pixels;
+        }
     };
 
     //================================VEC 2=====================================
