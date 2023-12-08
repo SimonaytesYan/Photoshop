@@ -1,16 +1,16 @@
 #include "CutMullRom.h"
 
-namespace sym_cut_mul_rom_brush
+namespace sym_plugin
 {
     const double kCatMullRomConst = 0.5;
-    const double kCatMullRomStep  = 0.1;
+    const double kCatMullRomStep  = 0.01;
 
     static double CalcNextT      (plugin::Vec2 p1, plugin::Vec2 p2, double t);
     static void   CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
                                 plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2);
     static void   CutMullRom2Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
                                 plugin::Vec2 p0, plugin::Vec2 p1);
-    static void   CutMullRom     (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+    static void   CutMullRom     (plugin::RenderTargetI* data, plugin::Color color, double thickness,
                                 plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3);
 
     double CalcNextT(plugin::Vec2 p1, plugin::Vec2 p2, double t)
@@ -24,7 +24,7 @@ namespace sym_cut_mul_rom_brush
     }
 
     void DrawPoint(plugin::RenderTargetI* target, plugin::Color color, 
-                double thickness, plugin::Vec2 point)
+                   double thickness, plugin::Vec2 point)
     {
         plugin::Color color_i = color;
 
@@ -66,7 +66,7 @@ namespace sym_cut_mul_rom_brush
         }
     }
 
-    void CutMullRom(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
+    void CutMullRom(plugin::RenderTargetI* target, plugin::Color color, double thickness,
                     plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3)
     {
         double t0 = 0;
@@ -74,7 +74,6 @@ namespace sym_cut_mul_rom_brush
         double t2 = CalcNextT(p1, p2, t1);
         double t3 = CalcNextT(p2, p3, t2);
 
-        tmp->clear();
         for (double it = 0; it <= 1; it += kCatMullRomStep)
         {
             double t = LinearInterpol(t1, t2, it);
@@ -88,19 +87,18 @@ namespace sym_cut_mul_rom_brush
 
             plugin::Vec2 c  = (t2 - t) / (t2 - t1) * b1 + (t - t1) / (t2 - t1) * b2;
 
-            DrawPoint(data, color, thickness, c);
+            DrawPoint(target, color, thickness, c);
         }
-        CutMullRom3Vert(tmp, color, thickness, p1, p2, p3);
     }
 
-    void DrawUsingCatMullRom_plugin(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color,
-                            double thickness, List<plugin::Vec2> &vertexes)
+    void DrawUsingCatMullRom_plugin(plugin::RenderTargetI* target, plugin::Color color,
+                                    double thickness, List<plugin::Vec2> &vertexes)
     {
         int index = vertexes.Begin();
         plugin::Vec2 p0 = vertexes[index].val; 
         if (vertexes.size == 1)
         {
-            DrawPoint(data, color, thickness, p0);
+            DrawPoint(target, color, thickness, p0);
             return;
         }
 
@@ -108,7 +106,7 @@ namespace sym_cut_mul_rom_brush
         plugin::Vec2 p1 = vertexes[index].val;
         if (vertexes.size == 2)
         {
-            CutMullRom2Vert(tmp, color, thickness, p0, p1);
+            CutMullRom2Vert(target, color, thickness, p0, p1);
             return;
         }
 
@@ -116,45 +114,28 @@ namespace sym_cut_mul_rom_brush
         plugin::Vec2 p2 = vertexes[index].val;
         if (vertexes.size == 3)
         {
-            tmp->clear();
-            CutMullRom3Vert(tmp,  color, thickness, p0, p1, p2);
-            CutMullRom3Vert(data, color, thickness, p2, p1, p0);
+            CutMullRom3Vert(target,  color, thickness, p0, p1, p2);
+            CutMullRom3Vert(target, color, thickness, p2, p1, p0);
             return;
         }
 
-        index = vertexes.Iterate(index);
-        plugin::Vec2 p3 = vertexes[index].val;
-        CutMullRom(data, tmp, color, thickness, p0, p1, p2, p3);
-    }
+        // Draw line between the first and the second points 
+        CutMullRom3Vert(target, color, thickness, p2, p1, p0);
 
-    void DrawTmpToData_plugin(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, plugin::Color color, double thickness,
-                    List<plugin::Vec2> &vertexes)
-    {
-        tmp->clear();
-        if (vertexes.size < 2)
-            return;
-        
-        int index = vertexes.Begin();
-        plugin::Vec2 p0 = vertexes[index].val;
         index = vertexes.Iterate(index);
-        plugin::Vec2 p1 = vertexes[index].val;
-        if (vertexes.size == 2)
+        plugin::Vec2 p3;
+
+        for (index; index != -1; index = vertexes.Iterate(index))
         {
-            CutMullRom2Vert(data, color, thickness, p0, p1);
-            return;
+            p3 = vertexes[index].val;
+            CutMullRom(target, color, thickness, p0, p1, p2, p3);
+            
+            p0 = p1;
+            p1 = p2;
+            p2 = p3;
         }
 
-        index = vertexes.Iterate(index);
-        plugin::Vec2 p2 = vertexes[index].val;
-        if (vertexes.size == 3)
-        {
-            CutMullRom3Vert(data, color, thickness, p0, p1, p2);
-            CutMullRom3Vert(data, color, thickness, p2, p1, p0);
-            return;
-        }
-
-        index = vertexes.Iterate(index);
-        plugin::Vec2 p3 = vertexes[index].val;
-        CutMullRom3Vert(data,  color, thickness, p1, p2, p3);
+        // Draw line to the last point
+        CutMullRom3Vert(target, color, thickness, p0, p1, p2);
     }
 }

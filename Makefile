@@ -21,9 +21,9 @@ compile_plugins: compile_curve_plugin
 	gcc $(SHARED_LAB_FLAGS) -o Plugins/Brush.so Obj/BrushPlug.o Obj/CutMulRomPlug.o
 
 compile_curve_plugin:
-	g++ -g $(SHARED_OBJ_LAB_FLAGS) -o Obj/CutMulRomPlug.o Plugins/CutMullRom/CutMullRom.cpp
+	g++ -g $(SHARED_OBJ_LAB_FLAGS) -o Obj/CurveCutMulRom.o Plugins/Curve/CutMullRom.cpp
 	g++ -g $(SHARED_OBJ_LAB_FLAGS) -o Obj/CurvePlugin.o Plugins/Curve/Curve.cpp 
-	gcc $(SHARED_LAB_FLAGS) -o Plugins/SymCurve.so Obj/CurvePlugin.o Obj/CutMulRomPlug.o
+	gcc $(SHARED_LAB_FLAGS) -o Plugins/SymCurve.so Obj/CurvePlugin.o Obj/CurveCutMulRom.o
 
 widget_debug:
 	g++ -c $(DEBUG_FLAGS) Src/Renderable/Widget/Widget.cpp -o Obj/Widget.o
