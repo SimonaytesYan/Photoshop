@@ -34,7 +34,7 @@ void BrushTool::paintOnPress(plugin::RenderTargetI* data, plugin::RenderTargetI*
     drawing = true;
 
     vertexes.PushBack(mouse.position);
-    sym_cut_mul_rom::DrawUsingCatMullRom_plugin(data, tmp, color, thickness, vertexes);
+    sym_cut_mul_rom_brush::DrawUsingCatMullRom_plugin(data, tmp, color, thickness, vertexes);
 }
 
 void BrushTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
@@ -48,14 +48,14 @@ void BrushTool::paintOnMove(plugin::RenderTargetI* data, plugin::RenderTargetI* 
         if (vertexes.size >= 5)
             vertexes.PopFront();
         
-        sym_cut_mul_rom::DrawUsingCatMullRom_plugin(data, tmp, color, thickness, vertexes);
+        sym_cut_mul_rom_brush::DrawUsingCatMullRom_plugin(data, tmp, color, thickness, vertexes);
     }   
 }
 
 void BrushTool::paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                plugin::MouseContext mouse, plugin::Color color)
 {
-    sym_cut_mul_rom::DrawTmpToData_plugin(data, tmp, color, thickness, vertexes);
+    sym_cut_mul_rom_brush::DrawTmpToData_plugin(data, tmp, color, thickness, vertexes);
 
     drawing   = false;
     vertexes.Clear();
@@ -66,7 +66,7 @@ void BrushTool::disable(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp,
 { 
     if (drawing)
     {
-        sym_cut_mul_rom::DrawTmpToData_plugin(data, tmp, color, thickness, vertexes);
+        sym_cut_mul_rom_brush::DrawTmpToData_plugin(data, tmp, color, thickness, vertexes);
 
         drawing   = false;
         vertexes.Clear();

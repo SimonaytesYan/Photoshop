@@ -29,15 +29,7 @@ namespace sym_cut_mul_rom_brush
         plugin::Color color_i = color;
 
         plugin::Vec2 gen_size(thickness, thickness);
-
-        color_i.a = 10;
-        target->drawEllipse(point - gen_size * 1/4, gen_size * 3/2, color_i);
-        color_i.a = 25;
         target->drawEllipse(point, gen_size, color_i);
-        color_i.a = 50;
-        target->drawEllipse(point + gen_size * 1/4, gen_size * 1/2, color_i);
-        color_i.a = 75;
-        target->drawEllipse(point + gen_size * 3/8, gen_size * 1/4, color_i);
     }
 
     void CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,

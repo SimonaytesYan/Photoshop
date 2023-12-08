@@ -3,11 +3,10 @@
 
 #include "../../Src/Standart/Standart.h"
 #include "../../Src/List.h"
-#include "../CutMullRom/CutMullRom.h"
+#include "CutMullRom.h"
 
 namespace sym_plugin
 {
-
     const int           kCurvePointSize = 15;
     const plugin::Color kCurveColorR(255,   0,   0);
     const plugin::Color kCurveColorG(  0, 255,   0);

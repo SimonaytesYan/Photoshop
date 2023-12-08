@@ -539,7 +539,7 @@ namespace sym_plugin
                                 point_size, color);            
         }
 
-        sym_cut_mul_rom::DrawUsingCatMullRom_plugin(target, target, color, 1, points);
+        sym_cut_mul_rom_brush::DrawUsingCatMullRom_plugin(target, target, color, 10, points);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
