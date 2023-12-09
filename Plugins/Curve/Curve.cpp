@@ -51,6 +51,8 @@ namespace sym_plugin
         Label* ok_label = new Label(ok_button->getSize(), 10, "OK", 
                                                plugin::Color(0, 255, 255));
 
+        fprintf(stderr, "ok_label = (%lg, %lg)\n", ok_label->getSize().x, ok_label->getSize().y);
+
         ok_button->registerSubWidget(ok_label);
         
         // Create window
@@ -327,6 +329,15 @@ namespace sym_plugin
             if (points[p0].val.x < position.x && position.x < points[p1].val.x)
             {
                 points.Insert(position, p0);
+                
+                // If curve intersect frame point dont be added 
+                if (DrawUsingCatMullRom_plugin(nullptr, plugin::Color(0, 0, 0), 0, 
+                                               points, graph_pos, graph_size))
+                {
+                    points.Remove(points[p0].next);
+                    return;
+                }
+                
                 moving_point_index = points[p0].next;
                 break;
             }
