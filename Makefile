@@ -12,13 +12,17 @@ debug: compile_plugins widget_debug button_debug menu_debug render_target_debug 
 release: compile_plugins widget_release button_release menu_release render_target_release texture_release font_release label_release window_release clip_region_release region_set_release canvas_release brush_release tool_manager_release circle_tool_release shape_tool_release rect_tool_release line_tool_release polyline_tool_release fill_tool_release  spline_tool_release cut_mull_rom_release event_manager_release filter_manager_release brightness_filter_release vertical_menu_release horizontal_menu_release edit_box_release scrollbar_release gui_release rect_widget_release
 	g++ $(SFML_FLAGS) $(RELEASE_FLAGS) Src/main.cpp Obj/Widget.o Obj/Button.o Obj/Menu.o Obj/RenderTarget.o Obj/Texture.o Obj/Font.o Obj/Label.o Obj/Window.o Obj/ClipRegion.o Obj/RegionSet.o Obj/Canvas.o Obj/Brush.o Obj/ToolManager.o Obj/ShapeTool.o Obj/CircleTool.o Obj/RectTool.o Obj/LineTool.o Obj/PolylineTool.o Obj/FillTool.o Obj/SplineTool.o Obj/CutMullRom.o Obj/EventManager.o Obj/FilterManager.o Obj/BrightnessFilter.o Obj/HorizontalMenu.o Obj/VerticalMenu.o Obj/EditBox.o Obj/ScrollBar.o Obj/Gui.o Obj/RectangleWidget.o -o $(EXE_FILE)
 
-compile_plugins: compile_curve_plugin
+compile_plugins: compile_curve_plugin compile_brush_plugin compile_white_black_plugin
+	echo Plugins are compiled!
+
+compile_brush_plugin:
+	g++ $(SHARED_OBJ_LAB_FLAGS) -o Obj/CutMulRomPlug.o Plugins/Brush/CutMullRom/CutMullRom.cpp
+	g++ $(SHARED_OBJ_LAB_FLAGS) -o Obj/BrushPlug.o Plugins/Brush/Brush.cpp
+	gcc $(SHARED_LAB_FLAGS) -o Plugins/Brush.so Obj/BrushPlug.o Obj/CutMulRomPlug.o
+
+compile_white_black_plugin:
 	g++ $(SHARED_OBJ_LAB_FLAGS) -o Obj/WhiteBlack.o Plugins/WhiteBlack.cpp 
 	gcc $(SHARED_LAB_FLAGS) -o Plugins/WhiteBlack.so Obj/WhiteBlack.o 
-
-	g++ $(SHARED_OBJ_LAB_FLAGS) -o Obj/CutMulRomPlug.o Plugins/CutMullRom/CutMullRom.cpp
-	g++ $(SHARED_OBJ_LAB_FLAGS) -o Obj/BrushPlug.o Plugins/Brush.cpp
-	gcc $(SHARED_LAB_FLAGS) -o Plugins/Brush.so Obj/BrushPlug.o Obj/CutMulRomPlug.o
 
 compile_curve_plugin:
 	g++ -g $(SHARED_OBJ_LAB_FLAGS) -o Obj/CurveCutMulRom.o Plugins/Curve/CutMullRom.cpp

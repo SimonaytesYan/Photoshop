@@ -1,8 +1,8 @@
 #ifndef SYM_CUT_MULL_ROM
 #define SYM_CUT_MULL_ROM
 
-#include "../../Src/RenderTarget/RenderTarget.h"
-#include "../../Src/List.h"
+#include "../../../Src/RenderTarget/RenderTarget.h"
+#include "../../../Src/List.h"
 
 namespace sym_cut_mul_rom_brush
 {

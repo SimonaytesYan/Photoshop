@@ -1,8 +1,8 @@
 #ifndef SYM_PLUGIN_BRUSH
 #define SYM_PLUGIN_BRUSH
 
-#include "../Src/Standart/Standart.h"
-#include "../Src/List.h"
+#include "../../Src/Standart/Standart.h"
+#include "../../Src/List.h"
 
 extern "C" plugin::Plugin* getInstance(plugin::App *app);
 
