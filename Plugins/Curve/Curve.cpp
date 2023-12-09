@@ -415,8 +415,26 @@ namespace sym_plugin
             if (moving_point_index == points->Begin() || 
                 moving_point_index == points->End  ())
                 mouse_pos.x = (*points)[moving_point_index].val.x;
+            else
+            {
+                plugin::Vec2 next_point = (*points)[points->Iterate(moving_point_index)].val;
+                plugin::Vec2 prev_point = (*points)[points->Deterate(moving_point_index)].val;
 
+                mouse_pos.x = min(mouse_pos.x, next_point.x);
+                mouse_pos.x = max(mouse_pos.x, prev_point.x);
+            }
+
+            //(*points)[moving_point_index].val = mouse_pos;
+            
+            // Checking if curve going abroad
+            plugin::Vec2 old_value = (*points)[moving_point_index].val;
             (*points)[moving_point_index].val = mouse_pos;
+
+            if (DrawUsingCatMullRom_plugin(nullptr, plugin::Color(0, 0, 0), 0, 
+                                           *points, graph_pos, graph_size))
+                (*points)[moving_point_index].val = old_value;
+            else
+                (*points)[moving_point_index].val = mouse_pos;
         }
     }
 
@@ -520,26 +538,13 @@ namespace sym_plugin
        
         plugin::Vec2 point_size = plugin::Vec2(kCurvePointSize, kCurvePointSize);
 
-        /*int p0 = points.Begin();
-        for (int p1 = points.Iterate(p0); p1 != -1; p1 = points.Iterate(p1))
-        {
-            target->drawLine(points[p0].val, points[p1].val, color);
-
-            target->drawEllipse(points[p0].val - point_size / 2, 
-                                point_size, color);
-            p0 = p1;
-        }
-        target->drawEllipse(points[p0].val - point_size / 2,
-                            point_size, color);
-        */ 
-
         for (int index = points.Begin(); index != -1; index = points.Iterate(index))
         {
             target->drawEllipse(points[index].val - point_size / 2, 
                                 point_size, color);            
         }
 
-        DrawUsingCatMullRom_plugin(target, color, 5, points);
+        DrawUsingCatMullRom_plugin(target, color, 4, points, graph_pos, graph_size);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)

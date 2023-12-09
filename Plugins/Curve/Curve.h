@@ -3,6 +3,7 @@
 
 #include "../../Src/Standart/Standart.h"
 #include "../../Src/List.h"
+#include "../../Src/Useful.h"
 #include "CutMullRom.h"
 
 namespace sym_plugin

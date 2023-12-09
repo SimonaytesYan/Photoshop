@@ -2,8 +2,8 @@
 
 namespace sym_plugin
 {
-    const double kCatMullRomConst = 0.5;
-    const double kCatMullRomStep  = 0.01;
+    const double kCatMullRomConst = 1;
+    const double kCatMullRomStep  = 0.02;
 
     static double CalcNextT      (plugin::Vec2 p1, plugin::Vec2 p2, double t);
     static void   CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
@@ -23,17 +23,27 @@ namespace sym_plugin
         return a + t * (b - a);
     }
 
-    void DrawPoint(plugin::RenderTargetI* target, plugin::Color color, 
-                   double thickness, plugin::Vec2 point)
+    bool DrawPoint(plugin::RenderTargetI* target, plugin::Color color, 
+                   double thickness, plugin::Vec2 point, 
+                   plugin::Vec2 graph_pos, plugin::Vec2 graph_size)
     {
-        plugin::Color color_i = color;
 
         plugin::Vec2 gen_size(thickness, thickness);
-        target->drawEllipse(point, gen_size, color_i);
+
+        if (point.x < graph_pos.x || 
+            point.y < graph_pos.y || 
+            point.x > graph_pos.x + graph_size.x || 
+            point.y > graph_pos.y + graph_size.y)
+           return true;
+
+        if (target != nullptr)
+            target->drawEllipse(point, gen_size, color);
+        return false;
     }
 
-    void CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
-                        plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2)
+    bool CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
+                         plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, 
+                         plugin::Vec2 graph_pos, plugin::Vec2 graph_size)
     {
         double t0 = 0;
         double t1 = CalcNextT(p0, p1, t0);
@@ -48,12 +58,16 @@ namespace sym_plugin
 
             plugin::Vec2 b = (t2 - t) / (t2 - t0) * a1 + (t - t0)/ (t2 - t0) * a2;
 
-            DrawPoint(target, color, thickness, b);
+            if (DrawPoint(target, color, thickness, b, graph_pos, graph_size))
+                return true;
         }
+
+        return false;
     }
 
-    void CutMullRom2Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
-                        plugin::Vec2 p0, plugin::Vec2 p1)
+    bool CutMullRom2Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,
+                         plugin::Vec2 p0, plugin::Vec2 p1, 
+                         plugin::Vec2 graph_pos, plugin::Vec2 graph_size)
     {
         double t0 = 0;
         double t1 = CalcNextT(p0, p1, t0);
@@ -62,12 +76,17 @@ namespace sym_plugin
         {
             double t = LinearInterpol(t0, t1, it);
             plugin::Vec2 a = (t1 - t) / (t1 - t0) * p0 + (t - t0) / (t1 - t0) * p1;
-            DrawPoint(target, color, thickness, a);
+
+            if (DrawPoint(target, color, thickness, a, graph_pos, graph_size))
+                return true;
         }
+
+        return false;
     }
 
-    void CutMullRom(plugin::RenderTargetI* target, plugin::Color color, double thickness,
-                    plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3)
+    bool CutMullRom(plugin::RenderTargetI* target, plugin::Color color, double thickness,
+                    plugin::Vec2 p0, plugin::Vec2 p1, plugin::Vec2 p2, plugin::Vec2 p3, 
+                    plugin::Vec2 graph_pos, plugin::Vec2 graph_size)
     {
         double t0 = 0;
         double t1 = CalcNextT(p0, p1, t0);
@@ -87,40 +106,42 @@ namespace sym_plugin
 
             plugin::Vec2 c  = (t2 - t) / (t2 - t1) * b1 + (t - t1) / (t2 - t1) * b2;
 
-            DrawPoint(target, color, thickness, c);
+            if (DrawPoint(target, color, thickness, c, graph_pos, graph_size))
+                return true;
         }
+        return false;
     }
 
-    void DrawUsingCatMullRom_plugin(plugin::RenderTargetI* target, plugin::Color color,
-                                    double thickness, List<plugin::Vec2> &vertexes)
+    bool DrawUsingCatMullRom_plugin(plugin::RenderTargetI* target, plugin::Color color,
+                                    double thickness, List<plugin::Vec2> &vertexes, 
+                                    plugin::Vec2 graph_pos, plugin::Vec2 graph_size)
     {
         int index = vertexes.Begin();
         plugin::Vec2 p0 = vertexes[index].val; 
         if (vertexes.size == 1)
         {
-            DrawPoint(target, color, thickness, p0);
-            return;
+            return DrawPoint(target, color, thickness, p0, graph_pos, graph_size);
         }
 
         index = vertexes.Iterate(index);
         plugin::Vec2 p1 = vertexes[index].val;
         if (vertexes.size == 2)
         {
-            CutMullRom2Vert(target, color, thickness, p0, p1);
-            return;
+            return CutMullRom2Vert(target, color, thickness, p0, p1, graph_pos, graph_size);
         }
 
         index = vertexes.Iterate(index);
         plugin::Vec2 p2 = vertexes[index].val;
         if (vertexes.size == 3)
         {
-            CutMullRom3Vert(target,  color, thickness, p0, p1, p2);
-            CutMullRom3Vert(target, color, thickness, p2, p1, p0);
-            return;
+            if (CutMullRom3Vert(target,  color, thickness, p0, p1, p2, graph_pos, graph_size))
+                return true;
+            return CutMullRom3Vert(target, color, thickness, p2, p1, p0, graph_pos, graph_size);
         }
 
         // Draw line between the first and the second points 
-        CutMullRom3Vert(target, color, thickness, p2, p1, p0);
+        if (CutMullRom3Vert(target, color, thickness, p2, p1, p0, graph_pos, graph_size))
+            return true;
 
         index = vertexes.Iterate(index);
         plugin::Vec2 p3;
@@ -128,7 +149,8 @@ namespace sym_plugin
         for (index; index != -1; index = vertexes.Iterate(index))
         {
             p3 = vertexes[index].val;
-            CutMullRom(target, color, thickness, p0, p1, p2, p3);
+            if (CutMullRom(target, color, thickness, p0, p1, p2, p3, graph_pos, graph_size))
+                return true;
             
             p0 = p1;
             p1 = p2;
@@ -136,6 +158,9 @@ namespace sym_plugin
         }
 
         // Draw line to the last point
-        CutMullRom3Vert(target, color, thickness, p0, p1, p2);
+        if (CutMullRom3Vert(target, color, thickness, p0, p1, p2, graph_pos, graph_size))
+            return true;
+
+        return false;
     }
 }

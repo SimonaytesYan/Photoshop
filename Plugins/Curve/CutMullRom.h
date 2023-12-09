@@ -6,8 +6,9 @@
 
 namespace sym_plugin
 {
-    void DrawUsingCatMullRom_plugin(plugin::RenderTargetI* target, plugin::Color color,
-                                    double thickness, List<plugin::Vec2> &vertexes);
+    bool DrawUsingCatMullRom_plugin(plugin::RenderTargetI* target, plugin::Color color,
+                                    double thickness, List<plugin::Vec2> &vertexes, 
+                                    plugin::Vec2 graph_pos, plugin::Vec2 graph_size);
 }
 
 #endif
