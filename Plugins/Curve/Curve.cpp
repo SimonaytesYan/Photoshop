@@ -18,8 +18,8 @@ namespace sym_plugin
 
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
     {        
-        plugin::Vec2 start_pos = plugin::Vec2(100, 100);
-        plugin::Vec2 size      = plugin::Vec2(500, 500);
+        plugin::Vec2 start_pos = plugin::Vec2(600, 600);
+        plugin::Vec2 size      = plugin::Vec2(400, 400);
 
         plugin::Vec2  button_size  = kButtonSize;
         plugin::Color button_color = plugin::Color(128, 128, 128);
@@ -43,10 +43,10 @@ namespace sym_plugin
         }
 
         Button* ok_button = new Button(start_pos + plugin::Vec2((size - kButtonSize).x / 2,     
-                                                                (size - kButtonSize).x * 11 / 12), 
-                                       kButtonSize, kUnSelected, functor);
+                                                                (size - kButtonSize).y * 11 / 12), 
+                                       kButtonSize, kSelected, functor);
         Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(25, 0), 
-                                    kFontSize, "OK");
+                                    kTextSize, "OK", kTextColor);
         ok_button->registerSubWidget(ok_label);
 
         // Create window
@@ -322,21 +322,21 @@ namespace sym_plugin
         points_b.PushBack(p0);
         points_b.PushBack(p1);
 
-
         // Button to move window
         Button* header_button = new Button(position, plugin::Vec2(size.x - 25, 25), 
-                                           plugin::Color(85, 85, 85), new ButtonMove(this));
+                                           plugin::Color(235,235,235), new ButtonMove(this));
         // Header
-        header_button->registerSubWidget(new Label(position, kFontSize, "Curve filter"));    
+        header_button->registerSubWidget(new Label(position, kTextSize, "Curve filter", kTextColor));    
         registerSubWidget(header_button);
 
         // Close button window
         plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
                                         position.GetY());
         Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
-                                          plugin::Color(40, 40, 40),
+                                          plugin::Color(217, 217, 217),
                                           nullptr, new ButtonClose(this));
-        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(5, -5), kFontSize + 5, "X"));
+        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(9, 1), 
+                                                  kTextSize - 5, "X", kTextColor));
         registerSubWidget(close_button);                    
 
         // Add button to switch color
@@ -345,15 +345,18 @@ namespace sym_plugin
         ChangeStatusFunctor* green_button_functor = new ChangeStatusFunctor(CurveWindowStatus::Green, this);
         ChangeStatusFunctor* blue_button_functor  = new ChangeStatusFunctor(CurveWindowStatus::Blue,  this);
 
-        red_button   = new Button(getPos() + plugin::Vec2(50, 50), 
+        red_button   = new Button(getPos() + plugin::Vec2(20, 30), 
                                   kButtonSize, kUnSelected, red_button_functor);
-        green_button = new Button(getPos() + plugin::Vec2(200, 50), 
+        green_button = new Button(getPos() + plugin::Vec2(160, 30), 
                                   kButtonSize, kUnSelected, green_button_functor);
-        blue_button  = new Button(getPos() + plugin::Vec2(350, 50), 
+        blue_button  = new Button(getPos() + plugin::Vec2(300, 30), 
                                   kButtonSize, kUnSelected, blue_button_functor);
-        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), kFontSize, "Red"));
-        green_button->registerSubWidget(new Label(green_button->getPos(), kFontSize, "Green"));
-        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), kFontSize, "Blue"));
+        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), 
+                                                  kTextSize, "Red"  , kTextColor));
+        green_button->registerSubWidget(new Label(green_button->getPos(), 
+                                                  kTextSize, "Green", kTextColor));
+        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), 
+                                                  kTextSize, "Blue" , kTextColor));
 
         registerSubWidget(red_button);
         registerSubWidget(green_button);

@@ -8,8 +8,8 @@
 
 namespace sym_plugin
 {
-    const plugin::Color kSelected  (128, 128, 128);
-    const plugin::Color kUnSelected(50,  50,  50);
+    const plugin::Color kSelected  (220, 220, 220);
+    const plugin::Color kUnSelected(180, 180, 180);
 
     const int           kThickness      = 3;
     const int           kCurvePointSize = 10;
@@ -17,9 +17,10 @@ namespace sym_plugin
     const plugin::Color kCurveColorG(  0, 255,   0);
     const plugin::Color kCurveColorB(  0,   0, 255);
 
-    const plugin::Color kBackgroundColor(175, 175, 175);
+    const plugin::Color kBackgroundColor(255, 255, 255);
+    const plugin::Color kTextColor      ( 61,  61,  61);
     const plugin::Vec2  kButtonSize     (75, 30);
-    const int           kFontSize     = 20;
+    const int           kTextSize     = 20;
 
     class CurveFilter;
     
