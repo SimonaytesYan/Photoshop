@@ -639,7 +639,8 @@ namespace sym_plugin
 
     void CurveWindow::render(plugin::RenderTargetI* target)
     {
-        target->drawRect(position, size, plugin::Color(64, 64, 64));
+        target->drawRect(position, size, kBackgroundColor);
+
         switch (status)
         {
             case CurveWindowStatus::Red:
