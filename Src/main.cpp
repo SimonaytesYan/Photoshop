@@ -35,15 +35,43 @@
 
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
-			 FilterManager* fm, ToolManager* tm, EventManager* em);
+			 FilterManager* fm, ToolManager* tm, EventManager* em, 
+			 DynArray<char*> plugin_names);
 void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
-				ToolManager* tm, EventManager* em, VerticalMenu* filters);
-void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* app);
+				ToolManager* tm, EventManager* em, VerticalMenu* filters, 
+				DynArray<char*> plugin_names);
+void AddTools(Window* main_window, Window* tools, ToolManager* tm, 
+			  plugin::App* app, DynArray<char*> plugin_names);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
 
 plugin::Plugin* LoadPlugin(const char* path, plugin::App* app);
+
+DynArray<char*> GetPluginNames()
+{
+	FILE* file = fopen("Plugins/Plugins", "r");
+
+	DynArray<char*> plugin_names;
+	
+	char* name = new char[100];
+	strcpy(name, "Plugins/");
+
+	while (NULL != fgets(name + 8, 100, file))
+	{
+		plugin_names.PushBack(name);
+		if (name[strlen(name) - 1] == '\n') 
+			name[strlen(name) - 1] = 0;
+
+		fprintf(stderr, "name = %s\n", name);
+		name = new char[100];
+		strcpy(name, "Plugins/");
+	}
+
+	delete[] name;
+
+	return plugin_names;
+}
 
 int main()
 {
@@ -87,6 +115,8 @@ int main()
 	main_window.registerSubWidget(&canvas_window2);
 
 	EventManager event_manager;
+	
+	DynArray<char*> plugin_name = GetPluginNames();
 
 	// Adding tools	
 	Window tools(plugin::Vec2(1400, 450),
@@ -98,7 +128,7 @@ int main()
 	app.root 		   = new Gui(&the_root);
 	app.filter_manager = &fm;
 
-	AddTools(&main_window, &tools, &tm, &app);
+	AddTools(&main_window, &tools, &tm, &app, plugin_name);
 
 	// Adding colors
 	Window colors(plugin::Vec2(1400, 150), 
@@ -107,7 +137,7 @@ int main()
 
 	event_manager.registerObject(&main_window);
 
-	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager);
+	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager, plugin_name);
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -212,7 +242,7 @@ int main()
 }
 
 void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, 
-			 ToolManager* tm, EventManager* em)
+			 ToolManager* tm, EventManager* em, DynArray<char*> plugin_names)
 {
 	// Get resources
 	Font font;
@@ -253,7 +283,7 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
-	AddFilters(root, canvas, fm, font, tm, em, filters);
+	AddFilters(root, canvas, fm, font, tm, em, filters, plugin_names);
 
 	main_menu->registerSubWidget(filters);
 
@@ -261,7 +291,8 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 }
 
 void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
-				ToolManager* tm, EventManager* em, VerticalMenu* filters)
+				ToolManager* tm, EventManager* em, VerticalMenu* filters,
+				DynArray<char*> plugin_names)
 {
 	SelectFilterArgs* brightness_func = new SelectFilterArgs(fm, new BrightnessFilter(), 
 															 font, em, root);
@@ -283,12 +314,12 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 
 	//==============================ADD PLUGIN FILTERS==========================
 	
-	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
+	for (int i = 0; i < plugin_names.GetLength(); i++)
 	{
-		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
+		plugin::Plugin* new_plugin = LoadPlugin(plugin_names[i], app);
 		if (new_plugin == nullptr)
 		{
-			fprintf(stderr, "Error during loading plugin [%d] <%s> like filter \n", i, kPluginNames[i]);
+			fprintf(stderr, "Error during loading plugin [%d] <%s> like filter \n", i, plugin_names[i]);
 			continue;
 		}
 
@@ -349,7 +380,8 @@ void ClearCanvas(void* args)
 	((Canvas*)args)->Clear();
 }
 
-void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* app)
+void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* app, 
+			 DynArray<char*> plugin_names)
 {
 	const int ToolsNumber = 7;
 	SwitchTool** tools_func = new SwitchTool*[ToolsNumber];
@@ -402,14 +434,13 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 	
 	int tool_i = ToolsNumber;
 
-	fprintf(stderr, "kPluginNames_N = %d\n", sizeof(kPluginNames) / sizeof(char*));
-	for (int i = 0; i < sizeof(kPluginNames) / sizeof(char*); i++)
+	for (int i = 0; i < plugin_names.GetLength(); i++)
 	{
-		fprintf(stderr, "plugin [%d] = <%s>\n", i, kPluginNames[i]);
-		plugin::Plugin* new_plugin = LoadPlugin(kPluginNames[i], app);
+		fprintf(stderr, "plugin [%d] = <%s>\n", i, plugin_names[i]);
+		plugin::Plugin* new_plugin = LoadPlugin(plugin_names[i], app);
 		if (new_plugin == nullptr)
 		{
-			fprintf(stderr, "Error during loading plugin[%d] <%s> like tools\n", i, kPluginNames[i]);
+			fprintf(stderr, "Error during loading plugin[%d] <%s> like tools\n", i, plugin_names[i]);
 			continue;
 		}
 		
@@ -418,7 +449,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 			plugin::ToolI* new_tool = (plugin::ToolI*)new_plugin->getInterface();
 			if (new_tool == nullptr)
 			{
-				fprintf(stderr, "Error during loading tool from plugin [%d] <%s>\n", i, kPluginNames[i]);
+				fprintf(stderr, "Error during loading tool from plugin [%d] <%s>\n", i, plugin_names[i]);
 				continue;
 			}
 
