@@ -227,6 +227,7 @@ struct OpenFile : ButtonFunction
 
 void SwitchTool::operator()()
 {
+	
 	tool_manager->setTool(tool);
 }
 

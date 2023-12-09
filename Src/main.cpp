@@ -33,6 +33,8 @@
 #include "Renderable/Widget/RectangleWidget/RectangleWidget.h"
 #include "Gui/Gui.h"
 
+typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
+
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
 			 FilterManager* fm, ToolManager* tm, EventManager* em, 
@@ -44,34 +46,8 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm,
 			  plugin::App* app, DynArray<char*> plugin_names);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
-typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
-
 plugin::Plugin* LoadPlugin(const char* path, plugin::App* app);
-
-DynArray<char*> GetPluginNames()
-{
-	FILE* file = fopen("Plugins/Plugins", "r");
-
-	DynArray<char*> plugin_names;
-	
-	char* name = new char[100];
-	strcpy(name, "Plugins/");
-
-	while (NULL != fgets(name + 8, 100, file))
-	{
-		plugin_names.PushBack(name);
-		if (name[strlen(name) - 1] == '\n') 
-			name[strlen(name) - 1] = 0;
-
-		fprintf(stderr, "name = %s\n", name);
-		name = new char[100];
-		strcpy(name, "Plugins/");
-	}
-
-	delete[] name;
-
-	return plugin_names;
-}
+DynArray<char*> GetPluginNames();
 
 int main()
 {
@@ -511,4 +487,29 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm)
 	}
 
 	main_window->registerSubWidget(colors);
+}
+
+DynArray<char*> GetPluginNames()
+{
+	FILE* file = fopen("Plugins/Plugins", "r");
+
+	DynArray<char*> plugin_names;
+	
+	char* name = new char[100];
+	strcpy(name, "Plugins/");
+
+	while (NULL != fgets(name + 8, 100, file))
+	{
+		plugin_names.PushBack(name);
+		if (name[strlen(name) - 1] == '\n') 
+			name[strlen(name) - 1] = 0;
+
+		fprintf(stderr, "name = %s\n", name);
+		name = new char[100];
+		strcpy(name, "Plugins/");
+	}
+
+	delete[] name;
+
+	return plugin_names;
 }
