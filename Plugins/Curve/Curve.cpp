@@ -334,17 +334,14 @@ namespace sym_plugin
         header_button->registerSubWidget(new Label(position, 20, "Curve filter"));    
         registerSubWidget(header_button);
 
+        // Close button window
         plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
                                         position.GetY());
-
-        // Close button window
         Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
                                           plugin::Color(150, 50, 50),
                                           nullptr, new ButtonClose(this));
-        close_button->registerSubWidget(new Label(close_button_pos, 25, "X"));
-        registerSubWidget(new Button(close_button_pos, plugin::Vec2(25, 25), 
-                                     plugin::Color(150, 50, 50),
-                                     nullptr, new ButtonClose(this)));                       
+        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(5, -5), 25, "X"));
+        registerSubWidget(close_button);                    
 
         // Add button to switch color
 
@@ -370,7 +367,6 @@ namespace sym_plugin
 
         SetStatus(CurveWindowStatus::Red);
     }
-
 
     void CurveWindow::move(plugin::Vec2 delta)
     {
@@ -532,7 +528,6 @@ namespace sym_plugin
         {
             if (!(last_mouse_pos == plugin::Vec2(0, 0)))
             {
-                fprintf(stderr, "Moving\n");
                 move(mouse.position - last_mouse_pos);
             }
             last_mouse_pos = mouse.position;
@@ -548,6 +543,7 @@ namespace sym_plugin
 
         moving_point_index = -1;
         moving             = false;
+        last_mouse_pos     = plugin::Vec2(0, 0);
 
         return false;
     }
