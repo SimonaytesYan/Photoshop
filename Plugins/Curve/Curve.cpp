@@ -7,8 +7,6 @@ extern "C" plugin::Plugin* getInstance(plugin::App *app)
 
 namespace sym_plugin
 {
-    const plugin::Color kBackgroundColor(150, 100, 100);
-
     CurvePlugin::CurvePlugin(plugin::App* app) :
     app (app)
     {
@@ -21,9 +19,9 @@ namespace sym_plugin
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
     {        
         plugin::Vec2 start_pos = plugin::Vec2(100, 100);
-        plugin::Vec2 size      = plugin::Vec2(800, 800);
+        plugin::Vec2 size      = plugin::Vec2(500, 500);
 
-        plugin::Vec2  button_size  = plugin::Vec2(100, 50);
+        plugin::Vec2  button_size  = kButtonSize;
         plugin::Color button_color = plugin::Color(128, 128, 128);
 
         // Create OK button
@@ -44,12 +42,11 @@ namespace sym_plugin
             functor->b.data[i] = i;
         }
 
-        Button* ok_button = new Button(start_pos + plugin::Vec2(300, 650), 
-                                       plugin::Vec2(100, 50), 
-                                       plugin::Color(128, 128, 128), 
-                                       functor);
-        Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(30, 0), 
-                                    30, "OK", plugin::Color(255, 255, 255));
+        Button* ok_button = new Button(start_pos + plugin::Vec2((size - kButtonSize).x / 2,     
+                                                                (size - kButtonSize).x * 11 / 12), 
+                                       kButtonSize, kUnSelected, functor);
+        Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(25, 0), 
+                                    kFontSize, "OK");
         ok_button->registerSubWidget(ok_label);
 
         // Create window
@@ -329,18 +326,18 @@ namespace sym_plugin
 
         // Button to move window
         Button* header_button = new Button(position, plugin::Vec2(size.x - 25, 25), 
-                                           plugin::Color(120, 50, 50), new ButtonMove(this));
+                                           plugin::Color(85, 85, 85), new ButtonMove(this));
         // Header
-        header_button->registerSubWidget(new Label(position, 20, "Curve filter"));    
+        header_button->registerSubWidget(new Label(position, kFontSize, "Curve filter"));    
         registerSubWidget(header_button);
 
         // Close button window
         plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
                                         position.GetY());
         Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
-                                          plugin::Color(150, 50, 50),
+                                          plugin::Color(40, 40, 40),
                                           nullptr, new ButtonClose(this));
-        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(5, -5), 25, "X"));
+        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(5, -5), kFontSize + 5, "X"));
         registerSubWidget(close_button);                    
 
         // Add button to switch color
@@ -349,17 +346,15 @@ namespace sym_plugin
         ChangeStatusFunctor* green_button_functor = new ChangeStatusFunctor(CurveWindowStatus::Green, this);
         ChangeStatusFunctor* blue_button_functor  = new ChangeStatusFunctor(CurveWindowStatus::Blue,  this);
 
-        plugin::Vec2 button_size(100, 50); 
-
-        red_button   = new Button(getPos() + plugin::Vec2(100, 50), 
-                                  button_size, kUnSelected, red_button_functor);
-        green_button = new Button(getPos() + plugin::Vec2(300, 50), 
-                                  button_size, kUnSelected, green_button_functor);
-        blue_button  = new Button(getPos() + plugin::Vec2(500, 50), 
-                                  button_size, kUnSelected, blue_button_functor);
-        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), 30, "Red"));
-        green_button->registerSubWidget(new Label(green_button->getPos(), 30, "Green"));
-        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), 30, "Blue"));
+        red_button   = new Button(getPos() + plugin::Vec2(50, 50), 
+                                  kButtonSize, kUnSelected, red_button_functor);
+        green_button = new Button(getPos() + plugin::Vec2(200, 50), 
+                                  kButtonSize, kUnSelected, green_button_functor);
+        blue_button  = new Button(getPos() + plugin::Vec2(350, 50), 
+                                  kButtonSize, kUnSelected, blue_button_functor);
+        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), kFontSize, "Red"));
+        green_button->registerSubWidget(new Label(green_button->getPos(), kFontSize, "Green"));
+        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), kFontSize, "Blue"));
 
         registerSubWidget(red_button);
         registerSubWidget(green_button);
@@ -634,7 +629,7 @@ namespace sym_plugin
                                 point_size, color);            
         }
 
-        DrawUsingCatMullRom_plugin(target, color, 4, points, graph_pos, graph_size);
+        DrawUsingCatMullRom_plugin(target, color, kThickness, points, graph_pos, graph_size);
     }
 
     void CurveWindow::render(plugin::RenderTargetI* target)
