@@ -103,7 +103,6 @@ namespace sym_plugin
             }
         }
 
-
         plugin::Vec2 pos  = {0, 0};
         plugin::Vec2 size = {texture->width, texture->height};
         rt->drawTexture(pos, size, texture);
@@ -615,7 +614,6 @@ namespace sym_plugin
         plugin::Vec2 left_down  = graph_pos + plugin::Vec2(0, graph_size.y);
         plugin::Vec2 right_up   = graph_pos + plugin::Vec2(graph_size.x, 0);
 
-
         target->drawLine(left_up,    left_down, plugin::Color(0, 0, 0));
         target->drawLine(left_up,    right_up,  plugin::Color(0, 0, 0));
         target->drawLine(right_down, left_down, plugin::Color(0, 0, 0));
@@ -625,7 +623,7 @@ namespace sym_plugin
 
         for (int index = points.Begin(); index != -1; index = points.Iterate(index))
         {
-            target->drawEllipse(points[index].val - point_size / 2, 
+            target->drawEllipse(points[index].val - point_size / 2 + plugin::Vec2(kThickness, kThickness) / 2, 
                                 point_size, color);            
         }
 
