@@ -51,7 +51,7 @@ namespace sym_plugin
         Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(30, 0), 
                                     30, "OK", plugin::Color(255, 255, 255));
         ok_button->registerSubWidget(ok_label);
-        
+
         // Create window
 
         CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
@@ -140,6 +140,8 @@ namespace sym_plugin
     {
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
             sub_widgets[i].val->move(delta);
+
+        position = position + delta;
     }
 
     void Widget::unregisterSubWidget(WidgetI* son)
@@ -262,6 +264,39 @@ namespace sym_plugin
                v.GetY() - position.GetY() <= size.GetY() + kPrecision;
     }
 
+
+    struct ButtonMove : ButtonFunction
+    {
+        CurveWindow* window;
+        plugin::Vec2 last_mouse_pos;
+
+        ButtonMove() {}
+        ButtonMove(CurveWindow* window) : 
+        window (window),
+        last_mouse_pos (plugin::Vec2())
+        {}
+
+        void operator()() override
+        {
+            window->SetMoving(true);
+        }
+    };
+
+    struct ButtonClose : ButtonFunction
+    {
+        CurveWindow* window;
+
+        ButtonClose() {}
+        ButtonClose(CurveWindow* window) : 
+        window (window) 
+        {}
+
+        void operator()() override
+        {
+            window->Close();
+        }
+    };
+
     //===============================CURVE WINDOW===============================
 
     CurveWindow::CurveWindow(plugin::Vec2 pos, plugin::Vec2 size, ApplyFilterFunctor* functor, plugin::App* app) :
@@ -271,6 +306,7 @@ namespace sym_plugin
     points_b           (List<plugin::Vec2>(0)),
     functor            (functor),
     app                (app),
+    moving             (false),
     moving_point_index (-1)
     {
         priority = 255;
@@ -290,7 +326,27 @@ namespace sym_plugin
         points_b.PushBack(p0);
         points_b.PushBack(p1);
 
-         // Add button to switch color
+
+        // Button to move window
+        Button* header_button = new Button(position, plugin::Vec2(size.x - 25, 25), 
+                                           plugin::Color(120, 50, 50), new ButtonMove(this));
+        // Header
+        header_button->registerSubWidget(new Label(position, 20, "Curve filter"));    
+        registerSubWidget(header_button);
+
+        plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
+                                        position.GetY());
+
+        // Close button window
+        Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
+                                          plugin::Color(150, 50, 50),
+                                          nullptr, new ButtonClose(this));
+        close_button->registerSubWidget(new Label(close_button_pos, 25, "X"));
+        registerSubWidget(new Button(close_button_pos, plugin::Vec2(25, 25), 
+                                     plugin::Color(150, 50, 50),
+                                     nullptr, new ButtonClose(this)));                       
+
+        // Add button to switch color
 
         ChangeStatusFunctor* red_button_functor   = new ChangeStatusFunctor(CurveWindowStatus::Red,   this);
         ChangeStatusFunctor* green_button_functor = new ChangeStatusFunctor(CurveWindowStatus::Green, this);
@@ -314,6 +370,22 @@ namespace sym_plugin
 
         SetStatus(CurveWindowStatus::Red);
     }
+
+
+    void CurveWindow::move(plugin::Vec2 delta)
+    {
+        graph_pos = graph_pos + delta;
+        
+        for (int index = points_r.Begin(); index != -1; index = points_r.Iterate(index))
+            points_r[index].val = delta + points_r[index].val;
+        for (int index = points_g.Begin(); index != -1; index = points_g.Iterate(index))
+            points_g[index].val = delta + points_g[index].val;
+        for (int index = points_b.Begin(); index != -1; index = points_b.Iterate(index))
+            points_b[index].val = delta + points_b[index].val;
+
+        Widget::move(delta);
+    }
+
 
     void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
     {
@@ -456,6 +528,16 @@ namespace sym_plugin
 
         MovePoint(mouse.position);
 
+        if (moving)
+        {
+            if (!(last_mouse_pos == plugin::Vec2(0, 0)))
+            {
+                fprintf(stderr, "Moving\n");
+                move(mouse.position - last_mouse_pos);
+            }
+            last_mouse_pos = mouse.position;
+        }
+
         return false;
     }
 
@@ -465,6 +547,7 @@ namespace sym_plugin
             return true;
 
         moving_point_index = -1;
+        moving             = false;
 
         return false;
     }

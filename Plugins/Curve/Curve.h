@@ -213,6 +213,9 @@ namespace sym_plugin
         plugin::Vec2 graph_size;
         plugin::Vec2 graph_pos;
 
+        bool         moving;
+        plugin::Vec2 last_mouse_pos;
+
         void UpdateFilter(plugin::Texture* texture);
         void ProcessPoint(List<plugin::Vec2>& points, plugin::Vec2 position);
         void MovePoint   (plugin::Vec2 mouse_pos);
@@ -252,12 +255,19 @@ namespace sym_plugin
                 default:
                     break;
             }
-        } 
+        }
+
+        void Close()
+        { delete this; }
+
+        void SetMoving(bool value)
+        { moving = value; }
 
         void render        (plugin::RenderTargetI* target) override;
         bool onMousePress  (plugin::MouseContext mouse)    override;
         bool onMouseMove   (plugin::MouseContext mouse)    override;
         bool onMouseRelease(plugin::MouseContext mouse)    override;
+        void move          (plugin::Vec2 delta)            override;
     };
 
 
