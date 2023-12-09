@@ -285,11 +285,10 @@ namespace sym_plugin
         int   character_size;
         char* text;
         plugin::Color text_color;
-        plugin::Color background;
 
     public:
         Label(plugin::Vec2 _position, int character_size, 
-            const char* text = "Label", plugin::Color background = plugin::Color(0, 0, 0), 
+            const char* text = "Label",
             plugin::Color text_color = plugin::Color(255, 255, 255));
         ~Label();
 

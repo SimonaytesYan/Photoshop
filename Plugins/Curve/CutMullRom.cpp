@@ -3,7 +3,7 @@
 namespace sym_plugin
 {
     const double kCatMullRomConst = 1;
-    const double kCatMullRomStep  = 0.02;
+    const double kCatMullRomStep  = 0.007;
 
     static double CalcNextT      (plugin::Vec2 p1, plugin::Vec2 p2, double t);
     static void   CutMullRom3Vert(plugin::RenderTargetI* target, plugin::Color color, double thickness,

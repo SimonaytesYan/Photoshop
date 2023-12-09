@@ -48,11 +48,8 @@ namespace sym_plugin
                                        plugin::Vec2(100, 50), 
                                        plugin::Color(128, 128, 128), 
                                        functor);
-        Label* ok_label = new Label(ok_button->getSize(), 10, "OK", 
-                                               plugin::Color(0, 255, 255));
-
-        fprintf(stderr, "ok_label = (%lg, %lg)\n", ok_label->getSize().x, ok_label->getSize().y);
-
+        Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(30, 0), 
+                                    30, "OK", plugin::Color(255, 255, 255));
         ok_button->registerSubWidget(ok_label);
         
         // Create window
@@ -307,6 +304,9 @@ namespace sym_plugin
                                   button_size, kUnSelected, green_button_functor);
         blue_button  = new Button(getPos() + plugin::Vec2(500, 50), 
                                   button_size, kUnSelected, blue_button_functor);
+        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), 30, "Red"));
+        green_button->registerSubWidget(new Label(green_button->getPos(), 30, "Green"));
+        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), 30, "Blue"));
 
         registerSubWidget(red_button);
         registerSubWidget(green_button);
@@ -655,10 +655,9 @@ namespace sym_plugin
     //====================================LABEL=================================
 
     Label::Label(plugin::Vec2 _position, int _character_size, 
-                const char* _text, plugin::Color _background, plugin::Color _text_color) :
+                const char* _text, plugin::Color _text_color) :
     Widget(_position, plugin::Vec2(strlen(_text) * (_character_size - 5), (_character_size + 10))),
     character_size (_character_size),
-    background     (_background),
     text_color     (_text_color)
     {
         text = (char*)calloc(sizeof(char), strlen(_text) + 1);
@@ -681,7 +680,6 @@ namespace sym_plugin
     {
         if (available)
         {
-            //render_target->drawRect(position, size, background);
             render_target->drawText(position, text, character_size, text_color);
 
             Widget::render(render_target);
