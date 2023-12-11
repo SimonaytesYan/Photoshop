@@ -9,20 +9,47 @@
 namespace plugin {
     enum class InterfaceType {
         Tool,
-        Filter
+        Filter,
+        System // системный плагин, мб обертка
     };
 
 /// @warning Array не владеющая структура => он не должен аллоцировать память. Даже в случае getPramas() надо возвращать указатель на какой-то внутренний массив даблов, а не аллоцировать, так как будет memory leak
     template<class T>
-    struct Array
+    struct Array 
     {
         uint64_t size;
         T* data;
 
-        Array(uint64_t size = 0, T* data = nullptr) :
-        size (size),
-        data (data)
+        Array(uint64_t _size, T* _data): size(_size), data(new T[_size]) 
+        { std::copy(_data, _data + _size, data); }
+
+        Array(const Array<T>& other) : 
+        Array(other.size, other.data) 
         {}
+        
+        Array& operator=(const Array<T>& other) 
+        {
+            size = other.size;
+            delete data;
+            data = new T[other.size];
+            std::copy(other.data, other.data + other.size, data);
+        }
+
+        Array(Array<T>&& other) 
+        {
+            std::swap(size, other.size);
+            std::swap(data, other.data);
+        }
+
+        Array& operator=(Array<T>&& other) 
+        {
+            std::swap(size, other.size);
+            std::swap(data, other.data);
+        }
+
+        ~Array() {
+            delete[] data;
+        };
     };
 
     struct Color
@@ -48,11 +75,6 @@ namespace plugin {
         b (_b),
         a (_a)
         {};
-
-        Color Inverse()
-        {
-            return Color(255 - r, 255 - g, 255 - b);
-        };
     };
 
     static bool operator==(Color& a, Color& b)
@@ -82,13 +104,10 @@ namespace plugin {
             memcpy(pixels, texture.pixels, sizeof(Color) * height * width);
         }
 
-        ~Texture()
+        virtual ~Texture() 
         {
-            height = 0;
-            width  = 0;
-
-            delete[] pixels;
-        }
+		    delete[] pixels;
+	    }
     };
 
     //================================VEC 2=====================================
@@ -276,7 +295,8 @@ namespace plugin {
         KeyCount,     
     };
 
-    struct KeyboardContext {
+    struct KeyboardContext 
+    {
         bool alt;
         bool shift;
         bool ctrl;
@@ -284,7 +304,8 @@ namespace plugin {
         Key key;
     };
 
-    struct RenderTargetI {
+    struct RenderTargetI 
+    {
         /**
          * point -- левый верхний угол
          * size  -- размер ограничивающего прямоугольника
@@ -306,12 +327,22 @@ namespace plugin {
         virtual void clear() = 0;
     };
 
+
+    struct RenderableI 
+    {
+        virtual void render(RenderTargetI* texture);
+        virtual ~RenderableI() = default;
+    };
+
+
     struct Interface {
         virtual Array<const char *> getParamNames() = 0;
         
         // в том же порядке, что getParamNames 
         virtual Array<double> getParams() = 0;
         virtual void setParams(Array<double> params) = 0;
+
+        virtual ~Interface() = default; 
     };
 
     struct Plugin {
@@ -321,6 +352,11 @@ namespace plugin {
         InterfaceType type;
 
         virtual Interface *getInterface() = 0;
+
+        // плагин выбрали
+        // [UPD]: только для системных
+        virtual void selectPlugin() = 0;
+
         virtual ~Plugin() = default;
     };
 
@@ -334,7 +370,8 @@ namespace plugin {
 	    NumOfEvents
     };
 
-    struct EventProcessableI {
+    struct EventProcessableI 
+    {
         // MouseContext хранит в себе координаты относительно позиции RT из GuiI::getRenderTarget.
         // Мотивация: если RT это не весь экран, а RT в каком-то окне (как идейно и планировалось), то, 
         // строго говоря, плагин не знает где в реальном мире находится RT (его могли перетаскивать и проч)
@@ -353,50 +390,49 @@ namespace plugin {
 
 
 	    virtual uint8_t getPriority() = 0;
+
+        virtual ~EventProcessableI() = default;
     };
 
-    struct EventManagerI {
+    struct EventManagerI 
+    {
         virtual void registerObject(EventProcessableI *object)   = 0;
 
         // 0 минимальный, ивенты приходят только объектам с их priority >= установленной по этому типу
         // 0 -- default
         virtual void setPriority(EventType, uint8_t priority)    = 0;
         virtual void unregisterObject(EventProcessableI *object) = 0;
+
+        virtual ~EventManagerI() = default;
     };
 
-    struct WidgetI: public EventProcessableI {
+    struct WidgetI 
+    {
         virtual void registerSubWidget(WidgetI* object) = 0;
         virtual void unregisterSubWidget(WidgetI* object) = 0;
 
-        virtual Vec2 getSize() = 0;
+        virtual Vec2 getSize() const = 0;
         virtual void setSize(Vec2) = 0;
 
-        virtual Vec2 getPos() = 0;
+        virtual Vec2 getPos() const = 0;
         virtual void setPos(Vec2) = 0;
 
-        /// Нужно для обновления регинов.
-        /// верно тогда и только тогда, когда виджет принадлежит плагину.
-        /// В таком случае вызов getDefaultRegion невалиден (поэтому тут его и нет), и нужно 
-        virtual bool isExtern() = 0;
-
+        virtual WidgetI *getParent() const = 0;
         virtual void setParent(WidgetI *root) = 0;
-        virtual WidgetI *getParent() = 0;
 
         virtual void move(Vec2 shift) = 0;
 
         // Жив ли виджет
         // Если true, то это идейно равносильно вызову деструктору, то есть его не надо рендерить, ему не надо передавать 
         // ивенты и тд и тп
-        virtual bool getAvailable() = 0;
+        virtual bool getAvailable() const = 0;
         virtual void setAvailable(bool) = 0;
 
-        virtual void render(RenderTargetI* ) = 0;
-        virtual void recalcRegion() = 0;
-
-        virtual ~WidgetI() = default;                                                                                                                                                                                           
+        virtual ~WidgetI() = default;
     };
 
-    struct ToolI: public Interface {
+    struct ToolI: public Interface 
+    {
         virtual const Texture *getIcon() = 0;
 
         virtual void paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
@@ -407,27 +443,10 @@ namespace plugin {
         virtual ~ToolI() = default;
     };
 
-    struct ToolManagerI {
-        virtual void setColor(Color color) = 0;
-        virtual void setTool(ToolI *tool) = 0;
-
-        virtual ToolI *getTool() = 0;
-        virtual Color  getColor() = 0;
-
-        virtual void paintOnMove(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) = 0;
-        virtual void paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) = 0;
-        virtual void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) = 0;
-        virtual void disableTool(RenderTargetI *data, RenderTargetI *tmp, MouseContext context) = 0;
-    };
-
-    struct FilterI: public Interface {
+    struct FilterI: public Interface 
+    {
         virtual void apply(RenderTargetI *data) = 0;
-    };
-
-    struct FilterManagerI {
-        virtual void setRenderTarget(RenderTargetI *target) = 0;
-        virtual void setFilter(FilterI *filter) = 0;
-        virtual void applyFilter() = 0;
+        virtual ~FilterI() = default;
     };
 
     struct GuiI {
@@ -451,14 +470,14 @@ namespace plugin {
          * @return WidgetI* root
          */
         virtual WidgetI* getRoot() = 0;
+
+        virtual ~GuiI() = default;
     };
 
     struct App 
     {
         GuiI *root;
-        EventManagerI *event_manager; 
-        ToolManagerI *tool_manager;
-        FilterManagerI *filter_manager; 
+        EventManagerI *event_manager;
     };
 }
 
