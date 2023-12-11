@@ -20,12 +20,22 @@ namespace plugin {
         uint64_t size;
         T* data;
 
-        Array(uint64_t _size, T* _data): size(_size), data(new T[_size]) 
-        { std::copy(_data, _data + _size, data); }
+        Array(uint64_t _size) :
+        size (_size)
+        {
+            data = new T[size];
+        }
+
+        Array(uint64_t _size, T* _data): 
+        size(_size), 
+        data(new T[_size]) 
+        { 
+            std::copy(_data, _data + _size, data); 
+        }
 
         Array(const Array<T>& other) : 
         Array(other.size, other.data) 
-        {}
+        { }
         
         Array& operator=(const Array<T>& other) 
         {
@@ -431,6 +441,11 @@ namespace plugin {
         virtual ~WidgetI() = default;
     };
 
+    struct PluginWidgetI: public EventProcessableI, public RenderableI 
+    {
+        WidgetI* host;
+    };
+
     struct ToolI: public Interface 
     {
         virtual const Texture *getIcon() = 0;
@@ -449,27 +464,27 @@ namespace plugin {
         virtual ~FilterI() = default;
     };
 
-    struct GuiI {
-        virtual Vec2 getSize() = 0; // размер доступной для рисования площади (которую можно запросить)
-
-        /// @brief запросить RT.
-        /// Хост создает новое окно / отдает какое-то, абсолютно пустое, с единственным RT на все окно.
-        /// @param size -- размер запрашиваемой области
-        /// @param pos  -- (относительное [относительно предоставленной области]) смещение запрашиваемой области
-        virtual RenderTargetI* getRenderTarget(Vec2 size, Vec2 pos, Plugin *self) = 0;
-
-        /// @brief Создает окно с параметрами, каким-то образом узнает у пользователя 
-        ///     значения параметров и потом возвращает их интерфейсу через Interface::set_params
-        /// @note окно не обязательно модальное, да и вообще implementation defined. Мем в том, что плагин находится в 
-        ///     неопределенном/дефолтном состоянии между createParamWindow и Interface::set_params и взаимодействие с ним UB
-        virtual void createParamWindow(Array<const char *> param_names, Interface * self) = 0;
-
+    struct GuiI 
+    {
         /**
          * @brief Get the root widget of widget tree
          * 
          * @return WidgetI* root
          */
-        virtual WidgetI* getRoot() = 0;
+        virtual WidgetI* getRoot() const = 0;
+
+        /**
+         * @brief Create a host WidgetI from PluginWidgetI and set `host` field in widget
+         */
+        virtual void createWidgetI(PluginWidgetI* widget) = 0;
+
+        // плагин через это у хоста запрашивает, есть ли плагин c таким id. nullptr если нет
+        virtual Plugin *queryPlugin(uint64_t id) = 0;
+
+        // принимает имя файла
+        // например, если у хоста все asset'ы этого плагина валяются в assets/shit/<filename>, то 
+        // сюда надо передавать только filename
+        virtual Texture *loadTextureFromFile(const char *filename) = 0;
 
         virtual ~GuiI() = default;
     };

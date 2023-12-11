@@ -29,11 +29,8 @@ namespace sym_plugin
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
         functor->rt = rt;
         functor->r  = plugin::Array<uint8_t>(256);
-        functor->r.data = new uint8_t[256];
         functor->g  = plugin::Array<uint8_t>(256);
-        functor->g.data = new uint8_t[256];
         functor->b  = plugin::Array<uint8_t>(256);
-        functor->b.data = new uint8_t[256];
 
         for (int i = 0; i < 256; i++)
         {
