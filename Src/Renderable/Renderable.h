@@ -4,7 +4,7 @@
 #include "../RenderTarget/RenderTarget.h"
 #include "../Standart/Standart.h"
 
-class Renderable
+class Renderable : plugin::RenderableI
 {
 
 public:

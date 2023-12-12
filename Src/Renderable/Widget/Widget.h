@@ -8,46 +8,14 @@
 #include "../../List.h"
 #include "../Renderable.h"
 #include "../../RegionSet/RegionSet.h"
-#include "../../Standart/Standart.h"
-#include "../../Standart/Standart.h"
+#include "../../EventProcessable.h"
 
-class Widget;
-
-struct WidgetPtr
-{
-
-    union 
-    {
-        Widget*          widget;
-        plugin::WidgetI* widget_i;
-    };
-    bool is_extern;
-
-    WidgetPtr() { is_extern = false; widget = nullptr; };
-    WidgetPtr(plugin::WidgetI* object);
-
-    RegionSet    GetDefaultRegSet ();
-    plugin::Vec2 getSize();
-    plugin::Vec2 getPos();
-    bool         onKeyboardPress  (plugin::KeyboardContext key);
-    bool         onKeyboardRelease(plugin::KeyboardContext key);
-    bool         onMousePress     (plugin::MouseContext mouse);
-    bool         onMouseRelease   (plugin::MouseContext mouse);
-    bool         onMouseMove      (plugin::MouseContext mouse);
-    bool         onClock          (size_t delta);
-    void         move             (plugin::Vec2 shift);
-    bool         InsideP          (plugin::Vec2 v);
-    void         setAvailable     (bool value);
-    bool         getAvailable     ();
-    void         recalcRegion     ();
-};
-
-class Widget : public Renderable, public plugin::WidgetI
+class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
 {
 protected:
     uint8_t priority;
     bool            available;
-    List<WidgetPtr> sub_widgets;
+    List<Widget*>   sub_widgets;
     plugin::Vec2    position;
     plugin::Vec2    size;
     RegionSet       reg_set;
@@ -71,14 +39,12 @@ public :
     virtual void move               (plugin::Vec2 delta)                   override;
     virtual void registerSubWidget  (WidgetI* new_widget)                  override;
             void unregisterSubWidget(WidgetI* son)                         override;
-            void recalcRegion       ()                                     override;
 
-    bool         getAvailable() override { return available; }
-    plugin::Vec2 getSize     () override { return size;      }
-    plugin::Vec2 getPos      () override { return position;  }
-    bool         isExtern    () override { return false;     }
+    bool         getAvailable() const override { return available; }
+    plugin::Vec2 getSize     () const override { return size;      }
+    plugin::Vec2 getPos      () const override { return position;  }
+    WidgetI*     getParent   () const override { return parent;    }
     uint8_t      getPriority () override { return priority;  }
-    WidgetI*     getParent   () override { return parent;    }
 
     void setAvailable(bool value)             override { available = value;         }
     void setSize     (plugin::Vec2 value)     override { size      = value;         }
@@ -91,18 +57,13 @@ public :
     const RegionSet& GetDefaultRegSet() const { return default_reg_set; }
     RegionSet&       GetRegionSet()           { return reg_set; }
     const RegionSet& GetRegionSet()    const  { return reg_set; }
+    void             recalcRegion();
     void             UpdateRegionSet       ();
     void             UpdateDefaultRegionSet();
     void             UpdateParentDefaultRegionSet();
     virtual void     UpdateOwnDefaultRegionSet();
     
-    virtual bool InsideP(plugin::Vec2 v);
-
-    const plugin::Vec2& getSize()      const { return size;      }
-    plugin::Vec2        getPosition()  const { return position;  }
-    
-    bool          getAvailable() const { return available; }
-    Widget*       getParent()    const { return parent;    }
+    virtual bool InsideP(plugin::Vec2 v);    
 };
 
 #endif  //SYM_SUB_WINDOW

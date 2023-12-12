@@ -9,6 +9,9 @@ protected :
     uint8_t priority;
 
 public : 
+    EventProcessable() :
+    priority (0)
+    { }
 
     uint8_t getPriority() override
     { return priority; }

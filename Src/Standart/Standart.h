@@ -344,7 +344,6 @@ namespace plugin {
         virtual ~RenderableI() = default;
     };
 
-
     struct Interface {
         virtual Array<const char *> getParamNames() = 0;
         
@@ -487,7 +486,7 @@ namespace plugin {
         virtual Texture *loadTextureFromFile(const char *filename) = 0;
 
         virtual ~GuiI() = default;
-    };
+    };  
 
     struct App 
     {
