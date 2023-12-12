@@ -36,6 +36,9 @@ namespace sym_plugin
         plugin::Interface *getInterface() override
         { return (plugin::Interface*) filter; }
 
+        void selectPlugin() override
+        {}
+
         ~CurvePlugin()
         {}
 
@@ -49,7 +52,8 @@ namespace sym_plugin
 
     public:
         CurveFilter(CurvePlugin* parent) :
-        parent (parent)
+        parent (parent),
+        param_names (plugin::Array<const char*>(0))
         {}
 
         void                       apply        (plugin::RenderTargetI* rt)    override;
@@ -79,15 +83,15 @@ namespace sym_plugin
         EVENTS_NUMBER
     };
 
-    class Widget : public plugin::WidgetI
+    class Widget : public plugin::PluginWidgetI
     {
     protected:
-        uint8_t          priority;
-        bool             available;
-        plugin::Vec2     position;
-        plugin::Vec2     size;
-        List<plugin::WidgetI*>  sub_widgets;
-        plugin::WidgetI* parent;
+        uint8_t                       priority;
+        bool                          available;
+        plugin::Vec2                  position;
+        plugin::Vec2                  size;
+        List<plugin::PluginWidgetI*>  sub_widgets;
+        plugin::WidgetI*              parent;
 
     public: 
         Widget (plugin::Vec2 position = plugin::Vec2(0, 0), 
@@ -100,28 +104,16 @@ namespace sym_plugin
         virtual bool onMousePress       (plugin::MouseContext mouse)  override;
         virtual bool onMouseRelease     (plugin::MouseContext mouse)  override;
         virtual bool onMouseMove        (plugin::MouseContext mouse)  override;
-        virtual bool onClock            (size_t delta)        override;
+        virtual bool onClock            (size_t delta)                override;
+
+        virtual void move(plugin::Vec2 shift);
 
         virtual void render             (plugin::RenderTargetI* render_target) override;
-        virtual void move               (plugin::Vec2 delta)                   override;
-        virtual void registerSubWidget  (WidgetI* new_widget)                  override;
-                void unregisterSubWidget(WidgetI* son)                         override;
-                void recalcRegion       ()                                     override;
 
-        bool         getAvailable() override { return available; }
-        plugin::Vec2 getSize     () override { return size;      }
-        plugin::Vec2 getPos      () override { return position;  }
-        bool         isExtern    () override { return true;     }
         uint8_t      getPriority () override { return priority;  }
-        WidgetI*     getParent   () override { return parent;    }
 
-        void setAvailable(bool value)             override { available = value;         }
-        void setSize     (plugin::Vec2 value)     override { size      = value;         }
-        void setPos      (plugin::Vec2 value)     override { position  = value;         }
-        void setParent   (plugin::WidgetI* value) override { parent    = (Widget*)value;}    
-        
         void setPriority(uint8_t value) { priority = value;  }
-        void setParent  (Widget* value) { parent   = value;  };
+        void setParent  (Widget* value) { parent   = (plugin::WidgetI*)value;  };
 
         virtual bool InsideP(plugin::Vec2 v);
     };

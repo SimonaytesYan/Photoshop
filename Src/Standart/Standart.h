@@ -20,7 +20,7 @@ namespace plugin {
         uint64_t size;
         T* data;
 
-        Array(uint64_t _size) :
+        Array(uint64_t _size = 0) :
         size (_size)
         {
             data = new T[size];
@@ -43,6 +43,8 @@ namespace plugin {
             delete data;
             data = new T[other.size];
             std::copy(other.data, other.data + other.size, data);
+
+            return *this;
         }
 
         Array(Array<T>&& other) 
@@ -55,6 +57,8 @@ namespace plugin {
         {
             std::swap(size, other.size);
             std::swap(data, other.data);
+
+            return *this;
         }
 
         ~Array() {
@@ -449,7 +453,7 @@ namespace plugin {
         WidgetI* host;
     };
 
-    struct ToolI: public Interface 
+    struct ToolI : public Interface 
     {
         virtual const Texture *getIcon() = 0;
 
@@ -461,7 +465,7 @@ namespace plugin {
         virtual ~ToolI() = default;
     };
 
-    struct FilterI: public Interface 
+    struct FilterI : public Interface 
     {
         virtual void apply(RenderTargetI *data) = 0;
         virtual ~FilterI() = default;

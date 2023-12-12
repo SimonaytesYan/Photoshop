@@ -42,15 +42,19 @@ namespace sym_plugin
         Button* ok_button = new Button(start_pos + plugin::Vec2((size - kButtonSize).x / 2,     
                                                                 (size - kButtonSize).y * 11 / 12), 
                                        kButtonSize, kSelected, functor);
-        Label* ok_label = new Label(ok_button->getPos() + plugin::Vec2(25, 0), 
+        app->root->createWidgetI(ok_button);
+        Label* ok_label = new Label(ok_button->host->getPos() + plugin::Vec2(25, 0), 
                                     kTextSize, "OK", kTextColor);
-        ok_button->registerSubWidget(ok_label);
+        app->root->createWidgetI(ok_label);
+
+        ok_button->host->registerSubWidget(ok_label->host);
 
         // Create window
 
         CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
+        app->root->createWidgetI(window);
 
-        window->registerSubWidget(ok_button);
+        window->host->registerSubWidget(ok_button->host);
         functor->window = window;
         
         // Make it modal
@@ -59,7 +63,7 @@ namespace sym_plugin
         app->event_manager->setPriority(plugin::EventType::MousePress, 
                                         255);
 
-        app->root->getRoot()->registerSubWidget(window);
+        app->root->getRoot()->registerSubWidget(window->host);
     }
 
     plugin::Array<const char*> CurveFilter::getParamNames()
@@ -115,7 +119,7 @@ namespace sym_plugin
     available       (_available),
     position        (_position),
     size            (_size),
-    sub_widgets     (List<plugin::WidgetI*>(0)),
+    sub_widgets     (List<plugin::PluginWidgetI*>(0)),
     parent          (nullptr)
     {
     }
@@ -126,27 +130,15 @@ namespace sym_plugin
             delete sub_widgets[i].val;
         
         if (parent != nullptr)
-            parent->unregisterSubWidget(this);
+            parent->unregisterSubWidget(this->host);
     }
 
     void Widget::move(plugin::Vec2 delta)
     {
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-            sub_widgets[i].val->move(delta);
+            sub_widgets[i].val->host->move(delta);
 
         position = position + delta;
-    }
-
-    void Widget::unregisterSubWidget(WidgetI* son)
-    {
-        for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
-        {
-            if (sub_widgets[index].val == son)
-            {
-                sub_widgets.Remove(index);
-                break;
-            }
-        }
     }
 
     void Widget::render(plugin::RenderTargetI* render_target)
@@ -155,24 +147,15 @@ namespace sym_plugin
         {
             for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
             {
-                plugin::WidgetI* sub_widget = sub_widgets[index].val;
-                if (sub_widget->getAvailable())
+                plugin::PluginWidgetI* sub_widget = sub_widgets[index].val;
+                if (sub_widget->host->getAvailable())
                         sub_widget->render(render_target);
             }
         }
     }
 
-    void Widget::registerSubWidget(WidgetI* new_widget)
-    {
-        new_widget->setParent(this);
-        sub_widgets.PushBack(new_widget);
-
-        if (parent != nullptr)
-            parent->recalcRegion();
-    }
-
     bool WidgetEventRound(Events event, void*  event_args, 
-                          List<plugin::WidgetI*> &objects, bool available)
+                          List<plugin::PluginWidgetI*> &objects, bool available)
     {
         if (!available)
             return false;
@@ -243,10 +226,6 @@ namespace sym_plugin
     bool Widget::onClock(size_t delta)
     {
         return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
-    }
-
-    void Widget::recalcRegion()
-    {
     }
 
     bool Widget::InsideP(plugin::Vec2 v)
@@ -322,9 +301,14 @@ namespace sym_plugin
         // Button to move window
         Button* header_button = new Button(position, plugin::Vec2(size.x - 25, 25), 
                                            plugin::Color(235,235,235), new ButtonMove(this));
+        app->root->createWidgetI(header_button);
+
+        Label* header_label = new Label(position, kTextSize, "Curve filter", kTextColor);
+        app->root->createWidgetI(header_label);
+        
         // Header
-        header_button->registerSubWidget(new Label(position, kTextSize, "Curve filter", kTextColor));    
-        registerSubWidget(header_button);
+        header_button->host->registerSubWidget(header_label->host);    
+        host->registerSubWidget(header_button->host);
 
         // Close button window
         plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
@@ -332,9 +316,13 @@ namespace sym_plugin
         Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
                                           plugin::Color(217, 217, 217),
                                           nullptr, new ButtonClose(this));
-        close_button->registerSubWidget(new Label(close_button_pos + plugin::Vec2(9, 1), 
-                                                  kTextSize - 5, "X", kTextColor));
-        registerSubWidget(close_button);                    
+        app->root->createWidgetI(close_button);
+        Label* close_label = new Label(close_button_pos + plugin::Vec2(9, 1), 
+                                       kTextSize - 5, "X", kTextColor);
+        app->root->createWidgetI(close_label);
+
+        close_button->host->registerSubWidget(close_label->host);
+        host->registerSubWidget(close_button->host);                    
 
         // Add button to switch color
 
@@ -342,22 +330,31 @@ namespace sym_plugin
         ChangeStatusFunctor* green_button_functor = new ChangeStatusFunctor(CurveWindowStatus::Green, this);
         ChangeStatusFunctor* blue_button_functor  = new ChangeStatusFunctor(CurveWindowStatus::Blue,  this);
 
-        red_button   = new Button(getPos() + plugin::Vec2(20, 30), 
+        red_button   = new Button(host->getPos() + plugin::Vec2(20, 30), 
                                   kButtonSize, kUnSelected, red_button_functor);
-        green_button = new Button(getPos() + plugin::Vec2(160, 30), 
+        green_button = new Button(host->getPos() + plugin::Vec2(160, 30), 
                                   kButtonSize, kUnSelected, green_button_functor);
-        blue_button  = new Button(getPos() + plugin::Vec2(300, 30), 
+        blue_button  = new Button(host->getPos() + plugin::Vec2(300, 30), 
                                   kButtonSize, kUnSelected, blue_button_functor);
-        red_button  ->registerSubWidget(new Label(red_button  ->getPos(), 
-                                                  kTextSize, "Red"  , kTextColor));
-        green_button->registerSubWidget(new Label(green_button->getPos(), 
-                                                  kTextSize, "Green", kTextColor));
-        blue_button ->registerSubWidget(new Label(blue_button ->getPos(), 
-                                                  kTextSize, "Blue" , kTextColor));
+        app->root->createWidgetI(red_button);
+        app->root->createWidgetI(green_button);
+        app->root->createWidgetI(blue_button);
 
-        registerSubWidget(red_button);
-        registerSubWidget(green_button);
-        registerSubWidget(blue_button);
+        Label* red_label   = new Label(red_button->host->getPos(), kTextSize, "Red",   kTextColor);
+        Label* green_label = new Label(red_button->host->getPos(), kTextSize, "Green", kTextColor);
+        Label* blue_label  = new Label(red_button->host->getPos(), kTextSize, "Blue",  kTextColor);
+
+        app->root->createWidgetI(red_label);
+        app->root->createWidgetI(green_label);
+        app->root->createWidgetI(blue_label);
+
+        red_button  ->host->registerSubWidget(red_label  ->host);
+        green_button->host->registerSubWidget(green_label->host);
+        blue_button ->host->registerSubWidget(blue_label ->host);
+
+        host->registerSubWidget(red_button  ->host);
+        host->registerSubWidget(green_button->host);
+        host->registerSubWidget(blue_button ->host);
 
         SetStatus(CurveWindowStatus::Red);
     }
