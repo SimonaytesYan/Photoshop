@@ -33,7 +33,7 @@ public :
     virtual bool onMousePress       (plugin::MouseContext mouse)  override;
     virtual bool onMouseRelease     (plugin::MouseContext mouse)  override;
     virtual bool onMouseMove        (plugin::MouseContext mouse)  override;
-    virtual bool onClock            (size_t delta)        override;
+    virtual bool onClock            (size_t delta)                override;
 
     virtual void render             (plugin::RenderTargetI* render_target) override;
     virtual void move               (plugin::Vec2 delta)                   override;
@@ -64,6 +64,28 @@ public :
     virtual void     UpdateOwnDefaultRegionSet();
     
     virtual bool InsideP(plugin::Vec2 v);    
+};
+
+//============================PLUGIN WIDGET=====================================
+
+class PluginWidget : public Widget
+{
+    plugin::PluginWidgetI* plugin_widget_i;
+
+public :
+
+    PluginWidget(plugin::PluginWidgetI* widget) :
+    plugin_widget_i (widget)
+    { }
+
+    void render(plugin::RenderTargetI* render_target) override;
+
+    bool onKeyboardPress    (plugin::KeyboardContext key) override;
+    bool onKeyboardRelease  (plugin::KeyboardContext key) override;
+    bool onMousePress       (plugin::MouseContext mouse)  override;
+    bool onMouseRelease     (plugin::MouseContext mouse)  override;
+    bool onMouseMove        (plugin::MouseContext mouse)  override;
+    bool onClock            (size_t delta)                override;
 };
 
 #endif  //SYM_SUB_WINDOW

@@ -281,3 +281,40 @@ bool Widget::InsideP(plugin::Vec2 v)
            v.GetY() - position.GetY() >= -kPrecision && 
            v.GetY() - position.GetY() <= size.GetY() + kPrecision;
 }
+
+//========================PLUGIN WIDGET=========================================
+
+void PluginWidget::render(plugin::RenderTargetI* render_target)
+{
+    plugin_widget_i->render(render_target);
+}
+
+bool PluginWidget::onKeyboardPress(plugin::KeyboardContext key)
+{
+    return plugin_widget_i->onKeyboardPress(key);
+}
+
+bool PluginWidget::onKeyboardRelease(plugin::KeyboardContext key)
+{
+    return plugin_widget_i->onKeyboardRelease(key);
+}
+
+bool PluginWidget::onMousePress(plugin::MouseContext mouse)
+{
+    return plugin_widget_i->onMousePress(mouse);
+}
+
+bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
+{
+    return plugin_widget_i->onMouseRelease(mouse);
+}
+
+bool PluginWidget::onMouseMove(plugin::MouseContext mouse)
+{
+    return plugin_widget_i->onMouseMove(mouse);
+}
+
+bool PluginWidget::onClock(size_t delta)
+{
+    return plugin_widget_i->onClock(delta);
+}

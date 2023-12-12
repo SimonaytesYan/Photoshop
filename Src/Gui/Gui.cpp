@@ -2,17 +2,23 @@
 #include "../ClipRegion/ClipRegion.h"
 #include "../RegionSet/RegionSet.h"
 
-void createWidgetI(plugin::PluginWidgetI* widget)
+void Gui::createWidgetI(plugin::PluginWidgetI* widget)
 {
-
+    root->registerSubWidget(new PluginWidget(widget));
 }
 
-plugin::Plugin* queryPlugin(uint64_t id)
+plugin::Plugin* Gui::queryPlugin(uint64_t id)
 {
+    for (int i = 0; i < plugins.GetLength(); i++)
+    {
+        if (plugins[i]->id == id)
+            return plugins[i];
+    }
 
+    return nullptr;
 }
 
-plugin::Texture* loadTextureFromFile(const char *filename)
+plugin::Texture* Gui::loadTextureFromFile(const char *filename)
 {
     Image image;
     image.LoadFromFile(filename);

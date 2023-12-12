@@ -413,7 +413,6 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 
 	//==========================================================================
 
-
 	main_window->registerSubWidget(tools);
 }
 
