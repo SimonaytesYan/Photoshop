@@ -7,26 +7,34 @@
 
 class Gui : public plugin::GuiI
 {
-    Widget*          root;
-    RectangleWidget* rt_widget;
+    DynArray<plugin::Plugin*> plugins;
+    Widget*                   root;
+    RectangleWidget*          rt_widget;
 
 public:
 
     Gui(Widget* root = nullptr) :
     root (root)
-    {}
+    { }
 
-    plugin::Vec2 getSize() override
-    { return root->getSize(); }
-    plugin::RenderTargetI* getRenderTarget(plugin::Vec2 size, 
-                                           plugin::Vec2 pos, 
-                                           plugin::Plugin *self) override;
+    void AddPlugin(plugin::Plugin* new_plugin)
+    {
+        plugins.PushBack(new_plugin);
+    }
 
-    void createParamWindow(plugin::Array<const char*> param_names, 
-                           plugin::Interface*         self) override;
+    DynArray<plugin::Plugin*>& GetPlugins()
+    {
+        return plugins;
+    }
 
-    plugin::WidgetI* getRoot() override
+    plugin::WidgetI* getRoot() const override
     { return root; }
+
+    void createWidgetI(plugin::PluginWidgetI* widget) override;
+
+    plugin::Plugin* queryPlugin(uint64_t id) override;
+
+    plugin::Texture* loadTextureFromFile(const char *filename) override;
 };
 
 #endif //SYM_GUI

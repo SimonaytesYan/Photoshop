@@ -2,19 +2,28 @@
 #include "../ClipRegion/ClipRegion.h"
 #include "../RegionSet/RegionSet.h"
 
-plugin::RenderTargetI* Gui::getRenderTarget(plugin::Vec2    size, 
-                                            plugin::Vec2    pos, 
-                                            plugin::Plugin *self)
+void createWidgetI(plugin::PluginWidgetI* widget)
 {
-    rt_widget = new RectangleWidget(pos, size);
-    root->registerSubWidget(rt_widget);
 
-    return (plugin::RenderTargetI*)rt_widget->GetRT();
 }
 
-void Gui::createParamWindow(plugin::Array<const char*> param_names, 
-                            plugin::Interface*         self)
+plugin::Plugin* queryPlugin(uint64_t id)
 {
-    //...
+
 }
 
+plugin::Texture* loadTextureFromFile(const char *filename)
+{
+    Image image;
+    image.LoadFromFile(filename);
+
+    plugin::Texture* texture = new plugin::Texture();
+    texture->width  = image.getSize().x; 
+    texture->height = image.getSize().y;
+    texture->pixels = new plugin::Color[texture->width * texture->height];
+    
+    memcpy(texture->pixels, image.GetPixelArray(), 
+           sizeof(plugin::Color) * texture->width * texture->height);
+    
+    return texture;
+}
