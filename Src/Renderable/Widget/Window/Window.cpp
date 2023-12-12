@@ -119,14 +119,8 @@ bool Window::onMouseRelease(plugin::MouseContext mouse)
 void Window::Close()
 {
     available = false;
-    size = plugin::Vec2(0, 0);
-    if (parent != nullptr)
-    {
-        parent->unregisterSubWidget(this);
-        parent->UpdateRegionSet();
-    }
-    
-    this->~Window();
+    move(plugin::Vec2(10000, 10000));
+    UpdateRegionSet();
 }
 
 bool Window::InsideP(plugin::Vec2 v)

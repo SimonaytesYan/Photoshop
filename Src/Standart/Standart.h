@@ -125,7 +125,7 @@ namespace plugin {
 
         virtual ~Texture() 
         {
-		    delete[] pixels;
+		    //delete[] pixels;
 	    }
     };
 

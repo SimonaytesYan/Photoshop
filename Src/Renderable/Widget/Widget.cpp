@@ -49,7 +49,7 @@ void Widget::unregisterSubWidget(WidgetI* son)
 {
     for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
     {
-        if (sub_widgets[index].val)
+        if (sub_widgets[index].val == son)
         {
             sub_widgets.Remove(index);
             break;
@@ -82,6 +82,12 @@ void Widget::render(RenderTarget* render_target)
             if (sub_widget->getAvailable())
             {
                 sub_widget->render(render_target);
+            }
+            else
+            {
+                //UpdateRegionSet();
+                //unregisterSubWidget(sub_widget);
+                //delete sub_widget;
             }
         }
     }
@@ -198,9 +204,12 @@ bool Widget::onClock(size_t delta)
 
 void Widget::UpdateRegionSet()
 {
+    int cnt = 0;
     Widget* root = this;
     while (root->parent != nullptr)
+    {
         root = root->parent;
+    }
 
     root->recalcRegion();
 }
