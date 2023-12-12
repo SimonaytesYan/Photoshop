@@ -50,7 +50,7 @@ void WhiteAndBlackFilter::apply(plugin::RenderTargetI* rt)
 
 
     plugin::Vec2 pos  = {0, 0};
-    plugin::Vec2 size = {texture->width, texture->height};
+    plugin::Vec2 size = {(double)texture->width, (double)texture->height};
     rt->drawTexture(pos, size, texture);
 
     delete[] texture->pixels;

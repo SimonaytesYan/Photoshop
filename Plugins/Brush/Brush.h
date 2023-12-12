@@ -19,6 +19,9 @@ public:
     plugin::Interface *getInterface() override
     { return (plugin::Interface*) tool; }
     
+    void selectPlugin() override
+    {}
+
     ~BrushPlugin()
     {}
 };
@@ -32,9 +35,10 @@ class BrushTool : public plugin::ToolI
 
 public:
     BrushTool(double _thickness) :
-    thickness(_thickness),
-    drawing  (false),
-    vertexes (List<plugin::Vec2>(0))
+    thickness   (_thickness),
+    drawing     (false),
+    vertexes    (List<plugin::Vec2>(0)),
+    param_names (plugin::Array<const char*>(0))
     {}
 
     virtual void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 

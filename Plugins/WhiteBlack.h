@@ -18,6 +18,9 @@ public:
     plugin::Interface *getInterface() override
     { return (plugin::Interface*) filter; }
     
+    void selectPlugin() override
+    {}
+
     ~SymWhiteAndBlackPlugin()
     {}
 };
@@ -31,6 +34,10 @@ public:
     void                       setParams    (plugin::Array<double> params) override;
     plugin::Array<const char*> getParamNames()                             override;
     plugin::Array<double>      getParams    ()                             override;
+
+    WhiteAndBlackFilter() :
+    param_names (plugin::Array<const char*>(0))
+    {}
 
     ~WhiteAndBlackFilter()
     {}
