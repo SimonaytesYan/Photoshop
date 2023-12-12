@@ -67,7 +67,7 @@ pressed         (false)
     plugin::WidgetI* parent = target->getParent();
     parent->unregisterSubWidget(target);
 
-    Interlayer* interlayer = new Interlayer(target->getPosition() + visible_box_offset, 
+    Interlayer* interlayer = new Interlayer(target->getPos() + visible_box_offset, 
                                             visible_box_size);
     interlayer->registerSubWidget(target);
     parent->registerSubWidget(interlayer);
@@ -76,24 +76,24 @@ pressed         (false)
 // Change delta if delta move child from parent
 plugin::Vec2 FixDelta(const Widget& parent, const Widget& slider, plugin::Vec2 delta)
 {
-    plugin::Vec2 v0 = delta + slider.getPosition();
+    plugin::Vec2 v0 = delta + slider.getPos();
     plugin::Vec2 v1 = v0 + slider.getSize();
 
-    if (v0.GetX() < parent.getPosition().GetX())
-        delta = plugin::Vec2((parent.getPosition() - slider.getPosition()).GetX(), 
+    if (v0.GetX() < parent.getPos().GetX())
+        delta = plugin::Vec2((parent.getPos() - slider.getPos()).GetX(), 
                        delta.GetY());
-    if (v0.GetY() < parent.getPosition().GetY())
+    if (v0.GetY() < parent.getPos().GetY())
         delta = plugin::Vec2(delta.GetX(),
-                       (parent.getPosition() - slider.getPosition()).GetY());
+                       (parent.getPos() - slider.getPos()).GetY());
 
-    if (v1.GetX() > (parent.getPosition() + parent.getSize()).GetX())
-        delta = plugin::Vec2((parent.getPosition() + parent.getSize() - 
-                        (slider.getPosition() + slider.getSize())).GetX(), 
+    if (v1.GetX() > (parent.getPos() + parent.getSize()).GetX())
+        delta = plugin::Vec2((parent.getPos() + parent.getSize() - 
+                        (slider.getPos() + slider.getSize())).GetX(), 
                        delta.GetY());
-    if (v1.GetY() > (parent.getPosition() + parent.getSize()).GetY())
+    if (v1.GetY() > (parent.getPos() + parent.getSize()).GetY())
         delta = plugin::Vec2(delta.GetX(),
-                       (parent.getPosition() + parent.getSize() - 
-                        (slider.getPosition() + slider.getSize())).GetY());
+                       (parent.getPos() + parent.getSize() - 
+                        (slider.getPos() + slider.getSize())).GetY());
 
     return delta;
 }

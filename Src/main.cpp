@@ -128,7 +128,7 @@ int main()
 				case sf::Event::MouseButtonPressed:
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
-									sf::Mouse::getPosition().y);
+										  sf::Mouse::getPosition().y);
 					event_manager.onMousePress({position, (plugin::MouseButton)event.mouseButton.button});
 					break;
 				}
@@ -136,7 +136,7 @@ int main()
 				case sf::Event::MouseMoved:
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
-									sf::Mouse::getPosition().y);
+										  sf::Mouse::getPosition().y);
 					event_manager.onMouseMove(plugin::MouseContext(position, (plugin::MouseButton)1));
 					break;
 				}
@@ -144,7 +144,7 @@ int main()
 				case sf::Event::MouseButtonReleased:
 				{
 					plugin::Vec2 position(sf::Mouse::getPosition().x,
-									sf::Mouse::getPosition().y);
+										  sf::Mouse::getPosition().y);
 					event_manager.onMouseRelease({position, (plugin::MouseButton)event.mouseButton.button});
 					break;
 				}

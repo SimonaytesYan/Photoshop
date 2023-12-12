@@ -259,7 +259,7 @@ void SelectFilterArgs::operator()()
 	int filter_args_n = filter_args.size;
 	if (filter_args_n != 0)
 	{
-		plugin::Vec2 position = root->getPosition() + root->getSize() / 2;
+		plugin::Vec2 position = root->getPos() + root->getSize() / 2;
 		plugin::Vec2 size(400, 2 * 50 + (filter_args_n + 1) * 100);
 		ModalWindow* dialog_box = new ModalWindow(position, size, 
 													  "Enter filter params", event_manager);
@@ -301,7 +301,7 @@ void LastFilter::operator()()
 
 void SavingParams::operator()()
 {
-	plugin::Vec2 position = main_window->getPosition() + main_window->getSize() / 2;
+	plugin::Vec2 position = main_window->getPos() + main_window->getSize() / 2;
 	plugin::Vec2 size(400, 300);
 	ModalWindow* dialog_box = new ModalWindow(position, size, 
 											  "Enter file name params", 
@@ -337,7 +337,7 @@ void SaveInFile::operator()()
 
 void OpeningParams::operator()()
 {
-	plugin::Vec2 position = main_window->getPosition() + main_window->getSize() / 2;
+	plugin::Vec2 position = main_window->getPos() + main_window->getSize() / 2;
 	plugin::Vec2 size(400, 300);
 	ModalWindow* dialog_box = new ModalWindow(position, size, 
 											  "Enter file name", 
@@ -368,7 +368,7 @@ void OpenFile::operator()()
 	Texture texture;
 	texture.LoadFromFile(file_name);
 
-	plugin::Vec2 position = main_window->getPosition() + main_window->getSize() / 10;
+	plugin::Vec2 position = main_window->getPos() + main_window->getSize() / 10;
 	Window* canvas_window = new Window(position          - plugin::Vec2(10, 50), 
 									   texture.getSize() + plugin::Vec2(20, 60), file_name);
 

@@ -20,7 +20,7 @@ public:
     ClipRegion(const ClipRegion& a);
 
     plugin::Vec2 getSize()     const;
-    plugin::Vec2 getPosition() const;
+    plugin::Vec2 getPos() const;
     plugin::Color  GetColor()    const;
 
     bool InsideP(plugin::Vec2 v) const;

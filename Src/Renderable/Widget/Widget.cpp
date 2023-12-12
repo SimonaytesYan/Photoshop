@@ -30,14 +30,14 @@ void Widget::move(plugin::Vec2 delta)
     position = position + delta;
     for (int i = 0; i < default_reg_set.GetLength(); i++)
     {
-        ClipRegion reg(delta + default_reg_set[i].getPosition(), 
+        ClipRegion reg(delta + default_reg_set[i].getPos(), 
                        default_reg_set[i].getSize());
         default_reg_set.ChangeElem(i, reg);
     }
 
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
-        reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].getPosition(), 
+        reg_set.ChangeElem(i, ClipRegion(delta + reg_set[i].getPos(), 
                                          reg_set[i].getSize()));
     }
 

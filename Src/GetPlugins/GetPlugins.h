@@ -5,6 +5,6 @@
 #include "../DynArray.h"
 #include "../Gui/Gui.h"
 
-plugin::Plugin* LoadPlugins(plugin::App* app, Gui* root);
+void LoadPlugins(plugin::App* app, Gui* root);
 
 #endif

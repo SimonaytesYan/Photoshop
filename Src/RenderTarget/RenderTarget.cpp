@@ -35,9 +35,9 @@ void DrawWithRegionSet(const RegionSet& rend_set, sf::RenderTexture& data,
     for (int i = 0; i < rend_set.GetLength(); i++)
     {
         sf::Sprite tmp_sprite(tmp_target.getTexture(), 
-                              sf::IntRect(ConvertVecI(rend_set[i].getPosition()), 
+                              sf::IntRect(ConvertVecI(rend_set[i].getPos()), 
                                           ConvertVecI(rend_set[i].getSize())));
-        tmp_sprite.setPosition(ConvertVecF(rend_set[i].getPosition()));
+        tmp_sprite.setPosition(ConvertVecF(rend_set[i].getPos()));
 
         data.draw(tmp_sprite);
     }
@@ -166,7 +166,7 @@ void RenderTarget::SetPixel(plugin::Vec2 position, plugin::Color color, const Re
 
     for (int i = 0; i < rend_set.GetLength(); i++)
     {
-        if (InsideP(position, rend_set[i].getPosition(), rend_set[i].getSize()))
+        if (InsideP(position, rend_set[i].getPos(), rend_set[i].getSize()))
         {
             data.draw(shape);
             return;
@@ -268,7 +268,7 @@ void RenderTarget::DrawRegionSet(const RegionSet& reg_set, plugin::Color color, 
     for (int i = 0; i < reg_set.GetLength(); i++)
     {
         sf::RectangleShape rect(ConvertVecF(reg_set[i].getSize()));
-        rect.setPosition(ConvertVecF(reg_set[i].getPosition()));
+        rect.setPosition(ConvertVecF(reg_set[i].getPos()));
 
         #ifdef DEBUG_REGIONS
             rect.setOutlineColor(sf::Color::White);

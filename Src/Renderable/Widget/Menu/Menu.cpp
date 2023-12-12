@@ -16,7 +16,7 @@ struct CallChangeExpandedStatus : public ButtonFunction
 };
 
 Menu::Menu(Button* button, bool _static_menu) :
-Widget        (button->getPosition(), button->getSize()),
+Widget        (button->getPos(), button->getSize()),
 main_button   (button),
 static_menu   (_static_menu)
 {
@@ -30,7 +30,7 @@ static_menu   (_static_menu)
 }
 
 Menu::Menu(Widget* widget) :
-Widget        (widget->getPosition(), widget->getSize()),
+Widget        (widget->getPos(), widget->getSize()),
 main_button   (widget),
 static_menu   (true)
 {
@@ -47,12 +47,12 @@ void Menu::ChangeExpandedStatus()
         if (expanded)
         {
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val.setAvailable(true);
+                sub_widgets[i].val->setAvailable(true);
         }
         else
         {
             for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-                sub_widgets[i].val.setAvailable(false);            
+                sub_widgets[i].val->setAvailable(false);            
             main_button->setAvailable(true);
         }
         UpdateDefaultRegionSet();
@@ -82,8 +82,8 @@ void Menu::UpdateOwnDefaultRegionSet()
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val.getAvailable())
-            default_reg_set += sub_widgets[i].val.GetDefaultRegSet();
+        if (sub_widgets[i].val->getAvailable())
+            default_reg_set += sub_widgets[i].val->GetDefaultRegSet();
     }
 }
 
@@ -104,7 +104,7 @@ bool Menu::InsideP(plugin::Vec2 v)
 
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        if (sub_widgets[i].val.getAvailable() && sub_widgets[i].val.InsideP(v))
+        if (sub_widgets[i].val->getAvailable() && sub_widgets[i].val->InsideP(v))
         {
             return true;
         }

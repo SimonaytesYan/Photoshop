@@ -12,7 +12,8 @@ protected:
     plugin::Array<const char*> param_names;
 
 public :
-    Filter()
+    Filter() :
+    param_names(0)
     {}
 
     virtual plugin::Array<const char*> getParamNames() override 

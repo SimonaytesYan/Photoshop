@@ -5,7 +5,7 @@
 #include "../RenderTarget/RenderTarget.h"
 #include "../Standart/Standart.h"
 
-class FilterManager : public plugin::FilterManagerI
+class FilterManager
 {
     plugin::FilterI       *last_filter;
     plugin::RenderTargetI *rt;
@@ -20,9 +20,9 @@ public:
         active      = false;
     }
 
-    void    setFilter      (plugin::FilterI* filter)   override;
-    void    setRenderTarget(plugin::RenderTargetI* rt) override;
-    void    applyFilter    ()                          override;
+    void setFilter      (plugin::FilterI* filter);
+    void setRenderTarget(plugin::RenderTargetI* rt);
+    void applyFilter    ();
     
     plugin::FilterI* GetFilter();
     bool             GetActive();

@@ -1,8 +1,12 @@
 #include <dlfcn.h>
 
 #include "GetPlugins.h"
+#include "../ClipRegion/ClipRegion.h"
+#include "../RegionSet/RegionSet.h"
 
 typedef plugin::Plugin* (*GetInstanceType)(plugin::App *app);
+
+const size_t kMaxPluginNameLength = 100;
 
 plugin::Plugin* LoadPlugin(const char* path, plugin::App* app)
 {
@@ -35,17 +39,17 @@ DynArray<char*> GetPluginNames()
 
 	DynArray<char*> plugin_names;
 	
-	char* name = new char[100];
+	char* name = new char[kMaxPluginNameLength];
 	strcpy(name, "Plugins/");
 
-	while (NULL != fgets(name + 8, 100, file))
+	while (NULL != fgets(name + strlen("Plugins/"), kMaxPluginNameLength - strlen("Plugins/"), file))
 	{
 		plugin_names.PushBack(name);
 		if (name[strlen(name) - 1] == '\n') 
 			name[strlen(name) - 1] = 0;
 
 		fprintf(stderr, "name = %s\n", name);
-		name = new char[100];
+		name = new char[kMaxPluginNameLength];
 		strcpy(name, "Plugins/");
 	}
 
@@ -54,7 +58,7 @@ DynArray<char*> GetPluginNames()
 	return plugin_names;
 }
 
-plugin::Plugin* LoadPlugins(plugin::App* app, Gui* root)
+void LoadPlugins(plugin::App* app, Gui* root)
 {
 	DynArray<char*> plugin_names = GetPluginNames();
 

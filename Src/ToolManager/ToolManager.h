@@ -6,7 +6,7 @@
 
 class RenderTarget;
 
-class ToolManager : plugin::ToolManagerI
+class ToolManager
 {
     plugin::ToolI* tool;
     plugin::Color color;
@@ -19,20 +19,20 @@ public :
     }
     
     void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        plugin::MouseContext mouse) override;
+                        plugin::MouseContext mouse);
     void paintOnMove   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        plugin::MouseContext mouse) override;
+                        plugin::MouseContext mouse);
     void paintOnRelease(plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        plugin::MouseContext mouse) override;
+                        plugin::MouseContext mouse);
     void disableTool   (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
-                        plugin::MouseContext mouse) override;
+                        plugin::MouseContext mouse);
 
-    void setTool (plugin::ToolI* new_tool) override;
-    void setColor(plugin::Color new_color) override;
+    void setTool (plugin::ToolI* new_tool);
+    void setColor(plugin::Color new_color);
 
-    plugin::ToolI* getTool () override
+    plugin::ToolI* getTool ()
     { return tool; }
-    plugin::Color  getColor() override
+    plugin::Color  getColor()
     { return color; }
 };
 
