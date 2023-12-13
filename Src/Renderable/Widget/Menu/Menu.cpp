@@ -11,7 +11,6 @@ struct CallChangeExpandedStatus : public ButtonFunction
 
     void operator()() override
     {
-        fprintf(stderr, "ChangeExpandedStatus\n");
         menu->ChangeExpandedStatus();
     }
 };
@@ -48,7 +47,6 @@ static_menu   (true)
 void Menu::ChangeExpandedStatus()
 {
     expanded = !expanded;
-    fprintf(stderr, "change expanded status = %d\n", expanded);
 
     if (!static_menu)
     {
