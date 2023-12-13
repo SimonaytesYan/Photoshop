@@ -75,15 +75,15 @@ int main()
 						 		    plugin::Color(100, 100, 100), 
 						 		    plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
 						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.getSize());
-	canvas_window1.registerSubWidget(&vertical_scroll_bar);
-	canvas_window1.registerSubWidget(&horizontal_scroll_bar);
+	//canvas_window1.registerSubWidget(&vertical_scroll_bar);
+	//canvas_window1.registerSubWidget(&horizontal_scroll_bar);
 
-	main_window.registerSubWidget(&canvas_window1);
+	//main_window.registerSubWidget(&canvas_window1);
 
 	Window canvas_window2(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
 	Canvas canvas2(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
-	canvas_window2.registerSubWidget(&canvas2);
-	main_window.registerSubWidget(&canvas_window2);
+	//canvas_window2.registerSubWidget(&canvas2);
+	//main_window.registerSubWidget(&canvas_window2);
 
 	EventManager event_manager;
 
@@ -98,12 +98,12 @@ int main()
 
 	LoadPlugins(&app, gui);
 
-	AddTools(&main_window, &tools, &tm, &app);
+	//AddTools(&main_window, &tools, &tm, &app);
 
 	// Adding colors
 	Window colors(plugin::Vec2(1400, 150), 
 			  	  plugin::Vec2(500, 300), "Colors");
-	AddColors(&main_window, &colors, &tm);	
+	//AddColors(&main_window, &colors, &tm);	
 
 	event_manager.registerObject(&main_window);
 
@@ -256,7 +256,6 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 	AddFilters(root, canvas, fm, font, tm, em, filters, app);
 
 	main_menu->registerSubWidget(filters);
-
 	window->registerSubWidget(main_menu);
 }
 

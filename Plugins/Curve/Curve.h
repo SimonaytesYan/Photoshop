@@ -108,7 +108,7 @@ namespace sym_plugin
 
         virtual void move(plugin::Vec2 shift);
 
-        virtual void render             (plugin::RenderTargetI* render_target) override;
+        virtual void render(plugin::RenderTargetI* render_target) override;
 
         uint8_t      getPriority () override { return priority;  }
 

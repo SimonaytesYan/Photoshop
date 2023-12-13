@@ -99,7 +99,7 @@ bool EditBox::onClock(size_t delta)
 
 void EditBox::render(RenderTarget* rt)
 {
-    if (available)
+    if (available && visible)
     {
         // Frame
         rt->DrawRect(position, size, reg_set, plugin::Color(255, 255, 255), 3);

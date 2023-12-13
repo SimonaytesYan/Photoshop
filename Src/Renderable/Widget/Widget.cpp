@@ -10,6 +10,7 @@ const double kPrecision = 1e-6;
 Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size, bool _available) :
 Renderable      (),
 available       (_available),
+visible         (true),
 position        (_position),
 size            (_size),
 sub_widgets     (List<Widget*>(0)),
@@ -59,12 +60,12 @@ void Widget::unregisterSubWidget(WidgetI* son)
 
 void Widget::render(plugin::RenderTargetI* render_target)
 {
-    if (available)
+    if (available && visible)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
             Widget* sub_widget = sub_widgets[index].val;
-            if (sub_widget->getAvailable())
+            if (sub_widget->getAvailable() && sub_widget->getVisible())
             {
                 sub_widget->render(render_target);
             }
@@ -74,20 +75,19 @@ void Widget::render(plugin::RenderTargetI* render_target)
 
 void Widget::render(RenderTarget* render_target)
 {
-    if (available)
+    if (available && visible)
     {
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
             Widget* sub_widget = sub_widgets[index].val;
-            if (sub_widget->getAvailable())
+            if (sub_widget->getAvailable() && sub_widget->getVisible())
             {
                 sub_widget->render(render_target);
             }
             else
             {
-                //UpdateRegionSet();
-                //unregisterSubWidget(sub_widget);
-                //delete sub_widget;
+                unregisterSubWidget(sub_widget);
+                UpdateRegionSet();
             }
         }
     }
@@ -102,9 +102,9 @@ void Widget::registerSubWidget(WidgetI* new_widget)
 }
 
 bool WidgetEventRound(Events event, void*  event_args, 
-                      List<Widget*> &objects, bool available)
+                      List<Widget*> &objects, bool available, bool visible)
 {
-    if (!available)
+    if (!available || !visible)
         return false;
 
     bool intercepted = false;
@@ -145,12 +145,12 @@ bool WidgetEventRound(Events event, void*  event_args,
 
 bool Widget::onKeyboardPress(plugin::KeyboardContext key)
 {
-    return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
+    return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available, visible);
 }
 
 bool Widget::onKeyboardRelease(plugin::KeyboardContext key)
 {
-    return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
+    return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available, visible);
 }
 
 void Widget::ToForeground(Widget* son)
@@ -178,28 +178,33 @@ void Widget::ToForeground(Widget* son)
 
 bool Widget::onMousePress(plugin::MouseContext mouse)
 {
+    fprintf(stderr, "On mouse (%lg, %lg) widget press %p\n", mouse.position.x, mouse.position.y, this);
+
+    fprintf(stderr, "pos  = (%lg, %lg)\n",   position.x, position.y);
+    fprintf(stderr, "size = (%lg, %lg)\n\n", size.x, size.y);
+
     if (InsideP(mouse.position))
     {
         if (parent != nullptr)
             parent->ToForeground(this);
-        return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available);
+        return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available, visible);
     }
     return false;
 }
  
 bool Widget::onMouseRelease(plugin::MouseContext mouse)
 {
-    return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
+    return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available, visible);
 }
 
 bool Widget::onMouseMove(plugin::MouseContext mouse)
 {
-    return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
+    return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available, visible);
 }
 
 bool Widget::onClock(size_t delta)
 {
-    return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
+    return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available, visible);
 }
 
 void Widget::UpdateRegionSet()
@@ -216,7 +221,7 @@ void Widget::UpdateRegionSet()
 
 void Widget::recalcRegion()
 {
-    if (!available)
+    if (!available || !visible)
         return;
     
     reg_set = default_reg_set;  // Set region set to default region set
@@ -249,14 +254,14 @@ void Widget::recalcRegion()
     {
         Widget* sub_w = sub_widgets[index].val;
         
-        if (sub_w->getAvailable())
+        if (sub_w->getAvailable() && sub_w->getVisible())
             sub_w->recalcRegion();
     }
 
     for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index)) // Remove children from this
     {
         Widget* sub_w = sub_widgets[index].val;
-        if (sub_w->getAvailable())
+        if (sub_w->getAvailable() && sub_w->getVisible())
             reg_set -= sub_w->GetDefaultRegSet();
     }
 }

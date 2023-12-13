@@ -32,9 +32,15 @@ public:
     void ChangeExpandedStatus();
 
     virtual void registerSubWidget       (plugin::WidgetI* new_widget) override;
-            bool onMouseMove             (plugin::MouseContext mouse)          override;
+            bool onMouseMove             (plugin::MouseContext mouse)  override;
             bool InsideP                 (plugin::Vec2 v)              override;
             void UpdateOwnDefaultRegionSet()                           override;
+    
+    bool onMouseRelease   (plugin::MouseContext mouse)    override;
+    bool onMousePress     (plugin::MouseContext mouse)    override;
+    bool onKeyboardPress  (plugin::KeyboardContext mouse) override;
+    bool onKeyboardRelease(plugin::KeyboardContext mouse) override;
+    bool onClock          (size_t delta)                  override;
 };
 
 #endif //SYM_BUTTON_MANAGER

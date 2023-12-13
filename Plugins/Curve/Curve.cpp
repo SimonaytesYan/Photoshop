@@ -155,7 +155,8 @@ namespace sym_plugin
     }
 
     bool WidgetEventRound(Events event, void*  event_args, 
-                          List<plugin::PluginWidgetI*> &objects, bool available)
+                          List<plugin::PluginWidgetI*> &objects,
+                          bool available)
     {
         if (!available)
             return false;

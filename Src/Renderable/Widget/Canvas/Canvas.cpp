@@ -87,7 +87,7 @@ bool Canvas::onMouseRelease(plugin::MouseContext mouse)
         return true;
     }
 
-    if (available && InsideP(mouse.position))
+    if (available && InsideP(mouse.position) && visible)
     {
         if (tm != nullptr)
         {
@@ -103,7 +103,7 @@ bool Canvas::onMouseRelease(plugin::MouseContext mouse)
 
 void Canvas::render(RenderTarget* render_target)
 {
-    if (available)
+    if (available && visible)
     {
         data.display();
         render_target->DrawSprite(position, data.GetTexture(), reg_set);

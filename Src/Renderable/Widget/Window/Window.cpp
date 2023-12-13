@@ -71,7 +71,7 @@ Window::~Window()
 
 bool Window::onMousePress(plugin::MouseContext mouse)
 {
-    if (available)
+    if (available && visible)
     {
         if (InsideP(mouse.position))
         {
@@ -133,7 +133,7 @@ bool Window::InsideP(plugin::Vec2 v)
 
 void Window::render(RenderTarget* render_target)
 {
-    if (available)
+    if (available && visible)
     {
         render_target->DrawRect(position, size, reg_set, 
                                 kBackgroundColor, kBorderThick, kBorderColor);  //border + background

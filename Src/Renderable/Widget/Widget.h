@@ -13,8 +13,9 @@
 class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
 {
 protected:
-    uint8_t priority;
+    uint8_t         priority;
     bool            available;
+    bool            visible; 
     List<Widget*>   sub_widgets;
     plugin::Vec2    position;
     plugin::Vec2    size;
@@ -63,7 +64,10 @@ public :
     void             UpdateParentDefaultRegionSet();
     virtual void     UpdateOwnDefaultRegionSet();
     
-    virtual bool InsideP(plugin::Vec2 v);    
+    virtual bool InsideP(plugin::Vec2 v);
+
+    bool getVisible()           { return visible; }
+    void setVisible(bool value) { visible = value; }
 };
 
 //============================PLUGIN WIDGET=====================================

@@ -30,7 +30,7 @@ void Label::SetText(const char* new_text)
 
 void Label::render(RenderTarget* render_target)
 {
-    if (available)
+    if (available && visible)
     {
         render_target->DrawRect(position, size, reg_set, background);
         render_target->DrawText(position, font, text, character_size, text_color, reg_set);
