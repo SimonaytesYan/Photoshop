@@ -71,7 +71,7 @@ namespace sym_plugin
         return {0, nullptr}; 
     }
 
-    plugin::Array<double> CurveFilter::getParams()
+    plugin::Array<double> CurveFilter::getParams() const
     { 
         return {0, nullptr}; 
     }

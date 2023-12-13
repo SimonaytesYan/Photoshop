@@ -385,6 +385,7 @@ void AddTools(Window* main_window, Window* tools, ToolManager* tm, plugin::App* 
 
 			if (new_tool->getIcon() != nullptr)
 			{
+				fprintf(stderr, "icon[%d] (%d, %d) = %p", i, new_tool->getIcon()->width, new_tool->getIcon()->height, new_tool->getIcon()->pixels);
 				common_texture  = Texture(*(new_tool->getIcon()));
 				pressed_texture = common_texture;
 			}

@@ -1,5 +1,8 @@
+
 #include <cinttypes>
-#include <algorithm>
+#include "vec2.h"
+#include "texture.h"
+#include "myvector.h"
 
 /*
     Запрещаем плагину иметь свои Widget и RenderTargetI
@@ -13,67 +16,6 @@ namespace plugin {
         Tool,
         Filter,
         System // системный плагин, мб обертка
-    };
-
-/// @warning [UPD] Array владеющая структура
-    template<class T>
-    struct Array {
-        uint64_t size;
-        T* data;
-
-        Array(uint64_t _size, T* _data): size(_size), data(new T[_size]) {
-            std::copy(_data, _data + _size, data);
-        }
-
-        Array(const Array<T>& other): Array(other.size, other.data) {}
-        
-        Array& operator=(const Array<T>& other) {
-            size = other.size;
-            delete data;
-            data = new T[other.size];
-            std::copy(other.data, other.data + other.size, data);
-
-	    return *this;
-        }
-
-        Array(Array<T>&& other) {
-            std::swap(size, other.size);
-            std::swap(data, other.data);
-        }
-
-        Array& operator=(Array<T>&& other) {
-            std::swap(size, other.size);
-            std::swap(data, other.data);
-
-	    return *this;
-        }
-
-        ~Array() {
-            delete[] data;
-        }
-    };
-
-    struct Color {
-        uint8_t r;
-        uint8_t g;
-        uint8_t b;
-        uint8_t a;
-    };
-
-    struct Texture {
-        uint64_t height;
-        uint64_t width;
-
-        Color *pixels;
-
-        virtual ~Texture() {
-		delete[] pixels;
-	};
-    };
-
-    struct Vec2 {
-        double x;
-        double y;
     };
 
     enum class MouseButton {

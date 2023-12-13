@@ -55,7 +55,7 @@ public:
 
     void                       setParams    (plugin::Array<double> params) override;
     plugin::Array<const char*> getParamNames() const                       override;
-    plugin::Array<double>      getParams    ()                             override;
+    plugin::Array<double>      getParams    () const                       override;
 
     ~BrushTool()
     {}

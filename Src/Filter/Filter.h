@@ -18,7 +18,7 @@ public :
 
     virtual plugin::Array<const char*> getParamNames() const override 
     { return plugin::Array<const char*>(0, nullptr); }
-    virtual plugin::Array<double>      getParams()     override 
+    virtual plugin::Array<double>  getParams() const override 
     { return plugin::Array<double>(0, nullptr); }
     
     virtual void apply    (plugin::RenderTargetI *data)  override {}

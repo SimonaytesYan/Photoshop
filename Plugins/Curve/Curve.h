@@ -59,7 +59,7 @@ namespace sym_plugin
         void                       apply        (plugin::RenderTargetI* rt)    override;
         void                       setParams    (plugin::Array<double> params) override;
         plugin::Array<const char*> getParamNames()                       const override;
-        plugin::Array<double>      getParams    ()                             override;
+        plugin::Array<double>      getParams    ()                       const override;
 
         void apply(plugin::RenderTargetI* rt,
                    plugin::Array<uint8_t> r, 

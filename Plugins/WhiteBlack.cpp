@@ -20,7 +20,7 @@ plugin::Array<const char*> WhiteAndBlackFilter::getParamNames() const
     return {0, nullptr}; 
 }
 
-plugin::Array<double> WhiteAndBlackFilter::getParams()
+plugin::Array<double> WhiteAndBlackFilter::getParams() const
 { 
     return {0, nullptr}; 
 }
