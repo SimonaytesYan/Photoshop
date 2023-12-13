@@ -4,7 +4,8 @@
 
 void Gui::createWidgetI(plugin::PluginWidgetI* widget)
 {
-    root->registerSubWidget(new PluginWidget(widget));
+    widget->host = new PluginWidget(widget);
+    root->registerSubWidget(widget->host);
 }
 
 plugin::Plugin* Gui::queryPlugin(uint64_t id)

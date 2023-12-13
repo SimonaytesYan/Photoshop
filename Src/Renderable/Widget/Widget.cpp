@@ -297,6 +297,7 @@ bool Widget::InsideP(plugin::Vec2 v)
 
 void PluginWidget::render(plugin::RenderTargetI* render_target)
 {
+    fprintf(stderr, "render PluginWidget\n");
     plugin_widget_i->render(render_target);
 }
 

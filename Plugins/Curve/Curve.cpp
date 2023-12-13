@@ -28,9 +28,9 @@ namespace sym_plugin
 
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
         functor->rt = rt;
-        functor->r  = plugin::Array<uint8_t>(256);
-        functor->g  = plugin::Array<uint8_t>(256);
-        functor->b  = plugin::Array<uint8_t>(256);
+        functor->r  = plugin::Array<uint8_t>(256, nullptr);
+        functor->g  = plugin::Array<uint8_t>(256, nullptr);
+        functor->b  = plugin::Array<uint8_t>(256, nullptr);
 
         for (int i = 0; i < 256; i++)
         {
@@ -66,7 +66,7 @@ namespace sym_plugin
         app->root->getRoot()->registerSubWidget(window->host);
     }
 
-    plugin::Array<const char*> CurveFilter::getParamNames()
+    plugin::Array<const char*> CurveFilter::getParamNames() const
     { 
         return {0, nullptr}; 
     }
@@ -282,6 +282,8 @@ namespace sym_plugin
     moving             (false),
     moving_point_index (-1)
     {
+        app->root->createWidgetI(this);
+
         priority = 255;
 
         graph_size = plugin::Vec2(255, 255);
@@ -308,7 +310,7 @@ namespace sym_plugin
         app->root->createWidgetI(header_label);
         
         // Header
-        header_button->host->registerSubWidget(header_label->host);    
+        header_button->host->registerSubWidget(header_label->host);
         host->registerSubWidget(header_button->host);
 
         // Close button window

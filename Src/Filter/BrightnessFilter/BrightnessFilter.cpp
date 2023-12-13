@@ -2,7 +2,7 @@
 #include "../../Useful.h"
 #include "../../Texture/Texture.h"
 
-plugin::Array<const char*> BrightnessFilter::getParamNames()
+plugin::Array<const char*> BrightnessFilter::getParamNames() const
 {
     return param_names;
 }

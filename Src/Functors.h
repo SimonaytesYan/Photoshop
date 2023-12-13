@@ -240,7 +240,7 @@ void SelectFilter::operator()()
 {
 	if (edit_boxes != nullptr)
 	{
-		plugin::Array<double> filter_params(edit_boxes->GetLength());
+		plugin::Array<double> filter_params(edit_boxes->GetLength(), nullptr);
 		filter_params.data = new double[edit_boxes->GetLength()];
 
 		for (int i = 0; i < edit_boxes->GetLength(); i++)

@@ -50,7 +50,7 @@ public :
 
     Texture GetTexture();
     void    display(sf::RenderWindow* window);
-    void    clear(plugin::Color color);
+    void    clear(plugin::Color color) override;
 
     void             display()    override;
     void             clear()      override;
@@ -73,6 +73,13 @@ public :
                      
     void drawText   (plugin::Vec2 pos, const char *content, 
                      uint16_t char_size, plugin::Color color) override;
+
+    void setTexture(plugin::Texture* new_texture) override
+    {
+        drawTexture(plugin::Vec2(0, 0), plugin::Vec2(new_texture->width, 
+                                                     new_texture->height), 
+                                        new_texture);
+    }
 };
 
 #endif //SYM_RENDER_TARGET

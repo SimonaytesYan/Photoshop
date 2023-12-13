@@ -13,7 +13,7 @@ public :
     priority (0)
     { }
 
-    uint8_t getPriority() override
+    uint8_t getPriority() const override
     { return priority; }
 
     EventProcessable(int _priority) :

@@ -17,7 +17,7 @@ public:
         brightness = _brightness;
     }
 
-    plugin::Array<const char*> getParamNames() override;
+    plugin::Array<const char*> getParamNames() const override;
 
     void apply    (plugin::RenderTargetI* rt)    override;
     void setParams(plugin::Array<double> params) override;

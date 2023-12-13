@@ -15,7 +15,7 @@ app (app)
     type = plugin::InterfaceType::Tool;
 }
 
-plugin::Array<const char*> BrushTool::getParamNames()
+plugin::Array<const char*> BrushTool::getParamNames() const
 { 
     return {0, nullptr}; 
 }

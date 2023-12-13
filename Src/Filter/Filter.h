@@ -13,10 +13,10 @@ protected:
 
 public :
     Filter() :
-    param_names(0)
+    param_names(0, nullptr)
     {}
 
-    virtual plugin::Array<const char*> getParamNames() override 
+    virtual plugin::Array<const char*> getParamNames() const override 
     { return plugin::Array<const char*>(0, nullptr); }
     virtual plugin::Array<double>      getParams()     override 
     { return plugin::Array<double>(0, nullptr); }

@@ -40,8 +40,6 @@ static_menu   (true)
 {
     Widget::registerSubWidget(widget);
     expanded = true;
-
-    fprintf(stderr, "Static menu\n");
 }
 
 void Menu::ChangeExpandedStatus()

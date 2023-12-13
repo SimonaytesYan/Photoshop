@@ -46,6 +46,8 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 int main()
 {
+	srand(time(nullptr));
+
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 
 	size_t WindowWidth  = window.getSize().x;

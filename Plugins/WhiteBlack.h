@@ -15,7 +15,7 @@ class SymWhiteAndBlackPlugin : public plugin::Plugin
 public:
     SymWhiteAndBlackPlugin(plugin::App* app);
 
-    plugin::Interface *getInterface() override
+    plugin::Interface *getInterface() const override
     { return (plugin::Interface*) filter; }
     
     void selectPlugin() override
@@ -32,11 +32,11 @@ class WhiteAndBlackFilter : public plugin::FilterI
 public:
     void                       apply        (plugin::RenderTargetI* rt)    override;
     void                       setParams    (plugin::Array<double> params) override;
-    plugin::Array<const char*> getParamNames()                             override;
+    plugin::Array<const char*> getParamNames() const                       override;
     plugin::Array<double>      getParams    ()                             override;
 
     WhiteAndBlackFilter() :
-    param_names (plugin::Array<const char*>(0))
+    param_names (plugin::Array<const char*>(0, nullptr))
     {}
 
     ~WhiteAndBlackFilter()

@@ -33,7 +33,7 @@ namespace sym_plugin
 
         CurvePlugin(plugin::App* app);
 
-        plugin::Interface *getInterface() override
+        plugin::Interface *getInterface() const override
         { return (plugin::Interface*) filter; }
 
         void selectPlugin() override
@@ -53,12 +53,12 @@ namespace sym_plugin
     public:
         CurveFilter(CurvePlugin* parent) :
         parent (parent),
-        param_names (plugin::Array<const char*>(0))
+        param_names (plugin::Array<const char*>(0, nullptr))
         {}
 
         void                       apply        (plugin::RenderTargetI* rt)    override;
         void                       setParams    (plugin::Array<double> params) override;
-        plugin::Array<const char*> getParamNames()                             override;
+        plugin::Array<const char*> getParamNames()                       const override;
         plugin::Array<double>      getParams    ()                             override;
 
         void apply(plugin::RenderTargetI* rt,
@@ -110,7 +110,7 @@ namespace sym_plugin
 
         virtual void render(plugin::RenderTargetI* render_target) override;
 
-        uint8_t      getPriority () override { return priority;  }
+        uint8_t      getPriority () const override { return priority;  }
 
         void setPriority(uint8_t value) { priority = value;  }
         void setParent  (Widget* value) { parent   = (plugin::WidgetI*)value;  };
@@ -179,9 +179,9 @@ namespace sym_plugin
         filter (nullptr),
         rt     (nullptr),
         window (nullptr),
-        r      (plugin::Array<uint8_t>()),
-        g      (plugin::Array<uint8_t>()),
-        b      (plugin::Array<uint8_t>())
+        r      (plugin::Array<uint8_t>(0, nullptr)),
+        g      (plugin::Array<uint8_t>(0, nullptr)),
+        b      (plugin::Array<uint8_t>(0, nullptr))
         {}
 
         void operator()() override;

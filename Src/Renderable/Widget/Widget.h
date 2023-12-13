@@ -45,7 +45,7 @@ public :
     plugin::Vec2 getSize     () const override { return size;      }
     plugin::Vec2 getPos      () const override { return position;  }
     WidgetI*     getParent   () const override { return parent;    }
-    uint8_t      getPriority () override { return priority;  }
+    uint8_t      getPriority () const override { return priority;  }
 
     void setAvailable(bool value)             override { available = value;         }
     void setSize     (plugin::Vec2 value)     override { size      = value;         }
@@ -84,12 +84,12 @@ public :
 
     void render(plugin::RenderTargetI* render_target) override;
 
-    bool onKeyboardPress    (plugin::KeyboardContext key) override;
-    bool onKeyboardRelease  (plugin::KeyboardContext key) override;
-    bool onMousePress       (plugin::MouseContext mouse)  override;
-    bool onMouseRelease     (plugin::MouseContext mouse)  override;
-    bool onMouseMove        (plugin::MouseContext mouse)  override;
-    bool onClock            (size_t delta)                override;
+    bool onKeyboardPress  (plugin::KeyboardContext key) override;
+    bool onKeyboardRelease(plugin::KeyboardContext key) override;
+    bool onMousePress     (plugin::MouseContext mouse)  override;
+    bool onMouseRelease   (plugin::MouseContext mouse)  override;
+    bool onMouseMove      (plugin::MouseContext mouse)  override;
+    bool onClock          (size_t delta)                override;
 };
 
 #endif  //SYM_SUB_WINDOW

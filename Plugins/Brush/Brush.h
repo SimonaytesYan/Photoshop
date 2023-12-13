@@ -16,7 +16,7 @@ class BrushPlugin : public plugin::Plugin
 public:
     BrushPlugin(plugin::App* app);
 
-    plugin::Interface *getInterface() override
+    plugin::Interface *getInterface() const override
     { return (plugin::Interface*) tool; }
     
     void selectPlugin() override
@@ -38,7 +38,7 @@ public:
     thickness   (_thickness),
     drawing     (false),
     vertexes    (List<plugin::Vec2>(0)),
-    param_names (plugin::Array<const char*>(0))
+    param_names (plugin::Array<const char*>(0, nullptr))
     {}
 
     virtual void paintOnPress  (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
@@ -54,7 +54,7 @@ public:
     { return nullptr; }
 
     void                       setParams    (plugin::Array<double> params) override;
-    plugin::Array<const char*> getParamNames()                             override;
+    plugin::Array<const char*> getParamNames() const                       override;
     plugin::Array<double>      getParams    ()                             override;
 
     ~BrushTool()

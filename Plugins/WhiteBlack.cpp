@@ -15,7 +15,7 @@ app (app)
     type = plugin::InterfaceType::Filter;
 }
 
-plugin::Array<const char*> WhiteAndBlackFilter::getParamNames()
+plugin::Array<const char*> WhiteAndBlackFilter::getParamNames() const
 { 
     return {0, nullptr}; 
 }
