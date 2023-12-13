@@ -82,6 +82,7 @@ void EventManager::ResetPriorities()
     for (int i = 0; i < EVENTS_NUMBER; i++)
         min_priority[i] = kDefaultPriority;
 }
+
 void EventManager::registerObject(plugin::EventProcessableI* obj)
 {
     objects.PushBack(obj);

@@ -29,6 +29,7 @@ public:
 
     ~ModalWindow()
     {
+        fprintf(stderr, "Dtor for modal window\n");
         event_manager->ResetPriorities();
         event_manager->unregisterObject(this);
     }

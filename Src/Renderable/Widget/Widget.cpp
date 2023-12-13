@@ -80,14 +80,16 @@ void Widget::render(RenderTarget* render_target)
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
             Widget* sub_widget = sub_widgets[index].val;
-            if (sub_widget->getAvailable() && sub_widget->getVisible())
+            if (sub_widget->getAvailable())
             {
-                sub_widget->render(render_target);
+                if (sub_widget->getVisible())
+                    sub_widget->render(render_target);
             }
             else
             {
                 unregisterSubWidget(sub_widget);
                 UpdateRegionSet();
+                delete sub_widget;
             }
         }
     }
@@ -178,11 +180,6 @@ void Widget::ToForeground(Widget* son)
 
 bool Widget::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "On mouse (%lg, %lg) widget press %p\n", mouse.position.x, mouse.position.y, this);
-
-    fprintf(stderr, "pos  = (%lg, %lg)\n",   position.x, position.y);
-    fprintf(stderr, "size = (%lg, %lg)\n\n", size.x, size.y);
-
     if (InsideP(mouse.position))
     {
         if (parent != nullptr)

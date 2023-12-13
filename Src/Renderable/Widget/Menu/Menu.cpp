@@ -100,7 +100,9 @@ bool Menu::onMouseMove(plugin::MouseContext mouse)
     if (!InsideP(mouse.position))
     {
         if (expanded && !static_menu)
+        {
             ChangeExpandedStatus();
+        }
     }
 
     if (expanded)
@@ -119,12 +121,8 @@ bool Menu::onMouseRelease(plugin::MouseContext mouse)
 
 bool Menu::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "expanded = %d\n", expanded);
     if (expanded)
         return Widget::onMousePress(mouse);
-    
-    fprintf(stderr, "Go into main_button = %p\n", main_button);
-    fprintf(stderr, "type_id main_button = %s\n", typeid(*main_button).name());
     
     return main_button->onMousePress(mouse);
 }

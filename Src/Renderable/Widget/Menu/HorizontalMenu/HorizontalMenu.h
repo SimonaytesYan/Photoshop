@@ -11,7 +11,6 @@ public:
     HorizontalMenu(Widget* widget) :
     Menu(widget)
     {
-        fprintf(stderr, "Static Hor menu expanded = %d\n", expanded);
     }
 
     HorizontalMenu(Button* button, bool static_menu) : 

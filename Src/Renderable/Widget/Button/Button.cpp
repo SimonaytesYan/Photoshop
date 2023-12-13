@@ -62,13 +62,8 @@ void Button::render(RenderTarget* render_target)
 
 bool Button::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "On mouse (%lg, %lg) press %p\n", mouse.position.x, mouse.position.y, this);
-
-    fprintf(stderr, "pos  = (%lg, %lg)\n",   position.x, position.y);
-    fprintf(stderr, "size = (%lg, %lg)\n\n", size.x, size.y);
     if (InsideP(mouse.position))
     {
-        fprintf(stderr, "On mouse press %p\n", this);
         bool intercepted = Widget::onMousePress(mouse);
 
         if (!intercepted)
