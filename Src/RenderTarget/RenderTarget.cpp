@@ -97,7 +97,7 @@ Texture RenderTarget::GetTexture()
     return Texture(data.getTexture());
 }
 
-plugin::Texture* RenderTarget::getTexture()
+plugin::Texture* RenderTarget::getTexture() const
 {
     sf::Image img = data.getTexture().copyToImage();
 

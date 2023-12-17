@@ -52,9 +52,9 @@ public :
     void    display(sf::RenderWindow* window);
     void    clear(plugin::Color color) override;
 
-    void             display()    override;
-    void             clear()      override;
-    plugin::Texture* getTexture() override;
+    void             display()          override;
+    void             clear()            override;
+    plugin::Texture* getTexture() const override;
 
 
     void setPixel   (plugin::Vec2 pos, plugin::Color color)   override;

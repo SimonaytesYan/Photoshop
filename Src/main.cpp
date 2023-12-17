@@ -55,61 +55,62 @@ int main()
 
 	RenderTarget rend_targ(plugin::Vec2(WindowWidth, WindowHeight));
 
-	RectangleWidget the_root(plugin::Vec2(0, 0), plugin::Vec2(WindowWidth, WindowHeight));
-	the_root.GetRT()->clear(plugin::Color(255, 255, 255));
-	Window main_window(plugin::Vec2(0, 0), 
-					   plugin::Vec2(WindowWidth, WindowHeight), "Window1");
-	the_root.registerSubWidget(&main_window);
+	RectangleWidget* the_root = new RectangleWidget(plugin::Vec2(0, 0), plugin::Vec2(WindowWidth, WindowHeight));
+	the_root->GetRT()->clear(plugin::Color(255, 255, 255));
+	Window* main_window = new Window(plugin::Vec2(0, 0), 
+									 plugin::Vec2(WindowWidth, WindowHeight), 
+									 "Window1");
+	the_root->registerSubWidget(main_window);
 
 	FilterManager fm;
 	ToolManager   tm;
 
-	Window canvas_window1(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
-	Canvas canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
-	canvas_window1.registerSubWidget(&canvas);
+	Window* canvas_window1 = new Window(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
+	Canvas* canvas 		   = new Canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
+	canvas_window1->registerSubWidget(canvas);
 
-	ScrollBar vertical_scroll_bar(canvas.getPos(), plugin::Vec2(20, canvas_window1.getSize().GetY() - 50),
-						 		  plugin::Color(100, 100, 100), 
-						 		  plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
-						 		  &canvas, plugin::Vec2(20, 20), canvas_window1.getSize());
+	ScrollBar* vertical_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(20, canvas_window1->getSize().y - 50),
+						 		  				   plugin::Color(100, 100, 100), 
+						 		  				   plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
+						 		  				   canvas, plugin::Vec2(20, 20), canvas_window1->getSize());
 	
-	ScrollBar horizontal_scroll_bar(canvas.getPos(), plugin::Vec2(canvas_window1.getSize().GetX(), 20),
-						 		    plugin::Color(100, 100, 100), 
-						 		    plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
-						 		    &canvas, plugin::Vec2(0, 20), canvas_window1.getSize());
-	canvas_window1.registerSubWidget(&vertical_scroll_bar);
-	canvas_window1.registerSubWidget(&horizontal_scroll_bar);
+	ScrollBar* horizontal_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(canvas_window1->getSize().x, 20),
+						 		    			     plugin::Color(100, 100, 100), 
+						 		    			     plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
+						 		    			     canvas, plugin::Vec2(0, 20), canvas_window1->getSize());
+	canvas_window1->registerSubWidget(vertical_scroll_bar);
+	canvas_window1->registerSubWidget(horizontal_scroll_bar);
 
-	main_window.registerSubWidget(&canvas_window1);
+	main_window->registerSubWidget(canvas_window1);
 
-	Window canvas_window2(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
-	Canvas canvas2(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
-	canvas_window2.registerSubWidget(&canvas2);
-	main_window.registerSubWidget(&canvas_window2);
+	Window* canvas_window2 = new Window(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
+	Canvas* canvas2 	   = new Canvas(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
+	canvas_window2->registerSubWidget(canvas2);
+	main_window->registerSubWidget   (canvas_window2);
 
 	EventManager event_manager;
 
 	// Adding tools	
-	Window tools(plugin::Vec2(1400, 450),
-			  	  plugin::Vec2(500, 300), "Tools");
+	Window* tools = new Window(plugin::Vec2(1400, 450),
+			  	  			   plugin::Vec2(500, 300), "Tools");
 
-	Gui* gui = new Gui(&the_root);
+	Gui* gui = new Gui(the_root);
 	plugin::App app;
 	app.root 		   = gui;
 	app.event_manager  = (plugin::EventManagerI*)&event_manager;
 
 	LoadPlugins(&app, gui);
 
-	AddTools(&main_window, &tools, &tm, &app);
+	AddTools(main_window, tools, &tm, &app);
 
 	// Adding colors
-	Window colors(plugin::Vec2(1400, 150), 
-			  	  plugin::Vec2(500, 300), "Colors");
-	AddColors(&main_window, &colors, &tm);	
+	Window* colors = new Window(plugin::Vec2(1400, 150), 
+			  	  				plugin::Vec2(500, 300), "Colors");
+	AddColors(main_window, colors, &tm);	
 
-	event_manager.registerObject(&main_window);
+	event_manager.registerObject(main_window);
 
-	AddMenu(&the_root, &main_window, &canvas, &fm, &tm, &event_manager, &app);
+	AddMenu(the_root, main_window, canvas, &fm, &tm, &event_manager, &app);
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -206,7 +207,7 @@ int main()
 			event_manager.onClock(delta_time);
 		}
 
-		the_root.render(&rend_targ);
+		the_root->render(&rend_targ);
 
 		rend_targ.display(&window);
 		window.display();

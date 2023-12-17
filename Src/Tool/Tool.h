@@ -43,7 +43,7 @@ public :
                                 plugin::MouseContext mouse, plugin::Color color) override
                                 {}
     
-    const plugin::Texture*           getIcon()             override { return &icon; }
+    const plugin::Texture*           getIcon()       const override { return &icon; }
           plugin::Array<const char*> getParamNames() const override { return plugin::Array<const char*>(0, nullptr); }
           plugin::Array<double>      getParams()     const override { return plugin::Array<double>(0, nullptr); }
     

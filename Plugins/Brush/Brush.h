@@ -50,7 +50,7 @@ public:
     virtual void disable       (plugin::RenderTargetI* data, plugin::RenderTargetI* tmp, 
                                 plugin::MouseContext mouse, plugin::Color color) override;
     
-    const plugin::Texture* getIcon() override 
+    const plugin::Texture* getIcon() const override 
     { return nullptr; }
 
     void                       setParams    (plugin::Array<double> params) override;

@@ -348,7 +348,7 @@ namespace plugin {
         virtual void drawTexture(Vec2 pos, Vec2 size, const Texture *texture) = 0;
         virtual void drawText(Vec2 pos, const char *content, uint16_t char_size, Color color) = 0;
 
-        virtual Texture *getTexture() = 0;
+        virtual Texture *getTexture() const = 0;
         virtual void setTexture(Texture *) = 0;
 
         /// как в RenderTexture::display
@@ -468,7 +468,7 @@ namespace plugin {
 
     struct ToolI : public Interface 
     {
-        virtual const Texture *getIcon() = 0;
+        virtual const Texture *getIcon() const = 0;
 
         virtual void paintOnPress(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;
         virtual void paintOnRelease(RenderTargetI *data, RenderTargetI *tmp, MouseContext context, Color color) = 0;

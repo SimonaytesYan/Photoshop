@@ -20,7 +20,7 @@ plugin::Array<const char*> BrushTool::getParamNames() const
     return {0, nullptr}; 
 }
 
-plugin::Array<double> BrushTool::getParams()
+plugin::Array<double> BrushTool::getParams() const
 { 
     return {0, nullptr}; 
 }
