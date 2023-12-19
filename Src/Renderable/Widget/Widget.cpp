@@ -187,10 +187,13 @@ void Widget::ToForeground(Widget* son)
 
 bool Widget::onMousePress(plugin::MouseContext mouse)
 {
+    fprintf(stderr, "Widget onMousePress %s(%p)\n", typeid(*this).name(), this);
+
     if (InsideP(mouse.position))
     {
         if (parent != nullptr)
             parent->ToForeground(this);
+
         return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available, visible);
     }
     return false;
@@ -309,7 +312,7 @@ void PluginWidget::render(plugin::RenderTargetI* render_target)
     Widget::render(render_target);
 }
 
-void  PluginWidget::render(RenderTarget* render_target)
+void PluginWidget::render(RenderTarget* render_target)
 {
     plugin_widget_i->render((plugin::RenderTargetI*)render_target);
 
@@ -334,6 +337,7 @@ bool PluginWidget::onKeyboardRelease(plugin::KeyboardContext key)
 
 bool PluginWidget::onMousePress(plugin::MouseContext mouse)
 {
+    fprintf(stderr, "PluginWidget onMousePress(%p)\n", this);
     if (Widget::onMousePress(mouse))
         return true;
 
@@ -342,6 +346,7 @@ bool PluginWidget::onMousePress(plugin::MouseContext mouse)
 
 bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
 {
+    fprintf(stderr, "PluginWidget onMouseRelease(%p)\n", this);
     if (Widget::onMouseRelease(mouse))
         return true;
 
@@ -350,6 +355,7 @@ bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
 
 bool PluginWidget::onMouseMove(plugin::MouseContext mouse)
 {
+    fprintf(stderr, "PluginWidget onMouseMove(%p)\n", this);
     if (Widget::onMouseRelease(mouse))
         return true;
 
@@ -362,4 +368,9 @@ bool PluginWidget::onClock(size_t delta)
         return true;
 
     return plugin_widget_i->onClock(delta);
+}
+
+bool PluginWidget::InsideP(plugin::Vec2 v)
+{
+    return true;
 }

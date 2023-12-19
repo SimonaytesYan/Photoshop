@@ -44,9 +44,12 @@ namespace sym_plugin
                                                                 (size - kButtonSize).y * 11 / 12), 
                                        kButtonSize, kSelected, functor);
         app->root->createWidgetI(ok_button);
+        ok_button->host->setPos(ok_button->getPos());
+
         Label* ok_label = new Label(ok_button->host->getPos() + plugin::Vec2(25, 0), 
                                     kTextSize, "OK", kTextColor);
         app->root->createWidgetI(ok_label);
+        ok_label->host->setPos(ok_label->getPos());
 
         ok_button->host->registerSubWidget(ok_label->host);
 
@@ -54,15 +57,10 @@ namespace sym_plugin
 
         CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
         app->root->createWidgetI(window);
+        window->host->setPos(window->getPos());
 
         window->host->registerSubWidget(ok_button->host);
         functor->window = window;
-        
-        // Make it modal
-        window->setPriority(255);
-        app->event_manager->registerObject(window);
-        app->event_manager->setPriority(plugin::EventType::MousePress, 
-                                        255);
 
         app->root->getRoot()->registerSubWidget(window->host);
     }
@@ -120,114 +118,55 @@ namespace sym_plugin
     available       (_available),
     position        (_position),
     size            (_size),
-    sub_widgets     (List<plugin::PluginWidgetI*>(0)),
     parent          (nullptr)
     {
     }
 
     Widget::~Widget()
     {
-        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-            delete sub_widgets[i].val;
-        
-        if (parent != nullptr)
-            parent->unregisterSubWidget(this->host);
+        host->setAvailable(false);
     }
 
     void Widget::move(plugin::Vec2 delta)
     {
-        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-            sub_widgets[i].val->host->move(delta);
-
         position = position + delta;
+        host->move(delta);
     }
 
     void Widget::render(plugin::RenderTargetI* render_target)
     {
-        if (available)
-        {
-            for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
-            {
-                plugin::PluginWidgetI* sub_widget = sub_widgets[index].val;
-                if (sub_widget->host->getAvailable())
-                        sub_widget->render(render_target);
-            }
-        }
-    }
-
-    bool WidgetEventRound(Events event, void*  event_args, 
-                          List<plugin::PluginWidgetI*> &objects,
-                          bool available)
-    {
-        if (!available)
-            return false;
-
-        bool intercepted = false;
-        int index        = objects.End();
-        while (index != -1)
-        {
-            switch (event)
-            {
-            case KEY_PRESS:
-                intercepted = objects[index].val->onKeyboardPress(*(plugin::KeyboardContext*)event_args);
-                break;
-            case KEY_RELEASE:
-                intercepted = objects[index].val->onKeyboardRelease(*(plugin::KeyboardContext*)event_args);
-                break;
-            case MOUSE_PRESS:
-                intercepted = objects[index].val->onMousePress(*(plugin::MouseContext*)event_args);
-                break;
-            case MOUSE_RELEASE:
-                intercepted = objects[index].val->onMouseRelease(*(plugin::MouseContext*)event_args);
-                break;
-            case MOUSE_MOVE:
-                intercepted = objects[index].val->onMouseMove(*(plugin::MouseContext*)event_args);
-                break;
-            case ON_CLOCK:
-                intercepted = objects[index].val->onClock(*(size_t*)event_args);
-                break;
-            
-            default:
-                break;
-            }
-            if (intercepted)
-                break;
-            index = objects.Deterate(index);
-        }
-
-        return intercepted;
     }
 
     bool Widget::onKeyboardPress(plugin::KeyboardContext key)
     {
-        return WidgetEventRound(KEY_PRESS, &key, sub_widgets, available);
+        return false;
     }
 
     bool Widget::onKeyboardRelease(plugin::KeyboardContext key)
     {
-        return WidgetEventRound(KEY_RELEASE, &key, sub_widgets, available);
+        return false;
     }
 
     bool Widget::onMousePress(plugin::MouseContext mouse)
     {
         if (InsideP(mouse.position))
-            return WidgetEventRound(MOUSE_PRESS, &mouse, sub_widgets, available);
+            return true;
         return false;
     }
     
     bool Widget::onMouseRelease(plugin::MouseContext mouse)
     {
-        return WidgetEventRound(MOUSE_RELEASE, &mouse, sub_widgets, available);
+        return false;
     }
 
     bool Widget::onMouseMove(plugin::MouseContext mouse)
     {
-        return WidgetEventRound(MOUSE_MOVE, &mouse, sub_widgets, available);
+        return false;
     }
 
     bool Widget::onClock(size_t delta)
     {
-        return WidgetEventRound(ON_CLOCK, &delta, sub_widgets, available);
+        return false;
     }
 
     bool Widget::InsideP(plugin::Vec2 v)
@@ -237,7 +176,6 @@ namespace sym_plugin
                v.GetY() - position.GetY() >= -kPrecision && 
                v.GetY() - position.GetY() <= size.GetY() + kPrecision;
     }
-
 
     struct ButtonMove : ButtonFunction
     {
@@ -284,6 +222,7 @@ namespace sym_plugin
     moving_point_index (-1)
     {
         app->root->createWidgetI(this);
+        host->setPos(position);
 
         priority = 255;
 
@@ -306,9 +245,11 @@ namespace sym_plugin
         Button* header_button = new Button(position, plugin::Vec2(size.x - 25, 25), 
                                            plugin::Color(235,235,235), new ButtonMove(this));
         app->root->createWidgetI(header_button);
+        header_button->host->setPos(header_button->getPos());
 
         Label* header_label = new Label(position, kTextSize, "Curve filter", kTextColor);
         app->root->createWidgetI(header_label);
+        header_label->host->setPos(header_label->getPos());
         
         // Header
         header_button->host->registerSubWidget(header_label->host);
@@ -316,14 +257,17 @@ namespace sym_plugin
 
         // Close button window
         plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - 25, 
-                                        position.GetY());
+                                                     position.GetY());
         Button* close_button = new Button(close_button_pos, plugin::Vec2(25, 25), 
                                           plugin::Color(217, 217, 217),
                                           nullptr, new ButtonClose(this));
         app->root->createWidgetI(close_button);
+        close_button->host->setPos(close_button->getPos());
+
         Label* close_label = new Label(close_button_pos + plugin::Vec2(9, 1), 
                                        kTextSize - 5, "X", kTextColor);
         app->root->createWidgetI(close_label);
+        close_label->host->setPos(close_label->getPos());
 
         close_button->host->registerSubWidget(close_label->host);
         host->registerSubWidget(close_button->host);                    
@@ -344,6 +288,11 @@ namespace sym_plugin
         app->root->createWidgetI(green_button);
         app->root->createWidgetI(blue_button);
 
+        red_button  ->host->setPos(red_button  ->getPos());
+        green_button->host->setPos(green_button->getPos());
+        blue_button ->host->setPos(blue_button ->getPos());
+
+
         Label* red_label   = new Label(red_button->host->getPos(), kTextSize, "Red",   kTextColor);
         Label* green_label = new Label(red_button->host->getPos(), kTextSize, "Green", kTextColor);
         Label* blue_label  = new Label(red_button->host->getPos(), kTextSize, "Blue",  kTextColor);
@@ -351,6 +300,10 @@ namespace sym_plugin
         app->root->createWidgetI(red_label);
         app->root->createWidgetI(green_label);
         app->root->createWidgetI(blue_label);
+
+        red_label  ->host->setPos(red_label  ->getPos());
+        green_label->host->setPos(green_label->getPos());
+        blue_label ->host->setPos(blue_label ->getPos());
 
         red_button  ->host->registerSubWidget(red_label  ->host);
         green_button->host->registerSubWidget(green_label->host);
@@ -545,7 +498,6 @@ namespace sym_plugin
 
     CurveWindow::~CurveWindow()
     {
-        app->event_manager->unregisterObject(this);
         app->event_manager->setPriority(plugin::EventType::MouseMove, 0);
         app->event_manager->setPriority(plugin::EventType::MousePress, 0);
         app->event_manager->setPriority(plugin::EventType::MouseRelease, 0);

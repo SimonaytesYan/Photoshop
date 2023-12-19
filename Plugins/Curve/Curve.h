@@ -90,7 +90,6 @@ namespace sym_plugin
         bool                          available;
         plugin::Vec2                  position;
         plugin::Vec2                  size;
-        List<plugin::PluginWidgetI*>  sub_widgets;
         plugin::WidgetI*              parent;
 
     public: 
@@ -114,6 +113,9 @@ namespace sym_plugin
 
         void setPriority(uint8_t value) { priority = value;  }
         void setParent  (Widget* value) { parent   = (plugin::WidgetI*)value;  };
+
+        plugin::Vec2 getPos()  const { return position; }
+        plugin::Vec2 getSize() const { return size; }
 
         virtual bool InsideP(plugin::Vec2 v);
     };

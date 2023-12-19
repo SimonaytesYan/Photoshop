@@ -92,6 +92,8 @@ public :
     bool onMouseRelease   (plugin::MouseContext mouse)  override;
     bool onMouseMove      (plugin::MouseContext mouse)  override;
     bool onClock          (size_t delta)                override;
+
+    bool InsideP(plugin::Vec2 v) override;
 };
 
 #endif  //SYM_SUB_WINDOW
