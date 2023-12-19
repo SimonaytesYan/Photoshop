@@ -90,10 +90,11 @@ int main()
 
 	EventManager event_manager;
 
-	// Adding tools	
+	// Adding tools
 	Window* tools = new Window(plugin::Vec2(1400, 450),
 			  	  			   plugin::Vec2(500, 300), "Tools");
 
+	fprintf(stderr, "the root = %p\n", the_root);
 	Gui* gui = new Gui(the_root);
 	plugin::App app;
 	app.root 		   = gui;

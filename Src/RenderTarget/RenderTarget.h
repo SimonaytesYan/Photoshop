@@ -21,6 +21,15 @@ public :
     
     RenderTarget(plugin::Vec2 size);
 
+    RenderTarget(const RenderTarget& rt)
+    {
+        data.create(rt.data.getSize().x, rt.data.getSize().y);
+        
+        sf::Sprite sprite;
+        sprite.setTexture(rt.data.getTexture());
+        data.draw(sprite);
+    }
+
     void SetPixel     (plugin::Vec2 position,           plugin::Color color, const RegionSet& rend_set);
     void DrawCircle   (plugin::Vec2 position, double r, plugin::Color color, const RegionSet& rend_set);
     void DrawLine     (plugin::Vec2 v0, plugin::Vec2 v1,      plugin::Color color, const RegionSet& rend_set);

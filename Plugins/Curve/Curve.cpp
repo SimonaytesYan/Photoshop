@@ -17,7 +17,8 @@ namespace sym_plugin
     }
 
     void CurvePlugin::CreateCurveWindow(plugin::RenderTargetI* rt)
-    {        
+    {
+        fprintf(stderr, "CreateCurveWindow\n");
         plugin::Vec2 start_pos = plugin::Vec2(600, 600);
         plugin::Vec2 size      = plugin::Vec2(400, 400);
 

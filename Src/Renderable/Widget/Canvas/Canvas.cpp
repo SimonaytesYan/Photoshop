@@ -11,6 +11,7 @@ fm   (_fm),
 data (RenderTarget(_size)),
 tmp  (RenderTarget(_size))
 {
+    drawing = false;
     data.clear(kCanvasBackgroundColor);
     tmp.clear(plugin::Color(0, 0, 0, 0));
 }
