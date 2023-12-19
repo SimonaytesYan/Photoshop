@@ -77,9 +77,16 @@ void Widget::render(RenderTarget* render_target)
 {
     if (available && visible)
     {
+        #ifdef DEBUG
+            fprintf(stderr, "Render widget %s\n", typeid(*this).name());
+        #endif
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
+
             Widget* sub_widget = sub_widgets[index].val;
+            #ifdef DEBUG    
+                fprintf(stderr, "sub_widget[%d] = %s(%p)\n", index, typeid(*sub_widget).name(), sub_widget);
+            #endif
             if (sub_widget->getAvailable())
             {
                 if (sub_widget->getVisible())
@@ -297,36 +304,62 @@ bool Widget::InsideP(plugin::Vec2 v)
 
 void PluginWidget::render(plugin::RenderTargetI* render_target)
 {
-    fprintf(stderr, "render PluginWidget\n");
     plugin_widget_i->render(render_target);
+
+    Widget::render(render_target);
+}
+
+void  PluginWidget::render(RenderTarget* render_target)
+{
+    plugin_widget_i->render((plugin::RenderTargetI*)render_target);
+
+    Widget::render(render_target);
 }
 
 bool PluginWidget::onKeyboardPress(plugin::KeyboardContext key)
 {
+    if (Widget::onKeyboardPress(key))
+        return true;
+
     return plugin_widget_i->onKeyboardPress(key);
 }
 
 bool PluginWidget::onKeyboardRelease(plugin::KeyboardContext key)
 {
+    if (Widget::onKeyboardRelease(key))
+        return true;
+
     return plugin_widget_i->onKeyboardRelease(key);
 }
 
 bool PluginWidget::onMousePress(plugin::MouseContext mouse)
 {
+    if (Widget::onMousePress(mouse))
+        return true;
+
     return plugin_widget_i->onMousePress(mouse);
 }
 
 bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
 {
+    if (Widget::onMouseRelease(mouse))
+        return true;
+
     return plugin_widget_i->onMouseRelease(mouse);
 }
 
 bool PluginWidget::onMouseMove(plugin::MouseContext mouse)
 {
+    if (Widget::onMouseRelease(mouse))
+        return true;
+
     return plugin_widget_i->onMouseMove(mouse);
 }
 
 bool PluginWidget::onClock(size_t delta)
 {
+    if (Widget::onClock(delta))
+        return true;
+
     return plugin_widget_i->onClock(delta);
 }

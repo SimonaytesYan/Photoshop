@@ -8,7 +8,9 @@ void Gui::createWidgetI(plugin::PluginWidgetI* widget)
     widget->host = plug_widget;
     root->registerSubWidget(plug_widget);  
     
-    fprintf(stderr, "CreateWidgetI root = %p\nwidget->host = %p\n\n", root, plug_widget);
+    #ifndef DEBUG
+        fprintf(stderr, "CreateWidgetI root = %p\nwidget->host = %p\n\n", root, plug_widget);
+    #endif
 }
 
 plugin::Plugin* Gui::queryPlugin(uint64_t id)

@@ -79,10 +79,12 @@ class PluginWidget : public Widget
 public :
 
     PluginWidget(plugin::PluginWidgetI* widget) :
+    Widget          (),
     plugin_widget_i (widget)
     { }
 
     void render(plugin::RenderTargetI* render_target) override;
+    void render(RenderTarget* render_target)          override;
 
     bool onKeyboardPress  (plugin::KeyboardContext key) override;
     bool onKeyboardRelease(plugin::KeyboardContext key) override;
