@@ -69,6 +69,9 @@ public :
 
     bool getVisible()           { return visible; }
     void setVisible(bool value) { visible = value; }
+
+    List<Widget*>& getSubWidgets() {return sub_widgets; }
+    Widget* getWidgetParent() { return parent; }; 
 };
 
 //============================PLUGIN WIDGET=====================================

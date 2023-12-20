@@ -38,4 +38,6 @@ const double kLetterWidth    = 0.57;
 const double kLetterHeight   = 1.5;
 const double kPrecision      = 1e-7;
 
+const plugin::Color kButtonColor = plugin::Color(199, 181, 173);
+
 #endif //SYM_RESOURCES

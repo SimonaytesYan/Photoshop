@@ -36,10 +36,10 @@
 int NewCanvas::counter = 0;
 
 void TestRegClip(RenderTarget& rend_targ);
-void AddMenu(Widget* root, Window* window, Canvas* canvas, 
+void AddMenu(Widget* root, Window* window, CanvasManager* canvas, 
 			 FilterManager* fm, ToolManager* tm, EventManager* em, 
 			 plugin::App* app);
-void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
+void AddFilters(Widget* root, CanvasManager* canvas_manager, FilterManager* fm, Font font,
 				ToolManager* tm, EventManager* em, VerticalMenu* filters,
 				plugin::App* app);
 void AddTools(Window* main_window, Window* tools, ToolManager* tm, 
@@ -67,31 +67,8 @@ int main()
 
 	FilterManager fm;
 	ToolManager   tm;
-
-	Window* canvas_window1 = new Window(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
-	Canvas* canvas 		   = new Canvas(plugin::Vec2(110, 150), plugin::Vec2(1500, 1200), &tm, &fm);
-	canvas_window1->registerSubWidget(canvas);
-
-	ScrollBar* vertical_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(20, canvas_window1->getSize().y - 50),
-						 		  				   plugin::Color(100, 100, 100), 
-						 		  				   plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
-						 		  				   canvas, plugin::Vec2(20, 20), canvas_window1->getSize());
-	
-	ScrollBar* horizontal_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(canvas_window1->getSize().x, 20),
-						 		    			     plugin::Color(100, 100, 100), 
-						 		    			     plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
-						 		    			     canvas, plugin::Vec2(0, 20), canvas_window1->getSize());
-	canvas_window1->registerSubWidget(vertical_scroll_bar);
-	canvas_window1->registerSubWidget(horizontal_scroll_bar);
-
-	main_window->registerSubWidget(canvas_window1);
-
-	Window* canvas_window2 = new Window(plugin::Vec2(900, 150), plugin::Vec2(520, 560), "Canvas2");
-	Canvas* canvas2 	   = new Canvas(plugin::Vec2(910, 200), plugin::Vec2(500, 500), &tm, &fm);
-	canvas_window2->registerSubWidget(canvas2);
-	main_window->registerSubWidget   (canvas_window2);
-
-	EventManager event_manager;
+	EventManager  event_manager;
+	CanvasManager canvas_manager(nullptr, &event_manager);
 
 	// Adding tools
 	Window* tools = new Window(plugin::Vec2(1400, 450),
@@ -114,7 +91,36 @@ int main()
 
 	event_manager.registerObject(main_window);
 
-	AddMenu(the_root, main_window, canvas, &fm, &tm, &event_manager, &app);
+	AddMenu(the_root, main_window, &canvas_manager, &fm, &tm, &event_manager, &app);
+
+	// Add some canvases
+
+	Window* canvas_window1 = new Window(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
+	Canvas* canvas 		   = new Canvas(plugin::Vec2(110, 150), plugin::Vec2(1500, 1200), 
+										&tm, &fm, "Canvas1", &canvas_manager);
+	canvas_window1->registerSubWidget(canvas);
+
+	ScrollBar* vertical_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(20, canvas_window1->getSize().y - 50),
+						 		  				   plugin::Color(100, 100, 100), 
+						 		  				   plugin::Color(200, 200, 200), plugin::Vec2(1, 0.5),
+						 		  				   canvas, plugin::Vec2(20, 20), canvas_window1->getSize());
+	
+	ScrollBar* horizontal_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(canvas_window1->getSize().x, 20),
+						 		    			     plugin::Color(100, 100, 100), 
+						 		    			     plugin::Color(200, 200, 200), plugin::Vec2(0.5, 1),
+						 		    			     canvas, plugin::Vec2(0, 20), canvas_window1->getSize());
+	canvas_window1->registerSubWidget(vertical_scroll_bar);
+	canvas_window1->registerSubWidget(horizontal_scroll_bar);
+
+	main_window->registerSubWidget(canvas_window1);
+
+	Window* canvas_window2 = new Window(plugin::Vec2(900, 150), plugin::Vec2(520, 560), "Canvas2");
+	Canvas* canvas2 	   = new Canvas(plugin::Vec2(910, 200), plugin::Vec2(500, 500), 
+										&tm, &fm, "Canvas2", &canvas_manager);
+	canvas_window2->registerSubWidget(canvas2);
+	main_window->registerSubWidget   (canvas_window2);
+
+	//=============================================
 
 	INIT_TIMER();
 	RESTART_TIMER();
@@ -218,7 +224,7 @@ int main()
 	}
 }
 
-void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm, 
+void AddMenu(Widget* root, Window* window, CanvasManager* canvas_manager, FilterManager* fm, 
 			 ToolManager* tm, EventManager* em, plugin::App* app)
 {
 	// Get resources
@@ -230,28 +236,28 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	// Create file menu
 	TextButton* file_button = new TextButton(plugin::Vec2(10, 50), plugin::Vec2(100, 50), 
-									 		 plugin::Color(199, 181, 173),
+									 		 kButtonColor,
 									 		 font, 20, "File", 
 									 		 plugin::Color(255, 255, 255));
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
-	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
+	SavingParams* saving_func = new SavingParams(window, em, canvas_manager, font);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
-									 			plugin::Color(199, 181, 173),
+									 			kButtonColor,
 												font, 20, "Save", 
 												plugin::Color(255, 255, 255),
 												saving_func));
 
-	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
+	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm, canvas_manager);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
-									 			plugin::Color(199, 181, 173),
+									 			kButtonColor,
 												font, 20, "Open", 
 												plugin::Color(255, 255, 255),
 												opening_func));
 
-	NewCanvas* new_canvas_functor = new NewCanvas(window, tm, fm);
+	NewCanvas* new_canvas_functor = new NewCanvas(window, tm, fm, canvas_manager);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
-									 			plugin::Color(199, 181, 173),
+									 			kButtonColor,
 												font, 20, "New", 
 												plugin::Color(255, 255, 255),
 												new_canvas_functor));
@@ -261,19 +267,31 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	// Create filter menu
 	TextButton* filter_button = new TextButton(plugin::Vec2(210, 50),  plugin::Vec2(200, 50),
-									  		   plugin::Color(199, 181, 173),
+									  		   kButtonColor,
 									  		   font, 20, "Filters",
 									  		   plugin::Color(255, 255, 255));
 
 	VerticalMenu* filters = new VerticalMenu(filter_button, false);
 
-	AddFilters(root, canvas, fm, font, tm, em, filters, app);
+	AddFilters(root, canvas_manager, fm, font, tm, em, filters, app);
 
 	main_menu->registerSubWidget(filters);
+
+	// Create windows menu
+
+	TextButton* windows_button = new TextButton(plugin::Vec2(310, 50),  plugin::Vec2(200, 50),
+									  		    kButtonColor,
+									  		    font, 20, "Windows",
+									  		    plugin::Color(255, 255, 255));
+	VerticalMenu* windows = new VerticalMenu(windows_button, false);
+	window->registerSubWidget(windows);
+
+	canvas_manager->SetWindowMenu(windows);
+
 	window->registerSubWidget(main_menu);
 }
 
-void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
+void AddFilters(Widget* root, CanvasManager* canvas_manager, FilterManager* fm, Font font,
 				ToolManager* tm, EventManager* em, VerticalMenu* filters,
 				plugin::App* app)
 {
@@ -281,7 +299,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 															 font, em, root);
 
 	TextButton* brightness_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
-									  		   	   plugin::Color(199, 181, 173),
+									  		   	   kButtonColor,
 									  	   		   font, 20, "Bright",
 									  	   		   plugin::Color(255, 255, 255),
 									  	   		   brightness_func);
@@ -302,7 +320,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 																		font, em, root);
 			
 			TextButton* plugin_filter = new TextButton(plugin::Vec2(0, 0),  plugin::Vec2(200, 50),  
-									  		   		   plugin::Color(199, 181, 173),
+									  		   		   kButtonColor,
 									  		   		   font, 20, new_plugin->name,
 									  		   		   plugin::Color(255, 255, 255),
 									  		   		   plugin_filter_func);
@@ -314,7 +332,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 
 	LastFilter* last_filter_func = new LastFilter(fm); 
 	TextButton* last_filter = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
-									  		 plugin::Color(199, 181, 173),
+									  		 kButtonColor,
 											 font, 20, "Last filter",
 											 plugin::Color(255, 255, 255),
 											 last_filter_func);

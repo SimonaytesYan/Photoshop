@@ -4,13 +4,20 @@
 #include "../../../ClipRegion/ClipRegion.h"
 
 Canvas::Canvas(plugin::Vec2 _position, plugin::Vec2 _size, 
-               ToolManager* _tm, FilterManager* _fm) :
+               ToolManager* _tm, FilterManager* _fm, 
+               const char* _name, CanvasManager* canvas_manager) :
 Widget(_position, _size),
-tm   (_tm),
-fm   (_fm),
-data (RenderTarget(_size)),
-tmp  (RenderTarget(_size))
+tm             (_tm),
+fm             (_fm),
+data           (RenderTarget(_size)),
+tmp            (RenderTarget(_size)),
+canvas_manager (canvas_manager)
 {
+    name = new char[strlen(_name) + 1];
+    strcpy(name, _name);
+
+    canvas_manager->registerCanvas(this);
+
     drawing = false;
     data.clear(kCanvasBackgroundColor);
     tmp.clear(plugin::Color(0, 0, 0, 0));

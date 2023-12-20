@@ -115,25 +115,25 @@ struct LastFilter : ButtonFunction
 
 struct SavingParams : ButtonFunction
 {
-	Window* 	  main_window;
-	EventManager* event_manager;
-	Canvas* 	  canvas;
-	Font 		  font;
+	Window* 	   main_window;
+	EventManager*  event_manager;
+	CanvasManager* canvas_manager;
+	Font 		   font;
 
 	SavingParams() :
-	main_window   (nullptr),
-	event_manager (nullptr),
-	canvas        (nullptr)
+	main_window    (nullptr),
+	event_manager  (nullptr),
+	canvas_manager (nullptr)
 	{}
 
-	SavingParams(Window* 	   main_window,
-				 EventManager* event_manager,
-				 Canvas* 	   canvas,
-				 Font 		   font) :
-	main_window   (main_window),
-	event_manager (event_manager),
-	canvas        (canvas),
-	font 		  (font)
+	SavingParams(Window* 	    main_window,
+				 EventManager*  event_manager,
+				 CanvasManager* canvas_manager,
+				 Font 		    font) :
+	main_window    (main_window),
+	event_manager  (event_manager),
+	canvas_manager (canvas_manager),
+	font 		   (font)
 	{}
 
 	void operator()() override;
@@ -141,20 +141,20 @@ struct SavingParams : ButtonFunction
 
 struct SaveInFile : ButtonFunction
 {
-	Canvas*	     canvas;
-	EditBox*     file_name_edit;  
-	ModalWindow* dialog_box;
+	CanvasManager* canvas_manager;
+	EditBox*       file_name_edit;  
+	ModalWindow*   dialog_box;
 
 	SaveInFile() :
-	canvas         (nullptr),
+	canvas_manager (nullptr),
 	file_name_edit (nullptr),
 	dialog_box     (nullptr)
 	{}
 
-	SaveInFile(Canvas*     canvas, 
+	SaveInFile(CanvasManager*     canvas, 
 			  EditBox*     file_name_edit,
 			  ModalWindow* dialog_box) :
-	canvas         (canvas),
+	canvas_manager (canvas_manager),
 	file_name_edit (file_name_edit),
 	dialog_box     (dialog_box)
 	{}
@@ -169,6 +169,7 @@ struct OpeningParams : ButtonFunction
 	Font 		   font;
 	ToolManager*   tool_manager;
 	FilterManager* filter_manager;
+	CanvasManager* canvas_manager;
 
 	OpeningParams() :
 	main_window    (nullptr),
@@ -181,12 +182,14 @@ struct OpeningParams : ButtonFunction
 				  EventManager* event_manager,
 				  Font 		   font,
 			 	  ToolManager*   tool_manager,
-			 	  FilterManager* filter_manager) :
+			 	  FilterManager* filter_manager,
+				  CanvasManager* canvas_manager) :
 	main_window   (main_window),
 	event_manager (event_manager),
 	font 		  (font),
 	tool_manager  (tool_manager),
-	filter_manager(filter_manager)
+	filter_manager(filter_manager),
+	canvas_manager(canvas_manager)
 	{}
 
 	void operator()() override;
@@ -199,6 +202,7 @@ struct OpenFile : ButtonFunction
 	ModalWindow*   dialog_box;
 	ToolManager*   tool_manager;
 	FilterManager* filter_manager;
+	CanvasManager* canvas_manager;
 
 	OpenFile() :
 	main_window	   (nullptr),
@@ -212,12 +216,14 @@ struct OpenFile : ButtonFunction
 	         EditBox*       file_name_edit,
 			 ModalWindow*   dialog_box,
 			 ToolManager*   tool_manager,
-			 FilterManager* filter_manager) :
+			 FilterManager* filter_manager,
+			 CanvasManager* canvas_manager) :
 	file_name_edit (file_name_edit),
 	dialog_box     (dialog_box),
 	main_window	   (main_window),
 	tool_manager   (tool_manager),
-	filter_manager (filter_manager)
+	filter_manager (filter_manager),
+	canvas_manager (canvas_manager)
 	{}
 
 	void operator()() override;
@@ -230,13 +236,16 @@ struct NewCanvas : ButtonFunction
 	Window* 	   main_window;
 	ToolManager*   tool_manager;
 	FilterManager* filter_manager;
+	CanvasManager* canvas_manager;
 
 	NewCanvas(Window* main_window,
 			  ToolManager*   tool_manager,
-			  FilterManager* filter_manager) :
+			  FilterManager* filter_manager,
+			  CanvasManager* canvas_manager) :
 	main_window   (main_window),
 	tool_manager  (tool_manager),
-	filter_manager(filter_manager)
+	filter_manager(filter_manager),
+	canvas_manager (canvas_manager)
 	{ }
 
 	void operator()() override
@@ -247,7 +256,8 @@ struct NewCanvas : ButtonFunction
 		fprintf(stderr, "Creating new canvas\n");
 
 		Window* new_window = new Window(plugin::Vec2(400, 400), plugin::Vec2(720, 560), window_header);
-		Canvas* new_canvas = new Canvas(plugin::Vec2(410, 450), plugin::Vec2(700, 500), tool_manager, filter_manager);
+		Canvas* new_canvas = new Canvas(plugin::Vec2(410, 450), plugin::Vec2(700, 500), tool_manager, 
+										filter_manager, window_header, canvas_manager);
 
 		new_window->registerSubWidget(new_canvas);
 		main_window->registerSubWidget(new_window);
@@ -345,7 +355,7 @@ void SavingParams::operator()()
 									font, kLetterWidth, kLetterHeight, 20);
 	dialog_box->registerSubWidget(edit_box);
 
-	SaveInFile* save_canvas_func = new SaveInFile(canvas, edit_box, dialog_box);
+	SaveInFile* save_canvas_func = new SaveInFile(canvas_manager, edit_box, dialog_box);
 		
 	TextButton* ok_button = new TextButton(position + plugin::Vec2(200, 100), 
 								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
@@ -358,7 +368,7 @@ void SavingParams::operator()()
 
 void SaveInFile::operator()()
 {
-    Image img(canvas->GetData()->GetTexture());
+    Image img(canvas_manager->GetActiveCanvas()->GetData()->GetTexture());
 	sf::Image image = img.GetImage();
 	const char* file_name = file_name_edit->GetText();
 
@@ -382,7 +392,7 @@ void OpeningParams::operator()()
 	dialog_box->registerSubWidget(edit_box);
 
 	OpenFile* save_canvas_func = new OpenFile(main_window, edit_box, dialog_box, 
-											  tool_manager, filter_manager);
+											  tool_manager, filter_manager, canvas_manager);
 	TextButton* ok_button = new TextButton(position + plugin::Vec2(200, 100), 
 								   		   plugin::Vec2(50, 50), plugin::Color(255, 255, 255), 
 										   font, 20, "Ok", plugin::Color(0, 0, 0),
@@ -403,7 +413,8 @@ void OpenFile::operator()()
 	Window* canvas_window = new Window(position          - plugin::Vec2(10, 50), 
 									   texture.getSize() + plugin::Vec2(20, 60), file_name);
 
-	Canvas* new_canvas = new Canvas(position, texture.getSize(), tool_manager, filter_manager);
+	Canvas* new_canvas = new Canvas(position, texture.getSize(), tool_manager, filter_manager,
+									file_name, canvas_manager);
 	new_canvas->GetData()->DrawSprite(plugin::Vec2(0, 0), texture);	
 	canvas_window->registerSubWidget(new_canvas);
 

@@ -5,6 +5,7 @@
 #include "../../../ToolManager/ToolManager.h" 
 #include "../../../FilterManager/FilterManager.h"
 #include "../../../Standart/Standart.h"
+#include "../../../CanvasManager/CanvasManager.h"
 
 const plugin::Color kCanvasBackgroundColor = plugin::Color(50, 50, 50);
 
@@ -15,17 +16,25 @@ class Canvas : public Widget
     FilterManager* fm;
     RenderTarget   data;
     RenderTarget   tmp;
+    char*          name;
+    CanvasManager* canvas_manager;
     
     void disableTool(plugin::MouseContext mouse);
 
 public :
     Canvas(plugin::Vec2 position, plugin::Vec2 size, 
-           ToolManager* tm = nullptr, FilterManager* fm = nullptr);
+           ToolManager* tm, FilterManager* fm, 
+           const char* name, CanvasManager* canvas_manager);
 
     ~Canvas()
-    {};
+    {
+        delete name;
+        canvas_manager->unregisterCanvas(this);
+    };
 
     RenderTarget* GetData() { return &data; }
+
+    const char* getName() { return name; }
 
     bool onMousePress  (plugin::MouseContext mouse)        override;
     bool onMouseRelease(plugin::MouseContext mouse)        override;
