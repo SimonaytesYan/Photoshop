@@ -87,15 +87,12 @@ namespace sym_plugin
     {
     protected:
         uint8_t                       priority;
-        bool                          available;
         plugin::Vec2                  position;
         plugin::Vec2                  size;
-        plugin::WidgetI*              parent;
 
     public: 
         Widget (plugin::Vec2 position = plugin::Vec2(0, 0), 
-                plugin::Vec2 size     = plugin::Vec2(0, 0), 
-                bool available = true);
+                plugin::Vec2 size     = plugin::Vec2(0, 0));
         virtual ~Widget();
 
         virtual bool onKeyboardPress    (plugin::KeyboardContext key) override;
@@ -111,8 +108,7 @@ namespace sym_plugin
 
         uint8_t      getPriority () const override { return priority;  }
 
-        void setPriority(uint8_t value) { priority = value;  }
-        void setParent  (Widget* value) { parent   = (plugin::WidgetI*)value;  };
+        void setPriority(uint8_t value) { priority = value; }
 
         plugin::Vec2 getPos()  const { return position; }
         plugin::Vec2 getSize() const { return size; }

@@ -114,11 +114,9 @@ namespace sym_plugin
     
     const double kPrecision = 1e-6;
 
-    Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size, bool _available) :
-    available       (_available),
+    Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size) :
     position        (_position),
-    size            (_size),
-    parent          (nullptr)
+    size            (_size)
     {
     }
 
@@ -380,7 +378,7 @@ namespace sym_plugin
         if (Widget::onMousePress(mouse))
             return true;
         
-        if (available && InsideP(mouse.position))
+        if (InsideP(mouse.position))
         {
             switch (status)
             {
@@ -613,20 +611,17 @@ namespace sym_plugin
 
     void Button::render(plugin::RenderTargetI* render_target)
     {
-        if (available)
+        if (pressed)
         {
-                if (pressed)
-                {
-                    plugin::Color inverse_color(255 - background_color.r,
-                                                255 - background_color.g,
-                                                255 - background_color.b); 
-                    render_target->drawRect(position, size, inverse_color);
-                }
-                else
-                    render_target->drawRect(position, size, background_color);
-
-            Widget::render(render_target);
+            plugin::Color inverse_color(255 - background_color.r,
+                                        255 - background_color.g,
+                                        255 - background_color.b); 
+            render_target->drawRect(position, size, inverse_color);
         }
+        else
+            render_target->drawRect(position, size, background_color);
+
+        Widget::render(render_target);
     }
 
     bool Button::onMousePress(plugin::MouseContext mouse)
@@ -704,12 +699,9 @@ namespace sym_plugin
 
     void Label::render(plugin::RenderTargetI* render_target)
     {
-        if (available)
-        {
-            render_target->drawText(position, text, character_size, text_color);
+        render_target->drawText(position, text, character_size, text_color);
 
-            Widget::render(render_target);
-        }
+        Widget::render(render_target);
     }
 
     //==================================FUNCTORS================================
