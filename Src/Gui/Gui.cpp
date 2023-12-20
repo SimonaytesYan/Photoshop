@@ -4,7 +4,7 @@
 
 void Gui::createWidgetI(plugin::PluginWidgetI* widget)
 {
-    PluginWidget* plug_widget = new PluginWidget(widget);
+    PluginWidget* plug_widget = new PluginWidget(widget, event_manager);
     widget->host = plug_widget;
     root->registerSubWidget(plug_widget);  
     

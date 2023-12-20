@@ -4,17 +4,20 @@
 #include "../Standart/Standart.h"
 #include "../Renderable/Widget/Widget.h"
 #include "../Renderable/Widget/RectangleWidget/RectangleWidget.h"
+#include "../EventManager/EventManager.h"
 
 class Gui : public plugin::GuiI
 {
     DynArray<plugin::Plugin*> plugins;
     Widget*                   root;
     RectangleWidget*          rt_widget;
+    EventManager*             event_manager;
 
 public:
 
-    Gui(Widget* root = nullptr) :
-    root (root)
+    Gui(Widget* root = nullptr, EventManager* event_manager = nullptr) :
+    root          (root),
+    event_manager (event_manager)
     { }
 
     void AddPlugin(plugin::Plugin* new_plugin)

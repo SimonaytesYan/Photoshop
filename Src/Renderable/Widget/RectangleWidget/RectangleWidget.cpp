@@ -28,9 +28,8 @@ void RectangleWidget::render(RenderTarget* render_target)
     
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         {
-            fprintf(stderr, "sub_widget[%d] = %s(%p) vis = %d avl = %d\n", i, typeid(*sub_widgets[i].val).name(), 
-                                                                  sub_widgets[i].val, sub_widgets[i].val->getVisible(),
-                                                                  sub_widgets[i].val->getAvailable());
+            fprintf(stderr, "sub_widget[%d] = %s(%p)\n", i, typeid(*sub_widgets[i].val).name(), 
+                                                                  sub_widgets[i].val);
         }
         fprintf(stderr, "\n");
     #endif

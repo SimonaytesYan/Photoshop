@@ -95,7 +95,7 @@ int main()
 			  	  			   plugin::Vec2(500, 300), "Tools");
 
 	fprintf(stderr, "the root = %p\n", the_root);
-	Gui* gui = new Gui(the_root);
+	Gui* gui = new Gui(the_root, &event_manager);
 	plugin::App app;
 	app.root 		   = gui;
 	app.event_manager  = (plugin::EventManagerI*)&event_manager;

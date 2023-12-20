@@ -9,6 +9,7 @@
 #include "../Renderable.h"
 #include "../../RegionSet/RegionSet.h"
 #include "../../EventProcessable.h"
+#include "../../EventManager/EventManager.h"
 
 class Widget : public Renderable, public plugin::WidgetI, public EventProcessable
 {
@@ -74,14 +75,31 @@ public :
 
 class PluginWidget : public Widget
 {
-    plugin::PluginWidgetI* plugin_widget_i;
+    static int counter;
+
+    EventManager* event_man;
 
 public :
+    plugin::PluginWidgetI* plugin_widget_i;
 
-    PluginWidget(plugin::PluginWidgetI* widget) :
+    PluginWidget(plugin::PluginWidgetI* _widget, EventManager* _event_man) :
     Widget          (),
-    plugin_widget_i (widget)
-    { }
+    plugin_widget_i (_widget),
+    event_man       (_event_man)
+    {
+        priority = 255;
+        counter++;
+
+        if (counter == 1)
+        {
+            fprintf(stderr, "plugin widget in event_man\n");
+            event_man->setPriority(plugin::EventType::MouseMove,    255);
+            event_man->setPriority(plugin::EventType::MousePress,   255);
+            event_man->setPriority(plugin::EventType::MouseRelease, 255);
+
+            event_man->registerObject(this);
+        }
+    }
 
     void render(plugin::RenderTargetI* render_target) override;
     void render(RenderTarget* render_target)          override;
@@ -93,7 +111,27 @@ public :
     bool onMouseMove      (plugin::MouseContext mouse)  override;
     bool onClock          (size_t delta)                override;
 
-    bool InsideP(plugin::Vec2 v) override;
+    ~PluginWidget()
+    {
+        /*
+        event_man->setPriority(plugin::EventType::MouseMove,    0);
+        event_man->setPriority(plugin::EventType::MousePress,   0);
+        event_man->setPriority(plugin::EventType::MouseRelease, 0);
+
+        event_man->unregisterObject(this);
+        */
+
+        available = false;
+        parent->unregisterSubWidget(this);
+        event_man->unregisterObject(this);
+
+        delete plugin_widget_i;
+
+        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+        {
+            delete sub_widgets[i].val;
+        }
+    }
 };
 
 #endif  //SYM_SUB_WINDOW

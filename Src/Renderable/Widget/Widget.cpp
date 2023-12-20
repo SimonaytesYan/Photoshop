@@ -96,6 +96,9 @@ void Widget::render(RenderTarget* render_target)
             {
                 unregisterSubWidget(sub_widget);
                 UpdateRegionSet();
+
+                unregisterSubWidget(sub_widget);
+
                 delete sub_widget;
             }
         }
@@ -187,8 +190,6 @@ void Widget::ToForeground(Widget* son)
 
 bool Widget::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "Widget onMousePress %s(%p)\n", typeid(*this).name(), this);
-
     if (InsideP(mouse.position))
     {
         if (parent != nullptr)
@@ -305,6 +306,8 @@ bool Widget::InsideP(plugin::Vec2 v)
 
 //========================PLUGIN WIDGET=========================================
 
+int PluginWidget::counter = 0;
+
 void PluginWidget::render(plugin::RenderTargetI* render_target)
 {
     plugin_widget_i->render(render_target);
@@ -337,11 +340,22 @@ bool PluginWidget::onKeyboardRelease(plugin::KeyboardContext key)
 
 bool PluginWidget::onMousePress(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "PluginWidget onMousePress(%p)\n", this);
+    fprintf(stderr, "PluginWidget onMousePress(%p)\n", plugin_widget_i);
+
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+    {
+        fprintf(stderr, "PluginWidget.sub_widgets[%d] = %s(%p)\n", i, typeid(*((PluginWidget*)sub_widgets[i].val)->plugin_widget_i).name(), 
+                                                                      ((PluginWidget*)sub_widgets[i].val)->plugin_widget_i);
+    }
+
     if (Widget::onMousePress(mouse))
         return true;
 
-    return plugin_widget_i->onMousePress(mouse);
+    fprintf(stderr, "Go into plugin\n");
+
+    bool plugin_res = plugin_widget_i->onMousePress(mouse);
+    fprintf(stderr, "plugin_res = %d(%p)\n", plugin_res, plugin_widget_i);
+    return plugin_res;
 }
 
 bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
@@ -355,8 +369,7 @@ bool PluginWidget::onMouseRelease(plugin::MouseContext mouse)
 
 bool PluginWidget::onMouseMove(plugin::MouseContext mouse)
 {
-    fprintf(stderr, "PluginWidget onMouseMove(%p)\n", this);
-    if (Widget::onMouseRelease(mouse))
+    if (Widget::onMouseMove(mouse))
         return true;
 
     return plugin_widget_i->onMouseMove(mouse);
@@ -370,7 +383,7 @@ bool PluginWidget::onClock(size_t delta)
     return plugin_widget_i->onClock(delta);
 }
 
-bool PluginWidget::InsideP(plugin::Vec2 v)
+/*bool PluginWidget::InsideP(plugin::Vec2 v)
 {
     return true;
-}
+}*/

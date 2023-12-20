@@ -25,7 +25,7 @@ namespace sym_plugin
         plugin::Vec2  button_size  = kButtonSize;
         plugin::Color button_color = plugin::Color(128, 128, 128);
 
-        // Create OK button
+        // Create functor
 
         ApplyFilterFunctor* functor = new ApplyFilterFunctor();
         functor->rt = rt;
@@ -40,29 +40,31 @@ namespace sym_plugin
             functor->b.data[i] = i;
         }
 
+        // Create window
+
+        CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
+        app->root->getRoot()->registerSubWidget(window->host);
+
+        // Create OK button
+
         Button* ok_button = new Button(start_pos + plugin::Vec2((size - kButtonSize).x / 2,     
                                                                 (size - kButtonSize).y * 11 / 12), 
                                        kButtonSize, kSelected, functor);
         app->root->createWidgetI(ok_button);
         ok_button->host->setPos(ok_button->getPos());
+        ok_button->host->setSize(ok_button->getSize());
+        
 
         Label* ok_label = new Label(ok_button->host->getPos() + plugin::Vec2(25, 0), 
                                     kTextSize, "OK", kTextColor);
         app->root->createWidgetI(ok_label);
         ok_label->host->setPos(ok_label->getPos());
+        ok_label->host->setSize(ok_label->getSize());
 
         ok_button->host->registerSubWidget(ok_label->host);
 
-        // Create window
-
-        CurveWindow* window = new CurveWindow(start_pos, size, functor, app);
-        app->root->createWidgetI(window);
-        window->host->setPos(window->getPos());
-
         window->host->registerSubWidget(ok_button->host);
         functor->window = window;
-
-        app->root->getRoot()->registerSubWidget(window->host);
     }
 
     plugin::Array<const char*> CurveFilter::getParamNames() const
@@ -147,8 +149,10 @@ namespace sym_plugin
 
     bool Widget::onMousePress(plugin::MouseContext mouse)
     {
-        if (InsideP(mouse.position))
-            return true;
+        fprintf(stderr, "(plugin) Widget::onMousePress %s(%p)\n", typeid(*this).name(), this);
+
+        //if (InsideP(mouse.position))
+        //    return true;
         return false;
     }
     
@@ -221,6 +225,7 @@ namespace sym_plugin
     {
         app->root->createWidgetI(this);
         host->setPos(position);
+        host->setSize(size);
 
         priority = 255;
 
@@ -244,10 +249,12 @@ namespace sym_plugin
                                            plugin::Color(235,235,235), new ButtonMove(this));
         app->root->createWidgetI(header_button);
         header_button->host->setPos(header_button->getPos());
+        header_button->host->setSize(header_button->getSize());
 
         Label* header_label = new Label(position, kTextSize, "Curve filter", kTextColor);
         app->root->createWidgetI(header_label);
         header_label->host->setPos(header_label->getPos());
+        header_label->host->setSize(header_label->getSize());
         
         // Header
         header_button->host->registerSubWidget(header_label->host);
@@ -261,11 +268,13 @@ namespace sym_plugin
                                           nullptr, new ButtonClose(this));
         app->root->createWidgetI(close_button);
         close_button->host->setPos(close_button->getPos());
+        close_button->host->setSize(close_button->getSize());
 
         Label* close_label = new Label(close_button_pos + plugin::Vec2(9, 1), 
                                        kTextSize - 5, "X", kTextColor);
         app->root->createWidgetI(close_label);
         close_label->host->setPos(close_label->getPos());
+        close_label->host->setSize(close_label->getSize());
 
         close_button->host->registerSubWidget(close_label->host);
         host->registerSubWidget(close_button->host);                    
@@ -290,6 +299,9 @@ namespace sym_plugin
         green_button->host->setPos(green_button->getPos());
         blue_button ->host->setPos(blue_button ->getPos());
 
+        red_button  ->host->setSize(red_button  ->getSize());
+        green_button->host->setSize(green_button->getSize());
+        blue_button ->host->setSize(blue_button ->getSize());
 
         Label* red_label   = new Label(red_button->host->getPos(), kTextSize, "Red",   kTextColor);
         Label* green_label = new Label(red_button->host->getPos(), kTextSize, "Green", kTextColor);
@@ -302,6 +314,10 @@ namespace sym_plugin
         red_label  ->host->setPos(red_label  ->getPos());
         green_label->host->setPos(green_label->getPos());
         blue_label ->host->setPos(blue_label ->getPos());
+
+        red_label  ->host->setSize(red_label  ->getPos());
+        green_label->host->setSize(green_label->getPos());
+        blue_label ->host->setSize(blue_label ->getPos());
 
         red_button  ->host->registerSubWidget(red_label  ->host);
         green_button->host->registerSubWidget(green_label->host);
@@ -327,7 +343,6 @@ namespace sym_plugin
 
         Widget::move(delta);
     }
-
 
     void CurveWindow::AddPoint(List<plugin::Vec2>& points, plugin::Vec2 position)
     {
@@ -375,11 +390,12 @@ namespace sym_plugin
 
     bool CurveWindow::onMousePress(plugin::MouseContext mouse)
     {
-        if (Widget::onMousePress(mouse))
-            return true;
-        
+        fprintf(stderr, "(plugin) CurveWindow::onMousePress (%p)\n", this);
+
         if (InsideP(mouse.position))
         {
+            fprintf(stderr, "(plugin) press inside curve window (%lg, %lg)\n", mouse.position.x, mouse.position.y);
+
             switch (status)
             {
                 case CurveWindowStatus::Red:
@@ -393,9 +409,10 @@ namespace sym_plugin
                     break;
                 
                 default:
-                    fprintf(stderr, "CurveWindow::onMousePress status = %d\n", status);
+                    fprintf(stderr, "(plugin) CurveWindow::onMousePress status = %d\n", status);
                     break;
             }
+
             return true;
         }
 
@@ -465,9 +482,6 @@ namespace sym_plugin
 
     bool CurveWindow::onMouseMove(plugin::MouseContext mouse)
     {
-        if (Widget::onMouseMove(mouse))
-            return true;
-
         MovePoint(mouse.position);
 
         if (moving)
@@ -620,12 +634,11 @@ namespace sym_plugin
         }
         else
             render_target->drawRect(position, size, background_color);
-
-        Widget::render(render_target);
     }
 
     bool Button::onMousePress(plugin::MouseContext mouse)
     {
+        fprintf(stderr, "(plugin) Button::onMousePress (%p)\n", this);
         if (InsideP(mouse.position))
         {
             if (Widget::onMousePress(mouse))
@@ -667,9 +680,8 @@ namespace sym_plugin
     bool Button::onMouseMove(plugin::MouseContext mouse)
     {
         if (!InsideP(mouse.position))
-        {
             pressed = false;
-        }
+
         return false;
     }
 
@@ -700,15 +712,14 @@ namespace sym_plugin
     void Label::render(plugin::RenderTargetI* render_target)
     {
         render_target->drawText(position, text, character_size, text_color);
-
-        Widget::render(render_target);
     }
 
     //==================================FUNCTORS================================
 
     void ApplyFilterFunctor::operator()()
     {
-        delete window;
+        window->host->setAvailable(false);
+
         filter->apply(rt, r, g, b);
     }
 }

@@ -86,6 +86,13 @@ void EventManager::ResetPriorities()
 void EventManager::registerObject(plugin::EventProcessableI* obj)
 {
     objects.PushBack(obj);
+
+    for (int i = objects.Begin(); i != -1; i = objects.Iterate(i))
+    {
+        fprintf(stderr, "objects[%d] = %s(%p)", i, typeid(*objects[i].val).name(), objects[i].val);
+    }
+
+    fprintf(stderr, "\n");
 }
 
 void EventManager::unregisterObject(plugin::EventProcessableI* obj)
