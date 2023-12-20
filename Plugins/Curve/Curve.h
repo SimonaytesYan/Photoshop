@@ -254,7 +254,9 @@ namespace sym_plugin
         }
 
         void Close()
-        { delete this; }
+        { 
+            host->setAvailable(false);
+        }
 
         void SetMoving(bool value)
         { moving = value; }

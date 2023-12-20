@@ -113,19 +113,14 @@ public :
 
     ~PluginWidget()
     {
-        /*
         event_man->setPriority(plugin::EventType::MouseMove,    0);
         event_man->setPriority(plugin::EventType::MousePress,   0);
         event_man->setPriority(plugin::EventType::MouseRelease, 0);
-
-        event_man->unregisterObject(this);
-        */
-
-        available = false;
-        parent->unregisterSubWidget(this);
         event_man->unregisterObject(this);
 
         delete plugin_widget_i;
+
+        parent->unregisterSubWidget(this);
 
         for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
         {

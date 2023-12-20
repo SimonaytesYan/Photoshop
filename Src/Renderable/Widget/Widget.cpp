@@ -84,9 +84,11 @@ void Widget::render(RenderTarget* render_target)
         {
 
             Widget* sub_widget = sub_widgets[index].val;
+
             #ifdef DEBUG    
                 fprintf(stderr, "sub_widget[%d] = %s(%p)\n", index, typeid(*sub_widget).name(), sub_widget);
             #endif
+
             if (sub_widget->getAvailable())
             {
                 if (sub_widget->getVisible())
@@ -97,9 +99,10 @@ void Widget::render(RenderTarget* render_target)
                 unregisterSubWidget(sub_widget);
                 UpdateRegionSet();
 
-                unregisterSubWidget(sub_widget);
+                for (int i = sub_widget->sub_widgets.Begin(); i != -1; i = sub_widget->sub_widgets.Iterate(i))
+                    sub_widget->sub_widgets[i].val->available = false;
 
-                delete sub_widget;
+                //delete sub_widget;
             }
         }
     }

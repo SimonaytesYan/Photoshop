@@ -304,8 +304,8 @@ namespace sym_plugin
         blue_button ->host->setSize(blue_button ->getSize());
 
         Label* red_label   = new Label(red_button->host->getPos(), kTextSize, "Red",   kTextColor);
-        Label* green_label = new Label(red_button->host->getPos(), kTextSize, "Green", kTextColor);
-        Label* blue_label  = new Label(red_button->host->getPos(), kTextSize, "Blue",  kTextColor);
+        Label* green_label = new Label(green_button->host->getPos(), kTextSize, "Green", kTextColor);
+        Label* blue_label  = new Label(blue_button->host->getPos(), kTextSize, "Blue",  kTextColor);
 
         app->root->createWidgetI(red_label);
         app->root->createWidgetI(green_label);
@@ -510,9 +510,6 @@ namespace sym_plugin
 
     CurveWindow::~CurveWindow()
     {
-        app->event_manager->setPriority(plugin::EventType::MouseMove, 0);
-        app->event_manager->setPriority(plugin::EventType::MousePress, 0);
-        app->event_manager->setPriority(plugin::EventType::MouseRelease, 0);
     }
 
     plugin::Color GetPixel(plugin::Texture* texture, plugin::Vec2 current_point)
