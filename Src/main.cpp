@@ -33,6 +33,8 @@
 #include "Tool/SplineTool/SplineTool.h"
 #include "Tool/FillTool/FillTool.h"
 
+int NewCanvas::counter = 0;
+
 void TestRegClip(RenderTarget& rend_targ);
 void AddMenu(Widget* root, Window* window, Canvas* canvas, 
 			 FilterManager* fm, ToolManager* tm, EventManager* em, 
@@ -43,6 +45,7 @@ void AddFilters(Widget* root, Canvas* canvas, FilterManager* fm, Font font,
 void AddTools(Window* main_window, Window* tools, ToolManager* tm, 
 			  plugin::App* app);
 void AddColors(Window* main_window, Window* colors, ToolManager* tm);
+
 
 int main()
 {
@@ -66,7 +69,7 @@ int main()
 	ToolManager   tm;
 
 	Window* canvas_window1 = new Window(plugin::Vec2(100, 100), plugin::Vec2(1200, 850), "Canvas1");
-	Canvas* canvas 		   = new Canvas(plugin::Vec2(110, 160), plugin::Vec2(1500, 1200), &tm, &fm);
+	Canvas* canvas 		   = new Canvas(plugin::Vec2(110, 150), plugin::Vec2(1500, 1200), &tm, &fm);
 	canvas_window1->registerSubWidget(canvas);
 
 	ScrollBar* vertical_scroll_bar = new ScrollBar(canvas->getPos(), plugin::Vec2(20, canvas_window1->getSize().y - 50),
@@ -83,8 +86,8 @@ int main()
 
 	main_window->registerSubWidget(canvas_window1);
 
-	Window* canvas_window2 = new Window(plugin::Vec2(900, 150), plugin::Vec2(500, 550), "Canvas2");
-	Canvas* canvas2 	   = new Canvas(plugin::Vec2(910, 210), plugin::Vec2(480, 480), &tm, &fm);
+	Window* canvas_window2 = new Window(plugin::Vec2(900, 150), plugin::Vec2(520, 560), "Canvas2");
+	Canvas* canvas2 	   = new Canvas(plugin::Vec2(910, 200), plugin::Vec2(500, 500), &tm, &fm);
 	canvas_window2->registerSubWidget(canvas2);
 	main_window->registerSubWidget   (canvas_window2);
 
@@ -234,17 +237,24 @@ void AddMenu(Widget* root, Window* window, Canvas* canvas, FilterManager* fm,
 
 	SavingParams* saving_func = new SavingParams(window, em, canvas, font);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
-									 	plugin::Color(199, 181, 173),
-										font, 20, "Save", 
-										plugin::Color(255, 255, 255),
-										saving_func));
+									 			plugin::Color(199, 181, 173),
+												font, 20, "Save", 
+												plugin::Color(255, 255, 255),
+												saving_func));
 
 	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
-									 	plugin::Color(199, 181, 173),
-										font, 20, "Open", 
-										plugin::Color(255, 255, 255),
-										opening_func));
+									 			plugin::Color(199, 181, 173),
+												font, 20, "Open", 
+												plugin::Color(255, 255, 255),
+												opening_func));
+
+	NewCanvas* new_canvas_functor = new NewCanvas(window, tm, fm);
+	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
+									 			plugin::Color(199, 181, 173),
+												font, 20, "New", 
+												plugin::Color(255, 255, 255),
+												new_canvas_functor));
 
 	// Create main menu
 	HorizontalMenu* main_menu = new HorizontalMenu(file_menu);

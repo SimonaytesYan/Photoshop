@@ -223,6 +223,37 @@ struct OpenFile : ButtonFunction
 	void operator()() override;
 };
 
+struct NewCanvas : ButtonFunction
+{
+	static int counter;
+
+	Window* 	   main_window;
+	ToolManager*   tool_manager;
+	FilterManager* filter_manager;
+
+	NewCanvas(Window* main_window,
+			  ToolManager*   tool_manager,
+			  FilterManager* filter_manager) :
+	main_window   (main_window),
+	tool_manager  (tool_manager),
+	filter_manager(filter_manager)
+	{ }
+
+	void operator()() override
+	{
+		char window_header[100] = "";
+		sprintf(window_header, "NewCanvas%d", counter++);
+
+		fprintf(stderr, "Creating new canvas\n");
+
+		Window* new_window = new Window(plugin::Vec2(400, 400), plugin::Vec2(720, 560), window_header);
+		Canvas* new_canvas = new Canvas(plugin::Vec2(410, 450), plugin::Vec2(700, 500), tool_manager, filter_manager);
+
+		new_window->registerSubWidget(new_canvas);
+		main_window->registerSubWidget(new_window);
+	}
+};
+
 //==============================FUNCTIONS IMPLEMENTATION========================
 
 void SwitchTool::operator()()
