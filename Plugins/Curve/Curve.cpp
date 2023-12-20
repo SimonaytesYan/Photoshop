@@ -135,6 +135,7 @@ namespace sym_plugin
 
     void Widget::render(plugin::RenderTargetI* render_target)
     {
+        size = host->getSize();
     }
 
     bool Widget::onKeyboardPress(plugin::KeyboardContext key)
@@ -594,6 +595,7 @@ namespace sym_plugin
 
     void CurveWindow::render(plugin::RenderTargetI* target)
     {
+        Widget::render(target);
         target->drawRect(position, size, kBackgroundColor);
 
         switch (status)
@@ -615,13 +617,14 @@ namespace sym_plugin
 
         UpdateFilter(target->getTexture());
         
-        Widget::render(target);
     }
 
     //===============================BUTTON=====================================
 
     void Button::render(plugin::RenderTargetI* render_target)
     {
+        Widget::render(render_target);
+
         if (pressed)
         {
             plugin::Color inverse_color(255 - background_color.r,
@@ -708,6 +711,8 @@ namespace sym_plugin
 
     void Label::render(plugin::RenderTargetI* render_target)
     {
+        Widget::render(render_target);
+
         render_target->drawText(position, text, character_size, text_color);
     }
 
