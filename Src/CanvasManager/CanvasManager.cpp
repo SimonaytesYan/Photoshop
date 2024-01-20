@@ -21,19 +21,16 @@ void CanvasManager::registerCanvas(Canvas* canvas)
 
 void CanvasManager::RecreateWindowMenu()
 {
-    for (int i = window_menu->getSubWidgets().Begin(); i != -1; )
-    {
-        fprintf(stderr, "recreate window i = %d\n", i);
-        if (window_menu->getMainButton() != window_menu->getSubWidgets()[i].val) // Skip button that opens menu
-        {
-            fprintf(stderr, "recreate window delete i = %d\n", i);
-            delete window_menu->getSubWidgets()[i].val;
-        }
+    fprintf(stderr, "window_menu->getSubWidgets().size = %d\n", window_menu->getSubWidgets().size);
 
-        int next = window_menu->getSubWidgets().Iterate(i);
-        window_menu->getSubWidgets().Remove(i);
-        i = next;
-    }
+    Widget* main_button = window_menu->getMainButton();
+    window_menu->unregisterSubWidget(main_button);
+
+    for (int i = window_menu->getSubWidgets().Begin(); i != -1; i = window_menu->getSubWidgets().Iterate(i))
+        delete window_menu->getSubWidgets()[i].val;
+
+    window_menu->getSubWidgets().Clear();
+    window_menu->registerSubWidget(main_button);
 
     for (int i = canvases.Begin(); i != -1; i = canvases.Iterate(i))
     {
@@ -58,13 +55,20 @@ void CanvasManager::unregisterCanvas(Canvas* canvas)
             fprintf(stderr, "Close canvas %s\n", canvases[i].val->getName());
             canvases.Remove(i);
 
+            fprintf(stderr, "canvases.size = %d\n", canvases.size);
+
             RecreateWindowMenu();
             break;
         }
     }
 
     if (active_canvas == canvas)
-        active_canvas = canvases[canvases.Begin()].val;
+    {
+        if (canvases.Begin() == -1)
+            active_canvas = nullptr;
+        else
+            active_canvas = canvases[canvases.Begin()].val;
+    }
 }
 
 void ToForegroundCanvasWindow::operator()()

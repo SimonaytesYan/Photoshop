@@ -75,7 +75,7 @@ int List<T>::Deterate(int index)
 template <class T>
 int List<T>::Begin() const
 {
-    if (capacity >= 1)
+    if (size >= 1)
         return data[0].next;
     return -1;
 }
@@ -83,7 +83,7 @@ int List<T>::Begin() const
 template <class T>
 int List<T>::End() const
 {
-    if (capacity >= 1)
+    if (size >= 1)
         return data[0].prev;
     return -1;
 }

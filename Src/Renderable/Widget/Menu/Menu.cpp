@@ -29,6 +29,8 @@ static_menu   (_static_menu)
     }
     else
         expanded = true;
+    
+    position = main_button->getPos();
 
     Widget::registerSubWidget(button);
 }
@@ -38,6 +40,8 @@ Widget        (widget->getPos(), widget->getSize()),
 main_button   (widget),
 static_menu   (true)
 {
+    position = main_button->getPos();
+
     Widget::registerSubWidget(widget);
     expanded = true;
 }
@@ -74,7 +78,9 @@ void Menu::registerSubWidget(plugin::WidgetI* new_widget)
     else
     {
         Widget::registerSubWidget(new_widget);
-        ((Widget*)new_widget)->setVisible(false);
+
+        if (new_widget != main_button)
+            ((Widget*)new_widget)->setVisible(false);
     }
 
     UpdateRegionSet();
