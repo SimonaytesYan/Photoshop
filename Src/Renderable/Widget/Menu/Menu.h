@@ -36,6 +36,8 @@ public:
             bool InsideP                 (plugin::Vec2 v)              override;
             void UpdateOwnDefaultRegionSet()                           override;
     
+    Widget* getMainButton() { return main_button; };
+
     bool onMouseRelease   (plugin::MouseContext mouse)    override;
     bool onMousePress     (plugin::MouseContext mouse)    override;
     bool onKeyboardPress  (plugin::KeyboardContext mouse) override;

@@ -7,7 +7,7 @@
 
 const size_t kHeaderSize      = 50;
 const size_t kBorderThick     = 10;
-const plugin::Color  kBorderColor     = plugin::Color(175, 200, 175); //plugin::Color(0,   255, 255);
+const plugin::Color  kBorderColor     = plugin::Color(175, 200, 175);
 const plugin::Color  kBackgroundColor = plugin::Color(255, 255, 255);
 
 struct ButtonMove : ButtonFunction
@@ -52,9 +52,9 @@ moving(false)
     close_texture_press.LoadFromFile(kClosePressedImgFile);
     
     Button* header_button = new Button(position, plugin::Vec2(_size.GetX() - kHeaderSize, kHeaderSize), 
-                                       kBorderColor, new ButtonMove(this));         //Button to move window
+                                       kBorderColor, new ButtonMove(this)); // Button to move window
 
-    header_button->registerSubWidget(new Label(position, font, kHeaderSize * 0.8, header, kBorderColor));    //Header
+    header_button->registerSubWidget(new Label(position, font, kHeaderSize * 0.8, header, kBorderColor));    // Header
     registerSubWidget(header_button);
 
     plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kHeaderSize, 
@@ -62,7 +62,7 @@ moving(false)
     registerSubWidget(new Button(close_button_pos, plugin::Vec2(kHeaderSize, kHeaderSize), 
                          close_texture, close_texture_press,
                          nullptr,
-                         new ButtonClose(this)));                       //Close button window
+                         new ButtonClose(this)));   // Button to close window
 }
 
 Window::~Window()

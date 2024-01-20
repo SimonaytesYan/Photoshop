@@ -52,9 +52,6 @@ bool Canvas::onMousePress(plugin::MouseContext mouse)
         }
         else if (tm != nullptr)
         {
-            fprintf(stderr, "data = %p\n", &data);
-            fprintf(stderr, "tmp  = %p\n", &tmp);
-            fprintf(stderr, "tm   = %p\n", tm);
             tm->paintOnPress((plugin::RenderTargetI*)&data, 
                              (plugin::RenderTargetI*)&tmp, 
                              mouse);

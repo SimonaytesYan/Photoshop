@@ -49,6 +49,8 @@ void AddColors(Window* main_window, Window* colors, ToolManager* tm);
 
 int main()
 {
+	fprintf(stderr, "Start\n");
+
 	srand(time(nullptr));
 
 	sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
@@ -284,9 +286,10 @@ void AddMenu(Widget* root, Window* window, CanvasManager* canvas_manager, Filter
 									  		    font, 20, "Windows",
 									  		    plugin::Color(255, 255, 255));
 	VerticalMenu* windows = new VerticalMenu(windows_button, false);
-	window->registerSubWidget(windows);
-
 	canvas_manager->SetWindowMenu(windows);
+
+	main_menu->registerSubWidget(windows);
+
 
 	window->registerSubWidget(main_menu);
 }

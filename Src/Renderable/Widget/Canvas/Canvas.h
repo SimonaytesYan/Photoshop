@@ -28,6 +28,7 @@ public :
 
     ~Canvas()
     {
+        fprintf(stderr, "Canvas %s dtor\n", name);
         canvas_manager->unregisterCanvas(this);
         delete[] name;
     };

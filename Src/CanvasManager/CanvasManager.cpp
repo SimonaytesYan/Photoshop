@@ -19,17 +19,46 @@ void CanvasManager::registerCanvas(Canvas* canvas)
     active_canvas = canvas;
 }
 
+void CanvasManager::RecreateWindowMenu()
+{
+    for (int i = window_menu->getSubWidgets().Begin(); i != -1; )
+    {
+        fprintf(stderr, "recreate window i = %d\n", i);
+        if (window_menu->getMainButton() != window_menu->getSubWidgets()[i].val) // Skip button that opens menu
+        {
+            fprintf(stderr, "recreate window delete i = %d\n", i);
+            delete window_menu->getSubWidgets()[i].val;
+        }
+
+        int next = window_menu->getSubWidgets().Iterate(i);
+        window_menu->getSubWidgets().Remove(i);
+        i = next;
+    }
+
+    for (int i = canvases.Begin(); i != -1; i = canvases.Iterate(i))
+    {
+        ToForegroundCanvasWindow* functor = new ToForegroundCanvasWindow(canvases[i].val, 
+                                                                         this, 
+                                                                         event_manager);
+        TextButton* text_button = new TextButton(plugin::Vec2(0, 0), plugin::Vec2(200, 50), 
+                                                 kButtonColor, 
+                                                 font, 20, canvases[i].val->getName(), plugin::Color(255, 255, 255), 
+                                                 functor);
+        window_menu->registerSubWidget(text_button);
+    }
+}
+
 void CanvasManager::unregisterCanvas(Canvas* canvas)
 {
-    List<Widget*>& canvases_button = window_menu->getSubWidgets();
-
+    fprintf(stderr, "We want close canvas %s\n", canvas->getName());
     for (int i = canvases.Begin(); i != -1; i = canvases.Iterate(i))
     {
         if (canvases[i].val == canvas)
         {
-            fprintf(stderr, "Close canvas %s\n", canvas->getName());
+            fprintf(stderr, "Close canvas %s\n", canvases[i].val->getName());
             canvases.Remove(i);
-            canvases_button.Remove(i);
+
+            RecreateWindowMenu();
             break;
         }
     }

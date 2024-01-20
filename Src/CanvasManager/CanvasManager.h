@@ -42,24 +42,19 @@ public :
         font.LoadFont(kFontFile);
     }
 
-    void registerCanvas(Canvas* canvas);
 
+    void registerCanvas  (Canvas* canvas);
     void unregisterCanvas(Canvas* canvas);
+    void RecreateWindowMenu();
 
     Canvas* GetActiveCanvas()
-    {
-        return active_canvas;
-    }
+    { return active_canvas; }
 
     void setActiveCanvas(Canvas* canvas)
-    {
-        active_canvas = canvas;
-    }
+    { active_canvas = canvas; }
 
     void SetWindowMenu(VerticalMenu* menu)
-    {
-        window_menu = menu;
-    }
+    { window_menu = menu; }
 };
 
 #endif

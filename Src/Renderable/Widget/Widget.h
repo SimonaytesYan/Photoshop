@@ -123,8 +123,6 @@ public :
         event_man->setPriority(plugin::EventType::MouseRelease, 0);
         event_man->unregisterObject(this);
 
-        fprintf(stderr, "plugin widget parent = %p\n", parent);
-
         delete plugin_widget_i;
     }
 };

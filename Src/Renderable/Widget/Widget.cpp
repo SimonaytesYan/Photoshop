@@ -268,7 +268,8 @@ void Widget::recalcRegion()
         for (index; index != -1; index = parent->sub_widgets.Iterate(index))
         {
             Widget* brother = parent->sub_widgets[index].val;
-            reg_set -= brother->GetDefaultRegSet();
+            if (brother->getAvailable() && brother->getVisible())
+                reg_set -= brother->GetDefaultRegSet();
         }
     }
 
