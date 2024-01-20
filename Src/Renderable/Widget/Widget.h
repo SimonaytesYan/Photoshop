@@ -90,6 +90,8 @@ public :
     plugin_widget_i (_widget),
     event_man       (_event_man)
     {
+
+
         priority = 255;
         counter++;
 
@@ -121,14 +123,9 @@ public :
         event_man->setPriority(plugin::EventType::MouseRelease, 0);
         event_man->unregisterObject(this);
 
+        fprintf(stderr, "plugin widget parent = %p\n", parent);
+
         delete plugin_widget_i;
-
-        parent->unregisterSubWidget(this);
-
-        for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
-        {
-            delete sub_widgets[i].val;
-        }
     }
 };
 

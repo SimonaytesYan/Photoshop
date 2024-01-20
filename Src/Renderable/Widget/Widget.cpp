@@ -24,6 +24,9 @@ parent          (nullptr)
 
 Widget::~Widget()
 {
+    if (parent != nullptr)
+        parent->unregisterSubWidget(this);
+
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
         sub_widgets[i].val->available = false;
@@ -115,6 +118,9 @@ void Widget::render(RenderTarget* render_target)
 
 void Widget::registerSubWidget(WidgetI* new_widget)
 {
+    if (new_widget->getParent() != nullptr)
+        new_widget->getParent()->unregisterSubWidget(new_widget);
+
     new_widget->setParent(this);
     sub_widgets.PushBack((Widget*)new_widget);
 
