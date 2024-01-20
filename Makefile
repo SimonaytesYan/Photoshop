@@ -189,6 +189,12 @@ brightness_filter_debug:
 brightness_filter_release:
 	g++ -c $(RELEASE_FLAGS) Src/Filter/BrightnessFilter/BrightnessFilter.cpp -o Obj/BrightnessFilter.o
 
+clean:
+	cd Obj
+	rm *.o
+	cd ..
+	rm $(EXE_FILE)
+
 run:
 	./$(EXE_FILE)
 
