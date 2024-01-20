@@ -693,13 +693,13 @@ namespace sym_plugin
     character_size (_character_size),
     text_color     (_text_color)
     {
-        text = (char*)calloc(sizeof(char), strlen(_text) + 1);
+        text = new char[strlen(_text) + 1];
         strcpy(text, _text);
     }
 
     Label::~Label()
     {
-        free(text);
+        delete[] text;
     }
 
     void Label::SetText(const char* new_text)

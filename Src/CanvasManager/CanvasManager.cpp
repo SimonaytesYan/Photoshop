@@ -27,6 +27,7 @@ void CanvasManager::unregisterCanvas(Canvas* canvas)
     {
         if (canvases[i].val == canvas)
         {
+            fprintf(stderr, "Close canvas %s\n", canvas->getName());
             canvases.Remove(i);
             canvases_button.Remove(i);
             break;
@@ -45,4 +46,4 @@ void ToForegroundCanvasWindow::operator()()
     event_manager->onMousePress(plugin::MouseContext(canvas->getPos(), plugin::MouseButton::Unknown));
 
     canvas_manager->setActiveCanvas(canvas);
-} 
+}

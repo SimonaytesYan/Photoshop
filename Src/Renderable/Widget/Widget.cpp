@@ -24,6 +24,11 @@ parent          (nullptr)
 
 Widget::~Widget()
 {
+    for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
+    {
+        sub_widgets[i].val->available = false;
+        delete sub_widgets[i].val;
+    }
 }
 
 void Widget::move(plugin::Vec2 delta)
@@ -102,7 +107,7 @@ void Widget::render(RenderTarget* render_target)
                 for (int i = sub_widget->sub_widgets.Begin(); i != -1; i = sub_widget->sub_widgets.Iterate(i))
                     sub_widget->sub_widgets[i].val->available = false;
 
-                //delete sub_widget;
+                delete sub_widget;
             }
         }
     }
