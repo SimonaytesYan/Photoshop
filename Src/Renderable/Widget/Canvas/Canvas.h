@@ -28,8 +28,8 @@ public :
 
     ~Canvas()
     {
-        delete name;
         canvas_manager->unregisterCanvas(this);
+        delete[] name;
     };
 
     RenderTarget* GetData() { return &data; }
