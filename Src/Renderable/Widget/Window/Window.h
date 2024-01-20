@@ -18,6 +18,7 @@ public:
     bool onMouseMove (plugin::MouseContext mouse)   override;
     bool onMouseRelease(plugin::MouseContext mouse) override;
     
+    void addIntoWindow(Widget* new_widget);
     void Close();
     void SetMoving(bool new_moving) { moving = new_moving; }
 };

@@ -5,7 +5,7 @@
 #include "../../../RegionSet/RegionSet.h"
 #include "../../../ClipRegion/ClipRegion.h"
 
-const size_t kButtonSize      = 50;
+const size_t kHeaderSize      = 50;
 const size_t kBorderThick     = 10;
 const plugin::Color  kBorderColor     = plugin::Color(175, 200, 175); //plugin::Color(0,   255, 255);
 const plugin::Color  kBackgroundColor = plugin::Color(255, 255, 255);
@@ -51,15 +51,15 @@ moving(false)
     close_texture.LoadFromFile(kCloseImgFile);
     close_texture_press.LoadFromFile(kClosePressedImgFile);
     
-    Button* header_button = new Button(position, plugin::Vec2(_size.GetX() - kButtonSize, kButtonSize), 
+    Button* header_button = new Button(position, plugin::Vec2(_size.GetX() - kHeaderSize, kHeaderSize), 
                                        kBorderColor, new ButtonMove(this));         //Button to move window
 
-    header_button->registerSubWidget(new Label(position, font, 40, header, kBorderColor));    //Header
+    header_button->registerSubWidget(new Label(position, font, kHeaderSize * 0.8, header, kBorderColor));    //Header
     registerSubWidget(header_button);
 
-    plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kButtonSize, 
+    plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kHeaderSize, 
                                     position.GetY());
-    registerSubWidget(new Button(close_button_pos, plugin::Vec2(kButtonSize, kButtonSize), 
+    registerSubWidget(new Button(close_button_pos, plugin::Vec2(kHeaderSize, kHeaderSize), 
                          close_texture, close_texture_press,
                          nullptr,
                          new ButtonClose(this)));                       //Close button window
@@ -67,6 +67,24 @@ moving(false)
 
 Window::~Window()
 {
+}
+
+// new_widget add into window with border and header indent 
+void Window::addIntoWindow(Widget* new_widget)
+{
+    plugin::Vec2 left_up_corner = new_widget->getPos() + plugin::Vec2(kBorderThick, kHeaderSize);
+    if (new_widget->getPos().x < left_up_corner.GetX())
+        new_widget->setPos(plugin::Vec2(left_up_corner.x, new_widget->getPos().y));
+    if (new_widget->getPos().y < left_up_corner.GetY())
+        new_widget->setPos(plugin::Vec2(new_widget->getPos().x, left_up_corner.y));
+
+    plugin::Vec2 bottom_right_corner = new_widget->getPos() + plugin::Vec2(kBorderThick, kHeaderSize);
+    if (new_widget->getPos().x > bottom_right_corner.GetX())
+        new_widget->setPos(plugin::Vec2(bottom_right_corner.x, new_widget->getPos().y));
+    if (new_widget->getPos().y > bottom_right_corner.GetY())
+        new_widget->setPos(plugin::Vec2(new_widget->getPos().x, bottom_right_corner.y));
+
+    Widget::registerSubWidget(new_widget);
 }
 
 bool Window::onMousePress(plugin::MouseContext mouse)
