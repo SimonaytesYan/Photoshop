@@ -42,6 +42,8 @@ bool Canvas::onMousePress(plugin::MouseContext mouse)
 
     if (InsideP(mouse.position))
     {
+        canvas_manager->setActiveCanvas(this);
+
         drawing = true;
         mouse.position = mouse.position - position;
         
