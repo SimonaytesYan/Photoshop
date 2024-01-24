@@ -375,8 +375,6 @@ void SavingParams::operator()()
 
 void SaveInFile::operator()()
 {
-	fprintf(stderr, "canvas_manager = %p\n", canvas_manager);
-	fprintf(stderr, "active canvas  = %p\n", canvas_manager->GetActiveCanvas());
     Image img(canvas_manager->GetActiveCanvas()->GetData()->GetTexture());
 	sf::Image image = img.GetImage();
 	const char* file_name = file_name_edit->GetText();
