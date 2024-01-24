@@ -115,21 +115,26 @@ struct LastFilter : ButtonFunction
 
 struct SavingParams : ButtonFunction
 {
-	Window* 	   main_window;
+	Widget*        root;		// We use like parent of modal window  
+								// (not main_window, because of doubling events )
+	Window* 	   main_window;	// We use main_window to calculate position of modal window
 	EventManager*  event_manager;
 	CanvasManager* canvas_manager;
 	Font 		   font;
 
 	SavingParams() :
+	root		   (nullptr),
 	main_window    (nullptr),
 	event_manager  (nullptr),
 	canvas_manager (nullptr)
 	{}
 
-	SavingParams(Window* 	    main_window,
+	SavingParams(Widget* 		root,
+				 Window* 	    main_window,
 				 EventManager*  event_manager,
 				 CanvasManager* canvas_manager,
 				 Font 		    font) :
+	root		   (root),
 	main_window    (main_window),
 	event_manager  (event_manager),
 	canvas_manager (canvas_manager),
@@ -152,8 +157,8 @@ struct SaveInFile : ButtonFunction
 	{}
 
 	SaveInFile(CanvasManager*     canvas, 
-			  EditBox*     file_name_edit,
-			  ModalWindow* dialog_box) :
+			   EditBox*     file_name_edit,
+			   ModalWindow* dialog_box) :
 	canvas_manager (canvas_manager),
 	file_name_edit (file_name_edit),
 	dialog_box     (dialog_box)
@@ -266,7 +271,6 @@ struct NewCanvas : ButtonFunction
 
 void SwitchTool::operator()()
 {
-	
 	tool_manager->setTool(tool);
 }
 
@@ -361,7 +365,7 @@ void SavingParams::operator()()
 								   		   save_canvas_func);
 	dialog_box->registerSubWidget(ok_button);		
 
-	main_window->registerSubWidget(dialog_box);
+	root->registerSubWidget(dialog_box);
 }
 
 void SaveInFile::operator()()

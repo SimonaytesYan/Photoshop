@@ -243,7 +243,7 @@ void AddMenu(Widget* root, Window* window, CanvasManager* canvas_manager, Filter
 									 		 plugin::Color(255, 255, 255));
 	VerticalMenu* file_menu = new VerticalMenu(file_button, false);
 
-	SavingParams* saving_func = new SavingParams(window, em, canvas_manager, font);
+	SavingParams* saving_func = new SavingParams(root, window, em, canvas_manager, font);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
 									 			kButtonColor,
 												font, 20, "Save", 
