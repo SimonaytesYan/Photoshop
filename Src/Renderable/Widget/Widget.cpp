@@ -29,18 +29,9 @@ Widget::~Widget()
     if (parent != nullptr)
         parent->unregisterSubWidget(this);
 
-    #ifdef DEBUG
-        sub_widgets.Dump();
-    #endif
-    
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
         sub_widgets[i].val->parent = nullptr;       //Set parent nullptr to do not change sub_widgets list
-
-        #ifdef DEBUG
-            fprintf(stderr, "Delete sub_widgets[%d] %s %p\n", i, typeid(*sub_widgets[i].val).name(), sub_widgets[i].val);
-        #endif
-
         delete sub_widgets[i].val;
     }
 }
@@ -108,8 +99,6 @@ void Widget::render(RenderTarget* render_target)
             }
             else
             {
-
-                fprintf(stderr, "Delete widget %s %d\n", typeid(*sub_widget).name(), (size_t)sub_widget % 1000);
                 delete sub_widget;
                 UpdateRegionSet();
             }

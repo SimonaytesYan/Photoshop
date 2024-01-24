@@ -163,16 +163,3 @@ void Window::render(RenderTarget* render_target)
         Widget::render(render_target);
     }
 }
-
-
-//-----------------------TO DEBUG-----------------------------------------------
-
-#if 1
-void Window::registerSubWidget(plugin::WidgetI* new_widget)
-{
-    Widget::registerSubWidget(new_widget);
-    
-    fprintf(stderr, "Window = %d\n", (size_t)this % 1000);
-    sub_widgets.Dump();
-}
-#endif

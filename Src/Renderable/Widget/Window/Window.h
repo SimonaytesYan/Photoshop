@@ -21,11 +21,6 @@ public:
     void addIntoWindow(Widget* new_widget);
     void Close();
     void SetMoving(bool new_moving) { moving = new_moving; }
-
-    // TO DEBUG
-    #if 1
-    void registerSubWidget(plugin::WidgetI* new_widget) override;
-    #endif
 };
 
 #endif //SYM_WINDOW
