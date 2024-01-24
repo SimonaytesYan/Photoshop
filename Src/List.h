@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 const int ResizeCoef = 2;
 
@@ -38,6 +39,7 @@ struct List
     void PopBack ();
 
     void Clear();
+    void Dump();
 
     ListElem<T>& operator[](int index);
 };
@@ -56,7 +58,7 @@ int List<T>::Iterate(int index)
 
     if (data[index].next != 0)
         return data[index].next;
-
+    // else
     return -1;
 }
 
@@ -68,14 +70,14 @@ int List<T>::Deterate(int index)
 
     if (data[index].prev != 0)
         return data[index].prev;
-
+    // else
     return -1;
 }
 
 template <class T>
 int List<T>::Begin() const
 {
-    if (size >= 1)
+    if (capacity >= 1)
         return data[0].next;
     return -1;
 }
@@ -83,7 +85,7 @@ int List<T>::Begin() const
 template <class T>
 int List<T>::End() const
 {
-    if (size >= 1)
+    if (capacity >= 1)
         return data[0].prev;
     return -1;
 }
@@ -129,6 +131,15 @@ void List<T>::Clear()
         data[i].prev = free_i;
         free_i  = i;
     }
+}
+
+template <class T>
+void List<T>::Dump()
+{
+    fprintf(stderr, "{------------------------\n");
+    for (int i = Begin(); i != -1; i = Iterate(i))
+        fprintf(stderr, "[prev %d] val %p [next %d]\n", data[i].prev, data[i].val, data[i].next);
+    fprintf(stderr, "------------------------}\n");
 }
 
 template <class T>
@@ -202,24 +213,18 @@ int List<T>::Insert(T value, int after_which)
 {
     ResizeIfNeed(this);
 
-    int index = 0;
-    int free_elem_index = -1;
-    FindFree(&free_elem_index);
-
-    index = free_elem_index;
-
-    int tail = 0;
-    tail = End();
+    int index = -1;
+    FindFree(&index);
     
-    ListElem<T>* new_elem = &data[free_elem_index];
+    ListElem<T>* new_elem = &data[index];
     new_elem->val = value;
     
     int next       = data[after_which].next;
     new_elem->next = next;
     new_elem->prev = after_which;
 
-    data[next].prev        = free_elem_index; 
-    data[after_which].next = free_elem_index;
+    data[next].prev        = index; 
+    data[after_which].next = index;
 
     size++;
 

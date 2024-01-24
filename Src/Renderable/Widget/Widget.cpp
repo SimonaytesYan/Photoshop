@@ -5,6 +5,8 @@
 #include "../../ClipRegion/ClipRegion.h"
 #include "../../Useful.h"
 
+#define DEBUG
+
 const double kPrecision = 1e-6;
 
 Widget::Widget (plugin::Vec2 _position, plugin::Vec2 _size, bool _available) :
@@ -23,13 +25,22 @@ parent          (nullptr)
 }
 
 Widget::~Widget()
-{
+{    
     if (parent != nullptr)
         parent->unregisterSubWidget(this);
 
+    #ifdef DEBUG
+        sub_widgets.Dump();
+    #endif
+    
     for (int i = sub_widgets.Begin(); i != -1; i = sub_widgets.Iterate(i))
     {
-        sub_widgets[i].val->available = false;
+        sub_widgets[i].val->parent = nullptr;       //Set parent nullptr to do not change sub_widgets list
+
+        #ifdef DEBUG
+            fprintf(stderr, "Delete sub_widgets[%d] %s %p\n", i, typeid(*sub_widgets[i].val).name(), sub_widgets[i].val);
+        #endif
+
         delete sub_widgets[i].val;
     }
 }
@@ -85,17 +96,10 @@ void Widget::render(RenderTarget* render_target)
 {
     if (available && visible)
     {
-        #ifdef DEBUG
-            fprintf(stderr, "Render widget %s\n", typeid(*this).name());
-        #endif
         for (int index = sub_widgets.Begin(); index != -1; index = sub_widgets.Iterate(index))
         {
 
             Widget* sub_widget = sub_widgets[index].val;
-
-            #ifdef DEBUG    
-                fprintf(stderr, "sub_widget[%d] = %s(%p)\n", index, typeid(*sub_widget).name(), sub_widget);
-            #endif
 
             if (sub_widget->getAvailable())
             {
@@ -104,13 +108,10 @@ void Widget::render(RenderTarget* render_target)
             }
             else
             {
-                unregisterSubWidget(sub_widget);
-                UpdateRegionSet();
 
-                for (int i = sub_widget->sub_widgets.Begin(); i != -1; i = sub_widget->sub_widgets.Iterate(i))
-                    sub_widget->sub_widgets[i].val->available = false;
-
+                fprintf(stderr, "Delete widget %s %d\n", typeid(*sub_widget).name(), (size_t)sub_widget % 1000);
                 delete sub_widget;
+                UpdateRegionSet();
             }
         }
     }
@@ -118,7 +119,7 @@ void Widget::render(RenderTarget* render_target)
 
 void Widget::registerSubWidget(WidgetI* new_widget)
 {
-    if (new_widget->getParent() != nullptr)
+    if (new_widget->getParent() != nullptr) // Delete new_widget from last parent sub_widgets
         new_widget->getParent()->unregisterSubWidget(new_widget);
 
     new_widget->setParent(this);
