@@ -14,7 +14,6 @@ void VerticalMenu::registerSubWidget(plugin::WidgetI* new_widget)
 
     new_widget->move(new_pos - new_widget->getPos());
 
-    fprintf(stderr, "VerticalMenu new widget pos = (%lg, %lg)\n",new_widget->getPos().x, new_widget->getPos().y);
     Menu::registerSubWidget(new_widget);
 }
 

@@ -136,10 +136,10 @@ void List<T>::Clear()
 template <class T>
 void List<T>::Dump()
 {
-    fprintf(stderr, "{------------------------\n");
+    fprintf(stderr, "\n{------------------------\n");
     for (int i = Begin(); i != -1; i = Iterate(i))
         fprintf(stderr, "[prev %d] val %p [next %d]\n", data[i].prev, data[i].val, data[i].next);
-    fprintf(stderr, "------------------------}\n");
+    fprintf(stderr, "------------------------}\n\n");
 }
 
 template <class T>
