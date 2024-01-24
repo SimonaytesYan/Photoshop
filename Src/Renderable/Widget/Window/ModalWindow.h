@@ -14,7 +14,7 @@ public:
     Window(_position, _size, _header),
     event_manager (_event_manager)
     {
-        priority = 1;
+        priority = 255;
         event_manager->registerObject(this);
 
         DynArray<Events> events(5);
@@ -24,7 +24,7 @@ public:
         events[3] = KEY_RELEASE;
         events[4] = KEY_PRESS;
 
-        event_manager->ChangePriorities(events, 1);
+        event_manager->ChangePriorities(events, priority);
     }
 
     ~ModalWindow()
