@@ -105,8 +105,8 @@ namespace sym_plugin
             }
         }
 
-        plugin::Vec2 pos  = {0, 0};
-        plugin::Vec2 size = {texture->width, texture->height};
+        plugin::Vec2 pos(0, 0);
+        plugin::Vec2 size(texture->width, texture->height);
         rt->drawTexture(pos, size, texture);
 
         delete texture;

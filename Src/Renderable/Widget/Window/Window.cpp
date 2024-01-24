@@ -140,8 +140,6 @@ bool Window::onMouseRelease(plugin::MouseContext mouse)
 void Window::Close()
 {
     available = false;
-    fprintf(stderr, "Close window\n");
-
     UpdateRegionSet();
 }
 

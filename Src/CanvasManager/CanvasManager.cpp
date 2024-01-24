@@ -16,8 +16,6 @@ void CanvasManager::registerCanvas(Canvas* canvas)
 // Run this function every time, when list of canvases changed 
 void CanvasManager::RecreateWindowMenu()
 {
-    fprintf(stderr, "window_menu->getSubWidgets().size = %d\n", window_menu->getSubWidgets().size);
-
     // Delete all buttons from menu except main button  
 
     Widget* main_button = window_menu->getMainButton();     // Save main_button
@@ -45,16 +43,11 @@ void CanvasManager::RecreateWindowMenu()
 
 void CanvasManager::unregisterCanvas(Canvas* canvas)
 {
-    fprintf(stderr, "We want close canvas %s\n", canvas->getName());
     for (int i = canvases.Begin(); i != -1; i = canvases.Iterate(i))
     {
         if (canvases[i].val == canvas)
         {
-            fprintf(stderr, "Close canvas %s\n", canvases[i].val->getName());
             canvases.Remove(i);
-
-            fprintf(stderr, "canvases.size = %d\n", canvases.size);
-
             RecreateWindowMenu();
             break;
         }
@@ -69,21 +62,18 @@ void CanvasManager::unregisterCanvas(Canvas* canvas)
     }
 }
 
+void PutAllParentsToForeground(Widget* widget)
+{
+    if (widget->getParent() == nullptr)
+        return;
+    
+    widget->getWidgetParent()->ToForeground(widget);
+    PutAllParentsToForeground(widget->getWidgetParent());
+}
+
 // We believe that all canvases are inside windows, that are children of root 
 void ToForegroundCanvasWindow::operator()()
 {
-    Widget* canvas_window = canvas->getWidgetParent();
-
-    if (canvas_window->getWidgetParent() != nullptr)
-    {
-        fprintf(stderr, "Put canvas_window to foreground\n");
-        canvas_window->getWidgetParent()->ToForeground(canvas_window);
-    }
-    else
-    {
-        canvas_window->getWidgetParent()->ToForeground(canvas_window);
-        event_manager->onMousePress(plugin::MouseContext(canvas->getPos(), plugin::MouseButton::Unknown));
-    }
-
+    PutAllParentsToForeground(canvas);
     canvas_manager->setActiveCanvas(canvas);
 }

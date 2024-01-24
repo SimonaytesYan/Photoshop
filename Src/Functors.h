@@ -253,8 +253,6 @@ struct NewCanvas : ButtonFunction
 		char window_header[100] = "";
 		sprintf(window_header, "NewCanvas%d", counter++);
 
-		fprintf(stderr, "Creating new canvas\n");
-
 		Window* new_window = new Window(plugin::Vec2(400, 400), plugin::Vec2(720, 560), window_header);
 		Canvas* new_canvas = new Canvas(plugin::Vec2(410, 450), plugin::Vec2(700, 500), tool_manager, 
 										filter_manager, window_header, canvas_manager);

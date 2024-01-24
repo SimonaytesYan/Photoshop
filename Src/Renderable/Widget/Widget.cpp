@@ -184,7 +184,7 @@ void Widget::ToForeground(Widget* son)
 
     // Put son to foreground
     if (sub_widgets.End() != index)
-    {   
+    {
         sub_widgets.Remove(index);
         sub_widgets.PushBack(son);
 
