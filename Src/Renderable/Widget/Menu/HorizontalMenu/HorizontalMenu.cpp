@@ -4,7 +4,7 @@
 void HorizontalMenu::registerSubWidget(plugin::WidgetI* new_widget)
 {
     plugin::Vec2 new_pos = plugin::Vec2(0, 0);
-    if (sub_widgets.End() != -1)
+    if (sub_widgets.size != 0)
     {
         Widget* last_w = sub_widgets[sub_widgets.End()].val;
         new_pos = last_w->getPos() + plugin::Vec2(last_w->getSize().x, 0);
