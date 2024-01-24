@@ -60,9 +60,9 @@ moving(false)
     plugin::Vec2 close_button_pos = plugin::Vec2(position.GetX() + size.GetX() - kHeaderSize, 
                                     position.GetY());
     registerSubWidget(new Button(close_button_pos, plugin::Vec2(kHeaderSize, kHeaderSize), 
-                         close_texture, close_texture_press,
-                         nullptr,
-                         new ButtonClose(this)));   // Button to close window
+                                 close_texture, close_texture_press,
+                                 nullptr,
+                                 new ButtonClose(this)));   // Button to close window
 }
 
 Window::~Window()
@@ -134,10 +134,14 @@ bool Window::onMouseRelease(plugin::MouseContext mouse)
     return false;
 }
 
+// We can`t run destructor right here because of segfault in OnMousePress function.
+// So we set available to false and 
+// this object will be deleted in the nearest render pass. 
 void Window::Close()
 {
     available = false;
-    move(plugin::Vec2(10000, 10000));
+    fprintf(stderr, "Close window\n");
+
     UpdateRegionSet();
 }
 
