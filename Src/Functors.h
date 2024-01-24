@@ -116,7 +116,7 @@ struct LastFilter : ButtonFunction
 struct SavingParams : ButtonFunction
 {
 	Widget*        root;		// We use like parent of modal window  
-								// (not main_window, because of doubling events )
+								// (not main_window, because of doubling events)
 	Window* 	   main_window;	// We use main_window to calculate position of modal window
 	EventManager*  event_manager;
 	CanvasManager* canvas_manager;
@@ -156,9 +156,9 @@ struct SaveInFile : ButtonFunction
 	dialog_box     (nullptr)
 	{}
 
-	SaveInFile(CanvasManager*     canvas, 
-			   EditBox*     file_name_edit,
-			   ModalWindow* dialog_box) :
+	SaveInFile(CanvasManager* canvas_manager, 
+			   EditBox*       file_name_edit,
+			   ModalWindow*   dialog_box) :
 	canvas_manager (canvas_manager),
 	file_name_edit (file_name_edit),
 	dialog_box     (dialog_box)
@@ -169,7 +169,9 @@ struct SaveInFile : ButtonFunction
 
 struct OpeningParams : ButtonFunction
 {
-	Window* 	   main_window;
+	Widget*        root;		// We use like parent of modal window  
+								// (not main_window, because of doubling events)
+	Window* 	   main_window;	// We use main_window to calculate position of modal window
 	EventManager*  event_manager;
 	Font 		   font;
 	ToolManager*   tool_manager;
@@ -177,18 +179,21 @@ struct OpeningParams : ButtonFunction
 	CanvasManager* canvas_manager;
 
 	OpeningParams() :
+	root		   (nullptr),
 	main_window    (nullptr),
 	event_manager  (nullptr),
 	tool_manager   (nullptr),
 	filter_manager (nullptr)
 	{}
 
-	OpeningParams(Window* 	   main_window,
-				  EventManager* event_manager,
-				  Font 		   font,
+	OpeningParams(Widget* 	   	 root,
+				  Window* 	   	 main_window,
+				  EventManager*  event_manager,
+				  Font 		   	 font,
 			 	  ToolManager*   tool_manager,
 			 	  FilterManager* filter_manager,
 				  CanvasManager* canvas_manager) :
+	root		  (root),
 	main_window   (main_window),
 	event_manager (event_manager),
 	font 		  (font),
@@ -370,6 +375,8 @@ void SavingParams::operator()()
 
 void SaveInFile::operator()()
 {
+	fprintf(stderr, "canvas_manager = %p\n", canvas_manager);
+	fprintf(stderr, "active canvas  = %p\n", canvas_manager->GetActiveCanvas());
     Image img(canvas_manager->GetActiveCanvas()->GetData()->GetTexture());
 	sf::Image image = img.GetImage();
 	const char* file_name = file_name_edit->GetText();
@@ -401,7 +408,7 @@ void OpeningParams::operator()()
 								   		   save_canvas_func);
 	dialog_box->registerSubWidget(ok_button);		
 
-	main_window->registerSubWidget(dialog_box);
+	root->registerSubWidget(dialog_box);
 }
 
 void OpenFile::operator()()

@@ -39,6 +39,7 @@ public :
     canvases      (List<Canvas*>(0)),
     event_manager (event_manager)
     {
+        active_canvas = nullptr;
         font.LoadFont(kFontFile);
     }
 

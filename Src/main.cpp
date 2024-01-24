@@ -250,7 +250,7 @@ void AddMenu(Widget* root, Window* window, CanvasManager* canvas_manager, Filter
 												plugin::Color(255, 255, 255),
 												saving_func));
 
-	OpeningParams* opening_func = new OpeningParams(window, em, font, tm, fm, canvas_manager);
+	OpeningParams* opening_func = new OpeningParams(root, window, em, font, tm, fm, canvas_manager);
 	file_menu->registerSubWidget(new TextButton(plugin::Vec2(0, 0), plugin::Vec2(100, 50), 
 									 			kButtonColor,
 												font, 20, "Open", 
