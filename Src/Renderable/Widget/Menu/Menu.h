@@ -15,7 +15,6 @@
 // Appropriate on_press function set by Menu constructor 
 // (only if static_menu - false) 
 //
-//
 class Menu : public Widget
 {
 

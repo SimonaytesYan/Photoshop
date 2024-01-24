@@ -79,8 +79,6 @@ bool Canvas::onMouseMove(plugin::MouseContext mouse)
 
     if (drawing == false)
     {
-        //disableTool(mouse);
-        //drawing = true;
         return false;
     }
 
