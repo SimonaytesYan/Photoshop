@@ -28,6 +28,8 @@ void CanvasManager::RecreateWindowMenu()
     window_menu->registerSubWidget(main_button);        // Recover main_button
 
     // Create buttons
+    if (canvases.size < 1)
+        return;
     for (int i = canvases.Begin(); i != -1; i = canvases.Iterate(i))
     {
         ToForegroundCanvasWindow* functor = new ToForegroundCanvasWindow(canvases[i].val, 

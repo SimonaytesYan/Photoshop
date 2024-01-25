@@ -10,9 +10,24 @@ const int ResizeCoef = 2;
 template <class T>
 struct ListElem 
 {
-    T   val  = 0;
+    T   val;
     int next = -1;
     int prev = -1;
+
+    ListElem() :
+    val  (T()),
+    next (0),
+    prev (0)
+    { }
+
+    ListElem& operator=(const ListElem& other) 
+    { 
+        val  = other.val;
+        next = other.next;
+        prev = other.prev;
+
+        return *this;
+    }
 };
 
 template <class T>
@@ -23,8 +38,11 @@ struct List
     ListElem<T>* data     = nullptr;
     int          free_i   = -1;
 
-    List(int _capacity);
+    List(int capacity);
+    List(const List<T>& other);
+    List<T>& operator=(const List<T>& other);
     ~List();
+
     int  Insert    (T value, int after_which);
     int  Remove    (int index);
     int  Iterate   (int index);
@@ -40,6 +58,7 @@ struct List
 
     void Clear();
     void Dump();
+    void AllDump();
 
     ListElem<T>& operator[](int index);
 };
@@ -97,14 +116,45 @@ List<T>::List(int _capacity)
     capacity = _capacity;
     free_i     = -1;
 
-    data     = (ListElem<T>*)calloc(capacity + 1, sizeof(ListElem<T>));
+    data     = new ListElem<T>[capacity + 1];
     if (data != nullptr)
+    {
         for(int i = capacity; i >= 1; i--)
         {            
             data[i].next = -1;
             data[i].prev = free_i;
             free_i  = i;
         }
+    }
+}
+
+
+template <class T>
+List<T>::List(const List<T>& other)
+{
+    size     = other.size;
+    capacity = other.capacity;
+    free_i   = other.free_i;
+    data     = new ListElem<T>[capacity + 1];
+
+    for (int i = capacity; i >= 1; i--)
+        data[i] = other.data[i];
+}
+
+template <class T>
+List<T>& List<T>::operator=(const List<T>& other)
+{
+    delete[] data;
+
+    size     = other.size;
+    capacity = other.capacity;
+    free_i   = other.free_i;
+    data     = new ListElem<T>[capacity + 1];
+
+    for (int i = 0; i <= capacity; i++)
+        data[i] = other.data[i];
+    
+    return *this;
 }
 
 template <class T>
@@ -114,7 +164,7 @@ List<T>::~List()
     size      = -1;
     free_i    = -1;
 
-    free(data);
+    delete[] data;
 }
 
 template <class T>
@@ -133,11 +183,26 @@ void List<T>::Clear()
     }
 }
 
+// Dump only filled in part of list
 template <class T>
 void List<T>::Dump()
 {
     fprintf(stderr, "\n{------------------------\n");
     for (int i = Begin(); i != -1; i = Iterate(i))
+        fprintf(stderr, "[prev %d] val %p [next %d]\n", data[i].prev, data[i].val, data[i].next);
+    fprintf(stderr, "------------------------}\n\n");
+}
+
+// Dump all information about list
+template <class T>
+void List<T>::AllDump()
+{
+    fprintf(stderr, "\n{------------------------\n");
+    fprintf(stderr, "size     = %d\n",   size);
+    fprintf(stderr, "capacity = %d\n",   capacity);
+    fprintf(stderr, "data     = %p\n",   data);
+    fprintf(stderr, "free_i   = %d\n\n", free_i);
+    for (int i = 0; i <= capacity; i++)
         fprintf(stderr, "[prev %d] val %p [next %d]\n", data[i].prev, data[i].val, data[i].next);
     fprintf(stderr, "------------------------}\n\n");
 }
@@ -175,10 +240,12 @@ int List<T>::Remove(int index)
 template <class T>
 int List<T>::ResizeUp(int new_capacity)
 {
-    data = (ListElem<T>*)realloc(data, sizeof(ListElem<T>)*(new_capacity + 1));
-
-    if (data == nullptr)
-        return -1;
+    ListElem<T>* new_data = new ListElem<T>[new_capacity + 1];
+    for (int i = 0; i <= capacity; i++)
+        new_data[i] = data[i];
+    
+    delete[] data;
+    data = new_data;
 
     for(int i = new_capacity; i >= capacity + 1; i--)
     {
@@ -211,7 +278,11 @@ int ResizeIfNeed(List<T> *list)
 template <class T>
 int List<T>::Insert(T value, int after_which) 
 {
+    AllDump();
+
     ResizeIfNeed(this);
+
+    AllDump();
 
     int index = -1;
     FindFree(&index);
