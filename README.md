@@ -1,6 +1,6 @@
 ## Photoshop ##
 
-This is a educational C++ project - GUI library based on SFML and simle version of photoshop implemented on it. 
+This is a educational C++ project - GUI library based on SFML and simle version of image editor implemented on it. There is also plugin system: you can add tools and filters without project recompilation. Some plugins sources you can find in folder Plugins.
 
 ![Preview](https://github.com/SimonaytesYan/Photoshop/blob/master/Resources/Preview.png)
 

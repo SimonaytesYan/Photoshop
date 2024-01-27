@@ -278,12 +278,8 @@ int ResizeIfNeed(List<T> *list)
 template <class T>
 int List<T>::Insert(T value, int after_which) 
 {
-    AllDump();
-
     ResizeIfNeed(this);
-
-    AllDump();
-
+    
     int index = -1;
     FindFree(&index);
     
